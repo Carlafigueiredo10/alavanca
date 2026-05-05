@@ -1,0 +1,101 @@
+---
+interface Props {
+  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos';
+}
+const { current } = Astro.props;
+---
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">
+      <svg class="nav-lever" viewBox="0 0 56 24" aria-hidden="true">
+        <g class="nav-lever-rotor" id="navLever">
+          <line x1="2" y1="12" x2="54" y2="12" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="22" y1="12" x2="28" y2="22" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="34" y1="12" x2="28" y2="22" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="28" cy="12" r="1.6" fill="#D97706"/>
+        </g>
+      </svg>
+      <span class="nav-logo-text">Alavanca</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/diagnostico" class={current === 'diagnostico' ? 'current' : ''}>Diagnóstico</a>
+      <a href="/trilhas" class={current === 'trilhas' ? 'current' : ''}>Trilhas</a>
+      <a href="/assistente" class={current === 'assistente' ? 'current' : ''}>Assistente</a>
+      <a href="/casos" class={current === 'casos' ? 'current' : ''}>Casos</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 14, 26, 0.78);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border-bottom: 0.5px solid var(--fg-10);
+    transition: background 300ms ease, border-color 300ms ease;
+  }
+
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .nav-lever {
+    width: 32px;
+    height: 18px;
+    display: block;
+  }
+
+  .nav-lever-rotor {
+    transform-origin: 28px 12px;
+    transition: transform 200ms ease-out;
+  }
+
+  .nav-logo-text {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--fg-50);
+  }
+
+  .nav-links a {
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.current {
+    color: var(--fg);
+  }
+
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .nav-inner { padding: 16px 24px; }
+  }
+</style>
