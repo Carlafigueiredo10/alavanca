@@ -25,7 +25,7 @@ import Base from '../layouts/Base.astro';
       A força que multiplica laboratórios<br />de inovação pública.
     </p>
 
-    <p class="hero-kicker animate-in delay-340">↑ IA para labs que duram</p>
+    <p class="hero-kicker animate-in delay-340">↑ Mais entrega, com a equipe que você tem.</p>
 
     <div class="hero-meta animate-in delay-420">
       <div>
@@ -35,7 +35,7 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="ctas">
         <a href="/diagnostico" class="cta cta-secondary">Diagnóstico</a>
-        <a href="/assistente" class="cta cta-primary">Falar com o assistente →</a>
+        <a href="/sobre-jo" class="cta cta-primary">Conheça nossa assistente Jô →</a>
       </div>
     </div>
   </div>
@@ -48,8 +48,8 @@ import Base from '../layouts/Base.astro';
   <div class="container">
     <div class="section-label">II / Aplicação</div>
 
-    <h2 class="headline-lg section-headline-pair">Estruturar. Formalizar. Construir.</h2>
-    <p class="subhead-italic section-subhead">IA aplicada com método faz os três.</p>
+    <h2 class="headline-lg section-headline-pair">Estruturar. Formalizar. Construir. Avaliar. Provar.</h2>
+    <p class="subhead-italic section-subhead">IA aplicada com método faz os cinco.</p>
 
     <hr class="divider divider-strong blocks-divider" />
 
@@ -86,8 +86,36 @@ import Base from '../layouts/Base.astro';
         <div class="block-num">03</div>
         <div>
           <div class="block-title">Construir</div>
-          <p class="block-pull">Da ideia ao protótipo funcional — no mesmo dia.</p>
-          <p class="block-body">Assistentes, dashboards e automações sem fila de TI. <em>O lab passa a construir o que usa.</em></p>
+          <p class="block-pull">Da ideia ao protótipo — e do protótipo à operação.</p>
+          <p class="block-body">Assistentes, dashboards e automações sem fila de TI. Handoff documentado sem o lab virar suporte permanente. <em>O lab entrega e atravessa.</em></p>
+        </div>
+        <span class="block-arrow" aria-hidden="true">→</span>
+      </article>
+    </a>
+
+    <hr class="divider divider-soft block-divider" />
+
+    <a href="/avaliar" class="block-link">
+      <article class="block">
+        <div class="block-num">04</div>
+        <div>
+          <div class="block-title">Avaliar</div>
+          <p class="block-pull">Do achismo à prova de valor público.</p>
+          <p class="block-body">IA desenha teorias de mudança, sugere indicadores de outcome e organiza relatórios de impacto a partir do que o lab já gera. <em>O que mostra valor sobrevive ao próximo corte.</em></p>
+        </div>
+        <span class="block-arrow" aria-hidden="true">→</span>
+      </article>
+    </a>
+
+    <hr class="divider divider-soft block-divider" />
+
+    <a href="/provar" class="block-link">
+      <article class="block">
+        <div class="block-num">05</div>
+        <div>
+          <div class="block-title">Provar</div>
+          <p class="block-pull">Da entrega silenciosa à defesa do lab na transição.</p>
+          <p class="block-body">Dossiês de transição, dashboards de impacto, pitches adaptáveis para cada audiência. <em>O lab passa a contar a própria história — com lastro.</em></p>
         </div>
         <span class="block-arrow" aria-hidden="true">→</span>
       </article>
@@ -158,9 +186,10 @@ import Base from '../layouts/Base.astro';
       <article class="block">
         <div class="block-num block-num--muted">03</div>
         <div>
-          <div class="block-title">Assistente</div>
-          <p class="block-pull block-pull--small">IA com fonte indicada.</p>
-          <p class="block-body">Respostas com base na legislação e na prática.</p>
+          <div class="block-title">Assistentes de laboratório</div>
+          <p class="block-pull block-pull--small">Assistentes prontos para uso.</p>
+          <p class="block-body">Prompts estruturados para aplicar método no mesmo dia.</p>
+          <div class="block-meta">15 prompts disponíveis</div>
         </div>
         <span class="block-arrow" aria-hidden="true">→</span>
       </article>
@@ -270,6 +299,22 @@ import Base from '../layouts/Base.astro';
         <div class="colofao-edition">Edição I · MMXXVI</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VII · CONSTRUÇÃO COLETIVA · última seção, convite a contribuir
+     ============================================================ -->
+<section class="contribute section-fade" aria-label="Sugestões da comunidade">
+  <div class="container">
+    <a href="/sugestoes?from=/" class="contribute-link">
+      <h2 class="contribute-headline">Como o Alavanca pode melhorar?</h2>
+      <p class="contribute-tagline">Plataforma de construção coletiva.</p>
+      <span class="contribute-cta">
+        Clique aqui e deixe sua sugestão
+        <span class="contribute-cta-arrow" aria-hidden="true">→</span>
+      </span>
+    </a>
   </div>
 </section>
 
@@ -457,6 +502,15 @@ import Base from '../layouts/Base.astro';
     margin-right: 6px;
   }
 
+  .block-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    color: var(--fg-45);
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+
   .block-arrow {
     font-family: var(--mono);
     font-size: 20px;
@@ -548,6 +602,77 @@ import Base from '../layouts/Base.astro';
   .fundamentos-base-link:hover {
     opacity: 0.85;
     transform: translateX(2px);
+  }
+
+  /* V.5 · CONSTRUÇÃO COLETIVA — interlúdio entre Prova e Ação */
+  .contribute {
+    padding: 64px 0;
+    border-top: 0.5px solid var(--fg-22);
+  }
+
+  .contribute-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 4px;
+    max-width: 640px;
+  }
+
+  .contribute-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 10px;
+  }
+
+  .contribute-tagline {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .contribute-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--amber);
+    border: 0.5px solid var(--amber);
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: background 250ms ease, color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+  }
+
+  .contribute-cta-arrow {
+    font-family: var(--mono);
+    font-size: 16px;
+    transition: transform 250ms ease;
+  }
+
+  .contribute-link:hover .contribute-cta {
+    background: var(--amber);
+    color: var(--bg);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(217, 119, 6, 0.35);
+  }
+
+  .contribute-link:hover .contribute-cta-arrow {
+    transform: translateX(4px);
+  }
+
+  .contribute-link:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 6px;
   }
 
   /* VI · AÇÃO */

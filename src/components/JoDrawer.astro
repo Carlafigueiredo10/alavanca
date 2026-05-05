@@ -1,0 +1,184 @@
+---
+import JoChat from './JoChat.astro';
+---
+<div class="jo-drawer" id="jo-drawer" aria-hidden="true">
+  <div class="jo-drawer__backdrop" data-role="backdrop"></div>
+  <aside class="jo-drawer__panel" role="dialog" aria-modal="true" aria-label="Conversa com a Jô">
+    <header class="jo-drawer__header">
+      <div class="jo-drawer__brand">
+        <img
+          class="jo-drawer__avatar"
+          src="/jo/jo-avatar-micro.png"
+          srcset="/jo/jo-avatar-micro.png 1x, /jo/jo-avatar-micro@2x.png 2x"
+          alt=""
+        />
+        <div>
+          <div class="jo-drawer__name">Jô</div>
+          <div class="jo-drawer__tag">A norma fica com ela.</div>
+        </div>
+      </div>
+      <div class="jo-drawer__actions">
+        <a class="jo-drawer__expand" href="/jo" title="Abrir tela cheia" aria-label="Abrir tela cheia">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>
+          </svg>
+        </a>
+        <button class="jo-drawer__close" data-role="close" type="button" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 6l12 12M18 6l-12 12"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div class="jo-drawer__body">
+      <JoChat variant="drawer" />
+    </div>
+  </aside>
+</div>
+
+<style>
+  .jo-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .jo-drawer.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .jo-drawer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 220ms ease;
+    backdrop-filter: blur(2px);
+  }
+  .jo-drawer.is-open .jo-drawer__backdrop {
+    opacity: 1;
+  }
+  .jo-drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 460px;
+    max-width: 100vw;
+    background: var(--bg);
+    border-left: 0.5px solid var(--fg-22);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(110%);
+    transition: transform 280ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+  }
+  .jo-drawer.is-open .jo-drawer__panel {
+    transform: translateX(0);
+  }
+  .jo-drawer__header {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 0.5px solid var(--fg-14);
+  }
+  .jo-drawer__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .jo-drawer__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 0.5px solid var(--fg-22);
+  }
+  .jo-drawer__name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--fg);
+  }
+  .jo-drawer__tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    color: var(--fg-50);
+    margin-top: 4px;
+  }
+  .jo-drawer__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .jo-drawer__expand,
+  .jo-drawer__close {
+    background: transparent;
+    border: 0;
+    color: var(--fg-50);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 180ms ease, color 180ms ease;
+    text-decoration: none;
+  }
+  .jo-drawer__expand:hover,
+  .jo-drawer__close:hover {
+    background: rgba(245, 242, 235, 0.06);
+    color: var(--fg);
+  }
+  .jo-drawer__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .jo-drawer__body > .jo-chat {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  @media (max-width: 600px) {
+    .jo-drawer__panel {
+      width: 100%;
+      border-left: 0;
+    }
+  }
+</style>
+
+<script>
+  const drawer = document.getElementById('jo-drawer');
+  if (drawer) {
+    const closeBtn = drawer.querySelector<HTMLButtonElement>('[data-role="close"]');
+    const backdrop = drawer.querySelector<HTMLDivElement>('[data-role="backdrop"]');
+
+    function open() {
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const input = drawer.querySelector<HTMLTextAreaElement>('.jo-chat__input');
+      setTimeout(() => input?.focus(), 280);
+    }
+    function close() {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('jo:open', open);
+    closeBtn?.addEventListener('click', close);
+    backdrop?.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) close();
+    });
+  }
+</script>

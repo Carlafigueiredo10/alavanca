@@ -1,0 +1,767 @@
+---
+interface Props {
+  conversationId?: string;
+  variant?: 'page' | 'drawer';
+}
+const { conversationId, variant = 'page' } = Astro.props;
+---
+
+<div class={`jo-chat jo-chat--${variant}`} data-conversation-id={conversationId ?? ''}>
+  <div class="jo-chat__messages" data-role="messages">
+    <div class="jo-chat__empty" data-role="empty">
+      <img
+        class="jo-chat__empty-avatar"
+        src="/jo/jo-avatar-hero.png"
+        srcset="/jo/jo-avatar-hero.png 1x, /jo/jo-avatar-hero@2x.png 2x"
+        alt="Jô"
+      />
+      <p class="jo-chat__empty-dek">
+        Mande seu caso, dúvida ou minuta. Eu cito a norma, classifico o risco e
+        proponho o próximo passo. Se quiser ampliar com referências de fora,
+        ative o toggle abaixo.
+      </p>
+    </div>
+  </div>
+
+  <div class="jo-chat__lgpd" data-role="lgpd" hidden>
+    Suas conversas ficam salvas pra você consultar depois. Nada é compartilhado.
+    <button type="button" class="jo-chat__lgpd-close" data-role="lgpd-close" aria-label="Fechar">×</button>
+  </div>
+
+  <form class="jo-chat__form" data-role="form">
+    <textarea
+      class="jo-chat__input"
+      data-role="input"
+      maxlength="4000"
+      rows="2"
+      placeholder="Pergunte à Jô…"
+      aria-label="Mensagem para a Jô"
+    ></textarea>
+    <div class="jo-chat__controls">
+      <label class="jo-chat__toggle">
+        <input type="checkbox" data-role="expand" />
+        <span class="jo-chat__toggle-track" aria-hidden="true"></span>
+        <span class="jo-chat__toggle-label">ampliar com refs externas</span>
+        <span class="jo-chat__model" data-role="model">(Gemini)</span>
+      </label>
+      <div class="jo-chat__counter" data-role="counter">0 / 4000</div>
+      <button class="jo-chat__submit" data-role="submit" type="submit" disabled>
+        <span data-role="submit-label">Enviar</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<style is:global>
+  .jo-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  .jo-chat__messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 28px 24px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* Empty state */
+  .jo-chat__empty {
+    margin: auto;
+    text-align: center;
+    max-width: 380px;
+    padding: 32px 0;
+    opacity: 0.92;
+  }
+  .jo-chat__empty-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+    display: block;
+    border: 0.5px solid var(--fg-22);
+  }
+  .jo-chat__empty-line {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--fg);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .jo-chat__empty-dek {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+
+  /* Bubbles */
+  .jo-chat__msg {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .jo-chat__msg--user {
+    flex-direction: row-reverse;
+  }
+  .jo-chat__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex: 0 0 32px;
+    background: rgba(217, 119, 6, 0.15);
+    border: 0.5px solid var(--fg-22);
+    object-fit: cover;
+  }
+  .jo-chat__avatar--user {
+    background: rgba(245, 242, 235, 0.05);
+    color: var(--fg-86);
+    font-family: var(--mono);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .jo-chat__bubble {
+    max-width: min(640px, 85%);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: rgba(245, 242, 235, 0.04);
+    border: 0.5px solid var(--fg-14);
+    word-break: break-word;
+  }
+  .jo-chat__msg--user .jo-chat__bubble {
+    background: rgba(217, 119, 6, 0.10);
+    border-color: rgba(217, 119, 6, 0.30);
+    color: var(--fg);
+  }
+  .jo-chat__msg--assistant .jo-chat__bubble {
+    border-left: 1.5px solid var(--amber);
+  }
+  .jo-chat__bubble strong { color: var(--fg); font-weight: 600; }
+  .jo-chat__bubble em { font-style: italic; color: var(--fg); }
+  .jo-chat__bubble p + p { margin-top: 10px; }
+  .jo-chat__bubble ul, .jo-chat__bubble ol { margin: 10px 0 10px 22px; }
+  .jo-chat__bubble li { margin: 4px 0; }
+  .jo-chat__bubble h2, .jo-chat__bubble h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--fg);
+    margin: 14px 0 6px;
+    line-height: 1.25;
+  }
+  .jo-chat__bubble h2 { font-size: 18px; }
+  .jo-chat__bubble h3 { font-size: 16px; }
+  .jo-chat__bubble blockquote {
+    border-left: 2px solid var(--fg-22);
+    padding-left: 12px;
+    color: var(--fg-86);
+    margin: 10px 0;
+    font-style: italic;
+  }
+  .jo-chat__bubble code {
+    font-family: var(--mono);
+    font-size: 0.92em;
+    background: rgba(245, 242, 235, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .jo-chat__bubble a {
+    color: var(--amber);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    word-break: break-all;
+  }
+  .jo-chat__bubble a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .jo-chat__partial-tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(217, 119, 6, 0.10);
+    border: 0.5px solid var(--amber);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .jo-chat__cursor {
+    display: inline-block;
+    width: 6px;
+    height: 14px;
+    background: var(--amber);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: jo-blink 1s steps(2) infinite;
+  }
+  @keyframes jo-blink { 50% { opacity: 0; } }
+
+  /* LGPD banner */
+  .jo-chat__lgpd {
+    position: relative;
+    margin: 0 24px 10px;
+    padding: 10px 36px 10px 14px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 8px;
+    background: rgba(245, 242, 235, 0.03);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--fg-86);
+    line-height: 1.5;
+  }
+  .jo-chat__lgpd-close {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: transparent;
+    border: 0;
+    color: var(--fg-50);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+  }
+  .jo-chat__lgpd-close:hover { color: var(--fg); }
+
+  /* Form */
+  .jo-chat__form {
+    flex: 0 0 auto;
+    border-top: 0.5px solid var(--fg-14);
+    padding: 14px 20px 18px;
+    background: var(--bg);
+  }
+  .jo-chat__input {
+    width: 100%;
+    resize: none;
+    background: rgba(245, 242, 235, 0.04);
+    border: 0.5px solid var(--fg-22);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.5;
+    transition: border-color 200ms ease;
+  }
+  .jo-chat__input:focus {
+    outline: none;
+    border-color: var(--amber);
+  }
+  .jo-chat__controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  /* Toggle */
+  .jo-chat__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    flex: 1 1 auto;
+  }
+  .jo-chat__toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .jo-chat__toggle-track {
+    width: 30px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--fg-14);
+    position: relative;
+    transition: background 200ms ease;
+    flex: 0 0 30px;
+  }
+  .jo-chat__toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--fg);
+    transition: transform 200ms ease;
+  }
+  .jo-chat__toggle input:checked + .jo-chat__toggle-track {
+    background: var(--amber);
+  }
+  .jo-chat__toggle input:checked + .jo-chat__toggle-track::after {
+    transform: translateX(14px);
+    background: var(--bg);
+  }
+  .jo-chat__toggle-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--fg-50);
+    transition: color 200ms ease;
+  }
+  .jo-chat__toggle input:checked ~ .jo-chat__toggle-label { color: var(--amber); }
+
+  .jo-chat__model {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-45);
+    letter-spacing: 0.04em;
+    margin-left: 2px;
+  }
+
+  .jo-chat__counter {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-45);
+  }
+  .jo-chat__counter--over { color: #FF6B6B; }
+
+  .jo-chat__submit {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--bg);
+    background: var(--amber);
+    border: 0;
+    border-radius: 999px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: filter 180ms ease, opacity 180ms ease, transform 180ms ease;
+  }
+  .jo-chat__submit:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+  .jo-chat__submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Drawer variant tweaks */
+  .jo-chat--drawer .jo-chat__messages { padding: 20px 18px 8px; }
+  .jo-chat--drawer .jo-chat__form { padding: 12px 16px 16px; }
+  .jo-chat--drawer .jo-chat__bubble { font-size: 14px; }
+</style>
+
+<script>
+  type Role = 'user' | 'assistant';
+  type Mode = 'decisao' | 'possibilidades';
+  interface ServerMessage {
+    id?: string;
+    role: Role;
+    content: string;
+    mode_used?: Mode | null;
+    is_partial?: boolean;
+  }
+
+  const LGPD_KEY = 'jo-lgpd-acknowledged';
+
+  function escapeHtml(text: string): string {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function inlineFormat(text: string): string {
+    let out = escapeHtml(text);
+    out = out.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+    out = out.replace(
+      /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+    out = out.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+    out = out.replace(/(^|[\s(_])\*([^*\n]+)\*(?=[\s.,;:)\]_!?]|$)/g, '$1<em>$2</em>');
+    out = out.replace(/(^|[\s(])_([^_\n]+)_(?=[\s.,;:)\]!?]|$)/g, '$1<em>$2</em>');
+    return out;
+  }
+
+  function renderMarkdown(src: string): string {
+    if (!src) return '';
+    const lines = src.replace(/\r\n/g, '\n').split('\n');
+    const html: string[] = [];
+    let buf: string[] = [];
+    let listType: 'ul' | 'ol' | null = null;
+    let inQuote = false;
+
+    function flushPara() {
+      if (buf.length === 0) return;
+      const joined = buf.join(' ').trim();
+      if (joined) html.push(`<p>${inlineFormat(joined)}</p>`);
+      buf = [];
+    }
+    function closeList() {
+      if (listType) {
+        html.push(`</${listType}>`);
+        listType = null;
+      }
+    }
+    function closeQuote() {
+      if (inQuote) {
+        html.push('</blockquote>');
+        inQuote = false;
+      }
+    }
+
+    for (const raw of lines) {
+      const line = raw.replace(/\s+$/g, '');
+      if (!line.trim()) {
+        flushPara();
+        closeList();
+        closeQuote();
+        continue;
+      }
+
+      const h3 = line.match(/^###\s+(.*)$/);
+      const h2 = line.match(/^##\s+(.*)$/);
+      const h1 = line.match(/^#\s+(.*)$/);
+      if (h1 || h2 || h3) {
+        flushPara();
+        closeList();
+        closeQuote();
+        const content = inlineFormat((h1 || h2 || h3)![1]);
+        if (h1) html.push(`<h2>${content}</h2>`);
+        else if (h2) html.push(`<h2>${content}</h2>`);
+        else html.push(`<h3>${content}</h3>`);
+        continue;
+      }
+
+      const ulMatch = line.match(/^[-•]\s+(.*)$/);
+      const olMatch = line.match(/^\d+\.\s+(.*)$/);
+      if (ulMatch || olMatch) {
+        flushPara();
+        closeQuote();
+        const want: 'ul' | 'ol' = ulMatch ? 'ul' : 'ol';
+        if (listType !== want) {
+          closeList();
+          html.push(`<${want}>`);
+          listType = want;
+        }
+        html.push(`<li>${inlineFormat((ulMatch || olMatch)![1])}</li>`);
+        continue;
+      }
+
+      const quoteMatch = line.match(/^>\s?(.*)$/);
+      if (quoteMatch) {
+        flushPara();
+        closeList();
+        if (!inQuote) {
+          html.push('<blockquote>');
+          inQuote = true;
+        }
+        html.push(`<p>${inlineFormat(quoteMatch[1])}</p>`);
+        continue;
+      }
+
+      closeList();
+      closeQuote();
+      buf.push(line);
+    }
+    flushPara();
+    closeList();
+    closeQuote();
+    return html.join('');
+  }
+
+  function initJoChat(root: HTMLElement) {
+    const messagesEl = root.querySelector<HTMLDivElement>('[data-role="messages"]')!;
+    const emptyEl = root.querySelector<HTMLDivElement>('[data-role="empty"]')!;
+    const formEl = root.querySelector<HTMLFormElement>('[data-role="form"]')!;
+    const inputEl = root.querySelector<HTMLTextAreaElement>('[data-role="input"]')!;
+    const expandEl = root.querySelector<HTMLInputElement>('[data-role="expand"]')!;
+    const modelEl = root.querySelector<HTMLSpanElement>('[data-role="model"]')!;
+    const submitEl = root.querySelector<HTMLButtonElement>('[data-role="submit"]')!;
+    const submitLabelEl = root.querySelector<HTMLSpanElement>('[data-role="submit-label"]')!;
+    const counterEl = root.querySelector<HTMLDivElement>('[data-role="counter"]')!;
+    const lgpdEl = root.querySelector<HTMLDivElement>('[data-role="lgpd"]')!;
+    const lgpdCloseEl = root.querySelector<HTMLButtonElement>('[data-role="lgpd-close"]')!;
+
+    let conversationId = root.dataset.conversationId || '';
+    let sending = false;
+
+    function setSending(v: boolean) {
+      sending = v;
+      submitEl.disabled = v || inputEl.value.trim().length === 0;
+      submitLabelEl.textContent = v ? 'Enviando…' : 'Enviar';
+    }
+
+    function updateCounter() {
+      const len = inputEl.value.length;
+      counterEl.textContent = `${len} / 4000`;
+      counterEl.classList.toggle('jo-chat__counter--over', len >= 4000);
+      submitEl.disabled = sending || inputEl.value.trim().length === 0 || len > 4000;
+    }
+
+    function updateModelLabel() {
+      modelEl.textContent = expandEl.checked ? '(DeepSeek)' : '(Gemini)';
+    }
+
+    function autoresize() {
+      inputEl.style.height = 'auto';
+      const max = 180;
+      inputEl.style.height = Math.min(inputEl.scrollHeight, max) + 'px';
+    }
+
+    function showLgpdIfNeeded() {
+      try {
+        if (!sessionStorage.getItem(LGPD_KEY)) {
+          lgpdEl.hidden = false;
+        }
+      } catch {
+        lgpdEl.hidden = false;
+      }
+    }
+
+    lgpdCloseEl.addEventListener('click', () => {
+      lgpdEl.hidden = true;
+      try {
+        sessionStorage.setItem(LGPD_KEY, '1');
+      } catch {
+        /* ignore */
+      }
+    });
+
+    function ensureEmptyHidden() {
+      emptyEl.hidden = true;
+    }
+
+    function appendMessage(msg: ServerMessage): HTMLElement {
+      ensureEmptyHidden();
+      const wrap = document.createElement('div');
+      wrap.className = `jo-chat__msg jo-chat__msg--${msg.role}`;
+
+      if (msg.role === 'assistant') {
+        const av = document.createElement('img');
+        av.className = 'jo-chat__avatar';
+        av.src = '/jo/jo-avatar-micro.png';
+        av.srcset = '/jo/jo-avatar-micro.png 1x, /jo/jo-avatar-micro@2x.png 2x';
+        av.alt = 'Jô';
+        wrap.appendChild(av);
+      } else {
+        const av = document.createElement('div');
+        av.className = 'jo-chat__avatar jo-chat__avatar--user';
+        av.textContent = 'eu';
+        wrap.appendChild(av);
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = 'jo-chat__bubble';
+      bubble.dataset.role = 'bubble';
+      if (msg.role === 'assistant') {
+        bubble.innerHTML = renderMarkdown(msg.content);
+      } else {
+        bubble.textContent = msg.content;
+      }
+      if (msg.is_partial) {
+        const tag = document.createElement('div');
+        tag.className = 'jo-chat__partial-tag';
+        tag.textContent = 'resposta incompleta';
+        bubble.appendChild(tag);
+      }
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      requestAnimationFrame(() => {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      });
+      return bubble;
+    }
+
+    async function loadHistory() {
+      if (!conversationId) return;
+      try {
+        const res = await fetch(`/api/jo/messages?conversationId=${encodeURIComponent(conversationId)}`);
+        if (!res.ok) return;
+        const data = (await res.json()) as { messages: ServerMessage[] };
+        for (const m of data.messages || []) appendMessage(m);
+      } catch {
+        /* ignore */
+      }
+    }
+
+    async function ensureConversation(): Promise<string | null> {
+      if (conversationId) return conversationId;
+      try {
+        const res = await fetch('/api/jo/conversations', { method: 'POST' });
+        if (res.status === 401) {
+          window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
+          return null;
+        }
+        if (!res.ok) return null;
+        const data = (await res.json()) as { conversation: { id: string } };
+        conversationId = data.conversation.id;
+        root.dataset.conversationId = conversationId;
+        return conversationId;
+      } catch {
+        return null;
+      }
+    }
+
+    async function streamChat(message: string, mode: Mode, assistantBubble: HTMLDivElement, partialTagOnError: () => void) {
+      const res = await fetch('/api/jo/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, message, mode }),
+      });
+
+      if (res.status === 401) {
+        window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+      if (!res.ok || !res.body) {
+        let msg = 'A Jô engasgou. Tenta de novo daqui a pouco.';
+        try {
+          const data = await res.json();
+          if (data?.error) msg = data.error;
+        } catch {
+          /* ignore */
+        }
+        assistantBubble.innerHTML = renderMarkdown(msg);
+        partialTagOnError();
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+      let acc = '';
+      let isPartial = false;
+
+      assistantBubble.innerHTML = '<span class="jo-chat__cursor"></span>';
+
+      function flushEvents() {
+        let idx;
+        while ((idx = buf.indexOf('\n\n')) !== -1) {
+          const evt = buf.slice(0, idx).trim();
+          buf = buf.slice(idx + 2);
+          if (!evt.startsWith('data:')) continue;
+          const json = evt.slice(5).trim();
+          if (!json) continue;
+          try {
+            const ev = JSON.parse(json);
+            if (ev.type === 'chunk' && typeof ev.text === 'string') {
+              acc += ev.text;
+              assistantBubble.innerHTML = renderMarkdown(acc) + '<span class="jo-chat__cursor"></span>';
+              messagesEl.scrollTop = messagesEl.scrollHeight;
+            } else if (ev.type === 'error' && typeof ev.message === 'string') {
+              acc += (acc ? '\n\n' : '') + ev.message;
+              assistantBubble.innerHTML = renderMarkdown(acc);
+            } else if (ev.type === 'done') {
+              isPartial = !!ev.is_partial;
+            }
+          } catch {
+            /* ignore malformed */
+          }
+        }
+      }
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        flushEvents();
+      }
+      buf += decoder.decode();
+      flushEvents();
+
+      assistantBubble.innerHTML = renderMarkdown(acc || ' ');
+      if (isPartial) {
+        const tag = document.createElement('div');
+        tag.className = 'jo-chat__partial-tag';
+        tag.textContent = 'resposta incompleta';
+        assistantBubble.appendChild(tag);
+      }
+    }
+
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (sending) return;
+      const message = inputEl.value.trim();
+      if (!message || message.length > 4000) return;
+
+      const mode: Mode = expandEl.checked ? 'possibilidades' : 'decisao';
+
+      setSending(true);
+      showLgpdIfNeeded();
+
+      const cid = await ensureConversation();
+      if (!cid) {
+        setSending(false);
+        return;
+      }
+
+      appendMessage({ role: 'user', content: message });
+      const assistantBubble = appendMessage({ role: 'assistant', content: '' }) as HTMLDivElement;
+      assistantBubble.innerHTML = '<span class="jo-chat__cursor"></span>';
+
+      inputEl.value = '';
+      autoresize();
+      updateCounter();
+      // Toggle reseta após o envio (vale só pra próxima)
+      expandEl.checked = false;
+      updateModelLabel();
+
+      try {
+        await streamChat(message, mode, assistantBubble, () => {
+          const tag = document.createElement('div');
+          tag.className = 'jo-chat__partial-tag';
+          tag.textContent = 'resposta incompleta';
+          assistantBubble.appendChild(tag);
+        });
+      } catch {
+        assistantBubble.innerHTML = renderMarkdown('A Jô engasgou. Tenta de novo daqui a pouco.');
+        const tag = document.createElement('div');
+        tag.className = 'jo-chat__partial-tag';
+        tag.textContent = 'resposta incompleta';
+        assistantBubble.appendChild(tag);
+      } finally {
+        setSending(false);
+        inputEl.focus();
+      }
+    });
+
+    inputEl.addEventListener('input', () => {
+      updateCounter();
+      autoresize();
+    });
+
+    expandEl.addEventListener('change', updateModelLabel);
+
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        formEl.requestSubmit();
+      }
+    });
+
+    updateCounter();
+    autoresize();
+    if (conversationId) {
+      loadHistory();
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('.jo-chat').forEach(initJoChat);
+</script>

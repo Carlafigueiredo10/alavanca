@@ -1,0 +1,96 @@
+---
+---
+<button class="jo-fab" id="jo-fab" type="button" aria-label="Falar com a Jô">
+  <span class="jo-fab__pulse" aria-hidden="true"></span>
+  <img
+    class="jo-fab__avatar"
+    src="/jo/jo-avatar-fab.png"
+    srcset="/jo/jo-avatar-fab.png 1x, /jo/jo-avatar-fab@2x.png 2x"
+    alt=""
+  />
+  <span class="jo-fab__label">Jô</span>
+</button>
+
+<style>
+  .jo-fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px 8px 8px;
+    background: var(--bg);
+    border: 0.5px solid var(--amber);
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--fg);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6),
+                0 0 0 0.5px rgba(217, 119, 6, 0.20);
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+  .jo-fab:hover {
+    transform: translateY(-2px);
+    border-color: var(--amber);
+    box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.7),
+                0 0 0 0.5px rgba(217, 119, 6, 0.40);
+  }
+  .jo-fab__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0.5px solid var(--fg-22);
+    background: rgba(217, 119, 6, 0.12);
+  }
+  .jo-fab__label {
+    font-weight: 500;
+    color: var(--fg);
+    padding-right: 4px;
+  }
+  .jo-fab__pulse {
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    border: 1px solid var(--amber);
+    opacity: 0;
+    animation: jo-fab-pulse 2.6s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes jo-fab-pulse {
+    0%   { opacity: 0.45; transform: scale(1); }
+    80%  { opacity: 0; transform: scale(1.18); }
+    100% { opacity: 0; transform: scale(1.18); }
+  }
+  @media (max-width: 480px) {
+    .jo-fab { right: 16px; bottom: 16px; padding: 6px 14px 6px 6px; font-size: 15px; }
+    .jo-fab__avatar { width: 34px; height: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jo-fab__pulse { animation: none; }
+  }
+</style>
+
+<script>
+  import { getSupabaseBrowserClient } from '../lib/supabase/browser';
+
+  const fab = document.getElementById('jo-fab');
+  fab?.addEventListener('click', async () => {
+    try {
+      const supabase = getSupabaseBrowserClient();
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        const next = encodeURIComponent(window.location.pathname + window.location.search);
+        window.location.href = `/login?next=${next}`;
+        return;
+      }
+      document.dispatchEvent(new CustomEvent('jo:open'));
+    } catch {
+      window.location.href = '/login';
+    }
+  });
+</script>

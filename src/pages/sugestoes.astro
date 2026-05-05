@@ -1,0 +1,487 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Sugestões · Alavanca"
+  description="O que pode melhorar no Alavanca? Toda sugestão chega — leio uma a uma."
+>
+
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Sugestões</div>
+    <h1 class="intro-headline animate-in delay-100">Como o Alavanca pode melhorar?</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Toda sugestão chega — leio uma a uma.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Anônimo se quiser · e-mail só se quiser resposta</p>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container">
+    <form id="suggestion-form" novalidate>
+      <!-- honeypot anti-bot · escondido para humanos, presente no DOM para bots -->
+      <div class="hp" aria-hidden="true">
+        <label>Website (não preencher)
+          <input type="text" name="website" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
+
+      <!-- SUGESTÃO -->
+      <div class="field">
+        <label for="content" class="field-label">
+          Sua sugestão <span class="required" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="content"
+          name="content"
+          rows="6"
+          maxlength="4000"
+          required
+          placeholder="O que melhoraria, o que confundiu, o que faltou…"
+        ></textarea>
+        <div class="field-hint">
+          <span id="char-count">0</span> / 4000
+        </div>
+      </div>
+
+      <!-- CATEGORIA -->
+      <fieldset class="field">
+        <legend class="field-label">Categoria <span class="field-optional">opcional</span></legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="category" value="elogio" /><span>Elogio</span></label>
+          <label class="chip"><input type="radio" name="category" value="melhoria" /><span>Melhoria</span></label>
+          <label class="chip"><input type="radio" name="category" value="erro" /><span>Erro</span></label>
+          <label class="chip"><input type="radio" name="category" value="outro" /><span>Outro</span></label>
+        </div>
+      </fieldset>
+
+      <!-- PÁGINA -->
+      <div class="field">
+        <label for="page" class="field-label">
+          Página relacionada <span class="field-optional">opcional</span>
+        </label>
+        <input
+          type="text"
+          id="page"
+          name="page"
+          maxlength="200"
+          placeholder="ex: /diagnostico"
+        />
+      </div>
+
+      <hr class="divider field-divider" />
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="authorName" class="field-label">
+            Nome <span class="field-optional">opcional</span>
+          </label>
+          <input
+            type="text"
+            id="authorName"
+            name="authorName"
+            maxlength="120"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="authorEmail" class="field-label">
+            E-mail <span class="field-optional">opcional</span>
+          </label>
+          <input
+            type="email"
+            id="authorEmail"
+            name="authorEmail"
+            maxlength="200"
+            autocomplete="email"
+            placeholder="para receber resposta"
+          />
+        </div>
+      </div>
+
+      <div class="form-feedback" id="form-feedback" role="status" aria-live="polite"></div>
+
+      <div class="form-actions">
+        <button type="submit" class="cta cta-primary cta-large" id="submit-btn">
+          Enviar sugestão →
+        </button>
+        <span class="form-meta">Nada vaza — só eu vejo.</span>
+      </div>
+    </form>
+
+    <div class="thanks" id="thanks" hidden>
+      <div class="section-label">↳ Recebida</div>
+      <h2 class="thanks-headline">Obrigada.</h2>
+      <p class="thanks-body">
+        Sua sugestão foi registrada. Se deixou e-mail e a resposta puder ajudar, te escrevo.
+      </p>
+      <div class="thanks-actions">
+        <a href="/" class="cta cta-secondary cta-large">Voltar ao início</a>
+        <button type="button" class="cta cta-secondary cta-large" id="another-btn">
+          Enviar outra
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 720px; }
+
+  /* INTRO */
+  .intro { padding-top: 80px; padding-bottom: 40px; }
+
+  .intro-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(44px, 6.5vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.026em;
+    color: var(--fg);
+    margin-bottom: 24px;
+    max-width: 600px;
+  }
+
+  .intro-subhead { margin-bottom: 18px; }
+  .intro-kicker  { margin-bottom: 0; }
+
+  /* FORM SECTION */
+  .form-section { padding-top: 24px; padding-bottom: 96px; }
+
+  form { display: flex; flex-direction: column; gap: 32px; }
+
+  .field { display: flex; flex-direction: column; gap: 10px; }
+
+  .field-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-86);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .required { color: var(--amber); }
+
+  .field-optional {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--fg-45);
+    text-transform: lowercase;
+  }
+
+  textarea, input[type="text"], input[type="email"] {
+    width: 100%;
+    background: rgba(245, 242, 235, 0.03);
+    border: 0.5px solid var(--fg-22);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    transition: border-color 200ms ease, background 200ms ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  textarea {
+    min-height: 160px;
+    resize: vertical;
+    font-family: var(--sans);
+  }
+
+  textarea::placeholder, input::placeholder {
+    color: var(--fg-45);
+  }
+
+  textarea:hover, input:hover {
+    border-color: var(--fg-50);
+  }
+
+  textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--amber);
+    background: rgba(245, 242, 235, 0.05);
+  }
+
+  textarea:focus-visible, input:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+  }
+
+  .field-hint {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--fg-45);
+    text-align: right;
+  }
+
+  .field-hint.is-warn  { color: var(--amber); }
+  .field-hint.is-over  { color: #e07a5f; }
+
+  /* CHIPS (categoria) */
+  fieldset.field {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  legend.field-label {
+    margin-bottom: 12px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+    pointer-events: none;
+  }
+
+  .chip span {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 0.5px solid var(--fg-22);
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--fg-86);
+    transition: all 200ms ease;
+  }
+
+  .chip:hover span {
+    border-color: var(--fg-50);
+    color: var(--fg);
+  }
+
+  .chip input:checked + span {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.10);
+    color: var(--fg);
+  }
+
+  .chip input:focus-visible + span {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  /* GRID nome+email */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 540px) {
+    .field-grid { grid-template-columns: 1fr; }
+  }
+
+  .field-divider { margin: 8px 0 0; }
+
+  /* HONEYPOT — invisível mas presente para bots */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* AÇÕES + FEEDBACK */
+  .form-feedback {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: #e07a5f;
+    min-height: 0;
+    transition: min-height 200ms ease;
+  }
+
+  .form-feedback:not(:empty) {
+    min-height: 20px;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .form-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+  }
+
+  #submit-btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+  }
+
+  /* THANKS state */
+  .thanks {
+    animation: thanksIn 600ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  }
+
+  .thanks-headline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(44px, 6.5vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.026em;
+    color: var(--amber);
+    margin: 16px 0 24px;
+  }
+
+  .thanks-body {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-86);
+    margin-bottom: 40px;
+    max-width: 540px;
+  }
+
+  .thanks-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @keyframes thanksIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('suggestion-form') as HTMLFormElement;
+  const thanks = document.getElementById('thanks') as HTMLElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const feedback = document.getElementById('form-feedback') as HTMLElement;
+  const contentEl = document.getElementById('content') as HTMLTextAreaElement;
+  const pageEl = document.getElementById('page') as HTMLInputElement;
+  const charCount = document.getElementById('char-count') as HTMLElement;
+  const charHint = charCount.parentElement as HTMLElement;
+  const anotherBtn = document.getElementById('another-btn') as HTMLButtonElement;
+
+  // pré-preenche "página relacionada" se vier ?from=/algo
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get('from');
+  if (from && /^\/[\w\-/]*$/.test(from)) {
+    pageEl.value = from;
+  }
+
+  // pré-seleciona categoria se vier ?type=elogio|melhoria|erro|outro
+  const VALID_TYPES = new Set(['elogio', 'melhoria', 'erro', 'outro']);
+  const type = params.get('type');
+  if (type && VALID_TYPES.has(type)) {
+    const radio = form.querySelector<HTMLInputElement>(`input[name="category"][value="${type}"]`);
+    if (radio) {
+      radio.checked = true;
+      // foco no textarea para a pessoa começar a escrever sem precisar tabular
+      contentEl.focus();
+    }
+  }
+
+  // contador de caracteres
+  function updateCount() {
+    const n = contentEl.value.length;
+    charCount.textContent = String(n);
+    charHint.classList.toggle('is-warn', n > 3500 && n <= 4000);
+    charHint.classList.toggle('is-over', n > 4000);
+  }
+  contentEl.addEventListener('input', updateCount);
+  updateCount();
+
+  function setError(msg: string) {
+    feedback.textContent = msg;
+    feedback.style.color = '#e07a5f';
+  }
+
+  function clearError() {
+    feedback.textContent = '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    const formData = new FormData(form);
+    const payload = {
+      content: String(formData.get('content') ?? ''),
+      category: formData.get('category') ? String(formData.get('category')) : null,
+      page: String(formData.get('page') ?? '').trim() || null,
+      authorName: String(formData.get('authorName') ?? '').trim() || null,
+      authorEmail: String(formData.get('authorEmail') ?? '').trim() || null,
+      website: String(formData.get('website') ?? ''),
+    };
+
+    if (payload.content.trim().length < 4) {
+      setError('Escreve um pouquinho mais — pelo menos 4 caracteres.');
+      contentEl.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    try {
+      const res = await fetch('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data?.error ?? 'Algo deu errado. Tenta de novo?');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar sugestão →';
+        return;
+      }
+
+      // sucesso — esconde form, mostra agradecimento
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch {
+      setError('Sem rede. Verifica a conexão e tenta de novo.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar sugestão →';
+    }
+  });
+
+  anotherBtn.addEventListener('click', () => {
+    form.reset();
+    updateCount();
+    if (from && /^\/[\w\-/]*$/.test(from)) pageEl.value = from;
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar sugestão →';
+    clearError();
+    thanks.hidden = true;
+    form.hidden = false;
+    contentEl.focus();
+  });
+</script>

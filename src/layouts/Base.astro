@@ -1,11 +1,13 @@
 ---
 import Nav from '../components/Nav.astro';
+import JoFab from '../components/JoFab.astro';
+import JoDrawer from '../components/JoDrawer.astro';
 import '../styles/tokens.css';
 
 interface Props {
   title: string;
   description?: string;
-  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos';
+  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos' | 'jo';
 }
 
 const {
@@ -13,6 +15,9 @@ const {
   description = 'Plataforma do CLIC para apoio a laboratórios de inovação pública: diagnóstico, trilhas, assistente e casos.',
   current,
 } = Astro.props;
+
+const path = Astro.url.pathname;
+const showJo = !path.startsWith('/jo') && !path.startsWith('/login');
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -34,5 +39,7 @@ const {
   <main>
     <slot />
   </main>
+  {showJo && <JoFab />}
+  {showJo && <JoDrawer />}
 </body>
 </html>

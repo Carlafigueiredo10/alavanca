@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos';
+}
+
+const { title, subtitle, current } = Astro.props;
+---
+<Base title={`${title} · Alavanca`} current={current}>
+  <section class="stub">
+    <div class="container">
+      <div class="stub-label">Edição I · em finalização</div>
+      <h1 class="stub-title">{title}</h1>
+      {subtitle && <p class="stub-subtitle">{subtitle}</p>}
+      <hr class="divider divider-strong" />
+      <div class="stub-meta">
+        <span class="stub-meta-label">Disponível na demonstração ao vivo · Encontro de Labs MMXXVI</span>
+        <a href="/" class="stub-back">↩ voltar ao índice</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .stub {
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    padding: 96px 0;
+  }
+
+  .stub-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    margin-bottom: 36px;
+  }
+
+  .stub-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 92px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    margin-bottom: 24px;
+    color: var(--fg);
+  }
+
+  .stub-subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(20px, 2.6vw, 28px);
+    line-height: 1.34;
+    color: var(--fg-86);
+    max-width: 600px;
+    margin-bottom: 56px;
+  }
+
+  .stub-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .stub-meta-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+  }
+
+  .stub-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+
+  .stub-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+</style>

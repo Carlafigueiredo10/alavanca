@@ -1,0 +1,869 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Diagnóstico · Alavanca"
+  description="Diagnóstico de maturidade do laboratório de inovação pública. Cinco dimensões, próximo passo claro."
+  current="diagnostico"
+>
+
+<!-- ============================================================
+     INTRO
+     ============================================================ -->
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Diagnóstico</div>
+    <h1 class="intro-headline animate-in delay-100">Onde seu lab está hoje?</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Cinco respostas. Próximo passo claro.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ 5 perguntas · ~3 minutos</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Auto-avaliação baseada em literatura<br />de inovação pública (ENAP / OCDE).<br />
+        <strong>O resultado fica nessa página.</strong> Nada é gravado.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     01 · VOCAÇÃO
+     ============================================================ -->
+<section class="question" id="q1" data-question="vocacao">
+  <div class="container">
+    <div class="question-label">01 · <span class="verb">Vocação</span></div>
+    <h2 class="question-headline">Qual é o papel principal do seu lab?</h2>
+    <div class="options" role="radiogroup" aria-label="Vocação">
+      <button class="option" data-key="desenvolvedor" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Desenvolvedor.</strong> Resolvemos problemas e desafios concretos com soluções que o lab mesmo entrega.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="facilitador" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Facilitador.</strong> Engajamos cidadãos, ONGs e setor privado em busca de ideias (inovação aberta).</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="educador" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Educador.</strong> Formamos servidores e mudamos a cultura organizacional da casa.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="arquiteto" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Arquiteto.</strong> Atuamos no nível de política pública, buscando mudanças sistêmicas.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 · GARGALO
+     ============================================================ -->
+<section class="question" id="q2" data-question="gargalo">
+  <div class="container">
+    <div class="question-label">02 · <span class="verb">Gargalo</span></div>
+    <h2 class="question-headline">Onde os projetos do lab costumam travar?</h2>
+    <div class="options" role="radiogroup" aria-label="Gargalo">
+      <button class="option" data-key="ideacao" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Na ideação.</strong> Geramos propostas, mas elas não saem do papel.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="prototipo" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>No protótipo.</strong> Chegamos ao MVP, mas não conseguimos avançar.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="implementacao" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Na implementação.</strong> O protótipo funciona, mas não vira serviço público.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="escala" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Na escala.</strong> Implementamos um caso, mas não conseguimos replicar nem sistematizar.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 · GOVERNANÇA
+     ============================================================ -->
+<section class="question" id="q3" data-question="governanca">
+  <div class="container">
+    <div class="question-label">03 · <span class="verb">Governança</span></div>
+    <h2 class="question-headline">Como a instituição enxerga o lab?</h2>
+    <div class="options" role="radiogroup" aria-label="Governança">
+      <button class="option" data-key="balcao" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Balcão de pedidos.</strong> Acionado para situações pontuais, sem orçamento estável nem agenda própria.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="programa" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Programa estabelecido.</strong> Temos espaço, mas a inovação não está no planejamento estratégico.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="estrategico" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Estratégico.</strong> A inovação está no plano da casa, com orçamento e metas próprias.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="patrocinado" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Estratégico com patrocínio.</strong> Temos respaldo da alta gestão e blindagem entre transições.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 · EQUIPE
+     ============================================================ -->
+<section class="question" id="q4" data-question="equipe">
+  <div class="container">
+    <div class="question-label">04 · <span class="verb">Equipe</span></div>
+    <h2 class="question-headline">Como está estruturada a equipe?</h2>
+    <div class="options" role="radiogroup" aria-label="Equipe">
+      <button class="option" data-key="conselheiro" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Conselheiro.</strong> Pequeno grupo prestando assistência técnica a outras áreas, sem dedicação exclusiva.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="facilitador-equipe" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Facilitador.</strong> Equipe pequena conectando unidades do governo, com dedicação parcial.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="lab-autonomo" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Lab autônomo.</strong> Grupo dedicado com identidade própria, mas sem dedicação exclusiva integral.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="lab-pleno" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Lab autônomo, dedicação plena.</strong> Equipe full-time com mandato claro e identidade pública.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 · ABERTURA
+     ============================================================ -->
+<section class="question" id="q5" data-question="abertura">
+  <div class="container">
+    <div class="question-label">05 · <span class="verb">Abertura</span></div>
+    <h2 class="question-headline">Com quem o lab cria as soluções?</h2>
+    <div class="options" role="radiogroup" aria-label="Abertura">
+      <button class="option" data-key="interna" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Internamente.</strong> Desenhamos as soluções com a própria equipe, sem cocriação.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="rede" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Em rede.</strong> Trocamos com outros labs públicos e órgãos parceiros.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="cocriacao" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Cocriação aberta.</strong> Convidamos sociedade civil, especialistas e setor privado para desenhar junto.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="misto" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Varia por projeto.</strong> Não temos um padrão definido de abertura.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESULTADO
+     ============================================================ -->
+<section class="result" id="result" aria-live="polite" aria-hidden="true">
+  <div class="container">
+    <div class="section-label">↳ Resultado</div>
+
+    <h2 class="result-headline">Comece por <span class="verb" id="result-verb">—</span>.</h2>
+    <p class="result-diag" id="result-diag"></p>
+
+    <div class="profile-block">
+      <div class="profile-label">Perfil do lab · cinco dimensões</div>
+      <div class="profile-grid">
+        <div class="profile-row"><div class="profile-key">Vocação</div><div class="profile-value" id="prof-vocacao">—</div></div>
+        <div class="profile-row"><div class="profile-key">Gargalo</div><div class="profile-value" id="prof-gargalo">—</div></div>
+        <div class="profile-row"><div class="profile-key">Governança</div><div class="profile-value" id="prof-governanca">—</div></div>
+        <div class="profile-row"><div class="profile-key">Equipe</div><div class="profile-value" id="prof-equipe">—</div></div>
+        <div class="profile-row"><div class="profile-key">Abertura</div><div class="profile-value" id="prof-abertura">—</div></div>
+      </div>
+    </div>
+
+    <div class="result-bars">
+      <div class="result-bars-label">Maturidade · três frentes</div>
+      <div class="bar-row" data-verb="formalizar">
+        <div class="bar-name">Formalização</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+      <div class="bar-row" data-verb="estruturar">
+        <div class="bar-name">Método</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+      <div class="bar-row" data-verb="construir">
+        <div class="bar-name">Construção</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+    </div>
+
+    <p class="result-action" id="result-action"></p>
+    <p class="result-secondary" id="result-secondary"></p>
+
+    <div class="result-ctas">
+      <a href="/formalizar" class="cta cta-primary cta-large" id="result-cta-primary">Ver caminho →</a>
+      <a href="/assistente" class="cta cta-secondary cta-large">Plano completo no assistente</a>
+    </div>
+
+    <div class="result-meta">
+      <div>
+        <span class="result-meta-id" id="result-id">—</span><br />
+        Diagnóstico realizado nesta sessão.
+      </div>
+      <a href="#" class="result-restart" id="result-restart">Refazer diagnóstico ↻</a>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     OVERRIDE DE LARGURA — diagnóstico é leitura em coluna única,
+     760px lê melhor que os 920px padrão do design system.
+     ============================================================ */
+  .container { max-width: 760px; }
+
+  /* ============================================================
+     INTRO
+     ============================================================ */
+  .intro { padding-top: 80px; padding-bottom: 80px; }
+
+  .intro-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 26px;
+    max-width: 640px;
+  }
+
+  .intro-subhead { margin-bottom: 18px; }
+  .intro-kicker { margin-bottom: 56px; }
+
+  .intro-meta {
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .intro-meta-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+    line-height: 1.6;
+  }
+
+  .intro-meta-text strong {
+    font-weight: 500;
+    color: var(--fg-86);
+  }
+
+  /* ============================================================
+     PERGUNTAS
+     ============================================================ */
+  .question { padding: 56px 0; }
+
+  .question-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 28px;
+  }
+
+  .question-label .verb { color: var(--amber); }
+
+  .question-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: transparent;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 28px 1fr 24px;
+    gap: 18px;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--sans);
+    color: var(--fg-86);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .option:hover {
+    border-color: var(--fg-50);
+    background: rgba(245, 242, 235, 0.02);
+    color: var(--fg);
+  }
+
+  .option:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-color: var(--amber);
+  }
+
+  .option.selected {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.08);
+    color: var(--fg);
+  }
+
+  .option-letter {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-50);
+    letter-spacing: 0.1em;
+    transition: color 200ms ease;
+  }
+
+  .option:hover .option-letter,
+  .option.selected .option-letter { color: var(--amber); }
+
+  .option-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .option-text strong {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .option-mark {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--amber);
+    text-align: right;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .option.selected .option-mark { opacity: 1; }
+
+  @media (max-width: 540px) {
+    .option { grid-template-columns: 22px 1fr; gap: 14px; padding: 16px 18px; }
+    .option-mark { display: none; }
+  }
+
+  /* ============================================================
+     RESULTADO
+     ============================================================ */
+  .result {
+    padding: 80px 0 96px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .result.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .result-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 24px;
+    max-width: 640px;
+  }
+
+  .result-headline .verb {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .result-diag {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.4;
+    color: var(--fg);
+    margin-bottom: 56px;
+    max-width: 580px;
+  }
+
+  /* perfil */
+  .profile-block { margin-bottom: 56px; }
+
+  .profile-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+
+  .profile-grid {
+    display: grid;
+    gap: 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+
+  .profile-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 0.5px solid var(--fg-10);
+  }
+
+  .profile-row:last-child { border-bottom: 0; }
+
+  .profile-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--fg-50);
+    text-transform: uppercase;
+  }
+
+  .profile-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  @media (max-width: 540px) {
+    .profile-row { grid-template-columns: 100px 1fr; gap: 14px; }
+    .profile-key { font-size: 10px; letter-spacing: 0.1em; }
+  }
+
+  /* barras */
+  .result-bars { margin-bottom: 56px; }
+
+  .result-bars-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 24px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 56px;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .bar-name {
+    color: var(--fg-86);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 200ms ease;
+  }
+
+  .bar-name.is-recommended { color: var(--amber); }
+
+  .bar-track {
+    height: 4px;
+    background: var(--fg-10);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--fg-50);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 800ms cubic-bezier(0.25, 0.1, 0.25, 1) 200ms,
+                background 200ms ease;
+  }
+
+  .bar-fill.is-recommended { background: var(--amber); }
+
+  .bar-value {
+    color: var(--fg-50);
+    font-size: 11px;
+    text-align: right;
+    letter-spacing: 0.1em;
+    transition: color 200ms ease;
+  }
+
+  .bar-value.is-recommended { color: var(--amber); }
+
+  @media (max-width: 540px) {
+    .bar-row { grid-template-columns: 100px 1fr 40px; gap: 14px; }
+    .bar-name { font-size: 11px; letter-spacing: 0.06em; }
+  }
+
+  /* ação */
+  .result-action {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.45;
+    color: var(--fg-86);
+    margin-bottom: 20px;
+    max-width: 580px;
+  }
+
+  .result-secondary {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--fg-50);
+    margin-bottom: 56px;
+  }
+
+  .result-secondary .verb { color: var(--amber); }
+
+  .result-ctas {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+  }
+
+  /* meta */
+  .result-meta {
+    padding-top: 28px;
+    border-top: 0.5px solid var(--fg-22);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+  }
+
+  .result-meta-id { color: var(--fg-86); }
+
+  .result-restart {
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
+  .result-restart:hover { color: var(--fg); }
+</style>
+
+<script>
+  // ============================================================
+  // DIAGNÓSTICO · 5 dimensões → 1 verbo recomendado
+  // ============================================================
+
+  type Dim = 'vocacao' | 'gargalo' | 'governanca' | 'equipe' | 'abertura';
+  type Verb = 'formalizar' | 'estruturar' | 'construir';
+  type Answers = Record<Dim, string | null>;
+
+  const answers: Answers = {
+    vocacao: null,
+    gargalo: null,
+    governanca: null,
+    equipe: null,
+    abertura: null,
+  };
+
+  // matriz de scoring — cada resposta atribui pontos a verbo(s)
+  const SCORING: Record<Dim, Record<string, Partial<Record<Verb, number>>>> = {
+    vocacao: {
+      desenvolvedor: { construir: 1 },
+      facilitador:   { estruturar: 1 },
+      educador:      { estruturar: 1, construir: 1 },
+      arquiteto:     { formalizar: 1 },
+    },
+    gargalo: {
+      ideacao:       { estruturar: 3 },
+      prototipo:     { construir: 3 },
+      implementacao: { formalizar: 2, construir: 1 },
+      escala:        { formalizar: 3 },
+    },
+    governanca: {
+      balcao:      { formalizar: 3 },
+      programa:    { formalizar: 1 },
+      estrategico: {},
+      patrocinado: {},
+    },
+    equipe: {
+      conselheiro:          { formalizar: 2 },
+      'facilitador-equipe': { formalizar: 1, estruturar: 1 },
+      'lab-autonomo':       { formalizar: 1 },
+      'lab-pleno':          {},
+    },
+    abertura: {
+      interna:   { estruturar: 2 },
+      rede:      { estruturar: 1 },
+      cocriacao: {},
+      misto:     { estruturar: 1 },
+    },
+  };
+
+  // máximos teóricos por verbo (worst case do usuário)
+  const MAX: Record<Verb, number> = { formalizar: 9, estruturar: 7, construir: 4 };
+
+  const LABELS: Record<Dim, Record<string, string>> = {
+    vocacao: {
+      desenvolvedor: 'Desenvolvedor',
+      facilitador:   'Facilitador',
+      educador:      'Educador',
+      arquiteto:     'Arquiteto',
+    },
+    gargalo: {
+      ideacao:       'Ideação',
+      prototipo:     'Protótipo',
+      implementacao: 'Implementação',
+      escala:        'Escala / replicação',
+    },
+    governanca: {
+      balcao:      'Balcão de pedidos',
+      programa:    'Programa estabelecido',
+      estrategico: 'Estratégico',
+      patrocinado: 'Estratégico com patrocínio',
+    },
+    equipe: {
+      conselheiro:          'Conselheiro',
+      'facilitador-equipe': 'Facilitador',
+      'lab-autonomo':       'Lab autônomo',
+      'lab-pleno':          'Lab pleno (dedicação exclusiva)',
+    },
+    abertura: {
+      interna:   'Interna',
+      rede:      'Em rede',
+      cocriacao: 'Cocriação aberta',
+      misto:     'Varia por projeto',
+    },
+  };
+
+  const VERB_COPY: Record<Verb, { name: string; diag: string; action: string; cta: string; href: string }> = {
+    formalizar: {
+      name: 'Formalizar',
+      diag: 'Sua equipe tem capacidade técnica e de método, mas o arranjo institucional ainda não sustenta o trabalho — limita captação, contratação e durabilidade entre ciclos de gestão.',
+      action: 'O caminho é virar ICT (ou equivalente jurídico), abrir captação via FNDCT, formalizar parcerias e construir governança que sobreviva a mudança de gestão.',
+      cta: 'Ver caminho de Formalizar →',
+      href: '/formalizar',
+    },
+    estruturar: {
+      name: 'Estruturar',
+      diag: 'Sua instituição reconhece o lab e há capacidade técnica disponível, mas o método não está consolidado — cada projeto reinventa seu fluxo, e ideias não viram ciclos contínuos de melhoria.',
+      action: 'O caminho é desenhar como o lab decide: critérios de priorização, ritmo de sprints, indicadores de impacto, ciclos de revisão. Sem isso, a entrega depende de heroísmo individual.',
+      cta: 'Ver caminho de Estruturar →',
+      href: '/estruturar',
+    },
+    construir: {
+      name: 'Construir',
+      diag: 'Seu lab tem instituição sólida e método claro, mas depende de fila de TI ou contratação externa para construir o que usa — segura o ciclo no ritmo dos atravessadores.',
+      action: 'O caminho é capacitar a equipe em IA e no-code para que o próprio lab construa assistentes, dashboards e automações. A autoria das ferramentas é o que garante autonomia operacional.',
+      cta: 'Ver caminho de Construir →',
+      href: '/construir',
+    },
+  };
+
+  const questionSections = document.querySelectorAll<HTMLElement>('.question');
+  const resultEl = document.getElementById('result') as HTMLElement;
+
+  function scrollToNextUnanswered(currentSection: HTMLElement) {
+    const all = Array.from(questionSections);
+    const idx = all.indexOf(currentSection);
+    for (let i = idx + 1; i < all.length; i++) {
+      const dim = all[i].getAttribute('data-question') as Dim;
+      if (answers[dim] === null) {
+        all[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+  }
+
+  questionSections.forEach((section) => {
+    const dim = section.getAttribute('data-question') as Dim;
+    const buttons = section.querySelectorAll<HTMLButtonElement>('.option');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wasUnanswered = answers[dim] === null;
+
+        buttons.forEach((b) => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-checked', 'true');
+        answers[dim] = btn.getAttribute('data-key');
+
+        const allFilled = (Object.keys(answers) as Dim[]).every((k) => answers[k] !== null);
+
+        if (allFilled) {
+          renderResult();
+        } else if (wasUnanswered) {
+          // momentum gentil para baixo, mas só na primeira vez —
+          // re-edição não força scroll para evitar incomodar.
+          setTimeout(() => scrollToNextUnanswered(section), 280);
+        }
+      });
+    });
+  });
+
+  function renderResult() {
+    const scores: Record<Verb, number> = { formalizar: 0, estruturar: 0, construir: 0 };
+
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const key = answers[dim];
+      if (!key) return;
+      const addition = SCORING[dim][key] || {};
+      (Object.keys(addition) as Verb[]).forEach((v) => {
+        scores[v] += addition[v] || 0;
+      });
+    });
+
+    const urgency: Record<Verb, number> = {
+      formalizar: scores.formalizar / MAX.formalizar,
+      estruturar: scores.estruturar / MAX.estruturar,
+      construir:  scores.construir  / MAX.construir,
+    };
+
+    const maturity: Record<Verb, number> = {
+      formalizar: Math.round((1 - urgency.formalizar) * 100),
+      estruturar: Math.round((1 - urgency.estruturar) * 100),
+      construir:  Math.round((1 - urgency.construir)  * 100),
+    };
+
+    const verbs: Verb[] = ['formalizar', 'estruturar', 'construir'];
+    const primary = verbs.reduce((best, v) => (urgency[v] > urgency[best] ? v : best), verbs[0]);
+    const pool = verbs.filter((v) => v !== primary);
+    const secondary = pool.reduce((best, v) => (urgency[v] > urgency[best] ? v : best), pool[0]);
+
+    const copy = VERB_COPY[primary];
+
+    (document.getElementById('result-verb') as HTMLElement).textContent = copy.name;
+    (document.getElementById('result-diag') as HTMLElement).textContent = copy.diag;
+    (document.getElementById('result-action') as HTMLElement).textContent = copy.action;
+    (document.getElementById('result-secondary') as HTMLElement).innerHTML =
+      'Depois disso, fortaleça <span class="verb">' + VERB_COPY[secondary].name + '</span>.';
+
+    const ctaPrimary = document.getElementById('result-cta-primary') as HTMLAnchorElement;
+    ctaPrimary.textContent = copy.cta;
+    ctaPrimary.setAttribute('href', copy.href);
+
+    (document.getElementById('prof-vocacao') as HTMLElement).textContent    = LABELS.vocacao[answers.vocacao!];
+    (document.getElementById('prof-gargalo') as HTMLElement).textContent    = LABELS.gargalo[answers.gargalo!];
+    (document.getElementById('prof-governanca') as HTMLElement).textContent = LABELS.governanca[answers.governanca!];
+    (document.getElementById('prof-equipe') as HTMLElement).textContent     = LABELS.equipe[answers.equipe!];
+    (document.getElementById('prof-abertura') as HTMLElement).textContent   = LABELS.abertura[answers.abertura!];
+
+    document.querySelectorAll<HTMLElement>('.bar-row').forEach((row) => {
+      const v = row.getAttribute('data-verb') as Verb;
+      const pct = maturity[v];
+      const fill = row.querySelector<HTMLElement>('.bar-fill')!;
+      const name = row.querySelector<HTMLElement>('.bar-name')!;
+      const value = row.querySelector<HTMLElement>('.bar-value')!;
+
+      value.textContent = pct + '%';
+      name.classList.toggle('is-recommended', v === primary);
+      fill.classList.toggle('is-recommended', v === primary);
+      value.classList.toggle('is-recommended', v === primary);
+
+      // reset → animar
+      fill.style.width = '0%';
+      requestAnimationFrame(() => {
+        fill.style.width = pct + '%';
+      });
+    });
+
+    const d = new Date();
+    const pad = (n: number) => (n < 10 ? '0' + n : '' + n);
+    const id =
+      'DIAG · ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() +
+      ' · ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    (document.getElementById('result-id') as HTMLElement).textContent = id;
+
+    resultEl.classList.add('visible');
+    resultEl.setAttribute('aria-hidden', 'false');
+
+    setTimeout(() => {
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 350);
+  }
+
+  document.getElementById('result-restart')!.addEventListener('click', (e) => {
+    e.preventDefault();
+    (Object.keys(answers) as Dim[]).forEach((k) => { answers[k] = null; });
+    document.querySelectorAll<HTMLButtonElement>('.option.selected').forEach((o) => {
+      o.classList.remove('selected');
+      o.setAttribute('aria-checked', 'false');
+    });
+    resultEl.classList.remove('visible');
+    resultEl.setAttribute('aria-hidden', 'true');
+
+    const firstQ = document.getElementById('q1');
+    if (firstQ) {
+      firstQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const firstOption = firstQ.querySelector<HTMLButtonElement>('.option');
+      // dá tempo do scroll começar antes de mover o foco, evita salto
+      setTimeout(() => firstOption?.focus(), 600);
+    }
+  });
+</script>

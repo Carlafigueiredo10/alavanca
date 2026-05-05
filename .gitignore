@@ -11,3 +11,11 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+
+.vercel
+
+.mcp.json
+.claude/
+
+supabase/.temp/
+supabase/.branches/

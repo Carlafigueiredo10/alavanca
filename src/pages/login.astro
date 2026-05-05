@@ -1,0 +1,218 @@
+---
+import Base from '../layouts/Base.astro';
+
+const error = Astro.url.searchParams.get('error');
+const next = Astro.url.searchParams.get('next') ?? '/jo';
+---
+<Base
+  title="Entrar · Jô"
+  description="Entre na Jô — assistente de inovação institucional da Alavanca."
+>
+  <main class="login-main">
+    <div class="login-card">
+      <div class="login-id">↳ Entrar na Jô</div>
+      <h1 class="login-title">A Jô precisa<br/>te conhecer.</h1>
+      <p class="login-dek">
+        Pra salvar suas conversas e continuar de onde parou.<br/>
+        Mando um link pro seu email — sem senha.
+      </p>
+
+      {error && (
+        <div class="login-error">{error}</div>
+      )}
+
+      <form class="login-form" id="login-form">
+        <label class="login-label" for="email">Seu email institucional</label>
+        <input
+          class="login-input"
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="nome@orgao.gov.br"
+        />
+        <input type="hidden" name="next" value={next} />
+        <button class="login-btn" type="submit" id="login-btn">
+          <span id="login-btn-label">Mandar link mágico</span>
+        </button>
+      </form>
+
+      <div class="login-status" id="login-status" hidden></div>
+
+      <p class="login-footnote">
+        Suas conversas ficam salvas pra você consultar.<br/>
+        Nada é compartilhado.
+      </p>
+    </div>
+  </main>
+
+  <style>
+    .login-main {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+    .login-card {
+      max-width: 440px;
+      width: 100%;
+    }
+    .login-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--fg-50);
+      margin-bottom: 28px;
+    }
+    .login-title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(40px, 6vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -0.026em;
+      margin-bottom: 18px;
+    }
+    .login-dek {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--fg-86);
+      margin-bottom: 36px;
+    }
+    .login-error {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--fg);
+      background: rgba(217, 119, 6, 0.10);
+      border: 0.5px solid var(--amber);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 22px;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .login-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.16em;
+      color: var(--fg-50);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .login-input {
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--fg);
+      background: rgba(245, 242, 235, 0.04);
+      border: 0.5px solid var(--fg-22);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: rgba(245, 242, 235, 0.06);
+    }
+    .login-btn {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--amber);
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 24px;
+      cursor: pointer;
+      transition: filter 200ms ease, transform 200ms ease;
+      margin-top: 6px;
+    }
+    .login-btn:hover:not(:disabled) {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+    .login-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .login-status {
+      font-family: var(--sans);
+      font-size: 13.5px;
+      color: var(--fg-86);
+      background: rgba(245, 242, 235, 0.04);
+      border: 0.5px solid var(--fg-22);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .login-status.success { border-color: var(--amber); }
+    .login-status.error { border-color: rgba(255, 100, 100, 0.5); }
+    .login-footnote {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--fg-45);
+      line-height: 1.6;
+    }
+  </style>
+
+  <script>
+    import { getSupabaseBrowserClient } from '../lib/supabase/browser';
+
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const btn = document.getElementById('login-btn') as HTMLButtonElement;
+    const btnLabel = document.getElementById('login-btn-label') as HTMLSpanElement;
+    const status = document.getElementById('login-status') as HTMLDivElement;
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const nextInput = form?.querySelector('input[name="next"]') as HTMLInputElement;
+
+    function setStatus(text: string, kind: 'success' | 'error' = 'success') {
+      status.textContent = text;
+      status.classList.remove('success', 'error');
+      status.classList.add(kind);
+      status.hidden = false;
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      btn.disabled = true;
+      btnLabel.textContent = 'Mandando…';
+
+      try {
+        const supabase = getSupabaseBrowserClient();
+        const next = nextInput?.value ?? '/jo';
+        const redirectTo = `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(next)}`;
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: { emailRedirectTo: redirectTo },
+        });
+        if (error) {
+          setStatus('Não consegui mandar o link. Confere o email e tenta de novo.', 'error');
+          btn.disabled = false;
+          btnLabel.textContent = 'Mandar link mágico';
+          return;
+        }
+        setStatus(
+          `Pronto. Cheque ${email} — o link expira em 1 hora. Pode fechar essa aba; quando clicar no link, você cai direto na Jô.`,
+          'success'
+        );
+        btnLabel.textContent = 'Link enviado';
+      } catch {
+        setStatus('Algo deu errado. Tenta de novo daqui a pouco.', 'error');
+        btn.disabled = false;
+        btnLabel.textContent = 'Mandar link mágico';
+      }
+    });
+  </script>
+</Base>
