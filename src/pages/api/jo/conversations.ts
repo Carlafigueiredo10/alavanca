@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase/server';
-import { logEvent, safeErrorMessage } from '../../../lib/jo/log';
+import { requireUser } from '../../../lib/server/auth';
+import { logEvent, safeErrorMessage } from '../../../lib/server/log';
 
 export const prerender = false;
 
@@ -15,9 +15,9 @@ function jsonResponse(body: unknown, status = 200): Response {
 
 export const GET: APIRoute = async ({ cookies }) => {
   const requestId = crypto.randomUUID();
-  const supabase = createSupabaseServerClient(cookies);
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return jsonResponse({ error: 'unauthenticated' }, 401);
+  const auth = await requireUser(cookies);
+  if (!auth.ok) return auth.response;
+  const { supabase, user } = auth;
 
   const { data, error } = await supabase
     .from('conversations')
@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ cookies }) => {
     logEvent({
       request_id: requestId,
       route,
-      user_id: auth.user.id,
+      user_id: user.id,
       error: error.message,
       event: 'list_failed',
     });
@@ -41,13 +41,13 @@ export const GET: APIRoute = async ({ cookies }) => {
 
 export const POST: APIRoute = async ({ cookies }) => {
   const requestId = crypto.randomUUID();
-  const supabase = createSupabaseServerClient(cookies);
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return jsonResponse({ error: 'unauthenticated' }, 401);
+  const auth = await requireUser(cookies);
+  if (!auth.ok) return auth.response;
+  const { supabase, user } = auth;
 
   const { data, error } = await supabase
     .from('conversations')
-    .insert({ user_id: auth.user.id })
+    .insert({ user_id: user.id })
     .select('id, title, created_at')
     .single();
 
@@ -55,7 +55,7 @@ export const POST: APIRoute = async ({ cookies }) => {
     logEvent({
       request_id: requestId,
       route,
-      user_id: auth.user.id,
+      user_id: user.id,
       error: safeErrorMessage(error),
       event: 'create_failed',
     });

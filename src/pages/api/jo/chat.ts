@@ -1,24 +1,13 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase/server';
-import { getPromptForMode, type JoMode } from '../../../lib/jo/prompts';
-import { truncateByChars, type ChatMessage } from '../../../lib/jo/history';
-import {
-  streamGemini,
-  streamDeepSeek,
-  completeGemini,
-  completeDeepSeek,
-  friendlyGeminiError,
-  friendlyDeepSeekError,
-} from '../../../lib/jo/clients';
-import { deepseekBreaker } from '../../../lib/jo/breaker';
-import { logEvent, safeErrorMessage, type Provider } from '../../../lib/jo/log';
+import { requireUser, type SupabaseServerClient } from '../../../lib/server/auth';
+import { getPromptForMode, type JoMode } from '../../../lib/ai/prompts';
+import { truncateByChars, type ChatMessage } from '../../../lib/ai/history/truncate';
+import { getProviderForMode } from '../../../lib/ai/orchestrator';
+import { logEvent, safeErrorMessage, type Provider } from '../../../lib/server/log';
 
 export const prerender = false;
 
 const MAX_MESSAGE_CHARS = 4000;
-
-const SHORT_CIRCUIT_MESSAGE =
-  'A ampliação com referências externas está temporariamente indisponível. Posso seguir pela base institucional — mande sua dúvida sem o "ampliar" ativado.';
 
 interface ChatBody {
   conversationId?: string;
@@ -56,14 +45,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return jsonResponse({ error: 'JSON inválido' }, 400);
   }
 
-  const supabase = createSupabaseServerClient(cookies);
-  const { data: auth } = await supabase.auth.getUser();
-  const user = auth?.user;
-  if (!user) {
+  const auth = await requireUser(cookies);
+  if (!auth.ok) {
     logEvent({ request_id: requestId, route, error: 'unauthenticated', event: 'auth_failed' });
-    return jsonResponse({ error: 'unauthenticated', redirect: '/login' }, 401);
+    return auth.response;
   }
-
+  const { supabase, user } = auth;
   const userId = user.id;
   const conversationId = typeof body.conversationId === 'string' ? body.conversationId : '';
   const messageRaw = typeof body.message === 'string' ? body.message : '';
@@ -82,7 +69,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 
   const mode: JoMode = body.mode === 'possibilidades' ? 'possibilidades' : 'decisao';
-  const provider: Provider = mode === 'possibilidades' ? 'deepseek' : 'gemini';
+  const adapter = getProviderForMode(mode);
+  const provider: Provider = adapter.key;
 
   const { data: conv, error: convErr } = await supabase
     .from('conversations')
@@ -152,27 +140,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const systemPrompt = getPromptForMode(mode);
 
-  if (mode === 'possibilidades' && deepseekBreaker.shouldShortCircuit()) {
-    return await respondWithFallback({
-      supabase,
-      conversationId,
-      mode,
-      message: SHORT_CIRCUIT_MESSAGE,
-      requestId,
-      route,
-      userId,
-      provider,
-      startedAt,
-      reason: 'short_circuit',
-    });
-  }
-
   let stream: ReadableStream<string>;
   try {
-    stream =
-      mode === 'possibilidades'
-        ? await streamDeepSeek(trimmed, messageRaw, systemPrompt)
-        : await streamGemini(trimmed, messageRaw, systemPrompt);
+    stream = await adapter.stream(trimmed, messageRaw, systemPrompt);
   } catch (initErr) {
     logEvent({
       request_id: requestId,
@@ -187,12 +157,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     let fullText = '';
     try {
-      fullText =
-        mode === 'possibilidades'
-          ? await completeDeepSeek(trimmed, messageRaw, systemPrompt)
-          : await completeGemini(trimmed, messageRaw, systemPrompt);
+      fullText = await adapter.complete(trimmed, messageRaw, systemPrompt);
     } catch (completeErr) {
-      const friendly = mode === 'possibilidades' ? friendlyDeepSeekError : friendlyGeminiError;
+      const friendly = adapter.friendly;
       return await respondWithFallback({
         supabase,
         conversationId,
@@ -241,9 +208,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         controller.close();
       } catch (err) {
         streamErrored = true;
-        if (provider === 'deepseek') deepseekBreaker.recordFailure();
 
-        const friendly = provider === 'deepseek' ? friendlyDeepSeekError : friendlyGeminiError;
+        const friendly = adapter.friendly;
         try {
           controller.enqueue(encoder.encode(sseError(friendly)));
           controller.enqueue(encoder.encode(sseDone(true)));
@@ -267,7 +233,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         const insertRes = await supabase.from('messages').insert({
           conversation_id: conversationId,
           role: 'assistant',
-          content: fullResponse || (streamErrored ? '' : ''),
+          content: fullResponse || '',
           mode_used: mode,
           is_partial: streamErrored,
         });
@@ -285,7 +251,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         }
 
         if (!streamErrored) {
-          if (provider === 'deepseek') deepseekBreaker.recordSuccess();
           logEvent({
             request_id: requestId,
             route,
@@ -312,7 +277,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 };
 
 interface FallbackArgs {
-  supabase: ReturnType<typeof createSupabaseServerClient>;
+  supabase: SupabaseServerClient;
   conversationId: string;
   mode: JoMode;
   message: string;
@@ -377,7 +342,7 @@ async function respondWithFallback(args: FallbackArgs): Promise<Response> {
 }
 
 interface NonStreamArgs {
-  supabase: ReturnType<typeof createSupabaseServerClient>;
+  supabase: SupabaseServerClient;
   conversationId: string;
   mode: JoMode;
   fullText: string;
@@ -408,8 +373,6 @@ async function respondNonStream(args: NonStreamArgs): Promise<Response> {
       event: 'persist_assistant_failed',
     });
   }
-
-  if (args.provider === 'deepseek') deepseekBreaker.recordSuccess();
 
   logEvent({
     request_id: args.requestId,

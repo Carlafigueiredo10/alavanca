@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseServerClient } from '../../../lib/supabase/server';
-import { logEvent } from '../../../lib/jo/log';
+import { requireUser } from '../../../lib/server/auth';
+import { logEvent } from '../../../lib/server/log';
 
 export const prerender = false;
 
@@ -18,9 +18,9 @@ export const GET: APIRoute = async ({ cookies, url }) => {
   const conversationId = url.searchParams.get('conversationId');
   if (!conversationId) return jsonResponse({ error: 'conversationId obrigatório' }, 400);
 
-  const supabase = createSupabaseServerClient(cookies);
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return jsonResponse({ error: 'unauthenticated' }, 401);
+  const auth = await requireUser(cookies);
+  if (!auth.ok) return auth.response;
+  const { supabase, user } = auth;
 
   const { data, error } = await supabase
     .from('messages')
@@ -32,7 +32,7 @@ export const GET: APIRoute = async ({ cookies, url }) => {
     logEvent({
       request_id: requestId,
       route,
-      user_id: auth.user.id,
+      user_id: user.id,
       error: error.message,
       event: 'list_failed',
     });

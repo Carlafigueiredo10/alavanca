@@ -1,4 +1,4 @@
-const promptModules = import.meta.glob('../../prompts/*.md', {
+const promptModules = import.meta.glob('../../../prompts/*.md', {
   query: '?raw',
   import: 'default',
   eager: true,

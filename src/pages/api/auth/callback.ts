@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseServerClient } from '../../../lib/supabase/server';
-import { logEvent, safeErrorMessage } from '../../../lib/jo/log';
+import { logEvent, safeErrorMessage } from '../../../lib/server/log';
 
 export const prerender = false;
 

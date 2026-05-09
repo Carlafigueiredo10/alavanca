@@ -3,7 +3,7 @@ export interface ChatMessage {
   content: string;
 }
 
-const MAX_CHARS = 12_000;
+const MAX_CHARS = 50_000;
 
 export function truncateByChars(messages: ChatMessage[], maxChars: number = MAX_CHARS): ChatMessage[] {
   let total = messages.reduce((acc, m) => acc + m.content.length, 0);
