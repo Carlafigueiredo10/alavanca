@@ -1,0 +1,308 @@
+---
+type Quick = {
+  type: 'elogio' | 'melhoria' | 'erro';
+  label: string;
+  hint: string;
+};
+
+const quicks: Quick[] = [
+  { type: 'elogio',   label: 'Elogio',   hint: 'O que funcionou' },
+  { type: 'melhoria', label: 'Melhoria', hint: 'O que pode melhorar' },
+  { type: 'erro',     label: 'Erro',     hint: 'Algo travou ou confundiu' },
+];
+---
+<section id="contribuir" class="contrib">
+  <div class="shell">
+    <header class="section-head">
+      <div class="section-head-meta">
+        <span class="section-head-id">/05</span>
+        <span class="section-head-line"></span>
+        <span class="section-head-tag">V · Construção coletiva</span>
+      </div>
+      <h2 class="section-head-title reveal">
+        Como o Alavanca pode <span class="signal-text">melhorar</span>?
+      </h2>
+    </header>
+
+    <p class="contrib-sub reveal delay-1">
+      Plataforma aberta a contribuições — toda sugestão chega, leio uma a uma.
+    </p>
+
+    <div class="contrib-grid">
+      <a href="/sugestoes?from=/" class="contrib-card surface reveal delay-1">
+        <div class="contrib-card-top">
+          <span class="contrib-card-id">/05·01</span>
+          <span class="contrib-card-arrow">→</span>
+        </div>
+
+        <div>
+          <div class="contrib-card-label">Sugestão livre</div>
+          <h3 class="contrib-card-title">Deixar uma sugestão</h3>
+          <p class="contrib-card-body">
+            Texto aberto — categoria, página relacionada e e-mail são opcionais.
+            Anônimo se quiser.
+          </p>
+          <p class="contrib-card-meta">
+            <span class="contrib-card-meta-mark">↳</span>
+            Honeypot anti-bot · só eu vejo
+          </p>
+        </div>
+
+        <span class="bracket bracket-tl"></span>
+        <span class="bracket bracket-tr"></span>
+        <span class="bracket bracket-bl"></span>
+        <span class="bracket bracket-br"></span>
+      </a>
+
+      <div class="contrib-quicks reveal delay-2">
+        <p class="contrib-quicks-label">Atalhos</p>
+        <ul class="contrib-quicks-list">
+          {quicks.map((q) => (
+            <li>
+              <a href={`/sugestoes?from=/&type=${q.type}`} class="contrib-quick">
+                <span class="contrib-quick-label">{q.label}</span>
+                <span class="contrib-quick-hint">{q.hint}</span>
+                <span class="contrib-quick-arrow">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contrib {
+    padding: 160px 0;
+  }
+
+  .contrib-sub {
+    margin-top: 32px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    font-style: italic;
+  }
+  @media (min-width: 880px) {
+    .contrib-sub { margin-left: 25%; }
+  }
+
+  /* section-head shared */
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 24px;
+  }
+  .section-head-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .section-head-id { color: var(--signal); }
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .section-head-title {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  @media (min-width: 880px) {
+    .section-head-meta  { grid-column: span 3; }
+    .section-head-title { grid-column: span 9; }
+  }
+
+  /* ---------- GRID ---------- */
+  .contrib-grid {
+    margin-top: 96px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 880px) {
+    .contrib-grid {
+      grid-template-columns: 7fr 5fr;
+      align-items: stretch;
+    }
+  }
+
+  /* ---------- CARD PRINCIPAL ---------- */
+  .contrib-card {
+    position: relative;
+    overflow: hidden;
+    padding: 40px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--bone);
+  }
+
+  .contrib-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .contrib-card-id { color: var(--signal); }
+
+  .contrib-card-arrow {
+    opacity: 0.6;
+    transition: transform 250ms ease;
+  }
+  .contrib-card:hover .contrib-card-arrow {
+    transform: translateX(4px);
+  }
+
+  .contrib-card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-60);
+    margin-bottom: 12px;
+  }
+
+  .contrib-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+
+  .contrib-card-body {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg-78);
+    max-width: 46ch;
+  }
+
+  .contrib-card-meta {
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--fg-50);
+  }
+
+  .contrib-card-meta-mark {
+    color: var(--signal);
+    margin-right: 4px;
+  }
+
+  /* ---------- ATALHOS ---------- */
+  .contrib-quicks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contrib-quicks-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 4px;
+  }
+
+  .contrib-quicks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .contrib-quicks-list li {
+    flex: 1;
+    display: flex;
+  }
+
+  .contrib-quick {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    border: 1px solid var(--hairline);
+    background: oklch(0.18 0.012 95 / 0.4);
+    color: var(--bone);
+    text-decoration: none;
+    transition:
+      border-color 250ms ease,
+      background-color 250ms ease,
+      color 250ms ease;
+  }
+
+  .contrib-quick:hover {
+    border-color: oklch(0.82 0.155 78 / 0.4);
+    background: oklch(0.22 0.02 80 / 0.5);
+  }
+
+  .contrib-quick-label {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .contrib-quick-hint {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--fg-60);
+  }
+
+  .contrib-quick-arrow {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--fg-50);
+    transition: transform 250ms ease, color 250ms ease;
+  }
+
+  .contrib-quick:hover .contrib-quick-arrow {
+    transform: translateX(4px);
+    color: var(--signal);
+  }
+
+  @media (max-width: 560px) {
+    .contrib-quick {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "label arrow"
+        "hint  hint";
+      gap: 4px 16px;
+      padding: 16px 18px;
+    }
+    .contrib-quick-label { grid-area: label; }
+    .contrib-quick-hint  { grid-area: hint; }
+    .contrib-quick-arrow { grid-area: arrow; }
+  }
+</style>

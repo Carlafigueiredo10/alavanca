@@ -25,6 +25,10 @@ Use estrutura de **Minuta de TCT** (com Nota Técnica de fundamentação anexa):
 7. **Fundamentação Normativa** — Tripartite.
 8. **Encaminhamento** — partícipes, vigência, foro.
 
+## Cadeia Vale da Morte (cross-ref)
+
+O Termo de Cooperação Técnica é **a peça final** da cadeia AGU para tirar a solução do "Vale da Morte" (protótipo → operação): **Sandbox Regulatório · CPSI · Encomenda Tecnológica → TCT** que formaliza o handoff. Sem TCT — ou equivalente — o lab vira suporte de TI permanente, fenômeno alertado pela literatura I.LAB. O modo **Construir** da Alavanca avalia a cadeia inteira e produz o pacote completo: Plano de Implementação Técnica + TCT + **Plano de Handoff e Descontinuidade** (transição para regulação plena ou desligamento seguro), conforme exigido pelo Guia AGU.
+
 ## Caveat obrigatório
 
 Encerre o documento com a ressalva:

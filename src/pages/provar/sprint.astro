@@ -1,0 +1,507 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Dossiê de Transição · Provar · Alavanca"
+  description="Três respostas. A Jô compõe Dossiê + Pitch adaptável + Dashboard de Impacto Acumulado, sustentados nas peças que você já produziu."
+>
+
+<!-- ============================================================
+     INTRO
+     ============================================================ -->
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Provar · Defesa</div>
+    <h1 class="intro-headline animate-in delay-100">Da entrega silenciosa à defesa do lab na transição.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Em três respostas — não em três dias de slides.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Entregas · Audiência · Janela</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Composição rigorosa, não criação. Toda afirmação rastreável<br />
+        às peças geradas pelos modos <strong>Construir</strong>, <strong>Formalizar</strong> e <strong>Avaliar</strong>.<br />
+        <strong>O lab passa a contar a própria história — com lastro.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STEPPER
+     ============================================================ -->
+<section class="stepper-bar">
+  <div class="container">
+    <div class="stepper" id="stepper">
+      <div class="step is-active" data-step="1">
+        <span class="step-num">01</span>
+        <span class="step-label">Entregas</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="2">
+        <span class="step-num">02</span>
+        <span class="step-label">Audiência</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="3">
+        <span class="step-num">03</span>
+        <span class="step-label">Janela</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WIZARD STEPS
+     ============================================================ -->
+<section class="wizard">
+  <div class="container">
+
+    <!-- ── 01 · ENTREGAS ── -->
+    <div class="wizard-step is-active" data-step="1">
+      <div class="step-header">
+        <div class="step-tag">01 · <span class="verb">Entregas existentes</span></div>
+        <h2 class="step-headline">Que peças já existem com lastro?</h2>
+        <p class="step-hint">
+          Liste portarias publicadas, TCTs assinados, sistemas em operação,
+          indicadores medidos. Sem insumos — peças formalmente publicadas ou
+          indicadores auditáveis — a Jô recusa redigir. Provar compõe; não cria.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="1"
+        rows="5"
+        maxlength="800"
+        placeholder="Ex: (a) portaria de criação publicada DOU abr/2024; (b) TCT com a CGAC firmado set/2025; (c) avaliação CGU concluída fev/2026 com redução de 38% no tempo médio de atendimento via canal automatizado."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="1">0</span> / 800</div>
+
+      <div class="step-actions">
+        <span class="step-back-placeholder"></span>
+        <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 02 · AUDIÊNCIA ── -->
+    <div class="wizard-step" data-step="2">
+      <div class="step-header">
+        <div class="step-tag">02 · <span class="verb">Audiência alvo</span></div>
+        <h2 class="step-headline">Pra quem o pacote vai?</h2>
+        <p class="step-hint">
+          Alta gestão, gabinete ministerial, cidadão, equipe sucessora, controle
+          externo. A mesma evidência se reembala diferentemente — adaptar não é
+          mentir, é ajustar nível de detalhe e vocabulário.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="2"
+        rows="3"
+        maxlength="500"
+        placeholder="Ex: alta gestão (ministro e secretários, na próxima reunião plenária); secundariamente, sucessor da Secretaria-Executiva."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="2">0</span> / 500</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 03 · JANELA ── -->
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Janela política</span></div>
+        <h2 class="step-headline">Que momento institucional é esse?</h2>
+        <p class="step-hint">
+          Transição de gestão, defesa orçamentária, prestação de contas anual,
+          audiência pública. A Jô calibra o foco — pitch de defesa em transição
+          é diferente de prestação de contas anual.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="3"
+        rows="3"
+        maxlength="500"
+        placeholder="Ex: transição de equipe da Secretaria-Executiva (mudança de Secretário-Executivo prevista para junho/2026)."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="3">0</span> / 500</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Dossiê →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     RODAPÉ TÉCNICO
+     ============================================================ -->
+<section class="footnote">
+  <div class="container">
+    <div class="footnote-grid">
+      <div>
+        <div class="footnote-label">↳ Saída</div>
+        <p>Dossiê de Transição (técnico, denso, com mapa de entregas em três camadas: Lastro Normativo · Operacional · de Outcome) + Pitch adaptável (versões alta gestão · cidadão · sucessor) + Dashboard de Impacto Acumulado (sem gráficos sem fonte).</p>
+      </div>
+      <div>
+        <div class="footnote-label">↳ Princípio</div>
+        <p>Provar compõe — não cria. Toda afirmação aqui é rastreável a peça nominada. Distorção retórica enfraquece o lab na próxima auditoria — não fortalece. Se faltar lastro, a Jô omite; não enfeita.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 760px; }
+  .intro { padding-top: 80px; padding-bottom: 60px; }
+  .intro-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 26px;
+    max-width: 640px;
+  }
+  .intro-subhead { margin-bottom: 18px; }
+  .intro-kicker { margin-bottom: 56px; }
+  .intro-meta { padding-top: 22px; border-top: 0.5px solid var(--fg-14); }
+  .intro-meta-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+    line-height: 1.7;
+  }
+  .intro-meta-text strong { font-weight: 500; color: var(--fg-86); }
+  .stepper-bar {
+    padding: 16px 0 32px;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+    background: rgba(0, 0, 0, 0.18);
+  }
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 8px 0;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.4;
+    transition: opacity 240ms ease, color 240ms ease;
+  }
+  .step.is-active, .step.is-done { opacity: 1; }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    transition: color 240ms ease;
+  }
+  .step.is-active .step-num { color: var(--amber); }
+  .step.is-done .step-num { color: var(--fg-86); }
+  .step-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    transition: color 240ms ease;
+  }
+  .step.is-active .step-label { color: var(--fg); }
+  .step-divider { width: 36px; height: 0.5px; background: var(--fg-22); }
+  @media (max-width: 540px) {
+    .stepper { gap: 8px; }
+    .step-divider { width: 18px; }
+    .step-label { font-size: 10px; letter-spacing: 0.1em; }
+  }
+  .wizard { padding: 56px 0 64px; min-height: 60vh; }
+  .wizard-step {
+    display: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .wizard-step.is-active { display: block; }
+  .wizard-step.is-active.is-visible { opacity: 1; transform: translateY(0); }
+  .step-header { margin-bottom: 26px; }
+  .step-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+  .step-tag .verb { color: var(--amber); }
+  .step-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 18px;
+    max-width: 640px;
+  }
+  .step-hint {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .step-hint em { font-family: var(--serif); font-style: italic; color: var(--fg); }
+  .step-input {
+    width: 100%;
+    background: rgba(245, 242, 235, 0.04);
+    border: 0.5px solid var(--fg-22);
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .step-input:focus {
+    outline: none;
+    border-color: var(--amber);
+    background: rgba(245, 242, 235, 0.06);
+  }
+  .step-input::placeholder { color: var(--fg-45); font-style: italic; }
+  .step-counter {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--fg-45);
+    text-align: right;
+  }
+  .step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .step-back-placeholder { display: inline-block; width: 1px; }
+  .footnote { padding: 56px 0 80px; border-top: 0.5px solid var(--fg-14); }
+  .footnote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footnote-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 12px;
+  }
+  .footnote p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+  @media (max-width: 640px) {
+    .footnote-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>
+
+<script>
+  // ============================================================
+  // WIZARD · 3 telas → consolidação → handoff pro modo Provar
+  // ============================================================
+  import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
+
+  type StepNum = 1 | 2 | 3;
+
+  const STATE_KEY = 'alavanca:wizard-state-provar';
+  const MODE = 'provar';
+
+  const stepNums: StepNum[] = [1, 2, 3];
+  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '' };
+  let current: StepNum = 1;
+  let isAuthed: boolean | null = null;
+
+  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
+  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
+
+  function showStep(n: StepNum) {
+    current = n;
+    steps.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      const isActive = num === n;
+      el.classList.toggle('is-active', isActive);
+      el.classList.remove('is-visible');
+      if (isActive) {
+        requestAnimationFrame(() => el.classList.add('is-visible'));
+        const input = el.querySelector<HTMLTextAreaElement>('.step-input');
+        setTimeout(() => input?.focus(), 80);
+      }
+    });
+    stepperItems.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      el.classList.toggle('is-active', num === n);
+      el.classList.toggle('is-done', num < n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  stepNums.forEach((n) => {
+    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const nextBtn =
+      document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
+      (n === 3 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+
+    function refresh() {
+      const val = input.value.trim();
+      answers[n] = val;
+      counter.textContent = String(input.value.length);
+      if (nextBtn) nextBtn.disabled = val.length < 12;
+    }
+
+    input.addEventListener('input', refresh);
+
+    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
+    backBtn?.addEventListener('click', () => {
+      if (n > 1) showStep((n - 1) as StepNum);
+    });
+
+    if (n < 3) {
+      nextBtn?.addEventListener('click', () => {
+        if (answers[n].length < 12) return;
+        showStep((n + 1) as StepNum);
+      });
+    }
+  });
+
+  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
+
+  function setGenerateLabel() {
+    if (isAuthed === false) {
+      generateBtn.textContent = 'Gerar Dossiê (faz login) →';
+    } else {
+      generateBtn.textContent = 'Gerar Dossiê →';
+    }
+  }
+
+  generateBtn.addEventListener('click', () => {
+    if (Object.values(answers).some((v) => v.length < 12)) return;
+
+    if (isAuthed === false) {
+      try {
+        localStorage.setItem(
+          STATE_KEY,
+          JSON.stringify({ ...answers, ts: Date.now() })
+        );
+      } catch { /* ignore */ }
+      window.location.href = '/login?next=/provar/sprint';
+      return;
+    }
+
+    const prompt = buildPrompt(answers[1], answers[2], answers[3]);
+
+    try {
+      sessionStorage.setItem(
+        'alavanca:diag-prefill',
+        JSON.stringify({
+          text: prompt,
+          mode: MODE,
+          source: 'wizard-provar',
+          ts: Date.now(),
+        })
+      );
+    } catch { /* ignore */ }
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Encaminhando à Jô…';
+    window.location.href = '/jo';
+  });
+
+  function buildPrompt(entregas: string, audiencia: string, janela: string): string {
+    return [
+      '[ Contexto · Wizard Provar / Dossiê de Defesa Institucional ]',
+      '',
+      'Cenário pré-estruturado pelo gestor público nas três variáveis canônicas:',
+      '',
+      `Entregas existentes: ${entregas}`,
+      `Audiência alvo: ${audiencia}`,
+      `Janela política: ${janela}`,
+      '',
+      '[ Pedido ]',
+      'Componha: (a) Dossiê de Transição denso e técnico (mapa de entregas em três camadas — Lastro Normativo,',
+      'Operacional e de Outcome), (b) Pitch adaptável por audiência (variantes alta gestão, cidadão, sucessor),',
+      '(c) Dashboard de Impacto Acumulado com fontes e janelas declaradas.',
+      'Toda afirmação deve ser rastreável a peça nominada (portaria, TCT, relatório, indicador). Se faltar lastro,',
+      'omitir a afirmação — não enfeitar. Inclua caveat institucional.',
+      'Se o conjunto de entregas declarado for insuficiente para sustentar a defesa pretendida, alerte e indique',
+      'qual módulo (Avaliar, Construir ou Formalizar) precisa entregar antes.',
+    ].join('\n');
+  }
+
+  function restoreState(): boolean {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (!raw) return false;
+      localStorage.removeItem(STATE_KEY);
+
+      const saved = JSON.parse(raw) as Record<string, string | number>;
+      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
+      if (Date.now() - ts > 3_600_000) return false;
+
+      let restored = false;
+      stepNums.forEach((n) => {
+        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
+        if (val.length === 0) return;
+        answers[n] = val;
+        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (input) {
+          input.value = val;
+          input.dispatchEvent(new Event('input'));
+        }
+        if (counter) counter.textContent = String(val.length);
+        restored = true;
+      });
+      return restored;
+    } catch {
+      return false;
+    }
+  }
+
+  async function checkAuth() {
+    try {
+      const sb = getSupabaseBrowserClient();
+      const { data } = await sb.auth.getSession();
+      isAuthed = !!data?.session;
+    } catch {
+      isAuthed = false;
+    }
+    setGenerateLabel();
+  }
+
+  const restored = restoreState();
+  if (restored && Object.values(answers).every((v) => v.length >= 12)) {
+    showStep(3);
+  } else {
+    showStep(1);
+  }
+  setGenerateLabel();
+  checkAuth();
+</script>

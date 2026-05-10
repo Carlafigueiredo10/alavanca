@@ -6,6 +6,9 @@ export const prerender = false;
 const CATEGORIES = ['elogio', 'melhoria', 'erro', 'outro'] as const;
 type Category = (typeof CATEGORIES)[number];
 
+const KINDS = ['geral', 'bibliografia'] as const;
+type Kind = (typeof KINDS)[number];
+
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -34,6 +37,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const category: Category | null =
     CATEGORIES.includes(body?.category) ? (body.category as Category) : null;
+
+  const kind: Kind = KINDS.includes(body?.kind) ? (body.kind as Kind) : 'geral';
 
   const page = typeof body?.page === 'string' && body.page.length <= 200 ? body.page : null;
 
@@ -67,6 +72,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const { error } = await admin.from('suggestions').insert({
     content,
     category,
+    kind,
     page,
     author_name: authorName,
     author_email: authorEmail,

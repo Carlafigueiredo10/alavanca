@@ -1,0 +1,545 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Plano de Implementação · Construir · Alavanca"
+  description="Quatro respostas. A Jô devolve um Plano Técnico + Termo de Cooperação + Plano de Handoff e Descontinuidade (AGU)."
+>
+
+<!-- ============================================================
+     INTRO
+     ============================================================ -->
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Construir · Plano</div>
+    <h1 class="intro-headline animate-in delay-100">Da ideia ao protótipo — e do protótipo à operação.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Em quatro respostas — não em quatro reuniões com o CTI.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Solução · Stack · Restrição TI · Destinatário</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Lastros embarcados: <strong>Guia AGU de Sandbox Regulatório</strong>,<br />
+        <strong>Marco Legal CT&I</strong> (Encomenda Tecnológica · art. 27),<br />
+        <strong>CPSI</strong> (Lei 14.133/2021 · Lei 14.129/2021).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STEPPER
+     ============================================================ -->
+<section class="stepper-bar">
+  <div class="container">
+    <div class="stepper" id="stepper">
+      <div class="step is-active" data-step="1">
+        <span class="step-num">01</span>
+        <span class="step-label">Solução</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="2">
+        <span class="step-num">02</span>
+        <span class="step-label">Stack</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="3">
+        <span class="step-num">03</span>
+        <span class="step-label">Restrição TI</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="4">
+        <span class="step-num">04</span>
+        <span class="step-label">Destinatário</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WIZARD STEPS
+     ============================================================ -->
+<section class="wizard">
+  <div class="container">
+
+    <!-- ── 01 · SOLUÇÃO ── -->
+    <div class="wizard-step is-active" data-step="1">
+      <div class="step-header">
+        <div class="step-tag">01 · <span class="verb">Solução validada</span></div>
+        <h2 class="step-headline">Que protótipo está pronto pra operar?</h2>
+        <p class="step-hint">
+          Idealmente, output da Fase 3 do Estruturar — um protótipo já testado em
+          piloto controlado. Se a solução ainda não foi validada, a Jô vai pedir
+          pra você passar primeiro pelo Estruturar.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="1"
+        rows="4"
+        maxlength="600"
+        placeholder="Ex: chatbot para tirar dúvidas frequentes sobre benefício previdenciário, testado em piloto de 200 atendimentos com 78% de resolução em primeira interação."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="1">0</span> / 600</div>
+
+      <div class="step-actions">
+        <span class="step-back-placeholder"></span>
+        <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 02 · STACK ── -->
+    <div class="wizard-step" data-step="2">
+      <div class="step-header">
+        <div class="step-tag">02 · <span class="verb">Stack desejada</span></div>
+        <h2 class="step-headline">No-code, customizado ou plataforma do órgão?</h2>
+        <p class="step-hint">
+          O Estado prefere reuso a desenvolvimento próprio. Se há plataforma
+          existente (Gov.br, SEI, eSocial), a Jô vai apontar essa alternativa
+          antes de propor stack customizada.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="2"
+        rows="3"
+        maxlength="500"
+        placeholder="Ex: integração via API ao canal Gov.br já operante; módulo NLP customizado para a base de conhecimento previdenciária."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="2">0</span> / 500</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 03 · RESTRIÇÃO TI ── -->
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Restrição de TI</span></div>
+        <h2 class="step-headline">O que trava a operação hoje?</h2>
+        <p class="step-hint">
+          Fila do CTI, vedações regimentais, necessidade de sandbox regulatório,
+          análise LGPD pendente. Quanto mais explícito, melhor a Jô amarra a
+          cadeia Vale da Morte (Sandbox · CPSI · Encomenda Tec).
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="3"
+        rows="3"
+        maxlength="500"
+        placeholder="Ex: fila do CTI tem prazo de 9 meses para novos sistemas; LGPD exige análise de dados sensíveis."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="3">0</span> / 500</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 04 · DESTINATÁRIO ── -->
+    <div class="wizard-step" data-step="4">
+      <div class="step-header">
+        <div class="step-tag">04 · <span class="verb">Unidade executora</span></div>
+        <h2 class="step-headline">Quem assume a operação depois?</h2>
+        <p class="step-hint">
+          Sem destinatário declarado, a Jô recusa redigir — o lab não pode virar
+          suporte de TI permanente. Identifique a área de negócio, autarquia ou
+          parceiro convenente que receberá o handoff.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="4"
+        rows="3"
+        maxlength="500"
+        placeholder="Ex: Coordenação-Geral de Atendimento ao Cidadão (CGAC) do INSS, com previsão de Termo de Cooperação Técnica."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="4">0</span> / 500</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Plano →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     RODAPÉ TÉCNICO
+     ============================================================ -->
+<section class="footnote">
+  <div class="container">
+    <div class="footnote-grid">
+      <div>
+        <div class="footnote-label">↳ Saída</div>
+        <p>Plano de Implementação Técnica + Termo de Cooperação Técnica enxuto + <strong>Plano de Handoff e Descontinuidade</strong> (Transição para Regulação Plena · Descontinuidade Planejada · Guia AGU). Fundamentação tripartite + caveat de revisão jurídica e técnica.</p>
+      </div>
+      <div>
+        <div class="footnote-label">↳ Princípio</div>
+        <p>O lab entrega e atravessa. Sem destinatário declarado, a Jô não redige. Sem Plano de Handoff, a peça não fecha — a porta de saída é pré-condição, não detalhe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 760px; }
+  .intro { padding-top: 80px; padding-bottom: 60px; }
+  .intro-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 26px;
+    max-width: 640px;
+  }
+  .intro-subhead { margin-bottom: 18px; }
+  .intro-kicker { margin-bottom: 56px; }
+  .intro-meta {
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .intro-meta-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+    line-height: 1.7;
+  }
+  .intro-meta-text strong {
+    font-weight: 500;
+    color: var(--fg-86);
+  }
+  .stepper-bar {
+    padding: 16px 0 32px;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+    background: rgba(0, 0, 0, 0.18);
+  }
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 8px 0;
+    flex-wrap: wrap;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.4;
+    transition: opacity 240ms ease, color 240ms ease;
+  }
+  .step.is-active, .step.is-done { opacity: 1; }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    transition: color 240ms ease;
+  }
+  .step.is-active .step-num { color: var(--amber); }
+  .step.is-done .step-num { color: var(--fg-86); }
+  .step-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    transition: color 240ms ease;
+  }
+  .step.is-active .step-label { color: var(--fg); }
+  .step-divider { width: 36px; height: 0.5px; background: var(--fg-22); }
+  @media (max-width: 540px) {
+    .stepper { gap: 8px; }
+    .step-divider { width: 14px; }
+    .step-label { font-size: 10px; letter-spacing: 0.1em; }
+  }
+  .wizard { padding: 56px 0 64px; min-height: 60vh; }
+  .wizard-step {
+    display: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .wizard-step.is-active { display: block; }
+  .wizard-step.is-active.is-visible { opacity: 1; transform: translateY(0); }
+  .step-header { margin-bottom: 26px; }
+  .step-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+  .step-tag .verb { color: var(--amber); }
+  .step-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 18px;
+    max-width: 640px;
+  }
+  .step-hint {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .step-hint em { font-family: var(--serif); font-style: italic; color: var(--fg); }
+  .step-input {
+    width: 100%;
+    background: rgba(245, 242, 235, 0.04);
+    border: 0.5px solid var(--fg-22);
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .step-input:focus {
+    outline: none;
+    border-color: var(--amber);
+    background: rgba(245, 242, 235, 0.06);
+  }
+  .step-input::placeholder { color: var(--fg-45); font-style: italic; }
+  .step-counter {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--fg-45);
+    text-align: right;
+  }
+  .step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .step-back-placeholder { display: inline-block; width: 1px; }
+  .footnote { padding: 56px 0 80px; border-top: 0.5px solid var(--fg-14); }
+  .footnote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footnote-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 12px;
+  }
+  .footnote p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+  @media (max-width: 640px) {
+    .footnote-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>
+
+<script>
+  // ============================================================
+  // WIZARD · 4 telas → consolidação → handoff pro modo Construir
+  // ============================================================
+  import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
+
+  type StepNum = 1 | 2 | 3 | 4;
+
+  const STATE_KEY = 'alavanca:wizard-state-construir';
+  const MODE = 'construir';
+
+  const stepNums: StepNum[] = [1, 2, 3, 4];
+  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '', 4: '' };
+  let current: StepNum = 1;
+  let isAuthed: boolean | null = null;
+
+  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
+  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
+
+  function showStep(n: StepNum) {
+    current = n;
+    steps.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      const isActive = num === n;
+      el.classList.toggle('is-active', isActive);
+      el.classList.remove('is-visible');
+      if (isActive) {
+        requestAnimationFrame(() => el.classList.add('is-visible'));
+        const input = el.querySelector<HTMLTextAreaElement>('.step-input');
+        setTimeout(() => input?.focus(), 80);
+      }
+    });
+    stepperItems.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      el.classList.toggle('is-active', num === n);
+      el.classList.toggle('is-done', num < n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  stepNums.forEach((n) => {
+    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const nextBtn =
+      document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
+      (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+
+    function refresh() {
+      const val = input.value.trim();
+      answers[n] = val;
+      counter.textContent = String(input.value.length);
+      if (nextBtn) nextBtn.disabled = val.length < 8;
+    }
+
+    input.addEventListener('input', refresh);
+
+    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
+    backBtn?.addEventListener('click', () => {
+      if (n > 1) showStep((n - 1) as StepNum);
+    });
+
+    if (n < 4) {
+      nextBtn?.addEventListener('click', () => {
+        if (answers[n].length < 8) return;
+        showStep((n + 1) as StepNum);
+      });
+    }
+  });
+
+  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
+
+  function setGenerateLabel() {
+    if (isAuthed === false) {
+      generateBtn.textContent = 'Gerar Plano (faz login) →';
+    } else {
+      generateBtn.textContent = 'Gerar Plano →';
+    }
+  }
+
+  generateBtn.addEventListener('click', () => {
+    if (Object.values(answers).some((v) => v.length < 8)) return;
+
+    if (isAuthed === false) {
+      try {
+        localStorage.setItem(
+          STATE_KEY,
+          JSON.stringify({ ...answers, ts: Date.now() })
+        );
+      } catch { /* ignore */ }
+      window.location.href = '/login?next=/construir/sprint';
+      return;
+    }
+
+    const prompt = buildPrompt(answers[1], answers[2], answers[3], answers[4]);
+
+    try {
+      sessionStorage.setItem(
+        'alavanca:diag-prefill',
+        JSON.stringify({
+          text: prompt,
+          mode: MODE,
+          source: 'wizard-construir',
+          ts: Date.now(),
+        })
+      );
+    } catch { /* ignore */ }
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Encaminhando à Jô…';
+    window.location.href = '/jo';
+  });
+
+  function buildPrompt(solucao: string, stack: string, restricao: string, destinatario: string): string {
+    return [
+      '[ Contexto · Wizard Construir / Plano de Implementação ]',
+      '',
+      'Cenário pré-estruturado pelo gestor público nas quatro variáveis canônicas:',
+      '',
+      `Solução validada: ${solucao}`,
+      `Stack desejada: ${stack}`,
+      `Restrição de TI: ${restricao}`,
+      `Unidade executora destinatária: ${destinatario}`,
+      '',
+      '[ Pedido ]',
+      'Redija um Plano de Implementação Técnica + minuta de Termo de Cooperação Técnica + Plano de Handoff',
+      'e Descontinuidade, posicionando o caso na cadeia Vale da Morte (Sandbox · CPSI · Encomenda Tec) e',
+      'aplicando o Guia Referencial de Sandbox Regulatório (AGU) onde for o instrumento aplicável.',
+      'Inclua Camada Normativa Tripartite e caveat institucional. Linguagem formal de administração pública.',
+      'Se a unidade executora não estiver claramente declarada, aponte e peça para o usuário definir antes de prosseguir.',
+    ].join('\n');
+  }
+
+  function restoreState(): boolean {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (!raw) return false;
+      localStorage.removeItem(STATE_KEY);
+
+      const saved = JSON.parse(raw) as Record<string, string | number>;
+      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
+      if (Date.now() - ts > 3_600_000) return false;
+
+      let restored = false;
+      stepNums.forEach((n) => {
+        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
+        if (val.length === 0) return;
+        answers[n] = val;
+        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (input) {
+          input.value = val;
+          input.dispatchEvent(new Event('input'));
+        }
+        if (counter) counter.textContent = String(val.length);
+        restored = true;
+      });
+      return restored;
+    } catch {
+      return false;
+    }
+  }
+
+  async function checkAuth() {
+    try {
+      const sb = getSupabaseBrowserClient();
+      const { data } = await sb.auth.getSession();
+      isAuthed = !!data?.session;
+    } catch {
+      isAuthed = false;
+    }
+    setGenerateLabel();
+  }
+
+  const restored = restoreState();
+  if (restored && Object.values(answers).every((v) => v.length >= 8)) {
+    showStep(4);
+  } else {
+    showStep(1);
+  }
+  setGenerateLabel();
+  checkAuth();
+</script>

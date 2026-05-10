@@ -1,0 +1,857 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface Obra {
+  titulo: string;
+  autores?: string;
+  publicacao?: string;
+  foco: string;
+  repositorio?: boolean;
+}
+
+interface Grupo {
+  n: string;
+  label: string;
+  titulo: string;
+  sub: string;
+  obras: Obra[];
+}
+
+const grupos: Grupo[] = [
+  {
+    n: 'I',
+    label: 'O Sistema',
+    titulo: 'Aceleração, Governança e Estruturação',
+    sub: 'Do voluntarismo heroico à criação de capacidades permanentes de Estado.',
+    obras: [
+      {
+        titulo: 'Aceleração de Laboratórios de Inovação no Setor Público: Teoria, prática e casos (Vol. 1)',
+        autores: 'Antonio Isidro e Tatiana Queiroz-Isidro (Orgs.)',
+        publicacao: 'Editora CRV / Programa I.LAB (UnB), 2025',
+        foco: 'Consolidação do Modelo Multidimensional de Capacidades de Inovação Pública e a passagem de labs para a "segunda geração".',
+      },
+      {
+        titulo: 'Laboratórios de Inovação Pública: Como e por que criá-los',
+        autores: 'Elisabete Ferrarezi e Guilherme Almeida de Almeida',
+        publicacao: 'GNova Lab / Enap, 2023',
+        foco: 'A "bíblia" da estruturação de labs, detalhando a configuração de equipes, recursos e graus de institucionalidade.',
+      },
+      {
+        titulo: 'Laboratórios de Inovação no Setor Público: Mapeamento e diagnóstico de experiências nacionais',
+        autores: 'Hironobu Sano',
+        publicacao: 'Cadernos Enap, 2020',
+        foco: 'O grande diagnóstico nacional das dores reais dos laboratórios, suas métricas e o risco de exaustão das equipes.',
+      },
+      {
+        titulo: 'Ciclos de Vida de Laboratórios de Inovação Pública',
+        autores: 'Caio Werneck, Elisabete Ferrarezi, Isabella Brandalise, Lucas Vaquero e Manuel Bonduki',
+        publicacao: 'GNova Lab / (011).lab, 2020',
+        foco: 'A jornada de maturidade (nascimento, crescimento e legado) e os dilemas existenciais dos labs.',
+        repositorio: true,
+      },
+    ],
+  },
+  {
+    n: 'II',
+    label: 'O Lastro',
+    titulo: 'Segurança Jurídica e Contratação',
+    sub: 'Os marcos legais que tiram a inovação do papel e a colocam no Diário Oficial com proteção aos gestores.',
+    obras: [
+      {
+        titulo: 'Guia Referencial de Sandbox Regulatório',
+        autores: 'Advocacia-Geral da União (AGU)',
+        foco: 'Manual oficial de como estruturar ambientes experimentais, suspender normas temporariamente de forma legal e prever planos de descontinuidade.',
+      },
+      {
+        titulo: 'Marco Legal das Startups e do Empreendedorismo Inovador',
+        autores: 'Lei Complementar nº 182/2021',
+        foco: 'Base para a criação do Contrato Público de Solução Inovadora (CPSI) e testagem de tecnologias.',
+      },
+      {
+        titulo: 'Marco Legal de Ciência, Tecnologia e Inovação (CT&I)',
+        autores: 'Lei nº 10.973/2004 e Lei nº 13.243/2016',
+        foco: 'Fundamentação para a Encomenda Tecnológica (ETEC) e estruturação de Instituições Científicas, Tecnológicas e de Inovação (ICTs).',
+      },
+      {
+        titulo: 'Projeto MINDS: Modelo de Inovação em Desenho de Serviços Públicos',
+        autores: 'Enap e OCDE',
+        publicacao: '2024',
+        foco: 'Paradigma de redesenho de serviços centrado nas necessidades e na experiência direta do cidadão.',
+      },
+    ],
+  },
+  {
+    n: 'III',
+    label: 'A Prática',
+    titulo: 'Métodos e Execução',
+    sub: 'Guias metodológicos que alimentam a IA para o desenho de sprints, imersões e simplificações.',
+    obras: [
+      {
+        titulo: 'Guia de Facilitadores — Design Thinking e Design Sprint no Setor Público',
+        autores: 'InovaGov / Setec / Enap / TCU',
+        publicacao: '2018',
+        foco: 'Roteiro prático para desenhar e executar Sprints de 5 dias e dinâmicas de ideação para problemas complexos de governo.',
+      },
+      {
+        titulo: 'Ciências Comportamentais e Políticas Públicas: O uso do SIMPLES MENTE em projetos de inovação',
+        autores: 'Antonio Claret Campos Filho, João Sigora e Manuel Bonduki',
+        publicacao: 'GNova / Enap, 2020',
+        foco: 'Aplicação de Nudges e arquitetura de escolhas para simplificar a vida do cidadão e reduzir fricções burocráticas.',
+        repositorio: true,
+      },
+      {
+        titulo: 'Experimentação e Novas Possibilidades em Governo: Aprendizados de um Laboratório de Inovação',
+        autores: 'Elisabete Ferrarezi, Joselene Lemos e Isabella Brandalise',
+        publicacao: 'GNova / Enap, 2018',
+        foco: 'Teoria da Mudança aplicada a projetos, ensinando como estruturar pilotos e medir resultados de experimentos.',
+        repositorio: true,
+      },
+      {
+        titulo: 'Mapa de Abordagens GNova Lab',
+        publicacao: 'GNova Lab / Enap, 2022',
+        foco: 'Mapeamento tático de atividades de experimentação (design etnográfico, imersão ágil e design sistêmico).',
+        repositorio: true,
+      },
+    ],
+  },
+  {
+    n: 'IV',
+    label: 'O Impacto',
+    titulo: 'Avaliação e Prova de Valor',
+    sub: 'Aferição de impacto e defesa do laboratório perante a alta gestão.',
+    obras: [
+      {
+        titulo: 'Como podemos aprimorar a avaliação em um laboratório de inovação: um estudo de caso do LA-BORA! gov',
+        autores: 'Mariana Yuka Akamine',
+        publicacao: 'Dissertação de Mestrado / Enap, 2022',
+        foco: 'Sistematização de dados, monitoramento de desempenho e estratégias para aprimorar a compreensão do impacto da inovação na fase adulta do laboratório.',
+      },
+      {
+        titulo: 'Percepção da experiência dos usuários nos serviços de um laboratório de inovação em governo: insights e oportunidades de ação',
+        autores: 'Luana Silveira de Faria',
+        publicacao: 'Monografia de Especialização / Enap, 2021',
+        foco: 'Como sair do achismo e criar métricas de avaliação centradas na experiência de quem utiliza os serviços do lab.',
+        repositorio: true,
+      },
+    ],
+  },
+];
+
+const navLinks = [
+  { id: '02', label: 'Aplicação',   href: '/#aplicacao'   },
+  { id: '03', label: 'Fundamentos', href: '/#fundamentos' },
+  { id: '04', label: 'Sistema',     href: '/#sistema'     },
+  { id: '05', label: 'IA',          href: '/#ia'          },
+  { id: '06', label: 'Contribuir',  href: '/#contribuir'  },
+];
+const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
+---
+<Base
+  title="Base institucional · Alavanca"
+  description="Bibliografia da Alavanca: literatura acadêmica, guias da Enap e marcos legais da AGU que sustentam o motor da plataforma."
+  navLinks={navLinks}
+  navCta={navCta}
+  bodyClass="film-grain"
+>
+  <section class="bib-hero">
+    <div class="shell">
+      <header class="section-head">
+        <div class="section-head-meta">
+          <span class="section-head-id">/03</span>
+          <span class="section-head-line"></span>
+          <span class="section-head-tag">III · Fundamentos · Bibliografia</span>
+        </div>
+        <h1 class="section-head-title">
+          Ideia não vira entrega <span class="signal-text">sem estrutura</span>.
+        </h1>
+      </header>
+
+      <div class="bib-lede">
+        <p class="bib-lede-italic">
+          A Alavanca transforma estrutura em método.
+        </p>
+        <p class="bib-lede-body">
+          A arquitetura, os assistentes e os roteiros de decisão da plataforma <strong>não utilizam modelos genéricos de mercado</strong>. Todo o motor de inteligência artificial é estritamente fundamentado na literatura acadêmica, nos guias operacionais da <strong>Escola Nacional de Administração Pública (Enap)</strong> e nos marcos legais da <strong>Advocacia-Geral da União (AGU)</strong>.
+        </p>
+        <p class="bib-lede-body">
+          Abaixo, a biblioteca essencial que embasa a ferramenta — organizada por área de impacto no laboratório.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {grupos.map((g, gi) => (
+    <section class="bib-grupo">
+      <div class="shell">
+        <header class="grupo-head">
+          <div class="grupo-meta">
+            <span class="grupo-num">{g.n}</span>
+            <span class="grupo-line"></span>
+            <span class="grupo-label">{g.label}</span>
+          </div>
+          <h2 class="grupo-titulo">{g.titulo}</h2>
+          <p class="grupo-sub">{g.sub}</p>
+        </header>
+
+        <ol class="obras">
+          {g.obras.map((o, oi) => (
+            <li class="obra">
+              <div class="obra-num">/{String(gi + 1).padStart(2, '0')}·{String(oi + 1).padStart(2, '0')}</div>
+              <div class="obra-body">
+                <h3 class="obra-titulo">{o.titulo}</h3>
+                <div class="obra-meta">
+                  {o.autores && <span class="obra-autor">{o.autores}</span>}
+                  {o.autores && o.publicacao && <span class="obra-sep" aria-hidden="true">·</span>}
+                  {o.publicacao && <span class="obra-pub">{o.publicacao}</span>}
+                </div>
+                <p class="obra-foco">{o.foco}</p>
+                {o.repositorio && (
+                  <span class="obra-link">↗ Repositório Enap</span>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  ))}
+
+  <section class="bib-call">
+    <div class="shell">
+      <div class="call-grid">
+        <div class="call-text">
+          <div class="call-meta">
+            <span class="call-meta-mark">↳</span>
+            <span>Construção coletiva</span>
+          </div>
+          <h2 class="call-title">
+            Faltou alguma <span class="signal-text">obra importante</span>?
+          </h2>
+          <p class="call-lede">
+            Esta biblioteca cresce com a comunidade. Se você conhece uma referência que
+            sustenta a prática de laboratórios públicos e não está aqui, mande pra gente —
+            leio uma a uma.
+          </p>
+          <p class="call-meta-foot">
+            <span class="call-meta-mark">·</span>
+            E-mail só se quiser resposta · honeypot anti-bot · só eu vejo
+          </p>
+        </div>
+
+        <form id="bib-form" class="call-form surface" novalidate>
+          <span class="bracket bracket-tl"></span>
+          <span class="bracket bracket-tr"></span>
+          <span class="bracket bracket-bl"></span>
+          <span class="bracket bracket-br"></span>
+
+          <div class="hp" aria-hidden="true">
+            <label>Website (não preencher)
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="bib-titulo" class="field-label">
+              Título da obra <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="bib-titulo"
+              name="titulo"
+              maxlength="300"
+              required
+              placeholder="ex: Public Sector Innovation Capacity"
+            />
+          </div>
+
+          <div class="field">
+            <label for="bib-autores" class="field-label">
+              Autor(es) <span class="field-optional">opcional</span>
+            </label>
+            <input
+              type="text"
+              id="bib-autores"
+              name="autores"
+              maxlength="300"
+              placeholder="ex: OECD / OPSI"
+            />
+          </div>
+
+          <div class="field">
+            <label for="bib-referencia" class="field-label">
+              Link ou referência <span class="field-optional">opcional</span>
+            </label>
+            <input
+              type="text"
+              id="bib-referencia"
+              name="referencia"
+              maxlength="500"
+              placeholder="URL, DOI ou editora/ano"
+            />
+          </div>
+
+          <div class="field">
+            <label for="bib-motivo" class="field-label">
+              Por que essa obra importa <span class="required" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="bib-motivo"
+              name="motivo"
+              rows="4"
+              maxlength="2000"
+              required
+              placeholder="O que ela traz para a prática de laboratórios públicos?"
+            ></textarea>
+          </div>
+
+          <div class="field">
+            <label for="bib-email" class="field-label">
+              Seu e-mail <span class="field-optional">opcional</span>
+            </label>
+            <input
+              type="email"
+              id="bib-email"
+              name="authorEmail"
+              maxlength="200"
+              autocomplete="email"
+              placeholder="para receber resposta"
+            />
+          </div>
+
+          <div class="form-feedback" id="bib-feedback" role="status" aria-live="polite"></div>
+
+          <div class="form-actions">
+            <button type="submit" class="cta cta-primary cta-large" id="bib-submit">
+              Enviar sugestão →
+            </button>
+          </div>
+        </form>
+
+        <div class="call-thanks" id="bib-thanks" hidden>
+          <div class="call-meta">
+            <span class="call-meta-mark">↳</span>
+            <span>Recebida</span>
+          </div>
+          <h2 class="thanks-headline">Obrigada.</h2>
+          <p class="thanks-body">
+            Sua sugestão foi registrada. Se a obra entrar na biblioteca, te aviso —
+            caso tenha deixado e-mail.
+          </p>
+          <button type="button" class="cta cta-secondary cta-large" id="bib-another">
+            Sugerir outra obra
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bib-foot">
+    <div class="shell">
+      <hr class="divider" />
+      <div class="bib-foot-row">
+        <span class="bib-foot-label">Base institucional · Alavanca</span>
+        <a href="/#fundamentos" class="bib-foot-back">↩ voltar para Fundamentos</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('bib-form') as HTMLFormElement;
+    const thanks = document.getElementById('bib-thanks') as HTMLElement;
+    const submitBtn = document.getElementById('bib-submit') as HTMLButtonElement;
+    const feedback = document.getElementById('bib-feedback') as HTMLElement;
+    const tituloEl = document.getElementById('bib-titulo') as HTMLInputElement;
+    const motivoEl = document.getElementById('bib-motivo') as HTMLTextAreaElement;
+    const anotherBtn = document.getElementById('bib-another') as HTMLButtonElement;
+
+    function setError(msg: string) {
+      feedback.textContent = msg;
+      feedback.style.color = '#e07a5f';
+    }
+    function clearError() {
+      feedback.textContent = '';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const data = new FormData(form);
+      const titulo = String(data.get('titulo') ?? '').trim();
+      const autores = String(data.get('autores') ?? '').trim();
+      const referencia = String(data.get('referencia') ?? '').trim();
+      const motivo = String(data.get('motivo') ?? '').trim();
+      const authorEmail = String(data.get('authorEmail') ?? '').trim() || null;
+      const website = String(data.get('website') ?? '');
+
+      if (titulo.length < 2) {
+        setError('Coloca o título da obra.');
+        tituloEl.focus();
+        return;
+      }
+      if (motivo.length < 4) {
+        setError('Escreve um pouquinho mais sobre por que essa obra importa.');
+        motivoEl.focus();
+        return;
+      }
+
+      const content =
+        `Obra: ${titulo}\n` +
+        (autores ? `Autor(es): ${autores}\n` : '') +
+        (referencia ? `Referência: ${referencia}\n` : '') +
+        `\nPor quê:\n${motivo}`;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+
+      try {
+        const res = await fetch('/api/sugestoes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content,
+            kind: 'bibliografia',
+            category: 'melhoria',
+            page: '/bibliografia',
+            authorEmail,
+            website,
+          }),
+        });
+
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          setError(j?.error ?? 'Algo deu errado. Tenta de novo?');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar sugestão →';
+          return;
+        }
+
+        form.hidden = true;
+        thanks.hidden = false;
+        thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch {
+        setError('Sem rede. Verifica a conexão e tenta de novo.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar sugestão →';
+      }
+    });
+
+    anotherBtn.addEventListener('click', () => {
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar sugestão →';
+      clearError();
+      thanks.hidden = true;
+      form.hidden = false;
+      tituloEl.focus();
+    });
+  </script>
+</Base>
+
+<style>
+  /* ---------- HERO ---------- */
+  .bib-hero {
+    padding: 160px 0 96px;
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 24px;
+  }
+  .section-head-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .section-head-id { color: var(--signal); }
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .section-head-title {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  @media (min-width: 880px) {
+    .section-head-meta  { grid-column: span 3; }
+    .section-head-title { grid-column: span 9; }
+  }
+
+  .bib-lede {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+  .bib-lede-italic {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    line-height: 1.25;
+    color: var(--signal);
+  }
+  .bib-lede-body {
+    grid-column: span 12;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg-78);
+    max-width: 64ch;
+  }
+  .bib-lede-body strong {
+    color: var(--bone);
+    font-weight: 500;
+  }
+  @media (min-width: 880px) {
+    .bib-lede-italic { grid-column: 4 / span 8; }
+    .bib-lede-body   { grid-column: 4 / span 7; }
+  }
+
+  /* ---------- GRUPO ---------- */
+  .bib-grupo {
+    padding: 96px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .grupo-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  .grupo-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .grupo-num { color: var(--signal); font-weight: 500; }
+  .grupo-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .grupo-titulo {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3.4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  .grupo-sub {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.4;
+    color: var(--fg-78);
+    max-width: 70ch;
+  }
+  @media (min-width: 880px) {
+    .grupo-meta    { grid-column: span 3; }
+    .grupo-titulo  { grid-column: span 9; }
+    .grupo-sub     { grid-column: 4 / span 9; }
+  }
+
+  /* ---------- LISTA DE OBRAS ---------- */
+  .obras {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .obra {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    padding: 32px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .obra:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .obra-num {
+    grid-column: span 12;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+  }
+  .obra-body {
+    grid-column: span 12;
+    min-width: 0;
+  }
+  @media (min-width: 880px) {
+    .obra-num  { grid-column: span 3; padding-top: 6px; }
+    .obra-body { grid-column: span 9; }
+  }
+
+  .obra-titulo {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  .obra-meta {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--fg-65);
+  }
+  .obra-sep { color: var(--fg-30); }
+  .obra-foco {
+    margin-top: 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-78);
+    max-width: 70ch;
+  }
+  .obra-link {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+  }
+
+  /* ---------- CHAMAMENTO + FORM ---------- */
+  .bib-call {
+    padding: 96px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .call-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 880px) {
+    .call-grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 64px;
+    }
+  }
+
+  .call-text { display: flex; flex-direction: column; gap: 20px; }
+  .call-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .call-meta-mark { color: var(--signal); }
+  .call-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3.4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  .call-lede {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg-78);
+    max-width: 48ch;
+  }
+  .call-meta-foot {
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--fg-45);
+  }
+
+  /* form */
+  .call-form {
+    position: relative;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  @media (max-width: 720px) { .call-form { padding: 28px; } }
+
+  .field { display: flex; flex-direction: column; gap: 10px; }
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-86);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .required { color: var(--signal); }
+  .field-optional {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--fg-45);
+    text-transform: lowercase;
+  }
+
+  .call-form input[type="text"],
+  .call-form input[type="email"],
+  .call-form textarea {
+    width: 100%;
+    background: oklch(0.94 0.008 90 / 0.03);
+    border: 0.5px solid var(--fg-22);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    line-height: 1.5;
+    transition: border-color 200ms ease, background 200ms ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .call-form textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  .call-form input::placeholder, .call-form textarea::placeholder {
+    color: var(--fg-45);
+  }
+  .call-form input:hover, .call-form textarea:hover {
+    border-color: var(--fg-50);
+  }
+  .call-form input:focus, .call-form textarea:focus {
+    outline: none;
+    border-color: var(--signal);
+    background: oklch(0.94 0.008 90 / 0.05);
+  }
+  .call-form input:focus-visible, .call-form textarea:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-feedback {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: #e07a5f;
+    min-height: 0;
+    transition: min-height 200ms ease;
+  }
+  .form-feedback:not(:empty) { min-height: 20px; }
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  #bib-submit[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+  }
+
+  .call-thanks {
+    grid-column: 1 / -1;
+    padding: 40px;
+    border: 1px solid var(--hairline);
+    background: oklch(0.18 0.012 95 / 0.4);
+  }
+  .thanks-headline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.04;
+    letter-spacing: -0.026em;
+    color: var(--signal);
+    margin: 12px 0 16px;
+  }
+  .thanks-body {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--fg-86);
+    margin-bottom: 24px;
+    max-width: 540px;
+  }
+
+  /* ---------- FOOT ---------- */
+  .bib-foot {
+    padding: 64px 0 120px;
+  }
+  .bib-foot-row {
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .bib-foot-label { color: var(--fg-50); }
+  .bib-foot-back  {
+    color: var(--signal);
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .bib-foot-back:hover {
+    opacity: 0.78;
+    transform: translateX(-2px);
+  }
+
+  @media (max-width: 720px) {
+    .bib-hero  { padding: 112px 0 64px; }
+    .bib-grupo { padding: 64px 0; }
+    .bib-call  { padding: 64px 0; }
+    .bib-foot  { padding: 48px 0 80px; }
+  }
+</style>

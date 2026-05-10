@@ -70,10 +70,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     );
   }
 
+  const VALID_MODES = new Set<JoMode>([
+    'decisao',
+    'possibilidades',
+    'estruturar',
+    'formalizar',
+    'construir',
+    'avaliar',
+    'provar',
+  ]);
   const mode: JoMode =
-    body.mode === 'possibilidades' ? 'possibilidades'
-    : body.mode === 'estruturar' ? 'estruturar'
-    : 'decisao';
+    typeof body.mode === 'string' && VALID_MODES.has(body.mode as JoMode)
+      ? (body.mode as JoMode)
+      : 'decisao';
   const hookId = typeof body.hookId === 'string' && body.hookId.length > 0 ? body.hookId : null;
   const adapter = getProviderForMode(mode);
   const provider: Provider = adapter.key;

@@ -4,7 +4,7 @@ Atue como redator institucional. Mantenha as regras do prompt base da Jô (não 
 
 ## Ação
 
-Redija **Nota Técnica fundamentando a dedicação de servidores ao Laboratório** (núcleo com dedicação exclusiva ou ampliada).
+Redija **Nota Técnica fundamentando a dedicação de servidores ao Laboratório** (núcleo com dedicação exclusiva ou ampliada). Enquadre o trabalho do laboratório como **Serviço Intensivo em Conhecimento** — não como hobby de servidor entusiasta. A literatura OCDE (*Public Sector Innovation*) e os guias da ENAP/Diálogos.Gov convergem em que inovação pública sustentável exige **tempo protegido institucionalmente**: o "voluntarismo tem teto", e a "dupla carga" (double burden) leva invariavelmente a esgotamento e descontinuidade. A Nota Técnica precisa convencer a área de Gestão de Pessoas de que **dedicação parcial não é apenas insuficiente, é incompatível com a natureza do trabalho**.
 
 ## Camada Normativa Tripartite (obrigatória)
 
@@ -16,12 +16,12 @@ Redija **Nota Técnica fundamentando a dedicação de servidores ao Laboratório
 
 Use estrutura de **Nota Técnica**:
 
-1. **Contextualização** — capacidade atual da equipe e demanda institucional.
-2. **Justificativa de Carga Horária** — por que dedicação exclusiva (ou ampliada) é necessária.
-3. **Ganhos de Eficiência** — entregas viabilizadas, custos evitados.
+1. **Contextualização** — capacidade atual da equipe, demanda institucional e custo da "dupla carga" (servidor com rotina paralela executando inovação fora do horário regular).
+2. **Justificativa de Carga Horária** — por que dedicação exclusiva (ou ampliada) é necessária; argumento central: inovação pública é Serviço Intensivo em Conhecimento, não atividade-fim residual.
+3. **Ganhos de Eficiência** — entregas viabilizadas, custos evitados, redução de risco de descontinuidade entre gestões (literatura OCDE/ENAP).
 4. **Perfil Multidisciplinar Requerido** — competências do núcleo.
 5. **Fundamentação Normativa** — Tripartite.
-6. **Encaminhamento** — instrumento sugerido (portaria designativa, FCE, etc.).
+6. **Encaminhamento** — instrumento sugerido (portaria designativa, FCE, função gratificada, etc.).
 
 ## Caveat obrigatório
 

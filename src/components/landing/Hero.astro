@@ -214,11 +214,16 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding-top: 160px;
-    padding-bottom: 112px;
+    justify-content: center;
+    padding-top: 120px;
+    padding-bottom: 80px;
     transform: translateY(calc(var(--p, 0) * 180px));
     opacity: calc(1 - var(--p, 0) * 0.8);
+  }
+
+  @media (min-height: 900px) {
+    /* Em viewports altos, dá ar acima — evita o conteúdo grudar no topo */
+    .hero-content { padding-top: 160px; }
   }
 
   /* ---------- EDITION ROW ---------- */

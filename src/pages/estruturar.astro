@@ -1,7 +1,25 @@
 ---
-import Stub from '../components/Stub.astro';
+import VerbLanding from '../components/VerbLanding.astro';
 ---
-<Stub
-  title="Estruturar."
-  subtitle="Do mapeamento ao plano de fases — em horas, não em meses."
+<VerbLanding
+  verb="Estruturar"
+  id="01"
+  headline="Do mapeamento ao plano de fases — em horas, não em meses."
+  body="IA mapeia capacidades, identifica gargalos e propõe fases. Você descreve Problema · Hipótese · Experimento; a Jô devolve um Blueprint de Sprint SEI-Ready, ancorado no Projeto MINDS e na tríade do InovaGov."
+  pull="O método permanece — o tempo encolhe."
+  ctaHref="/estruturar/sprint"
+  ctaLabel="Iniciar Blueprint →"
+  doesList={[
+    'Recebe Problema · Hipótese · Experimento e devolve Blueprint de Sprint estruturado em 3 fases (Entender · Explorar · Entregar).',
+    'Aplica Paradigma MINDS (foco no cidadão real) e ciências comportamentais (SIMPLES MENTE) onde couber.',
+    'Inclui Camada Normativa Tripartite e caveat obrigatório de validação jurídica.',
+    'Aponta viés de confirmação se a hipótese for "solução já comprada" disfarçada de experimento.',
+  ]}
+  doesNotList={[
+    'Não redige portaria, edital, regimento ou minuta jurídica.',
+    'Não propõe indicador de outcome ou dashboard.',
+    'Não monta narrativa institucional ou pitch.',
+    'Não desenha plano técnico de implementação operacional.',
+  ]}
+  meta="Projeto MINDS (GNova/OCDE) · InovaGov/ENAP · SIMPLES MENTE (ciências comportamentais)"
 />

@@ -24,6 +24,10 @@ Use estrutura de **Minuta** (com Nota Técnica de fundamentação anexa):
 6. **Fundamentação Normativa** — Tripartite.
 7. **Encaminhamento** — proposta de portaria autorizativa.
 
+## Cadeia Vale da Morte (cross-ref)
+
+Sandbox é **uma das três peças** da cadeia AGU para tirar a solução do "Vale da Morte" (protótipo → operação): **Sandbox Regulatório · CPSI · Encomenda Tecnológica**. Quando redigir esta minuta, mencione explicitamente onde o caso entra na cadeia e o que vem depois — sandbox sozinho não é estratégia de saída. O modo **Construir** da Alavanca redige o pacote completo (Plano de Implementação + TCT + Plano de Handoff e Descontinuidade) quando a unidade executora destinatária estiver declarada.
+
 ## Caveat obrigatório
 
 Encerre o documento com a ressalva:

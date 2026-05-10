@@ -29,8 +29,8 @@ const { conversationId, variant = 'page' } = Astro.props;
   </div>
 
   <div class="jo-chat__mode-banner" data-role="mode-banner" hidden>
-    <span class="jo-chat__mode-chip">Modo Estruturar</span>
-    <span class="jo-chat__mode-text">próximo envio gera Blueprint de Sprint (MINDS · GNova).</span>
+    <span class="jo-chat__mode-chip" data-role="mode-chip">Modo Estruturar</span>
+    <span class="jo-chat__mode-text" data-role="mode-text">próximo envio gera Blueprint de Sprint (MINDS · GNova).</span>
   </div>
 
   <form class="jo-chat__form" data-role="form">
@@ -402,7 +402,42 @@ const { conversationId, variant = 'page' } = Astro.props;
 
 <script>
   type Role = 'user' | 'assistant';
-  type Mode = 'decisao' | 'possibilidades' | 'estruturar';
+  type Mode =
+    | 'decisao'
+    | 'possibilidades'
+    | 'estruturar'
+    | 'formalizar'
+    | 'construir'
+    | 'avaliar'
+    | 'provar';
+
+  const VALID_MODES = new Set<Mode>([
+    'decisao',
+    'possibilidades',
+    'estruturar',
+    'formalizar',
+    'construir',
+    'avaliar',
+    'provar',
+  ]);
+
+  // Modos com conhecimento curado: o toggle "ampliar com refs" não se aplica
+  // (o provider está fixado e o system prompt já carrega o lastro).
+  const CURATED_MODES = new Set<Mode>([
+    'estruturar',
+    'formalizar',
+    'construir',
+    'avaliar',
+    'provar',
+  ]);
+
+  const MODE_BANNERS: Partial<Record<Mode, { chip: string; text: string }>> = {
+    estruturar: { chip: 'Modo Estruturar', text: 'próximo envio gera Blueprint de Sprint (MINDS · GNova).' },
+    formalizar: { chip: 'Modo Formalizar', text: 'próximo envio gera Minuta jurídica (Marco Legal CT&I · Lei 14.129/2021).' },
+    construir:  { chip: 'Modo Construir',  text: 'próximo envio gera Plano de Implementação + Handoff (AGU).' },
+    avaliar:    { chip: 'Modo Avaliar',    text: 'próximo envio gera Teoria de Mudança + Indicadores SMART.' },
+    provar:     { chip: 'Modo Provar',     text: 'próximo envio gera Dossiê + Pitch adaptável.' },
+  };
   interface ServerMessage {
     id?: string;
     role: Role;
@@ -536,6 +571,8 @@ const { conversationId, variant = 'page' } = Astro.props;
     const lgpdEl = root.querySelector<HTMLDivElement>('[data-role="lgpd"]')!;
     const lgpdCloseEl = root.querySelector<HTMLButtonElement>('[data-role="lgpd-close"]')!;
     const modeBannerEl = root.querySelector<HTMLDivElement>('[data-role="mode-banner"]')!;
+    const modeChipEl = root.querySelector<HTMLSpanElement>('[data-role="mode-chip"]')!;
+    const modeTextEl = root.querySelector<HTMLSpanElement>('[data-role="mode-text"]')!;
 
     let conversationId = root.dataset.conversationId || '';
     let sending = false;
@@ -545,11 +582,18 @@ const { conversationId, variant = 'page' } = Astro.props;
 
     function setNextModeOverride(mode: Mode | null) {
       nextModeOverride = mode;
-      const isEstruturar = mode === 'estruturar';
-      modeBannerEl.hidden = !isEstruturar;
-      // Esconde o toggle "ampliar com refs" quando estamos em modo Estruturar —
-      // o motor já está fixado, ampliar não se aplica.
-      toggleEl.style.display = isEstruturar ? 'none' : '';
+      const banner = mode ? MODE_BANNERS[mode] : null;
+      if (banner) {
+        modeChipEl.textContent = banner.chip;
+        modeTextEl.textContent = banner.text;
+        modeBannerEl.hidden = false;
+      } else {
+        modeBannerEl.hidden = true;
+      }
+      // Esconde o toggle "ampliar com refs" em qualquer modo curado
+      // (provider fixado, lastro no system prompt — ampliar não se aplica).
+      const isCurated = !!mode && CURATED_MODES.has(mode);
+      toggleEl.style.display = isCurated ? 'none' : '';
     }
 
     function setSending(v: boolean) {
@@ -832,8 +876,8 @@ const { conversationId, variant = 'page' } = Astro.props;
         if (data && typeof data.text === 'string' && data.text.length > 0) {
           inputEl.value = data.text;
           sessionStorage.removeItem('alavanca:diag-prefill');
-          if (data.mode === 'estruturar') {
-            setNextModeOverride('estruturar');
+          if (typeof data.mode === 'string' && VALID_MODES.has(data.mode as Mode)) {
+            setNextModeOverride(data.mode as Mode);
           }
           if (typeof data.hookId === 'string' && data.hookId.length > 0) {
             nextHookOverride = data.hookId;

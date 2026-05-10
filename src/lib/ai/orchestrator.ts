@@ -21,6 +21,16 @@ export interface ProviderAdapter {
   friendly: string;
 }
 
+// Modos com conhecimento curado no system prompt — Google Search só introduziria
+// ruído numa peça metodológica/normativa fechada.
+const CURATED_MODES = new Set<JoMode>([
+  'estruturar',
+  'formalizar',
+  'construir',
+  'avaliar',
+  'provar',
+]);
+
 export function getProviderForMode(mode: JoMode): ProviderAdapter {
   if (mode === 'possibilidades') {
     return {
@@ -30,9 +40,7 @@ export function getProviderForMode(mode: JoMode): ProviderAdapter {
       friendly: friendlyDeepSeekError,
     };
   }
-  if (mode === 'estruturar') {
-    // Modo Blueprint: conhecimento curado no system prompt, sem grounding.
-    // Google Search aqui só introduziria ruído num plano metodológico fechado.
+  if (CURATED_MODES.has(mode)) {
     return {
       key: 'gemini',
       stream: (h, u, s, p) => streamGemini(h, u, s, p, { enableGrounding: false }),

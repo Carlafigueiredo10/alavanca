@@ -22,6 +22,10 @@ Use estrutura de **Nota Técnica**:
 4. **Fundamentação Normativa** — Tripartite (Base Estruturante · Norma Operacional · Lacuna).
 5. **Encaminhamento** — proposta de abertura do procedimento de ETEC.
 
+## Cadeia Vale da Morte (cross-ref)
+
+Encomenda Tecnológica é **uma das três peças** da cadeia AGU para tirar a solução do "Vale da Morte" (protótipo → operação): **Sandbox Regulatório · CPSI · Encomenda Tecnológica**. ETEC se aplica quando o risco tecnológico é alto e não há solução comparável no mercado; CPSI quando há possibilidade de competição entre fornecedores inovadores; Sandbox quando é preciso testar antes de escalar. O modo **Construir** da Alavanca avalia a cadeia inteira e propõe o instrumento adequado, com Plano de Handoff e Descontinuidade explícitos.
+
 ## Caveat obrigatório
 
 Encerre o documento com a ressalva:

@@ -1,7 +1,25 @@
 ---
-import Stub from '../components/Stub.astro';
+import VerbLanding from '../components/VerbLanding.astro';
 ---
-<Stub
-  title="Construir."
-  subtitle="Da ideia ao protótipo — e do protótipo à operação."
+<VerbLanding
+  verb="Construir"
+  id="03"
+  headline="Da ideia ao protótipo — e do protótipo à operação."
+  body="Assistentes, dashboards e automações sem fila de TI. Você descreve Solução · Stack · Restrição TI · Destinatário; a Jô devolve Plano de Implementação + Termo de Cooperação Técnica + Plano de Handoff e Descontinuidade — fechando a porta de saída segundo o Guia AGU."
+  pull="O lab entrega e atravessa."
+  ctaHref="/construir/sprint"
+  ctaLabel="Iniciar Plano →"
+  doesList={[
+    'Posiciona o caso na cadeia Vale da Morte: Sandbox Regulatório · CPSI · Encomenda Tecnológica.',
+    'Redige Plano de Implementação Técnica + minuta de Termo de Cooperação Técnica para a unidade executora.',
+    'Inclui Plano de Descontinuidade Planejada (falha) e Transição para Regulação Plena (sucesso) — Guia AGU.',
+    'Recusa redigir se a unidade executora destinatária não estiver claramente declarada.',
+  ]}
+  doesNotList={[
+    'Não desenha blueprint metodológico ou plano de fases (isso é Estruturar).',
+    'Não redige minuta jurídica isolada (isso é Formalizar).',
+    'Não propõe indicador de outcome ou Teoria de Mudança.',
+    'Não monta narrativa de defesa institucional.',
+  ]}
+  meta="Guia Referencial de Sandbox Regulatório (AGU) · CPSI (Lei 14.133/2021) · Encomenda Tecnológica (art. 27 da Lei 10.973/2004)"
 />

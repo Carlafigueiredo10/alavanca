@@ -42,7 +42,7 @@ const year = new Date().getFullYear();
         <div class="lf-block">
           <p class="lf-block-label">Construção coletiva</p>
           <ul>
-            <li>Como o Alavanca pode melhorar?</li>
+            <li><a class="lf-block-link" href="/sugestoes?from=/">Como o Alavanca pode melhorar? →</a></li>
             <li>Plataforma aberta a contribuições.</li>
           </ul>
         </div>
@@ -192,6 +192,15 @@ const year = new Date().getFullYear();
     color: var(--fg-65);
     font-size: 14px;
     line-height: 1.6;
+  }
+
+  .lf-block-link {
+    color: var(--fg-65);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .lf-block-link:hover {
+    color: var(--signal);
   }
 
   /* ---------- META BAR ---------- */

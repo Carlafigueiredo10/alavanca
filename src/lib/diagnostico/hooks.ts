@@ -7,9 +7,11 @@
 // cruzada.
 // ============================================================
 
-export type Dim = 'vocacao' | 'gargalo' | 'governanca' | 'equipe' | 'abertura';
+export type Dim = 'vocacao' | 'gargalo' | 'governanca' | 'equipe' | 'abertura' | 'identidade';
 
-export type PieceType = 'nt' | 'minuta' | 'plano' | 'matriz' | 'protocolo' | 'blueprint';
+export type PieceType = 'nt' | 'minuta' | 'plano' | 'matriz' | 'protocolo' | 'blueprint' | 'catalogo' | 'memorando';
+
+export type Verb = 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'provar';
 
 export type Answers = Record<Dim, string | null>;
 
@@ -21,6 +23,7 @@ export interface Hook {
   pieceType: PieceType;
   label: string;           // exibido no card
   prefillRequest: string;  // colado na textbox da Jô
+  verb: Verb;              // verbo dono da peça (cf. §5 do plano-5-verbos.md)
 }
 
 export interface DedupedHook extends Hook {
@@ -35,6 +38,16 @@ export const PIECE_TYPE_LABEL: Record<PieceType, string> = {
   matriz: 'Matriz',
   protocolo: 'Protocolo',
   blueprint: 'Blueprint',
+  catalogo: 'Catálogo',
+  memorando: 'Memorando',
+};
+
+export const VERB_LABEL: Record<Verb, string> = {
+  estruturar: 'Estruturar',
+  formalizar: 'Formalizar',
+  construir: 'Construir',
+  avaliar: 'Avaliar',
+  provar: 'Provar',
 };
 
 // O detalhamento jurídico (Camada Tripartite, estrutura de Nota Técnica, caveat)
@@ -48,6 +61,7 @@ const HOOK_LIST: Hook[] = [
     response: 'desenvolvedor',
     pieceKey: 'piece:nt-encomenda-tecnologica',
     pieceType: 'nt',
+    verb: 'formalizar',
     label: 'Nota Técnica de fundamentação para Encomenda Tecnológica (Lei 10.973/2004, art. 27)',
     prefillRequest:
       'Redija uma Nota Técnica fundamentando a contratação por Encomenda Tecnológica (Lei 10.973/2004, art. 27) para acelerar entrega de soluções, reduzindo dependência de fila de TI ou contratação convencional.',
@@ -58,6 +72,7 @@ const HOOK_LIST: Hook[] = [
     response: 'facilitador',
     pieceKey: 'piece:edital-desafio-publico',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de Edital de Desafio Público / Hackathon (modelo GNova)',
     prefillRequest:
       'Redija uma minuta de Edital de Desafio Público nos moldes praticados pelo GNova/ENAP, contemplando objeto, requisitos de participação, etapas, critérios de seleção e premiação.',
@@ -68,6 +83,7 @@ const HOOK_LIST: Hook[] = [
     response: 'educador',
     pieceKey: 'piece:plano-letramento',
     pieceType: 'plano',
+    verb: 'estruturar',
     label: 'Plano de trilha de letramento em inovação para servidores',
     prefillRequest:
       'Elabore um Plano de trilha de letramento em inovação pública para servidores, com objetivos de aprendizagem, módulos, carga horária e indicadores de aprendizagem e de transferência para o trabalho.',
@@ -78,9 +94,10 @@ const HOOK_LIST: Hook[] = [
     response: 'arquiteto',
     pieceKey: 'piece:nt-air',
     pieceType: 'nt',
-    label: 'Nota Técnica de Avaliação de Impacto Regulatório (AIR)',
+    verb: 'avaliar',
+    label: 'Nota Técnica de Análise de Impacto Regulatório (AIR)',
     prefillRequest:
-      'Redija uma Nota Técnica de Avaliação de Impacto Regulatório (AIR) para a política em desenho, contemplando problema regulatório, alternativas, custos, benefícios e impactos diferenciais entre alternativas.',
+      'Redija uma Nota Técnica de Análise de Impacto Regulatório (AIR) para a política em desenho, contemplando problema regulatório, alternativas, custos, benefícios e impactos diferenciais entre alternativas.',
   },
 
   // ── 02 · GARGALO ───────────────────────────────────────────
@@ -90,6 +107,7 @@ const HOOK_LIST: Hook[] = [
     response: 'ideacao',
     pieceKey: 'piece:matriz-priorizacao',
     pieceType: 'matriz',
+    verb: 'estruturar',
     label: 'Matriz de priorização esforço × impacto público (canvas decisório)',
     prefillRequest:
       'Elabore uma Matriz de priorização do backlog do lab cruzando esforço estimado e impacto público esperado, com critérios objetivos, escala de pontuação e recomendação de quais ideias avançar para protótipo.',
@@ -100,6 +118,7 @@ const HOOK_LIST: Hook[] = [
     response: 'prototipo',
     pieceKey: 'piece:minuta-sandbox',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de Sandbox Regulatório setorial para o piloto',
     prefillRequest:
       'Redija uma minuta de instrumento de Sandbox Regulatório setorial para autorizar piloto controlado da solução, contemplando escopo, salvaguardas, prazo de experimentação, indicadores de avaliação e mecanismos de saída.',
@@ -110,6 +129,7 @@ const HOOK_LIST: Hook[] = [
     response: 'implementacao',
     pieceKey: 'piece:minuta-cooperacao-tecnica',
     pieceType: 'minuta',
+    verb: 'construir',
     label: 'Minuta de Termo de Cooperação Técnica com a unidade executora destinatária',
     prefillRequest:
       'Redija uma minuta de Termo de Cooperação Técnica para transferir o protótipo do lab à unidade executora destinatária, contemplando objeto, obrigações de cada parte, governança da operação e cronograma de transição.',
@@ -120,6 +140,7 @@ const HOOK_LIST: Hook[] = [
     response: 'escala',
     pieceKey: 'piece:plano-replicacao',
     pieceType: 'plano',
+    verb: 'construir',
     label: 'Plano de Replicação Institucional com indicadores de adoção',
     prefillRequest:
       'Elabore um Plano de Replicação Institucional para escalar a solução validada para outras unidades/órgãos, com critérios de adesão, ativos transferíveis (manuais, código, fluxos), suporte técnico e indicadores de adoção.',
@@ -132,6 +153,7 @@ const HOOK_LIST: Hook[] = [
     response: 'balcao',
     pieceKey: 'piece:minuta-portaria-criacao',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de portaria de criação formal do lab',
     prefillRequest:
       'Redija uma minuta de portaria de criação formal do laboratório de inovação, com competências, mandato, vinculação hierárquica e composição mínima da equipe.',
@@ -142,6 +164,7 @@ const HOOK_LIST: Hook[] = [
     response: 'programa',
     pieceKey: 'piece:plano-alinhamento-estrategico',
     pieceType: 'plano',
+    verb: 'provar',
     label: 'Plano de Alinhamento Estratégico com PPA / planejamento institucional',
     prefillRequest:
       'Elabore um Plano de Alinhamento Estratégico que conecte as entregas do lab às metas do PPA e ao planejamento institucional da casa, com mapa de contribuição, indicadores e ritos de prestação de contas à alta gestão.',
@@ -152,6 +175,7 @@ const HOOK_LIST: Hook[] = [
     response: 'estrategico',
     pieceKey: 'piece:matriz-kpis',
     pieceType: 'matriz',
+    verb: 'avaliar',
     label: 'Matriz de KPIs de inovação pública (formato painel de gestão)',
     prefillRequest:
       'Elabore uma Matriz de KPIs de inovação pública, combinando indicadores qualitativos e quantitativos (esforço, entrega, adoção, impacto, aprendizado), em formato de painel de gestão pronto para diretoria.',
@@ -162,6 +186,7 @@ const HOOK_LIST: Hook[] = [
     response: 'patrocinado',
     pieceKey: 'piece:plano-captacao',
     pieceType: 'plano',
+    verb: 'formalizar',
     label: 'Plano de Captação via FNDCT / Finep / emendas parlamentares',
     prefillRequest:
       'Elabore um Plano de Captação de recursos não-orçamentários para o lab, considerando FNDCT, Finep, emendas parlamentares e parcerias via Marco Legal de CT&I, com janelas de submissão, instrumentos cabíveis e requisitos institucionais.',
@@ -174,6 +199,7 @@ const HOOK_LIST: Hook[] = [
     response: 'conselheiro',
     pieceKey: 'piece:nt-dedicacao-exclusiva',
     pieceType: 'nt',
+    verb: 'formalizar',
     label: 'Nota Técnica fundamentando dedicação exclusiva da equipe',
     prefillRequest:
       'Redija uma Nota Técnica fundamentando a necessidade de dedicação exclusiva para o núcleo do lab, com base em normas de gestão de pessoas e demonstrando o custo de oportunidade da dedicação parcial atual.',
@@ -184,6 +210,7 @@ const HOOK_LIST: Hook[] = [
     response: 'facilitador-equipe',
     pieceKey: 'piece:protocolo-automacao-burocracia',
     pieceType: 'protocolo',
+    verb: 'construir',
     label: 'Protocolo de automação de tarefas burocráticas recorrentes',
     prefillRequest:
       'Elabore um Protocolo de automação das tarefas burocráticas recorrentes da equipe (despachos, memorandos, minutas-padrão, atas), identificando o que pode ser delegado a IA assistida ou no-code para liberar a equipe enxuta para o relacionamento e o desenho.',
@@ -194,6 +221,7 @@ const HOOK_LIST: Hook[] = [
     response: 'lab-autonomo',
     pieceKey: 'piece:minuta-regimento-dedicacao',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de alteração de regimento para dedicação plena',
     prefillRequest:
       'Redija uma minuta de alteração de regimento (ou portaria) para instituir a dedicação plena da equipe do lab, contemplando vinculação, perfil dos cargos, atribuições e mecanismos de blindagem da composição mínima.',
@@ -204,6 +232,7 @@ const HOOK_LIST: Hook[] = [
     response: 'lab-pleno',
     pieceKey: 'piece:plano-sucessao',
     pieceType: 'plano',
+    verb: 'provar',
     label: 'Plano de Sucessão e Continuidade Institucional (blindagem entre gestões)',
     prefillRequest:
       'Elabore um Plano de Sucessão e Continuidade Institucional para o lab, contemplando ritos de passagem entre gestões, gestão do conhecimento, mandato técnico estável e mecanismos de blindagem em transições políticas.',
@@ -216,6 +245,7 @@ const HOOK_LIST: Hook[] = [
     response: 'interna',
     pieceKey: 'piece:edital-desafio-publico',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de Edital de Desafio Público (modelo GNova)',
     prefillRequest:
       'Redija uma minuta de Edital de Desafio Público nos moldes praticados pelo GNova/ENAP, abrindo o desenho da solução à sociedade civil, academia e mercado, com objeto, etapas, critérios de seleção e premiação.',
@@ -226,6 +256,7 @@ const HOOK_LIST: Hook[] = [
     response: 'rede',
     pieceKey: 'piece:minuta-cooperacao-instituicoes',
     pieceType: 'minuta',
+    verb: 'formalizar',
     label: 'Minuta de Acordo de Cooperação Técnica com instituições parceiras',
     prefillRequest:
       'Redija uma minuta de Acordo de Cooperação Técnica entre o lab e instituições parceiras (outros labs públicos, academia, terceiro setor), contemplando objeto compartilhado, contribuições recíprocas, governança e propriedade intelectual de entregas conjuntas.',
@@ -236,6 +267,7 @@ const HOOK_LIST: Hook[] = [
     response: 'cocriacao',
     pieceKey: 'piece:protocolo-cocriacao',
     pieceType: 'protocolo',
+    verb: 'construir',
     label: 'Protocolo de Cocriação com stakeholders',
     prefillRequest:
       'Elabore um Protocolo de Cocriação com stakeholders (cidadãos, especialistas, setor privado), com etapas, papéis, regras de decisão, devolutivas e indicadores de qualidade do processo participativo.',
@@ -246,9 +278,56 @@ const HOOK_LIST: Hook[] = [
     response: 'misto',
     pieceKey: 'piece:matriz-criterios-abertura',
     pieceType: 'matriz',
+    verb: 'estruturar',
     label: 'Matriz de critérios para abrir vs. manter interno (decisão por projeto)',
     prefillRequest:
       'Elabore uma Matriz de critérios para decidir, projeto a projeto, quando abrir o desenho à cocriação externa e quando manter desenvolvimento interno, considerando complexidade, sensibilidade, prazo, capacidade da equipe e legitimidade.',
+  },
+
+  // ── 06 · IDENTIDADE ────────────────────────────────────────
+  {
+    hookId: 'identidade:invisivel',
+    dim: 'identidade',
+    response: 'invisivel',
+    pieceKey: 'piece:memorando-apresentacao',
+    pieceType: 'memorando',
+    verb: 'formalizar',
+    label: 'Memorando de Apresentação Institucional do Lab',
+    prefillRequest:
+      'Redija um Memorando de Apresentação Institucional do laboratório para circulação interna, deixando claro o que o lab faz, como acioná-lo e o que esperar (mapeamento Sano 2020 aponta "explicar o que é e como funciona" como dificuldade nº 1 dos labs brasileiros).',
+  },
+  {
+    hookId: 'identidade:vitrine',
+    dim: 'identidade',
+    response: 'vitrine',
+    pieceKey: 'piece:plano-catalogo-cases',
+    pieceType: 'plano',
+    verb: 'formalizar',
+    label: 'Plano de Consolidação do Catálogo de Serviços a partir de Cases existentes',
+    prefillRequest:
+      'Elabore um Plano de Consolidação do Catálogo de Serviços do laboratório a partir de cases já entregues, transformando vitrine pontual em catálogo estruturado de oferta institucional (virada de chave da RNP Labs no I.LAB).',
+  },
+  {
+    hookId: 'identidade:catalogo-informal',
+    dim: 'identidade',
+    response: 'catalogo-informal',
+    pieceKey: 'piece:catalogo-servicos',
+    pieceType: 'catalogo',
+    verb: 'formalizar',
+    label: 'Catálogo de Serviços do Laboratório de Inovação',
+    prefillRequest:
+      'Redija um Catálogo de Serviços do laboratório, peça-chave de identidade institucional. A literatura (Sano 2020, I.LAB, RNP Labs) é convergente: laboratórios que sobrevivem têm catálogo claro do que oferecem, para quem e como.',
+  },
+  {
+    hookId: 'identidade:catalogo-formal',
+    dim: 'identidade',
+    response: 'catalogo-formal',
+    pieceKey: 'piece:matriz-qualidade-catalogo',
+    pieceType: 'matriz',
+    verb: 'formalizar',
+    label: 'Matriz de Qualidade e Plano de Revisão Periódica do Catálogo',
+    prefillRequest:
+      'Elabore Matriz de Qualidade do Catálogo de Serviços e Plano de Revisão Periódica, garantindo que o catálogo permaneça vivo, fiel à oferta real e útil ao demandante (sem isso, catálogos formais envelhecem e perdem credibilidade).',
   },
 ];
 

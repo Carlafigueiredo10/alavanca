@@ -14,8 +14,8 @@ import Base from '../layouts/Base.astro';
   <div class="container">
     <div class="section-label animate-in">/ Diagnóstico</div>
     <h1 class="intro-headline animate-in delay-100">Onde seu lab está hoje?</h1>
-    <p class="subhead-italic intro-subhead animate-in delay-180">Cinco respostas. Próximo passo claro.</p>
-    <p class="kicker intro-kicker animate-in delay-260">↓ 5 perguntas · ~3 minutos</p>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Seis respostas. Próximo passo claro.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ 6 perguntas · ~4 minutos</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
         Ancorado na tipologia Nesta de labs<br />e no diagnóstico Sano (2020).<br />
@@ -186,6 +186,38 @@ import Base from '../layouts/Base.astro';
 </section>
 
 <!-- ============================================================
+     06 · IDENTIDADE
+     ============================================================ -->
+<section class="question" id="q6" data-question="identidade">
+  <div class="container">
+    <div class="question-label">06 · <span class="verb">Identidade</span></div>
+    <h2 class="question-headline">Como o lab se apresenta à casa?</h2>
+    <div class="options" role="radiogroup" aria-label="Identidade">
+      <button class="option" data-key="invisivel" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Invisível.</strong> A maioria dos servidores não sabe o que o lab faz nem como acioná-lo.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="vitrine" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Vitrine de cases.</strong> Mostramos resultados pontuais quando há reunião, mas não temos catálogo.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="catalogo-informal" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Catálogo informal.</strong> Sabemos verbalmente o que oferecemos; falta consolidar por escrito.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="catalogo-formal" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Catálogo formal.</strong> Temos catálogo de serviços publicado, com manutenção periódica.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      RESULTADO
      ============================================================ -->
 <section class="result" id="result" aria-live="polite" aria-hidden="true">
@@ -196,13 +228,14 @@ import Base from '../layouts/Base.astro';
     <p class="result-diag" id="result-diag"></p>
 
     <div class="profile-block">
-      <div class="profile-label">Perfil do lab · cinco dimensões</div>
+      <div class="profile-label">Perfil do lab · seis dimensões</div>
       <div class="profile-grid">
         <div class="profile-row"><div class="profile-key">Vocação</div><div class="profile-value" id="prof-vocacao">—</div></div>
         <div class="profile-row"><div class="profile-key">Gargalo</div><div class="profile-value" id="prof-gargalo">—</div></div>
         <div class="profile-row"><div class="profile-key">Governança</div><div class="profile-value" id="prof-governanca">—</div></div>
         <div class="profile-row"><div class="profile-key">Equipe</div><div class="profile-value" id="prof-equipe">—</div></div>
         <div class="profile-row"><div class="profile-key">Abertura</div><div class="profile-value" id="prof-abertura">—</div></div>
+        <div class="profile-row"><div class="profile-key">Identidade</div><div class="profile-value" id="prof-identidade">—</div></div>
       </div>
     </div>
 
@@ -873,6 +906,17 @@ import Base from '../layouts/Base.astro';
     font-weight: 500;
   }
 
+  .hook-card-verb {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 0.5px solid var(--fg-22);
+    background: transparent;
+    color: var(--fg-86);
+    letter-spacing: 0.14em;
+    font-size: 9.5px;
+    font-weight: 500;
+  }
+
   .hook-card-resp {
     font-family: var(--mono);
     font-size: 10.5px;
@@ -959,6 +1003,7 @@ import Base from '../layouts/Base.astro';
     dedupeHooks,
     buildPrefillText,
     PIECE_TYPE_LABEL,
+    VERB_LABEL,
     type Dim,
     type Answers,
   } from '../lib/diagnostico/hooks';
@@ -971,6 +1016,7 @@ import Base from '../layouts/Base.astro';
     governanca: null,
     equipe: null,
     abertura: null,
+    identidade: null,
   };
 
   // matriz de scoring — cada resposta atribui pontos a verbo(s)
@@ -1005,10 +1051,16 @@ import Base from '../layouts/Base.astro';
       cocriacao: {},
       misto:     { estruturar: 1 },
     },
+    identidade: {
+      invisivel:           { formalizar: 3 },
+      vitrine:             { formalizar: 2 },
+      'catalogo-informal': { formalizar: 1 },
+      'catalogo-formal':   {},
+    },
   };
 
   // máximos teóricos por verbo (worst case do usuário)
-  const MAX: Record<Verb, number> = { formalizar: 9, estruturar: 7, construir: 4 };
+  const MAX: Record<Verb, number> = { formalizar: 12, estruturar: 7, construir: 4 };
 
   const DIM_LABEL: Record<Dim, string> = {
     vocacao: 'Vocação',
@@ -1016,6 +1068,7 @@ import Base from '../layouts/Base.astro';
     governanca: 'Governança',
     equipe: 'Equipe',
     abertura: 'Abertura',
+    identidade: 'Identidade',
   };
 
   const LABELS: Record<Dim, Record<string, string>> = {
@@ -1048,6 +1101,12 @@ import Base from '../layouts/Base.astro';
       rede:      'Em rede',
       cocriacao: 'Cocriação aberta',
       misto:     'Varia por projeto',
+    },
+    identidade: {
+      invisivel:           'Invisível na casa',
+      vitrine:             'Vitrine de cases',
+      'catalogo-informal': 'Catálogo informal',
+      'catalogo-formal':   'Catálogo formal publicado',
     },
   };
 
@@ -1170,7 +1229,7 @@ import Base from '../layouts/Base.astro';
     (document.getElementById('derivation-total-max') as HTMLElement).textContent = String(MAX[primary]);
   }
 
-  const DIM_ORDER: Dim[] = ['vocacao', 'gargalo', 'governanca', 'equipe', 'abertura'];
+  const DIM_ORDER: Dim[] = ['vocacao', 'gargalo', 'governanca', 'equipe', 'abertura', 'identidade'];
 
   function renderHooks(answers: Answers) {
     const listEl = document.getElementById('hooks-list') as HTMLElement;
@@ -1201,8 +1260,13 @@ import Base from '../layouts/Base.astro';
       chip.className = 'hook-card-chip';
       chip.textContent = PIECE_TYPE_LABEL[hook.pieceType];
 
+      const verbChip = document.createElement('span');
+      verbChip.className = 'hook-card-verb';
+      verbChip.textContent = VERB_LABEL[hook.verb];
+
       header.appendChild(num);
       header.appendChild(chip);
+      header.appendChild(verbChip);
       main.appendChild(header);
 
       const resp = document.createElement('div');
@@ -1301,6 +1365,7 @@ import Base from '../layouts/Base.astro';
     (document.getElementById('prof-governanca') as HTMLElement).textContent = LABELS.governanca[answers.governanca!];
     (document.getElementById('prof-equipe') as HTMLElement).textContent     = LABELS.equipe[answers.equipe!];
     (document.getElementById('prof-abertura') as HTMLElement).textContent   = LABELS.abertura[answers.abertura!];
+    (document.getElementById('prof-identidade') as HTMLElement).textContent = LABELS.identidade[answers.identidade!];
 
     document.querySelectorAll<HTMLElement>('.bar-row').forEach((row) => {
       const v = row.getAttribute('data-verb') as Verb;

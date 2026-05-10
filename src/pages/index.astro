@@ -5,15 +5,16 @@ import HudFrame      from '../components/landing/HudFrame.astro';
 import Hero          from '../components/landing/Hero.astro';
 import Capabilities  from '../components/landing/Capabilities.astro';
 import Labs          from '../components/landing/Labs.astro';
-import Projects      from '../components/landing/Projects.astro';
-import Partners      from '../components/landing/Partners.astro';
+import IaSection     from '../components/landing/IaSection.astro';
+import Contribute    from '../components/landing/Contribute.astro';
 import LandingFooter from '../components/landing/LandingFooter.astro';
 
 const navLinks = [
-  { id: '02', label: 'Aplicação',   href: '#aplicacao'  },
+  { id: '02', label: 'Aplicação',   href: '#aplicacao'   },
   { id: '03', label: 'Fundamentos', href: '#fundamentos' },
-  { id: '04', label: 'Sistema',     href: '#sistema'     },
-  { id: '05', label: 'Prova',       href: '#prova'       },
+  { id: '04', label: 'IA',          href: '#ia'          },
+  { id: '05', label: 'Contribuir',  href: '#contribuir'  },
+  { id: '06', label: 'Rede',        href: '/casos'       },
 ];
 
 const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
@@ -31,8 +32,8 @@ const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
   <Hero />
   <Capabilities />
   <Labs />
-  <Projects />
-  <Partners />
+  <IaSection />
+  <Contribute />
   <LandingFooter />
 </Base>
 

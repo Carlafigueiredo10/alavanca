@@ -1,0 +1,245 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  verb: string;          // ex: "Formalizar"
+  id: string;            // ex: "02" (slot na cadeia dos 5 verbos)
+  headline: string;      // frase forte (de Capabilities.astro)
+  body: string;          // 1-2 frases descritivas
+  pull: string;          // frase italic, princípio
+  ctaHref: string;       // ex: "/formalizar/sprint"
+  ctaLabel: string;      // ex: "Iniciar minuta →"
+  doesList: string[];    // o que o verbo faz (cf. §3 do plano-5-verbos.md)
+  doesNotList: string[]; // o que o verbo NÃO faz
+  meta: string;          // linha de lastros (ex: "Marco Legal CT&I · Lei 14.129/2021 · padrão SEI")
+}
+
+const {
+  verb,
+  id,
+  headline,
+  body,
+  pull,
+  ctaHref,
+  ctaLabel,
+  doesList,
+  doesNotList,
+  meta,
+} = Astro.props;
+---
+<Base title={`${verb} · Alavanca`} description={body}>
+  <section class="vl-hero">
+    <div class="container">
+      <div class="vl-meta animate-in">
+        <span class="vl-id">/{id}</span>
+        <span class="vl-line"></span>
+        <span class="vl-tag">II · Aplicação</span>
+      </div>
+      <h1 class="vl-verb animate-in delay-100">{verb}.</h1>
+      <p class="vl-headline animate-in delay-180">{headline}</p>
+      <p class="vl-body animate-in delay-260">{body}</p>
+      <p class="vl-pull animate-in delay-340">{pull}</p>
+
+      <div class="vl-cta-wrap animate-in delay-400">
+        <a href={ctaHref} class="vl-cta">{ctaLabel}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="vl-frontier">
+    <div class="container">
+      <div class="vl-frontier-grid">
+        <div class="vl-frontier-block">
+          <div class="vl-frontier-label">↳ O que este modo faz</div>
+          <ul class="vl-frontier-list">
+            {doesList.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div class="vl-frontier-block">
+          <div class="vl-frontier-label vl-frontier-label--neg">↳ O que este modo não faz</div>
+          <ul class="vl-frontier-list vl-frontier-list--neg">
+            {doesNotList.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="vl-meta-strip">
+        <span class="vl-meta-strip-label">Lastros embarcados:</span>
+        <span class="vl-meta-strip-text">{meta}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="vl-bottom">
+    <div class="container">
+      <a href="/" class="vl-back">↩ voltar ao índice</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .container { max-width: 880px; }
+
+  .vl-hero { padding: 96px 0 64px; }
+
+  .vl-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .vl-id { color: var(--amber); }
+  .vl-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+
+  .vl-verb {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .vl-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.24;
+    color: var(--fg-86);
+    max-width: 640px;
+    margin-bottom: 20px;
+    text-wrap: balance;
+  }
+
+  .vl-body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--fg-86);
+    max-width: 600px;
+    margin-bottom: 18px;
+  }
+
+  .vl-pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--amber);
+    max-width: 600px;
+    margin-bottom: 56px;
+  }
+
+  .vl-cta-wrap { margin-top: 16px; }
+
+  .vl-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--bg);
+    background: var(--amber);
+    border-radius: 999px;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: filter 180ms ease, transform 180ms ease;
+  }
+  .vl-cta:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  .vl-frontier {
+    padding: 56px 0;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+    background: rgba(0, 0, 0, 0.18);
+  }
+  .vl-frontier-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 720px) {
+    .vl-frontier-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  .vl-frontier-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .vl-frontier-label--neg { color: var(--fg-50); }
+
+  .vl-frontier-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .vl-frontier-list li {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    padding-left: 16px;
+    position: relative;
+  }
+  .vl-frontier-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--amber);
+  }
+  .vl-frontier-list--neg li {
+    color: var(--fg-50);
+  }
+  .vl-frontier-list--neg li::before {
+    color: var(--fg-22);
+  }
+
+  .vl-meta-strip {
+    padding-top: 20px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--fg-50);
+    line-height: 1.7;
+  }
+  .vl-meta-strip-label { color: var(--fg-86); margin-right: 8px; }
+
+  .vl-bottom { padding: 48px 0 80px; }
+  .vl-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .vl-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+</style>

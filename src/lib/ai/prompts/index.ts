@@ -19,13 +19,30 @@ function read(filename: string): string {
 export const JO_DECISAO_PROMPT = read('jo-decisao.md');
 export const JO_POSSIBILIDADES_PROMPT = read('jo-possibilidades.md');
 export const JO_ESTRUTURAR_PROMPT = read('jo-estruturar.md');
+export const JO_FORMALIZAR_PROMPT = read('jo-formalizar.md');
+export const JO_CONSTRUIR_PROMPT = read('jo-construir.md');
+export const JO_AVALIAR_PROMPT = read('jo-avaliar.md');
+export const JO_PROVAR_PROMPT = read('jo-provar.md');
 
-export type JoMode = 'decisao' | 'possibilidades' | 'estruturar';
+export type JoMode =
+  | 'decisao'
+  | 'possibilidades'
+  | 'estruturar'
+  | 'formalizar'
+  | 'construir'
+  | 'avaliar'
+  | 'provar';
 
 export function getPromptForMode(mode: JoMode): string {
-  if (mode === 'possibilidades') return JO_POSSIBILIDADES_PROMPT;
-  if (mode === 'estruturar') return JO_ESTRUTURAR_PROMPT;
-  return JO_DECISAO_PROMPT;
+  switch (mode) {
+    case 'possibilidades': return JO_POSSIBILIDADES_PROMPT;
+    case 'estruturar':    return JO_ESTRUTURAR_PROMPT;
+    case 'formalizar':    return JO_FORMALIZAR_PROMPT;
+    case 'construir':     return JO_CONSTRUIR_PROMPT;
+    case 'avaliar':       return JO_AVALIAR_PROMPT;
+    case 'provar':        return JO_PROVAR_PROMPT;
+    default:              return JO_DECISAO_PROMPT;
+  }
 }
 
 // ============================================================

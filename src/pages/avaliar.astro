@@ -1,7 +1,25 @@
 ---
-import Stub from '../components/Stub.astro';
+import VerbLanding from '../components/VerbLanding.astro';
 ---
-<Stub
-  title="Avaliar."
-  subtitle="Do achismo à prova de valor público."
+<VerbLanding
+  verb="Avaliar"
+  id="04"
+  headline="Do achismo à prova de valor público."
+  body="IA desenha teorias de mudança, sugere indicadores de outcome e organiza relatórios de impacto a partir do que o lab já gera. Você descreve Intervenção · Outcome · Dados; a Jô devolve Teoria de Mudança + Matriz SMART + Plano de Coleta com salvaguarda anti-viés."
+  pull="O que mostra valor sobrevive ao próximo corte."
+  ctaHref="/avaliar/sprint"
+  ctaLabel="Iniciar Teoria de Mudança →"
+  doesList={[
+    'Explicita a Teoria de Mudança em cadeia (insumos → atividades → outputs → outcomes → impacto).',
+    'Aplica Critérios DAC da OCDE pertinentes (Eficácia · Eficiência · Sustentabilidade · Impacto).',
+    'Propõe Matriz de Indicadores SMART com fontes e instrumentos de coleta nominados.',
+    'Aponta risco de viés se o avaliador for da mesma equipe que executou — recomenda controle externo.',
+  ]}
+  doesNotList={[
+    'Não propõe KPIs de gestão do laboratório (vaidade) sem indicador de outcome ao lado.',
+    'Não redige pitch para audiência política (isso é Provar).',
+    'Não monta dashboard de impacto histórico acumulado (isso é Provar).',
+    'Não desenha intervenção nova (isso é Estruturar / Construir).',
+  ]}
+  meta="Theory of Change (Kellogg/ActKnowledge) · Critérios DAC da OCDE · Indicadores SMART"
 />

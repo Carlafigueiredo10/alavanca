@@ -1,7 +1,25 @@
 ---
-import Stub from '../components/Stub.astro';
+import VerbLanding from '../components/VerbLanding.astro';
 ---
-<Stub
-  title="Formalizar."
-  subtitle="Do projeto interno à instituição reconhecida."
+<VerbLanding
+  verb="Formalizar"
+  id="02"
+  headline="Do projeto interno à instituição reconhecida."
+  body="IA lê portarias, compara arranjos e produz minutas. Você descreve Tipo · Vinculação · Mandato · Lastro; a Jô devolve uma Minuta SEI-Ready com fundamentação tripartite e caveat obrigatório de revisão jurídica."
+  pull="O técnico decide — o volume deixa de travar."
+  ctaHref="/formalizar/sprint"
+  ctaLabel="Iniciar Minuta →"
+  doesList={[
+    'Redige minuta jurídica (portaria, regimento, edital de desafio, termo de cooperação técnica, sandbox).',
+    'Cita Marco Legal CT&I (Lei 10.973/2004 c/ redação 13.243/2016) e Lei 14.129/2021 onde couber.',
+    'Estrutura "Da Fundamentação" em três níveis: Base Estruturante · Norma Operacional · Lacuna Reconhecida.',
+    'Aponta inconsistência se o mandato pretendido exceder a vinculação hierárquica declarada.',
+  ]}
+  doesNotList={[
+    'Não desenha blueprint metodológico ou plano de fases.',
+    'Não redige plano técnico de implementação operacional.',
+    'Não propõe indicador de impacto ou matriz de KPIs.',
+    'Não monta dossiê de defesa institucional ou pitch.',
+  ]}
+  meta="Marco Legal CT&I (Lei 10.973/2004 c/ redação 13.243/2016) · Lei do Governo Digital (Lei 14.129/2021) · padrão SEI/ABNT"
 />
