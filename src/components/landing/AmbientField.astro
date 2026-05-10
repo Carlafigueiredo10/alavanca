@@ -1,0 +1,199 @@
+---
+/**
+ * AmbientField — living, breathing background.
+ * Vector lattice + drifting nodes + mouse-reactive distortion.
+ * Atmospheric wash + grid bleed + scanline + edge vignette.
+ * Fixed inset-0, lowest z. Pointer-events: none throughout.
+ */
+---
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-atmosphere"></div>
+  <canvas class="ambient-canvas" id="ambient-canvas"></canvas>
+  <div class="ambient-grid"></div>
+  <div class="ambient-top-line"></div>
+  <div class="ambient-scanline"></div>
+  <div class="ambient-vignette"></div>
+</div>
+
+<script is:inline>
+  (() => {
+    const canvas = document.getElementById('ambient-canvas');
+    if (!canvas || !(canvas instanceof HTMLCanvasElement)) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return; // skip animation entirely; static atmosphere remains
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0, h = 0;
+    let nodes = [];
+    let raf = 0;
+    let t = 0;
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+
+    const resize = () => {
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const density = Math.min(110, Math.floor((w * h) / 22000));
+      nodes = Array.from({ length: density }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        r: 0.6 + Math.random() * 1.4,
+        seed: Math.random() * 1000,
+      }));
+    };
+
+    const onMove = (e) => {
+      mouse.tx = e.clientX;
+      mouse.ty = e.clientY;
+    };
+
+    const draw = () => {
+      t += 0.004;
+      mouse.x += (mouse.tx - mouse.x) * 0.04;
+      mouse.y += (mouse.ty - mouse.y) * 0.04;
+      const mx = mouse.x, my = mouse.y;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Soft sodium-amber wash near top
+      const g = ctx.createRadialGradient(w * 0.5, 0, 0, w * 0.5, 0, Math.max(w, h) * 0.9);
+      g.addColorStop(0,   'rgba(255, 190, 110, 0.06)');
+      g.addColorStop(0.4, 'rgba(120, 90, 60, 0.025)');
+      g.addColorStop(1,   'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+
+      // Update node motion
+      for (const n of nodes) {
+        const dx = n.x - mx;
+        const dy = n.y - my;
+        const d2 = dx * dx + dy * dy;
+        const inf = Math.min(1, 18000 / (d2 + 4000));
+        n.vx += (-dx / 80000) * inf;
+        n.vy += (-dy / 80000) * inf;
+        n.vx *= 0.985;
+        n.vy *= 0.985;
+        n.x += n.vx + Math.sin(t + n.seed) * 0.08;
+        n.y += n.vy + Math.cos(t * 0.8 + n.seed) * 0.08;
+        if (n.x < -10) n.x = w + 10; else if (n.x > w + 10) n.x = -10;
+        if (n.y < -10) n.y = h + 10; else if (n.y > h + 10) n.y = -10;
+      }
+
+      // Vector links
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 18000) {
+            const alpha = (1 - d2 / 18000) * 0.18;
+            ctx.strokeStyle = 'rgba(220, 215, 200, ' + alpha + ')';
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes (warm near cursor, bone elsewhere)
+      for (const n of nodes) {
+        const dx = n.x - mx, dy = n.y - my;
+        const close = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy) / 240);
+        const r = n.r + close * 1.6;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = close > 0.05
+          ? 'rgba(255, 196, 120, ' + (0.35 + close * 0.4) + ')'
+          : 'rgba(220, 215, 200, 0.45)';
+        ctx.fill();
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    const start = () => {
+      resize();
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', onMove);
+      mouse.tx = window.innerWidth / 2;
+      mouse.ty = window.innerHeight / 3;
+      raf = requestAnimationFrame(draw);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+</script>
+
+<style>
+  .ambient {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-atmosphere {
+    position: absolute;
+    inset: 0;
+    background: var(--grad-atmosphere), var(--background);
+  }
+
+  .ambient-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+
+  .ambient-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right,  var(--hairline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 80px 80px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black 30%, transparent 80%);
+    opacity: 0.35;
+  }
+
+  .ambient-top-line {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, oklch(0.82 0.155 78 / 0.4), transparent);
+  }
+
+  .ambient-scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, oklch(0.94 0.008 90 / 0.15), transparent);
+    animation: scan 14s linear infinite;
+  }
+
+  .ambient-vignette {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 240px 40px oklch(0 0 0 / 0.65);
+  }
+</style>

@@ -1,101 +1,234 @@
 ---
+interface NavLink {
+  id: string;
+  label: string;
+  href: string;
+  match?: string;
+}
+
 interface Props {
   current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos' | 'jo';
+  links?: NavLink[];
+  cta?: { label: string; href: string } | null;
 }
-const { current } = Astro.props;
+
+const defaultLinks: NavLink[] = [
+  { id: '01', label: 'Diagnóstico', href: '/diagnostico', match: 'diagnostico' },
+  { id: '02', label: 'Trilhas',     href: '/trilhas',     match: 'trilhas' },
+  { id: '03', label: 'Assistente',  href: '/assistente',  match: 'assistente' },
+  { id: '04', label: 'Casos',       href: '/casos',       match: 'casos' },
+];
+
+const {
+  current,
+  links = defaultLinks,
+  cta = { label: 'Iniciar diagnóstico', href: '/diagnostico' },
+} = Astro.props;
 ---
-<header class="nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="/">
+<header class="nav" id="alavanca-nav">
+  <div class="nav-inner shell">
+    <a class="nav-brand" href="/">
       <svg class="nav-lever" viewBox="0 0 56 24" aria-hidden="true">
-        <g class="nav-lever-rotor" id="navLever">
-          <line x1="2" y1="12" x2="54" y2="12" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
-          <line x1="22" y1="12" x2="28" y2="22" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
-          <line x1="34" y1="12" x2="28" y2="22" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
-          <circle cx="28" cy="12" r="1.6" fill="#D97706"/>
+        <g class="nav-lever-rotor">
+          <line x1="2" y1="12" x2="54" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="22" y1="12" x2="28" y2="22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="34" y1="12" x2="28" y2="22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="28" cy="12" r="1.6" fill="currentColor"/>
         </g>
       </svg>
-      <span class="nav-logo-text">Alavanca</span>
+      <div class="nav-brand-text">
+        <div class="nav-brand-title">Alavanca</div>
+        <div class="nav-brand-sub">CLIC · Inovação pública</div>
+      </div>
     </a>
-    <nav class="nav-links">
-      <a href="/diagnostico" class={current === 'diagnostico' ? 'current' : ''}>Diagnóstico</a>
-      <a href="/trilhas" class={current === 'trilhas' ? 'current' : ''}>Trilhas</a>
-      <a href="/assistente" class={current === 'assistente' ? 'current' : ''}>Assistente</a>
-      <a href="/casos" class={current === 'casos' ? 'current' : ''}>Casos</a>
+
+    <nav class="nav-links" aria-label="Seções">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          class:list={['nav-link', { current: current && l.match === current }]}
+        >
+          <span class="nav-link-id">/{l.id}</span>
+          <span class="nav-link-label">{l.label}</span>
+        </a>
+      ))}
     </nav>
+
+    {cta && (
+      <a class="nav-cta" href={cta.href}>
+        <span class="nav-cta-dot"></span>
+        <span class="nav-cta-label">{cta.label}</span>
+        <span class="nav-cta-arrow">→</span>
+      </a>
+    )}
   </div>
 </header>
 
+<script is:inline>
+  (() => {
+    const nav = document.getElementById('alavanca-nav');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
+
 <style>
   .nav {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    inset: 0 0 auto 0;
     z-index: 100;
-    background: rgba(10, 14, 26, 0.78);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-    border-bottom: 0.5px solid var(--fg-10);
-    transition: background 300ms ease, border-color 300ms ease;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color    500ms ease,
+      backdrop-filter     500ms ease,
+      border-bottom-color 500ms ease;
+  }
+
+  .nav.scrolled {
+    background: oklch(0.10 0.010 95 / 0.45);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+            backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--hairline);
   }
 
   .nav-inner {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 18px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
+    padding: 20px 40px;
   }
 
-  .nav-logo {
+  /* ---------- BRAND ---------- */
+  .nav-brand {
     display: flex;
     align-items: center;
     gap: 14px;
     text-decoration: none;
-    color: var(--fg);
+    color: var(--bone);
   }
 
   .nav-lever {
-    width: 32px;
-    height: 18px;
+    width: 36px;
+    height: 16px;
     display: block;
+    color: var(--signal);
   }
 
   .nav-lever-rotor {
     transform-origin: 28px 12px;
-    transition: transform 200ms ease-out;
+    transition: transform 220ms ease-out;
   }
 
-  .nav-logo-text {
-    font-family: var(--serif);
-    font-size: 17px;
+  .nav-brand:hover .nav-lever-rotor {
+    transform: rotate(-8deg);
+  }
+
+  .nav-brand-text {
+    line-height: 1.1;
+  }
+
+  .nav-brand-title {
+    font-family: var(--font-display);
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: -0.01em;
+    color: var(--bone);
   }
 
+  .nav-brand-sub {
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  /* ---------- LINKS ---------- */
   .nav-links {
-    display: flex;
-    gap: 28px;
-    font-family: var(--sans);
-    font-size: 13px;
-    color: var(--fg-50);
+    display: none;
+    gap: 32px;
   }
 
-  .nav-links a {
-    color: var(--fg-50);
+  @media (min-width: 880px) {
+    .nav-links { display: flex; }
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     text-decoration: none;
-    transition: color 200ms ease;
-    letter-spacing: 0.01em;
+    color: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    transition: color 220ms ease;
   }
 
-  .nav-links a:hover,
-  .nav-links a.current {
-    color: var(--fg);
+  .nav-link-id {
+    color: oklch(0.62 0.16 60 / 0.7);
+    transition: color 220ms ease;
   }
 
-  @media (max-width: 720px) {
-    .nav-links { display: none; }
+  .nav-link:hover,
+  .nav-link.current {
+    color: var(--signal);
+  }
+  .nav-link:hover .nav-link-id,
+  .nav-link.current .nav-link-id {
+    color: var(--signal);
+  }
+
+  /* ---------- CTA ---------- */
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--hairline);
+    padding: 10px 16px;
+    text-decoration: none;
+    color: var(--bone);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: border-color 250ms ease, color 250ms ease;
+  }
+
+  .nav-cta:hover {
+    border-color: oklch(0.82 0.155 78 / 0.6);
+  }
+
+  .nav-cta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: blink 3.4s steps(1) infinite;
+  }
+
+  .nav-cta-arrow {
+    color: var(--signal);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+
+  .nav-cta:hover .nav-cta-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 640px) {
     .nav-inner { padding: 16px 24px; }
+    .nav-brand-sub { display: none; }
+    .nav-cta-label { display: none; }
+    .nav-cta { padding: 10px 12px; }
   }
 </style>

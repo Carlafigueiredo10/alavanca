@@ -28,6 +28,11 @@ const { conversationId, variant = 'page' } = Astro.props;
     <button type="button" class="jo-chat__lgpd-close" data-role="lgpd-close" aria-label="Fechar">×</button>
   </div>
 
+  <div class="jo-chat__mode-banner" data-role="mode-banner" hidden>
+    <span class="jo-chat__mode-chip">Modo Estruturar</span>
+    <span class="jo-chat__mode-text">próximo envio gera Blueprint de Sprint (MINDS · GNova).</span>
+  </div>
+
   <form class="jo-chat__form" data-role="form">
     <textarea
       class="jo-chat__input"
@@ -241,6 +246,37 @@ const { conversationId, variant = 'page' } = Astro.props;
   }
   .jo-chat__lgpd-close:hover { color: var(--fg); }
 
+  /* Modo Estruturar — banner sticky pra um envio só */
+  .jo-chat__mode-banner {
+    margin: 0 24px 10px;
+    padding: 10px 14px;
+    border: 0.5px solid var(--amber);
+    border-radius: 8px;
+    background: rgba(217, 119, 6, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--fg-86);
+  }
+  .jo-chat__mode-chip {
+    flex: 0 0 auto;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--amber);
+    color: var(--bg);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    font-size: 9.5px;
+    text-transform: uppercase;
+  }
+  .jo-chat__mode-text {
+    color: var(--fg-86);
+    letter-spacing: 0.04em;
+  }
+
   /* Form */
   .jo-chat__form {
     flex: 0 0 auto;
@@ -366,7 +402,7 @@ const { conversationId, variant = 'page' } = Astro.props;
 
 <script>
   type Role = 'user' | 'assistant';
-  type Mode = 'decisao' | 'possibilidades';
+  type Mode = 'decisao' | 'possibilidades' | 'estruturar';
   interface ServerMessage {
     id?: string;
     role: Role;
@@ -492,15 +528,29 @@ const { conversationId, variant = 'page' } = Astro.props;
     const formEl = root.querySelector<HTMLFormElement>('[data-role="form"]')!;
     const inputEl = root.querySelector<HTMLTextAreaElement>('[data-role="input"]')!;
     const expandEl = root.querySelector<HTMLInputElement>('[data-role="expand"]')!;
+    const toggleEl = root.querySelector<HTMLLabelElement>('.jo-chat__toggle')!;
     const modelEl = root.querySelector<HTMLSpanElement>('[data-role="model"]')!;
     const submitEl = root.querySelector<HTMLButtonElement>('[data-role="submit"]')!;
     const submitLabelEl = root.querySelector<HTMLSpanElement>('[data-role="submit-label"]')!;
     const counterEl = root.querySelector<HTMLDivElement>('[data-role="counter"]')!;
     const lgpdEl = root.querySelector<HTMLDivElement>('[data-role="lgpd"]')!;
     const lgpdCloseEl = root.querySelector<HTMLButtonElement>('[data-role="lgpd-close"]')!;
+    const modeBannerEl = root.querySelector<HTMLDivElement>('[data-role="mode-banner"]')!;
 
     let conversationId = root.dataset.conversationId || '';
     let sending = false;
+    // Sticky overrides usados apenas no próximo envio (vêm do wizard / prefill).
+    let nextModeOverride: Mode | null = null;
+    let nextHookOverride: string | null = null;
+
+    function setNextModeOverride(mode: Mode | null) {
+      nextModeOverride = mode;
+      const isEstruturar = mode === 'estruturar';
+      modeBannerEl.hidden = !isEstruturar;
+      // Esconde o toggle "ampliar com refs" quando estamos em modo Estruturar —
+      // o motor já está fixado, ampliar não se aplica.
+      toggleEl.style.display = isEstruturar ? 'none' : '';
+    }
 
     function setSending(v: boolean) {
       sending = v;
@@ -619,11 +669,17 @@ const { conversationId, variant = 'page' } = Astro.props;
       }
     }
 
-    async function streamChat(message: string, mode: Mode, assistantBubble: HTMLDivElement, partialTagOnError: () => void) {
+    async function streamChat(
+      message: string,
+      mode: Mode,
+      hookId: string | null,
+      assistantBubble: HTMLDivElement,
+      partialTagOnError: () => void,
+    ) {
       const res = await fetch('/api/jo/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, message, mode }),
+        body: JSON.stringify({ conversationId, message, mode, hookId }),
       });
 
       if (res.status === 401) {
@@ -701,7 +757,12 @@ const { conversationId, variant = 'page' } = Astro.props;
       const message = inputEl.value.trim();
       if (!message || message.length > 4000) return;
 
-      const mode: Mode = expandEl.checked ? 'possibilidades' : 'decisao';
+      const mode: Mode = nextModeOverride
+        ? nextModeOverride
+        : expandEl.checked
+          ? 'possibilidades'
+          : 'decisao';
+      const hookForThisSend = nextHookOverride;
 
       setSending(true);
       showLgpdIfNeeded();
@@ -722,9 +783,12 @@ const { conversationId, variant = 'page' } = Astro.props;
       // Toggle reseta após o envio (vale só pra próxima)
       expandEl.checked = false;
       updateModelLabel();
+      // Overrides do wizard / gancho valem uma vez: limpa ao enviar.
+      if (nextModeOverride) setNextModeOverride(null);
+      if (nextHookOverride) nextHookOverride = null;
 
       try {
-        await streamChat(message, mode, assistantBubble, () => {
+        await streamChat(message, mode, hookForThisSend, assistantBubble, () => {
           const tag = document.createElement('div');
           tag.className = 'jo-chat__partial-tag';
           tag.textContent = 'resposta incompleta';
@@ -758,6 +822,33 @@ const { conversationId, variant = 'page' } = Astro.props;
 
     updateCounter();
     autoresize();
+
+    // Pré-fill vindo do diagnóstico/wizard (sessionStorage). O servidor revisa/edita
+    // antes de enviar — "Você decide. A Jô redige."
+    try {
+      const raw = sessionStorage.getItem('alavanca:diag-prefill');
+      if (raw) {
+        const data = JSON.parse(raw) as { text?: string; mode?: string; hookId?: string };
+        if (data && typeof data.text === 'string' && data.text.length > 0) {
+          inputEl.value = data.text;
+          sessionStorage.removeItem('alavanca:diag-prefill');
+          if (data.mode === 'estruturar') {
+            setNextModeOverride('estruturar');
+          }
+          if (typeof data.hookId === 'string' && data.hookId.length > 0) {
+            nextHookOverride = data.hookId;
+          }
+          updateCounter();
+          autoresize();
+          inputEl.focus();
+          const len = data.text.length;
+          inputEl.setSelectionRange(len, len);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+
     if (conversationId) {
       loadHistory();
     }

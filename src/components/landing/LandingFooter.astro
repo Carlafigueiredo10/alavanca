@@ -1,0 +1,232 @@
+---
+const year = new Date().getFullYear();
+---
+<footer id="acao" class="lf">
+  <div class="shell">
+    <div class="lf-grid">
+      <div class="lf-main">
+        <p class="lf-label">VI · Ação</p>
+        <h2 class="lf-title">
+          Pronto para <span class="lf-italic signal-text">operar</span>.
+        </h2>
+        <p class="lf-sub">Escolha por onde começar.</p>
+
+        <div class="lf-ctas">
+          <a class="lf-cta lf-cta-primary" href="/diagnostico">
+            <span class="lf-cta-label">Iniciar diagnóstico</span>
+            <span class="lf-cta-arrow">→</span>
+          </a>
+          <a class="lf-cta lf-cta-secondary" href="/jo">
+            <span class="lf-cta-label">Falar com o assistente</span>
+            <span class="lf-cta-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lf-blocks">
+        <div class="lf-block">
+          <p class="lf-block-label">Edição</p>
+          <ul>
+            <li>Edição I · MMXXVI</li>
+            <li>Encontro de Labs</li>
+            <li>Inovação pública</li>
+          </ul>
+        </div>
+        <div class="lf-block">
+          <p class="lf-block-label">Por</p>
+          <ul>
+            <li>CLIC</li>
+            <li>Centro de letramento digital</li>
+          </ul>
+        </div>
+        <div class="lf-block">
+          <p class="lf-block-label">Construção coletiva</p>
+          <ul>
+            <li>Como o Alavanca pode melhorar?</li>
+            <li>Plataforma aberta a contribuições.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="lf-meta">
+      <span>© CLIC · Alavanca · {year} · Inovação pública</span>
+      <span class="lf-meta-edition">
+        <span class="lf-meta-dot"></span> Edição I · MMXXVI
+      </span>
+      <span>BR · PT</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .lf {
+    position: relative;
+    padding: 128px 0 40px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .lf-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 40px;
+  }
+
+  .lf-main {
+    grid-column: span 12;
+  }
+  @media (min-width: 880px) {
+    .lf-main { grid-column: span 8; }
+  }
+
+  .lf-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 24px;
+  }
+
+  .lf-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5.4rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+
+  .lf-italic {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .lf-sub {
+    margin-top: 24px;
+    font-size: 16px;
+    font-style: italic;
+    max-width: 36ch;
+    color: var(--fg-65);
+  }
+
+  .lf-ctas {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  @media (min-width: 600px) {
+    .lf-ctas { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  .lf-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 24px;
+    min-width: 280px;
+    text-decoration: none;
+    color: var(--bone);
+    transition: background-color 250ms ease, border-color 250ms ease;
+  }
+
+  .lf-cta-primary {
+    border: 1px solid var(--signal);
+    background: oklch(0.82 0.155 78 / 0.10);
+  }
+  .lf-cta-primary:hover {
+    background: oklch(0.82 0.155 78 / 0.18);
+  }
+  .lf-cta-primary .lf-cta-arrow { color: var(--signal); }
+
+  .lf-cta-secondary {
+    border: 1px solid var(--fg-30);
+  }
+  .lf-cta-secondary:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .lf-cta-label {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .lf-cta-arrow {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    transition: transform 250ms ease;
+  }
+  .lf-cta:hover .lf-cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ---------- BLOCKS ---------- */
+  .lf-blocks {
+    grid-column: span 12;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-self: end;
+  }
+  @media (min-width: 880px) {
+    .lf-blocks { grid-column: span 4; }
+  }
+
+  .lf-block-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 12px;
+  }
+
+  .lf-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: var(--fg-65);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ---------- META BAR ---------- */
+  .lf-meta {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  @media (min-width: 720px) {
+    .lf-meta {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .lf-meta-edition {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lf-meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: blink 3.4s steps(1) infinite;
+  }
+</style>

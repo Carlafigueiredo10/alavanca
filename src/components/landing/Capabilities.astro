@@ -1,0 +1,292 @@
+---
+type Verb = {
+  id: string;
+  verb: string;
+  headline: string;
+  body: string;
+  pull: string;
+  span: number; // grid columns on >=md
+  href: string;
+};
+
+const items: Verb[] = [
+  {
+    id: '01',
+    verb: 'Estruturar',
+    headline: 'Do mapeamento ao plano de fases — em horas, não em meses.',
+    body: 'IA mapeia capacidades, identifica gargalos e propõe fases.',
+    pull: 'O método permanece — o tempo encolhe.',
+    span: 7,
+    href: '/estruturar',
+  },
+  {
+    id: '02',
+    verb: 'Formalizar',
+    headline: 'Do projeto interno à instituição reconhecida.',
+    body: 'IA lê portarias, compara arranjos e produz minutas.',
+    pull: 'O técnico decide — o volume deixa de travar.',
+    span: 5,
+    href: '/formalizar',
+  },
+  {
+    id: '03',
+    verb: 'Construir',
+    headline: 'Da ideia ao protótipo — e do protótipo à operação.',
+    body: 'Assistentes, dashboards e automações sem fila de TI. Handoff documentado sem o lab virar suporte permanente.',
+    pull: 'O lab entrega e atravessa.',
+    span: 5,
+    href: '/construir',
+  },
+  {
+    id: '04',
+    verb: 'Avaliar',
+    headline: 'Do achismo à prova de valor público.',
+    body: 'IA desenha teorias de mudança, sugere indicadores de outcome e organiza relatórios de impacto a partir do que o lab já gera.',
+    pull: 'O que mostra valor sobrevive ao próximo corte.',
+    span: 7,
+    href: '/avaliar',
+  },
+  {
+    id: '05',
+    verb: 'Provar',
+    headline: 'Da entrega silenciosa à defesa do lab na transição.',
+    body: 'Dossiês de transição, dashboards de impacto, pitches adaptáveis para cada audiência.',
+    pull: 'O lab passa a contar a própria história — com lastro.',
+    span: 12,
+    href: '/provar',
+  },
+];
+---
+<section id="aplicacao" class="cap">
+  <div class="shell">
+    <header class="section-head">
+      <div class="section-head-meta">
+        <span class="section-head-id">/02</span>
+        <span class="section-head-line"></span>
+        <span class="section-head-tag">II · Aplicação</span>
+      </div>
+      <h2 class="section-head-title reveal">
+        Estruturar. Formalizar. Construir. Avaliar. Provar.
+      </h2>
+    </header>
+
+    <p class="cap-sub reveal delay-1">
+      IA aplicada com método faz os cinco.
+    </p>
+
+    <div class="cap-grid">
+      {items.map((it, i) => (
+        <a
+          href={it.href}
+          class:list={['cap-block', 'surface', 'reveal', `delay-${(i % 5) + 1}`]}
+          data-span={it.span}
+        >
+          <div class="cap-spot" aria-hidden="true"></div>
+          <div class="cap-block-inner">
+            <div class="cap-block-top">
+              <span class="cap-block-id">/{it.id}</span>
+              <span class="cap-block-arrow">→</span>
+            </div>
+            <div class="cap-block-body">
+              <h3 class="cap-block-verb">{it.verb}</h3>
+              <p class="cap-block-headline">{it.headline}</p>
+              <p class="cap-block-text">{it.body}</p>
+              <p class="cap-block-pull signal-text">{it.pull}</p>
+            </div>
+          </div>
+          <span class="bracket bracket-tl"></span>
+          <span class="bracket bracket-tr"></span>
+          <span class="bracket bracket-bl"></span>
+          <span class="bracket bracket-br"></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    const blocks = document.querySelectorAll('.cap-block');
+    blocks.forEach((el) => {
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width  - 0.5) * 14;
+        const y = ((e.clientY - r.top)  / r.height - 0.5) * 14;
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top)  + 'px');
+        el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate3d(0,0,0)';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .cap {
+    padding: 160px 0;
+  }
+
+  .cap-sub {
+    margin-top: 32px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-65);
+  }
+
+  @media (min-width: 880px) {
+    .cap-sub { margin-left: 25%; }
+  }
+
+  /* ---------- SECTION HEAD (shared pattern) ---------- */
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 24px;
+  }
+
+  .section-head-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .section-head-id {
+    color: var(--signal);
+  }
+
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+
+  .section-head-title {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+
+  @media (min-width: 880px) {
+    .section-head-meta  { grid-column: span 3; }
+    .section-head-title { grid-column: span 9; }
+  }
+
+  /* ---------- GRID OF BLOCKS ---------- */
+  .cap-grid {
+    margin-top: 96px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+
+  .cap-block {
+    grid-column: span 12;
+    position: relative;
+    min-height: 380px;
+    overflow: hidden;
+    padding: 40px;
+    transition:
+      transform 500ms cubic-bezier(.2, .8, .2, 1),
+      border-color 400ms ease,
+      background 400ms ease;
+    will-change: transform;
+  }
+
+  @media (min-width: 880px) {
+    .cap-block[data-span='5']  { grid-column: span 5; }
+    .cap-block[data-span='7']  { grid-column: span 7; }
+    .cap-block[data-span='12'] { grid-column: span 12; }
+  }
+
+  .cap-spot {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), oklch(0.82 0.155 78 / 0.18), transparent 60%);
+  }
+
+  .cap-block:hover .cap-spot {
+    opacity: 1;
+  }
+
+  .cap-block-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 32px;
+  }
+
+  .cap-block-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .cap-block-id {
+    color: var(--signal);
+  }
+
+  .cap-block-arrow {
+    opacity: 0.6;
+  }
+
+  .cap-block-verb {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+
+  .cap-block-headline {
+    margin-top: 16px;
+    max-width: 36ch;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--fg-86);
+  }
+
+  .cap-block-text {
+    margin-top: 16px;
+    max-width: 40ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-60);
+    text-wrap: pretty;
+  }
+
+  .cap-block-pull {
+    margin-top: 20px;
+    max-width: 40ch;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+  }
+</style>

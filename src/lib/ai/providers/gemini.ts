@@ -24,16 +24,22 @@ function geminiHistory(messages: ChatMessage[]) {
 
 const GEMINI_TOOLS = [{ googleSearch: {} }] as any;
 
+export interface GeminiOptions {
+  enableGrounding?: boolean;
+}
+
 export async function streamGemini(
   history: ChatMessage[],
   userMessage: string,
   systemPrompt: string,
-  _parentSignal?: AbortSignal
+  _parentSignal?: AbortSignal,
+  options: GeminiOptions = {}
 ): Promise<ReadableStream<string>> {
+  const enableGrounding = options.enableGrounding ?? true;
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
-    tools: GEMINI_TOOLS,
+    ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
   let lastErr: unknown;
@@ -75,12 +81,14 @@ export async function completeGemini(
   history: ChatMessage[],
   userMessage: string,
   systemPrompt: string,
-  _parentSignal?: AbortSignal
+  _parentSignal?: AbortSignal,
+  options: GeminiOptions = {}
 ): Promise<string> {
+  const enableGrounding = options.enableGrounding ?? true;
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
-    tools: GEMINI_TOOLS,
+    ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
   let lastErr: unknown;

@@ -18,7 +18,7 @@ import Base from '../layouts/Base.astro';
     <p class="kicker intro-kicker animate-in delay-260">↓ 5 perguntas · ~3 minutos</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
-        Auto-avaliação baseada em literatura<br />de inovação pública (ENAP / OCDE).<br />
+        Ancorado na tipologia Nesta de labs<br />e no diagnóstico Sano (2020).<br />
         <strong>O resultado fica nessa página.</strong> Nada é gravado.
       </div>
     </div>
@@ -225,12 +225,48 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
 
+    <!-- DERIVAÇÃO DO SCORING -->
+    <div class="derivation">
+      <div class="derivation-label">↳ Por que <span class="verb" id="derivation-verb">—</span>? · peso de cada resposta</div>
+      <div class="derivation-table" id="derivation-table"></div>
+      <div class="derivation-total">
+        Total: <strong id="derivation-total-pts">—</strong> de <span id="derivation-total-max">—</span> pts possíveis
+      </div>
+    </div>
+
     <p class="result-action" id="result-action"></p>
     <p class="result-secondary" id="result-secondary"></p>
 
+    <!-- CTA BLUEPRINT — só aparece quando o verbo recomendado for Estruturar -->
+    <div class="blueprint-cta" id="blueprint-cta" hidden>
+      <div class="blueprint-cta-label">↳ Peça-síntese do <span class="verb">Estruturar</span></div>
+      <a href="/estruturar/sprint" class="blueprint-cta-card">
+        <div class="blueprint-cta-chip">Blueprint</div>
+        <div class="blueprint-cta-body">
+          <div class="blueprint-cta-title">Comece pelo Blueprint do Sprint →</div>
+          <p class="blueprint-cta-text">
+            Três respostas — Problema · Hipótese · Experimento — e a Jô devolve o cronograma
+            tático SEI-Ready com as três fases do InovaGov (Entender · Explorar · Entregar),
+            ancorado no MINDS. <em>O método permanece. O tempo encolhe.</em>
+          </p>
+        </div>
+        <div class="blueprint-cta-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- CINCO GANCHOS -->
+    <div class="hooks-section">
+      <div class="hooks-label">↳ Peças que sua equipe pode pedir agora</div>
+      <p class="hooks-intro">
+        Cada peça vem como rascunho SEI-Ready: estrutura de Nota Técnica, fundamentação
+        normativa explícita, caveat de revisão jurídica. <em>Você decide. A Jô redige.</em>
+      </p>
+      <div class="hooks-list" id="hooks-list"></div>
+    </div>
+
     <div class="result-ctas">
       <a href="/formalizar" class="cta cta-primary cta-large" id="result-cta-primary">Ver caminho →</a>
-      <a href="/assistente" class="cta cta-secondary cta-large">Plano completo no assistente</a>
+      <a href="/jo" class="cta cta-secondary cta-large">Conversa aberta com a Jô</a>
     </div>
 
     <div class="result-meta">
@@ -583,6 +619,308 @@ import Base from '../layouts/Base.astro';
     margin-bottom: 60px;
   }
 
+  /* derivação do scoring */
+  .derivation { margin-bottom: 56px; }
+
+  .derivation-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+
+  .derivation-label .verb {
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .derivation-table {
+    display: grid;
+    grid-template-columns: 130px 1fr 80px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+
+  .derivation-row {
+    display: contents;
+  }
+
+  .derivation-row > * {
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--fg-10);
+    align-self: center;
+  }
+
+  .derivation-dim {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .derivation-resp {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--fg-86);
+  }
+
+  .derivation-pts {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: right;
+    color: var(--fg-86);
+    letter-spacing: 0.04em;
+  }
+
+  .derivation-pts.is-zero { color: var(--fg-45); }
+  .derivation-pts.is-strong { color: var(--amber); }
+
+  .derivation-total {
+    padding-top: 14px;
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--fg-50);
+  }
+
+  .derivation-total strong {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  @media (max-width: 540px) {
+    .derivation-table { grid-template-columns: 90px 1fr 60px; }
+    .derivation-dim { font-size: 9.5px; letter-spacing: 0.1em; }
+    .derivation-resp { font-size: 12.5px; }
+  }
+
+  /* CTA do Blueprint — peça-síntese quando verbo = Estruturar */
+  .blueprint-cta { margin-bottom: 48px; }
+
+  .blueprint-cta-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .blueprint-cta-label .verb { color: var(--amber); }
+
+  .blueprint-cta-card {
+    display: grid;
+    grid-template-columns: auto 1fr 28px;
+    gap: 22px;
+    align-items: center;
+    padding: 24px 26px;
+    border: 0.5px solid var(--amber);
+    border-radius: 14px;
+    background: rgba(217, 119, 6, 0.08);
+    text-decoration: none;
+    color: var(--fg);
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .blueprint-cta-card:hover {
+    background: rgba(217, 119, 6, 0.14);
+    transform: translateY(-1px);
+  }
+  .blueprint-cta-card:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .blueprint-cta-chip {
+    align-self: flex-start;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--amber);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .blueprint-cta-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--fg);
+    margin-bottom: 8px;
+  }
+  .blueprint-cta-text {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+  .blueprint-cta-text em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg);
+  }
+
+  .blueprint-cta-arrow {
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--amber);
+    align-self: center;
+    transition: transform 200ms ease;
+  }
+  .blueprint-cta-card:hover .blueprint-cta-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 540px) {
+    .blueprint-cta-card {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 20px;
+    }
+    .blueprint-cta-arrow { display: none; }
+    .blueprint-cta-title { font-size: 19px; }
+  }
+
+  /* cards de ganchos */
+  .hooks-section { margin-bottom: 60px; }
+
+  .hooks-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+
+  .hooks-intro {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+    margin-bottom: 24px;
+    max-width: 580px;
+  }
+
+  .hooks-intro em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg);
+  }
+
+  .hooks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hook-card {
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    gap: 18px;
+    padding: 18px 22px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--sans);
+    color: var(--fg-86);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    width: 100%;
+  }
+
+  .hook-card:hover {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.06);
+    color: var(--fg);
+  }
+
+  .hook-card:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-color: var(--amber);
+  }
+
+  .hook-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    flex-wrap: wrap;
+  }
+
+  .hook-card-num {
+    color: var(--fg-86);
+    letter-spacing: 0.16em;
+  }
+
+  .hook-card-chip {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(217, 119, 6, 0.12);
+    color: var(--amber);
+    letter-spacing: 0.14em;
+    font-size: 9.5px;
+    font-weight: 500;
+  }
+
+  .hook-card-resp {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-45);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .hook-card-resp strong {
+    color: var(--fg-86);
+    font-weight: 500;
+  }
+
+  .hook-card-label {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--fg);
+    line-height: 1.45;
+  }
+
+  .hook-card-cross {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-50);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .hook-card-arrow {
+    align-self: center;
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--fg-45);
+    transition: color 200ms ease, transform 200ms ease;
+  }
+
+  .hook-card:hover .hook-card-arrow {
+    color: var(--amber);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 540px) {
+    .hook-card { padding: 16px 18px; }
+    .hook-card-label { font-size: 13.5px; }
+  }
+
   /* meta */
   .result-meta {
     padding-top: 28px;
@@ -614,12 +952,18 @@ import Base from '../layouts/Base.astro';
 
 <script>
   // ============================================================
-  // DIAGNÓSTICO · 5 dimensões → 1 verbo recomendado
+  // DIAGNÓSTICO · 5 dimensões → 1 verbo + 5 ganchos
   // ============================================================
+  import {
+    buildHooksFromAnswers,
+    dedupeHooks,
+    buildPrefillText,
+    PIECE_TYPE_LABEL,
+    type Dim,
+    type Answers,
+  } from '../lib/diagnostico/hooks';
 
-  type Dim = 'vocacao' | 'gargalo' | 'governanca' | 'equipe' | 'abertura';
   type Verb = 'formalizar' | 'estruturar' | 'construir';
-  type Answers = Record<Dim, string | null>;
 
   const answers: Answers = {
     vocacao: null,
@@ -665,6 +1009,14 @@ import Base from '../layouts/Base.astro';
 
   // máximos teóricos por verbo (worst case do usuário)
   const MAX: Record<Verb, number> = { formalizar: 9, estruturar: 7, construir: 4 };
+
+  const DIM_LABEL: Record<Dim, string> = {
+    vocacao: 'Vocação',
+    gargalo: 'Gargalo',
+    governanca: 'Governança',
+    equipe: 'Equipe',
+    abertura: 'Abertura',
+  };
 
   const LABELS: Record<Dim, Record<string, string>> = {
     vocacao: {
@@ -767,6 +1119,142 @@ import Base from '../layouts/Base.astro';
     });
   });
 
+  function buildProfileLine(answers: Answers): string {
+    const parts: string[] = [];
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const r = answers[dim];
+      if (!r) return;
+      parts.push(`${DIM_LABEL[dim]}: ${LABELS[dim][r]}`);
+    });
+    return parts.join(' · ') + '.';
+  }
+
+  function renderDerivation(answers: Answers, primary: Verb) {
+    (document.getElementById('derivation-verb') as HTMLElement).textContent = VERB_COPY[primary].name;
+
+    const tableEl = document.getElementById('derivation-table') as HTMLElement;
+    tableEl.innerHTML = '';
+
+    let total = 0;
+
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const key = answers[dim];
+      if (!key) return;
+      const pts = (SCORING[dim][key] || {})[primary] || 0;
+      total += pts;
+
+      const row = document.createElement('div');
+      row.className = 'derivation-row';
+
+      const dimEl = document.createElement('div');
+      dimEl.className = 'derivation-dim';
+      dimEl.textContent = DIM_LABEL[dim];
+
+      const respEl = document.createElement('div');
+      respEl.className = 'derivation-resp';
+      respEl.textContent = LABELS[dim][key];
+
+      const ptsEl = document.createElement('div');
+      ptsEl.className = 'derivation-pts';
+      if (pts === 0) ptsEl.classList.add('is-zero');
+      else if (pts >= 3) ptsEl.classList.add('is-strong');
+      ptsEl.textContent = pts === 0 ? '0 pts' : '+' + pts + ' pts';
+
+      row.appendChild(dimEl);
+      row.appendChild(respEl);
+      row.appendChild(ptsEl);
+      tableEl.appendChild(row);
+    });
+
+    (document.getElementById('derivation-total-pts') as HTMLElement).textContent = String(total);
+    (document.getElementById('derivation-total-max') as HTMLElement).textContent = String(MAX[primary]);
+  }
+
+  const DIM_ORDER: Dim[] = ['vocacao', 'gargalo', 'governanca', 'equipe', 'abertura'];
+
+  function renderHooks(answers: Answers) {
+    const listEl = document.getElementById('hooks-list') as HTMLElement;
+    listEl.innerHTML = '';
+
+    const all = buildHooksFromAnswers(answers);
+    const deduped = dedupeHooks(all);
+    deduped.sort((a, b) => DIM_ORDER.indexOf(a.fromDims[0]) - DIM_ORDER.indexOf(b.fromDims[0]));
+
+    const profileLine = buildProfileLine(answers);
+
+    deduped.forEach((hook, idx) => {
+      const card = document.createElement('button');
+      card.className = 'hook-card';
+      card.type = 'button';
+
+      const main = document.createElement('div');
+
+      const header = document.createElement('div');
+      header.className = 'hook-card-header';
+
+      const num = document.createElement('span');
+      num.className = 'hook-card-num';
+      const dimsLabel = hook.fromDims.map((d) => DIM_LABEL[d]).join(' + ');
+      num.textContent = String(idx + 1).padStart(2, '0') + ' · ' + dimsLabel;
+
+      const chip = document.createElement('span');
+      chip.className = 'hook-card-chip';
+      chip.textContent = PIECE_TYPE_LABEL[hook.pieceType];
+
+      header.appendChild(num);
+      header.appendChild(chip);
+      main.appendChild(header);
+
+      const resp = document.createElement('div');
+      resp.className = 'hook-card-resp';
+      if (hook.fromDims.length === 1) {
+        const d = hook.fromDims[0];
+        resp.innerHTML = 'Você marcou: <strong>' + LABELS[d][hook.responsesByDim[d]!] + '</strong>';
+      } else {
+        resp.innerHTML = hook.fromDims
+          .map((d) => DIM_LABEL[d] + ': <strong>' + LABELS[d][hook.responsesByDim[d]!] + '</strong>')
+          .join(' · ');
+      }
+      main.appendChild(resp);
+
+      const label = document.createElement('div');
+      label.className = 'hook-card-label';
+      label.textContent = hook.label;
+      main.appendChild(label);
+
+      if (hook.fromDims.length > 1) {
+        const cross = document.createElement('div');
+        cross.className = 'hook-card-cross';
+        cross.textContent = '↳ Esta peça apoia ' + hook.fromDims.length + ' frentes do seu diagnóstico.';
+        main.appendChild(cross);
+      }
+
+      const arrow = document.createElement('div');
+      arrow.className = 'hook-card-arrow';
+      arrow.textContent = '→';
+
+      card.appendChild(main);
+      card.appendChild(arrow);
+
+      card.addEventListener('click', () => {
+        const prefillText = buildPrefillText({ hook, profileLine });
+        try {
+          sessionStorage.setItem('alavanca:diag-prefill', JSON.stringify({
+            text: prefillText,
+            hookId: hook.hookId,
+            pieceKey: hook.pieceKey,
+            ts: Date.now(),
+          }));
+        } catch {
+          /* ignore */
+        }
+        window.location.href = '/jo';
+      });
+
+      listEl.appendChild(card);
+    });
+  }
+
   function renderResult() {
     const scores: Record<Verb, number> = { formalizar: 0, estruturar: 0, construir: 0 };
 
@@ -832,6 +1320,15 @@ import Base from '../layouts/Base.astro';
         fill.style.width = pct + '%';
       });
     });
+
+    renderDerivation(answers, primary);
+    renderHooks(answers);
+
+    // Mostra CTA do Blueprint só quando o verbo recomendado for Estruturar.
+    const blueprintCta = document.getElementById('blueprint-cta');
+    if (blueprintCta) {
+      blueprintCta.hidden = primary !== 'estruturar';
+    }
 
     const d = new Date();
     const pad = (n: number) => (n < 10 ? '0' + n : '' + n);

@@ -30,6 +30,16 @@ export function getProviderForMode(mode: JoMode): ProviderAdapter {
       friendly: friendlyDeepSeekError,
     };
   }
+  if (mode === 'estruturar') {
+    // Modo Blueprint: conhecimento curado no system prompt, sem grounding.
+    // Google Search aqui só introduziria ruído num plano metodológico fechado.
+    return {
+      key: 'gemini',
+      stream: (h, u, s, p) => streamGemini(h, u, s, p, { enableGrounding: false }),
+      complete: (h, u, s, p) => completeGemini(h, u, s, p, { enableGrounding: false }),
+      friendly: friendlyGeminiError,
+    };
+  }
   return {
     key: 'gemini',
     stream: streamGemini,

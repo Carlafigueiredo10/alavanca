@@ -1,9 +1,10 @@
 import type { APIRoute } from 'astro';
 import { requireUser, type SupabaseServerClient } from '../../../lib/server/auth';
-import { getPromptForMode, type JoMode } from '../../../lib/ai/prompts';
+import { buildSystemPrompt, type JoMode } from '../../../lib/ai/prompts';
 import { truncateByChars, type ChatMessage } from '../../../lib/ai/history/truncate';
 import { getProviderForMode } from '../../../lib/ai/orchestrator';
 import { logEvent, safeErrorMessage, type Provider } from '../../../lib/server/log';
+import { checkChatRateLimit, logChatRateUse } from '../../../lib/server/rate-limit';
 
 export const prerender = false;
 
@@ -13,6 +14,7 @@ interface ChatBody {
   conversationId?: string;
   message?: string;
   mode?: string;
+  hookId?: string;
 }
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -68,9 +70,29 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     );
   }
 
-  const mode: JoMode = body.mode === 'possibilidades' ? 'possibilidades' : 'decisao';
+  const mode: JoMode =
+    body.mode === 'possibilidades' ? 'possibilidades'
+    : body.mode === 'estruturar' ? 'estruturar'
+    : 'decisao';
+  const hookId = typeof body.hookId === 'string' && body.hookId.length > 0 ? body.hookId : null;
   const adapter = getProviderForMode(mode);
   const provider: Provider = adapter.key;
+
+  // Rate limit por usuário (10/min, 100/dia) — fail-open se a query do log falhar.
+  const rate = await checkChatRateLimit(supabase, userId);
+  if (!rate.ok) {
+    logEvent({
+      request_id: requestId,
+      route,
+      user_id: userId,
+      mode,
+      event: `rate_limit_${rate.window}`,
+    });
+    return jsonResponse({ error: rate.message }, 429);
+  }
+  // Loga a tentativa imediatamente — contar tentativas autenticadas e válidas
+  // protege contra abuso de quem dispara em loop. Fail-silent.
+  await logChatRateUse(supabase, userId);
 
   const { data: conv, error: convErr } = await supabase
     .from('conversations')
@@ -138,7 +160,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const priorHistory = lastUserIdx >= 0 ? allMessages.slice(0, lastUserIdx) : allMessages;
   const trimmed = truncateByChars(priorHistory);
 
-  const systemPrompt = getPromptForMode(mode);
+  const systemPrompt = buildSystemPrompt(mode, hookId);
 
   let stream: ReadableStream<string>;
   try {

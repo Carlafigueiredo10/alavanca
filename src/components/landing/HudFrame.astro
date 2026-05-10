@@ -1,0 +1,153 @@
+---
+/**
+ * HudFrame — fixed instrumentation overlay.
+ * Corner brackets · left rail (SYS/ALV, NODE, LIVE) · bottom rail (coords, field, UTC).
+ * Suggests a research console rather than a webpage.
+ */
+---
+<div class="hud" aria-hidden="true">
+  <span class="hud-bracket hud-bracket-tl"></span>
+  <span class="hud-bracket hud-bracket-tr"></span>
+  <span class="hud-bracket hud-bracket-bl"></span>
+  <span class="hud-bracket hud-bracket-br"></span>
+
+  <div class="hud-rail-left">
+    <span>SYS / ALV</span>
+    <span class="hud-rail-sep" aria-hidden="true"></span>
+    <span>NODE 04</span>
+    <span class="hud-rail-sep hud-rail-sep-short" aria-hidden="true"></span>
+    <span class="hud-rail-live">
+      <span class="hud-live-dot"></span> LIVE
+    </span>
+  </div>
+
+  <div class="hud-rail-bottom">
+    <span class="hud-coord">LAT <span id="hud-lat">0000</span> · LON <span id="hud-lon">0000</span></span>
+    <span class="hud-mid">FIELD · CONTINUOUS</span>
+    <span class="hud-time" id="hud-time">00:00:00 UTC</span>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const lat = document.getElementById('hud-lat');
+    const lon = document.getElementById('hud-lon');
+    const time = document.getElementById('hud-time');
+    if (!lat || !lon || !time) return;
+
+    const pad4 = (n) => String(Math.max(0, Math.floor(n))).padStart(4, '0');
+
+    const tick = () => {
+      const d = new Date();
+      time.textContent = d.toISOString().slice(11, 19) + ' UTC';
+    };
+    tick();
+    setInterval(tick, 1000);
+
+    let raf = 0, tx = 0, ty = 0, x = 0, y = 0;
+    const onMove = (e) => { tx = e.clientX; ty = e.clientY; };
+    const loop = () => {
+      x += (tx - x) * 0.08;
+      y += (ty - y) * 0.08;
+      lat.textContent = pad4(y);
+      lon.textContent = pad4(x);
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener('mousemove', onMove);
+    raf = requestAnimationFrame(loop);
+  })();
+</script>
+
+<style>
+  .hud {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  /* ---------- BRACKETS ---------- */
+  .hud-bracket {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--fg-40);
+    border-style: solid;
+    border-width: 0;
+  }
+  .hud-bracket-tl { top: 16px;    left: 16px;  border-top-width: 1px; border-left-width: 1px; }
+  .hud-bracket-tr { top: 16px;    right: 16px; border-top-width: 1px; border-right-width: 1px; }
+  .hud-bracket-bl { bottom: 16px; left: 16px;  border-bottom-width: 1px; border-left-width: 1px; }
+  .hud-bracket-br { bottom: 16px; right: 16px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* ---------- LEFT RAIL ---------- */
+  .hud-rail-left {
+    display: none;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  @media (min-width: 880px) {
+    .hud-rail-left { display: flex; }
+  }
+
+  .hud-rail-sep {
+    width: 1px;
+    height: 96px;
+    background: linear-gradient(to bottom, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .hud-rail-sep-short { height: 48px; }
+
+  .hud-rail-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hud-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: blink 3.4s steps(1) infinite;
+  }
+
+  /* ---------- BOTTOM RAIL ---------- */
+  .hud-rail-bottom {
+    display: none;
+    position: absolute;
+    inset: auto 40px 16px 40px;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  @media (min-width: 880px) {
+    .hud-rail-bottom { display: flex; }
+  }
+
+  .hud-coord {
+    color: var(--fg-65);
+  }
+  .hud-coord span {
+    color: var(--bone);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hud-time {
+    font-variant-numeric: tabular-nums;
+    color: var(--bone);
+  }
+</style>

@@ -1,0 +1,291 @@
+---
+type Tool = {
+  id: string;
+  name: string;
+  tagline: string;
+  body: string;
+  meta: string;
+  status: 'DISPONÍVEL' | 'EM CAMPO' | 'PRÉVIA';
+  href: string;
+};
+
+const tools: Tool[] = [
+  {
+    id: 'S/01',
+    name: 'Diagnóstico',
+    tagline: 'Saber onde está, em três respostas.',
+    body: 'Questionário curto com saída em uma página.',
+    meta: 'Tempo médio · 4 min',
+    status: 'DISPONÍVEL',
+    href: '/diagnostico',
+  },
+  {
+    id: 'S/02',
+    name: 'Trilhas',
+    tagline: 'Leituras-chave, organizadas por verbo.',
+    body: 'Conteúdo direto, com próximos passos.',
+    meta: 'Pós-evento',
+    status: 'PRÉVIA',
+    href: '/trilhas',
+  },
+  {
+    id: 'S/03',
+    name: 'Assistentes de laboratório',
+    tagline: 'Assistentes prontos para uso.',
+    body: 'Prompts estruturados para aplicar método no mesmo dia.',
+    meta: '15 prompts disponíveis',
+    status: 'EM CAMPO',
+    href: '/assistente',
+  },
+  {
+    id: 'S/04',
+    name: 'Casos',
+    tagline: 'Inspiração com lastro.',
+    body: 'Exemplos reais com decisões e resultados.',
+    meta: 'Pós-evento',
+    status: 'PRÉVIA',
+    href: '/casos',
+  },
+];
+---
+<section id="sistema" class="proj">
+  <div class="shell">
+    <header class="section-head">
+      <div class="section-head-meta">
+        <span class="section-head-id">/04</span>
+        <span class="section-head-line"></span>
+        <span class="section-head-tag">IV · Sistema</span>
+      </div>
+      <h2 class="section-head-title reveal">
+        Diagnosticar. Orientar. Construir. Referenciar.
+      </h2>
+    </header>
+
+    <p class="proj-sub reveal delay-1">
+      Do diagnóstico à execução.
+    </p>
+
+    <div class="proj-list">
+      {tools.map((t, i) => (
+        <a
+          href={t.href}
+          class:list={['proj-row', 'reveal', `delay-${(i % 4) + 1}`]}
+          data-status={t.status}
+          data-row={i === 0 ? 'active' : null}
+        >
+          <span class="proj-row-bar"></span>
+          <span class="proj-row-id">{t.id}</span>
+          <div class="proj-row-text">
+            <h3 class="proj-row-name">{t.name}</h3>
+            <p class="proj-row-tagline">{t.tagline}</p>
+            <p class="proj-row-body">{t.body}</p>
+          </div>
+          <span class="proj-row-meta">{t.meta}</span>
+          <span class="proj-row-status">
+            <span class="proj-row-dot"></span>
+            {t.status}
+          </span>
+          <span class="proj-row-arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const rows = document.querySelectorAll('.proj-row');
+    rows.forEach((r) => {
+      r.addEventListener('mouseenter', () => {
+        rows.forEach((x) => x.removeAttribute('data-row'));
+        r.setAttribute('data-row', 'active');
+      });
+    });
+  })();
+</script>
+
+<style>
+  .proj {
+    padding: 160px 0;
+  }
+
+  .proj-sub {
+    margin-top: 32px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    font-style: italic;
+  }
+  @media (min-width: 880px) {
+    .proj-sub { margin-left: 25%; }
+  }
+
+  /* section-head (duplicated from Capabilities — Astro scopes) */
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 24px;
+  }
+  .section-head-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .section-head-id { color: var(--signal); }
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .section-head-title {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  @media (min-width: 880px) {
+    .section-head-meta  { grid-column: span 3; }
+    .section-head-title { grid-column: span 9; }
+  }
+
+  /* ---------- LIST ---------- */
+  .proj-list {
+    margin-top: 96px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .proj-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr 160px 140px 32px;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: var(--bone);
+    transition: background-color 250ms ease;
+  }
+
+  .proj-row[data-row='active'] {
+    background: oklch(0.94 0.008 90 / 0.025);
+  }
+
+  .proj-row-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: transparent;
+    transition: background 250ms ease;
+  }
+  .proj-row[data-row='active'] .proj-row-bar {
+    background: var(--signal);
+  }
+
+  .proj-row-id {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .proj-row-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg-78);
+    transition: color 250ms ease;
+  }
+  .proj-row[data-row='active'] .proj-row-name {
+    color: var(--bone);
+  }
+
+  .proj-row-tagline {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--fg-80);
+  }
+
+  .proj-row-body {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--fg-50);
+  }
+
+  .proj-row-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-60);
+  }
+
+  .proj-row-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+  }
+
+  .proj-row-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg-30);
+  }
+  .proj-row[data-status='DISPONÍVEL'] .proj-row-dot,
+  .proj-row[data-status='EM CAMPO']   .proj-row-dot {
+    background: var(--signal);
+    animation: blink 3.4s steps(1) infinite;
+  }
+
+  .proj-row-arrow {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--fg-40);
+    transition: color 250ms ease, transform 250ms ease;
+    text-align: right;
+  }
+  .proj-row[data-row='active'] .proj-row-arrow {
+    color: var(--signal);
+    transform: translateX(4px);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 720px) {
+    .proj-row {
+      grid-template-columns: 50px 1fr 32px;
+      grid-template-areas:
+        "id    text   arrow"
+        ".     meta   ."
+        ".     status .";
+      gap: 12px 16px;
+    }
+    .proj-row-id     { grid-area: id; }
+    .proj-row-text   { grid-area: text; }
+    .proj-row-meta   { grid-area: meta; }
+    .proj-row-status { grid-area: status; }
+    .proj-row-arrow  { grid-area: arrow; align-self: start; }
+  }
+</style>
