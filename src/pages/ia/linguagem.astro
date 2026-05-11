@@ -447,6 +447,18 @@ const docTypes = [
 
     try {
       const res = await fetch('/api/ia/linguagem', fetchInit);
+
+      // Distingue timeout/erro de gateway (HTML não-JSON) de erro de aplicação (JSON)
+      const ct = res.headers.get('content-type') ?? '';
+      if (!ct.includes('application/json')) {
+        if (res.status === 504 || res.status === 408) {
+          setError('Tempo esgotado no servidor. Documento longo demais ou serviço lento — tente um trecho menor.');
+        } else {
+          setError(`Resposta inesperada do servidor (HTTP ${res.status}). Veja DevTools › Network.`);
+        }
+        return;
+      }
+
       const data = await res.json();
       if (!res.ok) {
         setError(data?.detail || data?.error || 'Falha na análise.');
@@ -454,7 +466,8 @@ const docTypes = [
       }
       renderResult(data.output, data.meta);
     } catch (err) {
-      setError('Sem rede. Tente de novo.');
+      const msg = err instanceof Error ? err.message : '';
+      setError(msg.toLowerCase().includes('fetch') ? 'Sem rede. Tente de novo.' : `Erro: ${msg || 'desconhecido'}`);
     } finally {
       submitBtn.disabled = false;
       submitBtn.querySelector('span:first-child')!.textContent = 'Analisar';
