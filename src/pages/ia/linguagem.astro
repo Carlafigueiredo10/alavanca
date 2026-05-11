@@ -448,11 +448,15 @@ const docTypes = [
     try {
       const res = await fetch('/api/ia/linguagem', fetchInit);
 
-      // Distingue timeout/erro de gateway (HTML não-JSON) de erro de aplicação (JSON)
+      // Distingue erro de gateway/servidor (HTML não-JSON) de erro de aplicação (JSON estruturado)
       const ct = res.headers.get('content-type') ?? '';
       if (!ct.includes('application/json')) {
         if (res.status === 504 || res.status === 408) {
           setError('Tempo esgotado no servidor. Documento longo demais ou serviço lento — tente um trecho menor.');
+        } else if (res.status === 502 || res.status === 503) {
+          setError(`Serviço indisponível no momento (HTTP ${res.status}). Tente de novo em instantes.`);
+        } else if (res.status >= 500) {
+          setError(`Erro interno do servidor (HTTP ${res.status}). Veja DevTools › Network para detalhes.`);
         } else {
           setError(`Resposta inesperada do servidor (HTTP ${res.status}). Veja DevTools › Network.`);
         }
@@ -466,8 +470,14 @@ const docTypes = [
       }
       renderResult(data.output, data.meta);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : '';
-      setError(msg.toLowerCase().includes('fetch') ? 'Sem rede. Tente de novo.' : `Erro: ${msg || 'desconhecido'}`);
+      // Apenas falha de fetch real (TypeError) significa "sem rede".
+      // Outros erros (parse de JSON malformado, etc) devem mostrar mensagem específica.
+      if (err instanceof TypeError) {
+        setError('Sem conexão com o servidor. Verifique sua rede e tente de novo.');
+      } else {
+        const msg = err instanceof Error ? err.message : 'desconhecido';
+        setError(`Erro: ${msg}`);
+      }
     } finally {
       submitBtn.disabled = false;
       submitBtn.querySelector('span:first-child')!.textContent = 'Analisar';

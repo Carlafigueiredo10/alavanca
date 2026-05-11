@@ -3,7 +3,7 @@
  *
  * Ordem:
  *   .docx        → mammoth                    (sempre)
- *   .pdf textual → pdf-parse                  (sempre primeiro)
+ *   .pdf textual → unpdf                      (sempre primeiro)
  *   .pdf scan    → fallback Claude Vision     (Fase 1)
  *   .png/.jpg    → Claude Vision direto       (Fase 1)
  *   texto puro   → passa direto
@@ -12,7 +12,7 @@
  */
 
 import mammoth from 'mammoth';
-import { PDFParse } from 'pdf-parse';
+import { extractText } from 'unpdf';
 
 export type ExtractionResult = {
   text: string;
@@ -94,17 +94,16 @@ export async function extractDocx(buffer: ArrayBuffer): Promise<ExtractionResult
 
 export async function extractPdfText(buffer: ArrayBuffer): Promise<ExtractionResult> {
   const data = new Uint8Array(buffer);
-  const parser = new PDFParse({ data });
   try {
-    const result = await parser.getText();
-    const pages = result.pages.length;
-    const text = result.text ?? '';
+    const { text, totalPages } = await extractText(data, { mergePages: true });
+    const pages = totalPages;
+    const fullText = typeof text === 'string' ? text : text.join('\n\n');
 
     // Critério de "PDF escaneado": menos de 50 chars por página em média
-    const chars = text.replace(/\s/g, '').length;
+    const chars = fullText.replace(/\s/g, '').length;
     if (pages > 0 && chars / pages < MIN_CHARS_PER_PAGE) {
       return {
-        text,
+        text: fullText,
         quality: 20,
         flags: ['extraction_imperfect'],
         used_vision: false,
@@ -112,15 +111,13 @@ export async function extractPdfText(buffer: ArrayBuffer): Promise<ExtractionRes
       };
     }
 
-    return postProcess(text, pages);
+    return postProcess(fullText, pages);
   } catch (err) {
     const msg = err instanceof Error ? err.message.toLowerCase() : '';
     if (msg.includes('password') || msg.includes('encrypt')) {
       return { text: '', quality: 0, flags: ['password_protected'], used_vision: false };
     }
     throw err;
-  } finally {
-    await parser.destroy().catch(() => {});
   }
 }
 
