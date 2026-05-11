@@ -1,0 +1,469 @@
+---
+import Base from '../../layouts/Base.astro';
+import '../../styles/adequa.css';
+
+const audiences = [
+  { code: 'cidadao',             label: 'Cidadão geral' },
+  { code: 'cidadao_vulneravel',  label: 'Cidadão vulnerabilizado' },
+  { code: 'servidor_par',        label: 'Servidor par (interno)' },
+  { code: 'tecnico_outra_area',  label: 'Técnico de outra área' },
+  { code: 'gestor',              label: 'Gestor (alto escalão)' },
+  { code: 'orgao_controle',      label: 'Órgão de controle (CGU/TCU/AGU)' },
+  { code: 'imprensa',            label: 'Imprensa' },
+  { code: 'audiencia_academica', label: 'Audiência acadêmica' },
+  { code: 'audiencia_politica',  label: 'Audiência política' },
+  { code: 'parceiro_institucional', label: 'Parceiro institucional' },
+];
+
+const docTypes = [
+  { code: 'nota_tecnica',           label: 'Nota Técnica' },
+  { code: 'memorando',              label: 'Memorando / Despacho' },
+  { code: 'catalogo_servicos',      label: 'Catálogo de Serviços' },
+  { code: 'carta_servicos',         label: 'Carta de Serviços' },
+  { code: 'manifesto',              label: 'Manifesto / Divulgação' },
+  { code: 'post_rede',              label: 'Post de rede social' },
+  { code: 'apresentacao_executiva', label: 'Apresentação executiva' },
+  { code: 'release_oped',           label: 'Release / Op-ed' },
+  { code: 'email_institucional',    label: 'E-mail institucional' },
+  { code: 'texto_livre',            label: 'Texto livre' },
+];
+---
+<Base
+  title="Adequa · Assistente de linguagem · Alavanca"
+  description="IA que adequa a comunicação ao seu público — Nota Técnica para o TCU, manifesto para o cidadão, post para a imprensa."
+  bodyClass="adequa-theme"
+>
+
+<section class="adq-hero">
+  <div class="shell">
+    <div class="adq-meta">
+      <span class="adq-meta-id">/IV·03</span>
+      <span class="adq-meta-line"></span>
+      <span class="adq-meta-tag">Módulo · Adequa</span>
+    </div>
+
+    <h1 class="adq-headline">
+      Adequar a <span class="signal-text">comunicação</span> ao seu público.
+    </h1>
+
+    <p class="adq-sub">
+      Cole o texto, diga quem vai ler, receba sugestões pontuais — cada uma com base normativa, boa prática ou marcador honesto de estilo.
+    </p>
+  </div>
+</section>
+
+<section class="adq-form-section">
+  <div class="shell">
+    <form id="adq-form" class="adq-form" novalidate>
+      <div class="adq-field">
+        <div class="adq-label">
+          <span class="adq-label-id">/01</span>
+          <span class="adq-label-name">Texto para revisar</span>
+          <span class="adq-label-hint" id="input-hint">0 / 50000</span>
+        </div>
+
+        <div class="adq-tabs" role="tablist">
+          <button type="button" class="adq-tab is-active" role="tab" data-mode="text" aria-selected="true">
+            Colar texto
+          </button>
+          <button type="button" class="adq-tab" role="tab" data-mode="file" aria-selected="false">
+            Subir arquivo
+          </button>
+        </div>
+
+        <div class="adq-tab-panel" data-panel="text">
+          <textarea
+            id="text"
+            name="text"
+            rows="14"
+            maxlength="50000"
+            placeholder="Cole aqui o texto que você quer adequar..."
+          ></textarea>
+        </div>
+
+        <div class="adq-tab-panel" data-panel="file" hidden>
+          <label class="adq-drop" id="drop-zone">
+            <input
+              type="file"
+              id="file"
+              name="file"
+              accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
+              hidden
+            />
+            <span class="adq-drop-icon">↑</span>
+            <span class="adq-drop-title">Arraste aqui ou clique para selecionar</span>
+            <span class="adq-drop-formats">.docx · .pdf · até 4.5 MB</span>
+            <span class="adq-drop-note">Imagem com OCR · em breve</span>
+            <span class="adq-drop-selected" id="file-selected" hidden></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="adq-grid">
+        <div class="adq-field">
+          <label for="audience" class="adq-label">
+            <span class="adq-label-id">/02</span>
+            <span class="adq-label-name">Quem vai ler</span>
+          </label>
+          <select id="audience" name="audience" required>
+            <option value="">Selecione…</option>
+            {audiences.map((a) => <option value={a.code}>{a.label}</option>)}
+          </select>
+        </div>
+
+        <div class="adq-field">
+          <label for="document_type" class="adq-label">
+            <span class="adq-label-id">/03</span>
+            <span class="adq-label-name">Tipo de documento</span>
+          </label>
+          <select id="document_type" name="document_type" required>
+            <option value="">Selecione…</option>
+            {docTypes.map((d) => <option value={d.code}>{d.label}</option>)}
+          </select>
+        </div>
+
+        <div class="adq-field">
+          <label for="formality" class="adq-label">
+            <span class="adq-label-id">/04</span>
+            <span class="adq-label-name">Formalidade</span>
+          </label>
+          <select id="formality" name="formality" required>
+            <option value="">Selecione…</option>
+            <option value="1">1 · muito informal</option>
+            <option value="2">2 · informal acessível</option>
+            <option value="3">3 · neutro</option>
+            <option value="4">4 · formal</option>
+            <option value="5">5 · muito formal técnico</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="adq-field">
+        <label for="free_brief" class="adq-label">
+          <span class="adq-label-id">/05</span>
+          <span class="adq-label-name">Algo específico para verificar?</span>
+          <span class="adq-label-hint">opcional</span>
+        </label>
+        <input
+          type="text"
+          id="free_brief"
+          name="free_brief"
+          maxlength="280"
+          placeholder="ex: quero que soe mais impactante; verificar se está enxuto..."
+        />
+      </div>
+
+      <div class="adq-actions">
+        <button type="submit" class="adq-submit" id="submit-btn">
+          <span>Analisar</span>
+          <span class="adq-submit-arrow">→</span>
+        </button>
+        <span class="adq-meta-note" id="form-feedback"></span>
+      </div>
+    </form>
+
+    <!-- Resultado -->
+    <div class="adq-result" id="result" hidden>
+      <header class="adq-result-head">
+        <span class="adq-result-id">↳ Revisão</span>
+        <button type="button" class="adq-result-reset" id="reset-btn">Nova análise</button>
+      </header>
+
+      <article class="adq-summary surface" id="summary"></article>
+
+      <section class="adq-metrics" id="metrics"></section>
+
+      <section class="adq-suggestions">
+        <h2 class="adq-suggestions-title">Sugestões</h2>
+        <ul class="adq-suggestions-list" id="suggestions-list"></ul>
+      </section>
+
+      <footer class="adq-result-foot" id="result-foot"></footer>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<script>
+  type Basis =
+    | { type: 'normative';     norm_id: string; article?: string; excerpt: string }
+    | { type: 'best_practice'; source: string; description: string }
+    | { type: 'style';         description: string }
+    | { type: 'consistency';   description: string };
+
+  type Suggestion = {
+    id: string;
+    range: { start: number; end: number };
+    original: string;
+    suggested: string;
+    basis: Basis;
+    confidence: 'high' | 'medium' | 'low';
+    rationale: string;
+  };
+
+  type ReviewOutput = {
+    summary: string;
+    suggestions: Suggestion[];
+    metrics: {
+      flesch_pt?: number;
+      avg_sentence_length: number;
+      complex_word_ratio: number;
+      jargon_detected: string[];
+    };
+    basis_breakdown: {
+      normative: number;
+      best_practice: number;
+      style: number;
+      consistency: number;
+    };
+  };
+
+  const form         = document.getElementById('adq-form') as HTMLFormElement;
+  const textEl       = document.getElementById('text') as HTMLTextAreaElement;
+  const fileEl       = document.getElementById('file') as HTMLInputElement;
+  const dropEl       = document.getElementById('drop-zone') as HTMLElement;
+  const fileSelected = document.getElementById('file-selected') as HTMLElement;
+  const inputHint    = document.getElementById('input-hint') as HTMLElement;
+  const tabs         = document.querySelectorAll<HTMLButtonElement>('.adq-tab');
+  const panels       = document.querySelectorAll<HTMLElement>('.adq-tab-panel');
+  const submitBtn    = document.getElementById('submit-btn') as HTMLButtonElement;
+  const feedback     = document.getElementById('form-feedback') as HTMLElement;
+  const resultEl     = document.getElementById('result') as HTMLElement;
+  const summaryEl    = document.getElementById('summary') as HTMLElement;
+  const metricsEl    = document.getElementById('metrics') as HTMLElement;
+  const listEl       = document.getElementById('suggestions-list') as HTMLElement;
+  const resetBtn     = document.getElementById('reset-btn') as HTMLButtonElement;
+  const resultFoot   = document.getElementById('result-foot') as HTMLElement;
+
+  let mode: 'text' | 'file' = 'text';
+  const MAX_FILE_BYTES = 4.5 * 1024 * 1024;
+
+  function updateHint() {
+    if (mode === 'text') {
+      inputHint.textContent = `${textEl.value.length} / 50000`;
+    } else if (fileEl.files && fileEl.files[0]) {
+      const f = fileEl.files[0];
+      inputHint.textContent = `${(f.size / 1024).toFixed(0)} KB`;
+    } else {
+      inputHint.textContent = 'arquivo · .docx ou .pdf';
+    }
+  }
+  textEl.addEventListener('input', updateHint);
+  updateHint();
+
+  // Tabs
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.mode as 'text' | 'file';
+      mode = target;
+      tabs.forEach((t) => {
+        const isActive = t.dataset.mode === target;
+        t.classList.toggle('is-active', isActive);
+        t.setAttribute('aria-selected', String(isActive));
+      });
+      panels.forEach((p) => {
+        (p as HTMLElement).hidden = p.dataset.panel !== target;
+      });
+      updateHint();
+      clearError();
+    });
+  });
+
+  // File input
+  fileEl.addEventListener('change', () => {
+    const f = fileEl.files?.[0];
+    if (!f) {
+      fileSelected.hidden = true;
+      fileSelected.textContent = '';
+    } else {
+      if (f.size > MAX_FILE_BYTES) {
+        setError(`Arquivo muito grande (${(f.size / 1024 / 1024).toFixed(1)} MB). Limite: 4.5 MB.`);
+        fileEl.value = '';
+        return;
+      }
+      fileSelected.hidden = false;
+      fileSelected.textContent = `${f.name} · ${(f.size / 1024).toFixed(0)} KB`;
+    }
+    updateHint();
+  });
+
+  // Drag-and-drop
+  ['dragenter', 'dragover'].forEach((ev) =>
+    dropEl.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropEl.classList.add('is-drag');
+    })
+  );
+  ['dragleave', 'drop'].forEach((ev) =>
+    dropEl.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropEl.classList.remove('is-drag');
+    })
+  );
+  dropEl.addEventListener('drop', (e: DragEvent) => {
+    const f = e.dataTransfer?.files?.[0];
+    if (f) {
+      const dt = new DataTransfer();
+      dt.items.add(f);
+      fileEl.files = dt.files;
+      fileEl.dispatchEvent(new Event('change'));
+    }
+  });
+
+  function setError(msg: string) {
+    feedback.textContent = msg;
+    feedback.classList.add('is-error');
+  }
+  function clearError() {
+    feedback.textContent = '';
+    feedback.classList.remove('is-error');
+  }
+
+  function basisBadge(basis: Basis): string {
+    switch (basis.type) {
+      case 'normative':
+        return `<span class="adq-badge adq-badge-normative">■ Normativa · ${escapeHtml(basis.norm_id)}${basis.article ? ' · ' + escapeHtml(basis.article) : ''}</span>`;
+      case 'best_practice':
+        return `<span class="adq-badge adq-badge-best">■ Boa prática · ${escapeHtml(basis.source)}</span>`;
+      case 'consistency':
+        return `<span class="adq-badge adq-badge-consistency">□ Consistência</span>`;
+      case 'style':
+        return `<span class="adq-badge adq-badge-style">□ Estilo</span>`;
+    }
+  }
+
+  function basisDetail(basis: Basis): string {
+    switch (basis.type) {
+      case 'normative':    return escapeHtml(basis.excerpt);
+      case 'best_practice':
+      case 'style':
+      case 'consistency':  return escapeHtml(basis.description);
+    }
+  }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]!));
+  }
+
+  function renderResult(output: ReviewOutput, meta: any) {
+    summaryEl.innerHTML = `
+      <div class="adq-summary-id">↳ Resumo</div>
+      <p class="adq-summary-text">${escapeHtml(output.summary)}</p>
+      <div class="adq-summary-breakdown">
+        <span><strong>${output.basis_breakdown.normative}</strong> normativas</span>
+        <span><strong>${output.basis_breakdown.best_practice}</strong> boas práticas</span>
+        <span><strong>${output.basis_breakdown.consistency}</strong> consistência</span>
+        <span><strong>${output.basis_breakdown.style}</strong> estilo</span>
+      </div>
+    `;
+
+    metricsEl.innerHTML = `
+      <div class="adq-metric"><span class="adq-metric-label">Frase média</span><span class="adq-metric-value">${output.metrics.avg_sentence_length.toFixed(1)} palavras</span></div>
+      <div class="adq-metric"><span class="adq-metric-label">Palavras complexas</span><span class="adq-metric-value">${Math.round(output.metrics.complex_word_ratio * 100)}%</span></div>
+      ${output.metrics.flesch_pt !== undefined ? `<div class="adq-metric"><span class="adq-metric-label">Flesch (PT)</span><span class="adq-metric-value">${output.metrics.flesch_pt.toFixed(0)}</span></div>` : ''}
+      ${output.metrics.jargon_detected.length ? `<div class="adq-metric adq-metric-wide"><span class="adq-metric-label">Jargão detectado</span><span class="adq-metric-value">${output.metrics.jargon_detected.map(escapeHtml).join(', ')}</span></div>` : ''}
+    `;
+
+    if (output.suggestions.length === 0) {
+      listEl.innerHTML = '<li class="adq-empty">Nenhuma sugestão — o texto já está adequado.</li>';
+    } else {
+      listEl.innerHTML = output.suggestions.map((s) => `
+        <li class="adq-sug surface" data-confidence="${s.confidence}">
+          <header class="adq-sug-head">
+            <span class="adq-sug-id">${escapeHtml(s.id)}</span>
+            ${basisBadge(s.basis)}
+            <span class="adq-sug-confidence adq-conf-${s.confidence}">${s.confidence}</span>
+          </header>
+          <div class="adq-sug-diff">
+            <div class="adq-sug-original">
+              <span class="adq-sug-label">Original</span>
+              <p>${escapeHtml(s.original)}</p>
+            </div>
+            <div class="adq-sug-suggested">
+              <span class="adq-sug-label">Sugerido</span>
+              <p>${escapeHtml(s.suggested)}</p>
+            </div>
+          </div>
+          <p class="adq-sug-rationale">${escapeHtml(s.rationale)}</p>
+          <p class="adq-sug-basis">${basisDetail(s.basis)}</p>
+        </li>
+      `).join('');
+    }
+
+    const m = meta?.usage;
+    const tokens = m ? `${m.input_tokens} in · ${m.output_tokens} out${m.cache_read_input_tokens ? ' · ' + m.cache_read_input_tokens + ' cache' : ''}` : '';
+    resultFoot.innerHTML = `<span class="adq-foot-meta">${escapeHtml(meta?.model ?? '')}${tokens ? ' · ' + tokens : ''}</span>`;
+
+    resultEl.hidden = false;
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    const audience = (document.getElementById('audience') as HTMLSelectElement).value;
+    const document_type = (document.getElementById('document_type') as HTMLSelectElement).value;
+    const formality = Number((document.getElementById('formality') as HTMLSelectElement).value);
+    const free_brief = (document.getElementById('free_brief') as HTMLInputElement).value.trim();
+
+    if (!audience || !document_type || !Number.isFinite(formality)) {
+      setError('Preencha público, tipo de documento e formalidade.');
+      return;
+    }
+
+    let fetchInit: RequestInit;
+
+    if (mode === 'text') {
+      const text = textEl.value.trim();
+      if (text.length < 30) {
+        setError('O texto precisa ter pelo menos 30 caracteres.');
+        textEl.focus();
+        return;
+      }
+      fetchInit = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, audience, document_type, formality, free_brief: free_brief || undefined }),
+      };
+    } else {
+      const file = fileEl.files?.[0];
+      if (!file) {
+        setError('Selecione um arquivo .docx ou .pdf.');
+        return;
+      }
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('audience', audience);
+      fd.append('document_type', document_type);
+      fd.append('formality', String(formality));
+      if (free_brief) fd.append('free_brief', free_brief);
+      fetchInit = { method: 'POST', body: fd };
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.querySelector('span:first-child')!.textContent = 'Analisando…';
+
+    try {
+      const res = await fetch('/api/ia/linguagem', fetchInit);
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.detail || data?.error || 'Falha na análise.');
+        return;
+      }
+      renderResult(data.output, data.meta);
+    } catch (err) {
+      setError('Sem rede. Tente de novo.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span:first-child')!.textContent = 'Analisar';
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    resultEl.hidden = true;
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
