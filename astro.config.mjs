@@ -11,4 +11,11 @@ export default defineConfig({
   build: {
     format: 'file',
   },
+  // CSRF default do Astro 5 rejeita multipart com 403 quando Origin != Host.
+  // No Vercel, o alias (cliclabs.vercel.app) e o Host canônico do deployment
+  // não batem, então uploads de arquivo eram bloqueados. Os endpoints só são
+  // chamados pela própria UI same-origin — segurança preservada.
+  security: {
+    checkOrigin: false,
+  },
 });
