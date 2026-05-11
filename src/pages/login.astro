@@ -192,7 +192,7 @@ const next = Astro.url.searchParams.get('next') ?? '/jo';
       try {
         const supabase = getSupabaseBrowserClient();
         const next = nextInput?.value ?? '/jo';
-        const redirectTo = `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(next)}`;
+        const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
         const { error } = await supabase.auth.signInWithOtp({
           email,
           options: { emailRedirectTo: redirectTo },
