@@ -1,50 +1,32 @@
 ---
-const bases = [
-  { id: 'ENAP', full: 'Escola Nacional de Administração Pública', note: 'Gnova · método aplicado' },
-  { id: 'OCDE', full: 'Organização para Cooperação e Desenvolvimento Econômico', note: 'Observatory of Public Sector Innovation' },
-  { id: 'MGI',  full: 'McKinsey Global Institute', note: 'Public sector productivity' },
-];
+/**
+ * Labs — III · Fundamentos
+ * Claim institucional + link pra bibliografia. Os cards de bases (ENAP, OCDE,
+ * MGI) foram removidos pra desviar atenção do produto pra teoria; quem quer
+ * o lastro bibliográfico segue pelo link "Ver bibliografia".
+ */
 ---
 <section id="fundamentos" class="labs">
   <div class="shell">
     <header class="section-head">
       <div class="section-head-meta">
-        <span class="section-head-id">/03</span>
+        <span class="section-head-id">/05</span>
         <span class="section-head-line"></span>
-        <span class="section-head-tag">III · Fundamentos</span>
+        <span class="section-head-tag">V · Fundamentos</span>
       </div>
       <h2 class="section-head-title reveal">
         Ideia não vira entrega sem estrutura.
       </h2>
     </header>
 
-    <div class="labs-grid">
-      <div class="labs-claim reveal">
-        <p class="labs-claim-text signal-text">
-          A Alavanca transforma estrutura em método.
-        </p>
-        <p class="labs-claim-label">Base institucional</p>
-        <a href="/bibliografia" class="labs-claim-link">
-          Ver bibliografia <span aria-hidden="true">→</span>
-        </a>
-      </div>
-
-      <div class="labs-cards">
-        {bases.map((b, i) => (
-          <article class:list={['labs-card', 'surface', 'reveal', `delay-${i + 1}`]}>
-            <div class="labs-card-id">/0{i + 1}</div>
-            <div>
-              <div class="labs-card-name">{b.id}</div>
-              <div class="labs-card-full">{b.full}</div>
-              <div class="labs-card-note">{b.note}</div>
-            </div>
-            <span class="bracket bracket-tl"></span>
-            <span class="bracket bracket-tr"></span>
-            <span class="bracket bracket-bl"></span>
-            <span class="bracket bracket-br"></span>
-          </article>
-        ))}
-      </div>
+    <div class="labs-claim reveal">
+      <p class="labs-claim-text signal-text">
+        A Alavanca transforma estrutura em método.
+      </p>
+      <p class="labs-claim-label">Base institucional</p>
+      <a href="/bibliografia" class="labs-claim-link">
+        Ver bibliografia <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>
@@ -54,7 +36,6 @@ const bases = [
     padding: 160px 0;
   }
 
-  /* (section-head styles inherited from Capabilities? Astro scopes — duplicate here) */
   .section-head {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -93,21 +74,14 @@ const bases = [
     .section-head-title { grid-column: span 9; }
   }
 
-  /* ---------- LABS LAYOUT ---------- */
-  .labs-grid {
-    margin-top: 80px;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 40px;
-    align-items: start;
-  }
-
+  /* ---------- CLAIM ---------- */
   .labs-claim {
-    grid-column: span 12;
+    margin-top: 80px;
+    max-width: 640px;
   }
 
   @media (min-width: 880px) {
-    .labs-claim { grid-column: 4 / span 5; }
+    .labs-claim { margin-left: 25%; }
   }
 
   .labs-claim-text {
@@ -142,59 +116,5 @@ const bases = [
   }
   .labs-claim-link span {
     font-family: var(--font-mono);
-  }
-
-  .labs-cards {
-    grid-column: span 12;
-    margin-top: 24px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  @media (min-width: 720px) {
-    .labs-cards { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .labs-card {
-    position: relative;
-    padding: 32px;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 32px;
-  }
-
-  .labs-card-id {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--signal);
-  }
-
-  .labs-card-name {
-    font-family: var(--font-display);
-    font-size: 30px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--bone);
-  }
-
-  .labs-card-full {
-    margin-top: 8px;
-    font-size: 13px;
-    line-height: 1.4;
-    color: var(--fg-60);
-  }
-
-  .labs-card-note {
-    margin-top: 12px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-50);
   }
 </style>

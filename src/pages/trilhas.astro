@@ -1,8 +1,7 @@
 ---
-import Stub from '../components/Stub.astro';
+// Trilhas vive em outro projeto (Servidoras no Comando). Redirect server-side
+// pra evitar duplicar conteúdo aqui. Mantém /trilhas como ponto de entrada
+// estável caso outros lugares do site linkem pra ele.
+export const prerender = false;
+return Astro.redirect('https://servidorasnocomando.netlify.app/trilhas', 302);
 ---
-<Stub
-  title="Trilhas."
-  subtitle="Leituras-chave organizadas por verbo — conteúdo direto, com próximos passos."
-  current="trilhas"
-/>

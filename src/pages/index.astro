@@ -1,20 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
-import AmbientField  from '../components/landing/AmbientField.astro';
-import HudFrame      from '../components/landing/HudFrame.astro';
-import Hero          from '../components/landing/Hero.astro';
-import Capabilities  from '../components/landing/Capabilities.astro';
-import Labs          from '../components/landing/Labs.astro';
-import IaSection     from '../components/landing/IaSection.astro';
-import Contribute    from '../components/landing/Contribute.astro';
-import LandingFooter from '../components/landing/LandingFooter.astro';
+import AmbientField        from '../components/landing/AmbientField.astro';
+import HudFrame            from '../components/landing/HudFrame.astro';
+import Hero                from '../components/landing/Hero.astro';
+import Capabilities        from '../components/landing/Capabilities.astro';
+import IaSection           from '../components/landing/IaSection.astro';
+import EcossistemaSection  from '../components/landing/EcossistemaSection.astro';
+import Labs                from '../components/landing/Labs.astro';
+import Contribute          from '../components/landing/Contribute.astro';
+import LandingFooter       from '../components/landing/LandingFooter.astro';
 
 const navLinks = [
-  { id: '02', label: 'Aplicação',   href: '#aplicacao'   },
-  { id: '03', label: 'Fundamentos', href: '#fundamentos' },
-  { id: '04', label: 'IA',          href: '#ia'          },
-  { id: '05', label: 'Contribuir',  href: '#contribuir'  },
-  { id: '06', label: 'Rede',        href: '/casos'       },
+  { id: '01', label: 'Diagnóstico', href: '/diagnostico'  },
+  { id: '02', label: 'Aplicação',   href: '#aplicacao'    },
+  { id: '03', label: 'IA',          href: '#ia'           },
+  { id: '04', label: 'Ecossistema', href: '#ecossistema'  },
+  { id: '05', label: 'Fundamentos', href: '#fundamentos'  },
+  { id: '06', label: 'Contribuir',  href: '#contribuir'   },
 ];
 
 const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
@@ -31,8 +33,9 @@ const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
 
   <Hero />
   <Capabilities />
-  <Labs />
   <IaSection />
+  <EcossistemaSection />
+  <Labs />
   <Contribute />
   <LandingFooter />
 </Base>

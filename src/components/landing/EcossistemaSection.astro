@@ -1,8 +1,9 @@
 ---
 /**
- * IaSection — V · IA aplicada
- * Substitui Partners (V · Prova). Grid de 4 cards-propaganda que apontam
- * todos pra /ia (hub do módulo). Função é teaser, não roteamento.
+ * EcossistemaSection — IV · Ecossistema
+ * Teaser-propaganda da página /casos. Mesma lógica do IaSection: 4 cards
+ * que apontam todos pra /casos (hub real). Função aqui é convidar pro
+ * ecossistema, não rotear pra destinos específicos.
  */
 
 interface Card {
@@ -15,59 +16,60 @@ interface Card {
 const cards: Card[] = [
   {
     id: '/01',
-    badge: 'Externo · CLIC',
-    eyebrow: 'Caixa de ferramentas',
-    title: 'Catálogo curado · 120+ ferramentas IA',
+    badge: 'Mapa',
+    eyebrow: 'Quem está em campo',
+    title: 'LISP Brasil e outros mapas de labs',
   },
   {
     id: '/02',
-    badge: 'Disponível',
-    eyebrow: 'Aceleração na prática',
-    title: 'Assistentes de Laboratório',
+    badge: 'Redes temáticas',
+    eyebrow: 'Comunidades vivas',
+    title: 'Linguagem simples, RNP Labs e redes de pesquisa',
   },
   {
     id: '/03',
-    badge: 'Disponível',
-    eyebrow: 'Assistente de linguagem',
-    title: 'Adequar a comunicação ao seu público.',
+    badge: 'Programas',
+    eyebrow: 'Lastro institucional',
+    title: 'Programas federais, CNJ e curadorias do LA-BORA!',
   },
   {
     id: '/04',
-    badge: 'Externo · Servidoras',
-    eyebrow: 'Letramento digital',
-    title: 'Trilhas de cursos',
+    badge: 'Contribuir',
+    eyebrow: 'Sua rede no mapa',
+    title: 'Sugira uma rede, prática ou ferramenta.',
   },
 ];
 ---
-<section id="ia" class="ia">
+<section id="ecossistema" class="eco">
   <div class="shell">
     <header class="section-head">
       <div class="section-head-meta">
-        <span class="section-head-id">/03</span>
+        <span class="section-head-id">/04</span>
         <span class="section-head-line"></span>
-        <span class="section-head-tag">III · Infraestrutura</span>
+        <span class="section-head-tag">IV · Ecossistema</span>
       </div>
       <h2 class="section-head-title reveal">
-        IA como <span class="signal-text">Infraestrutura</span>.
+        Construtores de <span class="signal-text">ecossistemas</span>.
       </h2>
     </header>
 
-    <p class="ia-sub reveal delay-1">
-      O braço operacional do seu lab — capacidade da casa, não atalho terceirizado.
+    <p class="eco-sub reveal delay-1">
+      Os 5 verbos são o motor metodológico do lab. Articular cidadãos, academia
+      e instituições é o que faz a inovação escalar — e não morrer isolada.
     </p>
 
-    <div class="ia-grid reveal delay-1">
+    <div class="eco-grid reveal delay-1">
       {cards.map((c) => (
-        <a href="/ia" class="ia-card surface">
-          <div class="ia-card-top">
-            <span class="ia-card-id">{c.id}</span>
-            <span class="ia-card-status">{c.badge}</span>
-            <span class="ia-card-arrow">→</span>
+        <a href="/casos" class="eco-card surface">
+          <div class="eco-card-top">
+            <span class="eco-card-id">{c.id}</span>
+            <span class="eco-card-status">{c.badge}</span>
+            <span class="eco-card-arrow">→</span>
           </div>
 
-          <div class="ia-card-body">
-            <div class="ia-card-label">{c.eyebrow}</div>
-            <h3 class="ia-card-title">{c.title}</h3>
+          <div class="eco-card-body">
+            <div class="eco-card-label">{c.eyebrow}</div>
+            <h3 class="eco-card-title">{c.title}</h3>
           </div>
 
           <span class="bracket bracket-tl"></span>
@@ -81,11 +83,11 @@ const cards: Card[] = [
 </section>
 
 <style>
-  .ia {
+  .eco {
     padding: 160px 0;
   }
 
-  .ia-sub {
+  .eco-sub {
     margin-top: 32px;
     max-width: 640px;
     font-size: 15px;
@@ -94,7 +96,7 @@ const cards: Card[] = [
     font-style: italic;
   }
   @media (min-width: 880px) {
-    .ia-sub { margin-left: 25%; }
+    .eco-sub { margin-left: 25%; }
   }
 
   /* section-head shared */
@@ -137,27 +139,27 @@ const cards: Card[] = [
   }
 
   /* ---------- GRID 1×4 ---------- */
-  .ia-grid {
+  .eco-grid {
     margin-top: 96px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
   }
   @media (min-width: 720px) {
-    .ia-grid {
+    .eco-grid {
       grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
   }
   @media (min-width: 1100px) {
-    .ia-grid {
+    .eco-grid {
       grid-template-columns: repeat(4, 1fr);
       gap: 24px;
     }
   }
 
   /* ---------- CARD ---------- */
-  .ia-card {
+  .eco-card {
     position: relative;
     overflow: hidden;
     padding: 32px 28px;
@@ -169,7 +171,7 @@ const cards: Card[] = [
     color: var(--bone);
   }
 
-  .ia-card-top {
+  .eco-card-top {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -181,32 +183,32 @@ const cards: Card[] = [
     flex-wrap: wrap;
   }
 
-  .ia-card-id { color: var(--signal); }
+  .eco-card-id { color: var(--signal); }
 
-  .ia-card-status {
+  .eco-card-status {
     padding: 4px 10px;
     border: 1px solid var(--hairline-2);
     border-radius: 999px;
     color: var(--fg-65);
   }
 
-  .ia-card-arrow {
+  .eco-card-arrow {
     margin-left: auto;
     font-size: 18px;
     color: var(--fg-50);
     opacity: 0.7;
     transition: transform 250ms ease, color 250ms ease;
   }
-  .ia-card:hover .ia-card-arrow {
+  .eco-card:hover .eco-card-arrow {
     transform: translateX(6px);
     color: var(--signal);
   }
 
-  .ia-card-body {
+  .eco-card-body {
     margin-top: 32px;
   }
 
-  .ia-card-label {
+  .eco-card-label {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
@@ -216,7 +218,7 @@ const cards: Card[] = [
     margin-bottom: 14px;
   }
 
-  .ia-card-title {
+  .eco-card-title {
     font-family: var(--font-display);
     font-size: clamp(1.3rem, 1.8vw, 1.55rem);
     font-weight: 500;
@@ -227,7 +229,7 @@ const cards: Card[] = [
   }
 
   @media (max-width: 720px) {
-    .ia-card { padding: 32px 24px; }
-    .ia-card-body { margin-top: 24px; }
+    .eco-card { padding: 32px 24px; }
+    .eco-card-body { margin-top: 24px; }
   }
 </style>

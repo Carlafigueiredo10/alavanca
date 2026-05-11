@@ -6,8 +6,11 @@ export const prerender = false;
 const CATEGORIES = ['elogio', 'melhoria', 'erro', 'outro'] as const;
 type Category = (typeof CATEGORIES)[number];
 
-const KINDS = ['geral', 'bibliografia'] as const;
+const KINDS = ['geral', 'bibliografia', 'ecossistema'] as const;
 type Kind = (typeof KINDS)[number];
+
+const SUBKINDS_ECOSSISTEMA = ['rede', 'pratica', 'ferramenta'] as const;
+type SubkindEcossistema = (typeof SUBKINDS_ECOSSISTEMA)[number];
 
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -39,6 +42,18 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     CATEGORIES.includes(body?.category) ? (body.category as Category) : null;
 
   const kind: Kind = KINDS.includes(body?.kind) ? (body.kind as Kind) : 'geral';
+
+  // subkind só é aceito quando kind = ecossistema; nos demais kinds, sempre null.
+  let subkind: SubkindEcossistema | null = null;
+  if (kind === 'ecossistema') {
+    if (!SUBKINDS_ECOSSISTEMA.includes(body?.subkind)) {
+      return jsonResponse(
+        { error: 'Selecione o tipo da sugestão (rede, prática ou ferramenta).' },
+        400,
+      );
+    }
+    subkind = body.subkind as SubkindEcossistema;
+  }
 
   const page = typeof body?.page === 'string' && body.page.length <= 200 ? body.page : null;
 
@@ -73,6 +88,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     content,
     category,
     kind,
+    subkind,
     page,
     author_name: authorName,
     author_email: authorEmail,

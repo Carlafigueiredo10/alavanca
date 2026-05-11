@@ -1,8 +1,678 @@
 ---
-import Stub from '../components/Stub.astro';
+import Base from '../layouts/Base.astro';
+
+type Link = {
+  id: string;
+  label: string;
+  title: string;
+  body: string;
+  cta: string;
+  href: string;
+};
+
+const links: Link[] = [
+  {
+    id: '01',
+    label: 'Mapeamento',
+    title: 'LISP Brasil',
+    body: 'Mapa nacional dos laboratórios de inovação no setor público — referência aberta para localizar quem está fazendo o quê.',
+    cta: 'Abrir LISP',
+    href: 'https://lisp.ufrn.br/lispbrasil.html',
+  },
+  {
+    id: '02',
+    label: 'Iniciativa · CNJ',
+    title: 'RenovaJud — iniciativas públicas',
+    body: 'Portal do CNJ com iniciativas de inovação no Judiciário — referência para quem busca práticas testadas dentro do sistema de justiça.',
+    cta: 'Abrir RenovaJud',
+    href: 'https://renovajud.cnj.jus.br/iniciativas-publicas',
+  },
+  {
+    id: '03',
+    label: 'Programa federal',
+    title: 'Programa Nacional de Gestão e Inovação',
+    body: 'Programa do Ministério da Gestão e Inovação para fomentar transformação na administração pública federativa.',
+    cta: 'Abrir programa',
+    href: 'https://www.gov.br/gestao/pt-br/federativo/programa-nacional-de-gestao-e-inovacao',
+  },
+  {
+    id: '04',
+    label: 'Curadoria · LA-BORA! Gov',
+    title: 'Como acolher pessoas e criar ambientes para a inovação',
+    body: 'Curadoria temática do LA-BORA! Gov sobre as condições humanas e ambientais para que a inovação aconteça no setor público.',
+    cta: 'Abrir curadoria',
+    href: 'https://drive.google.com/file/d/1bQVuDK70IS1EDbJkPLgE5x6-cH4a4suY/view',
+  },
+  {
+    id: '05',
+    label: 'Conexão',
+    title: 'CONEXÃO LABS',
+    body: 'Ferramenta para conexão de ações inovadoras dos laboratórios de inovação — encontre quem está trabalhando em pautas próximas das suas.',
+    cta: 'Abrir ferramenta',
+    href: 'https://form.typeform.com/to/w71U22SZ',
+  },
+  {
+    id: '06',
+    label: 'Contribuir · LISP',
+    title: 'Sugerir lab não mapeado',
+    body: 'Formulário para indicar laboratórios que ainda não estão no LISP. Quem conhece o terreno completa o mapa.',
+    cta: 'Abrir formulário',
+    href: 'https://docs.google.com/forms/d/e/1FAIpQLSdzpRqpYuQPlJuXUn7ZJF5RhmvQZOaT-W37YOh-fUaiNNXFCQ/viewform',
+  },
+  {
+    id: '07',
+    label: 'Rede temática · Linguagem',
+    title: 'Rede Linguagem Simples Brasil',
+    body: 'Rede focada em tornar a comunicação governamental clara, cidadã e acessível. Reúne mil+ pessoas de todos os estados em torno do direito de entender.',
+    cta: 'Conhecer a rede',
+    href: 'https://linguagemsimples.prefeitura.sp.gov.br/rede-linguagem-simples-brasil/',
+  },
+  {
+    id: '08',
+    label: 'Rede de laboratórios · RNP',
+    title: 'RNP Labs',
+    body: 'Ecossistema de laboratórios da Rede Nacional de Ensino e Pesquisa — ESR LABs, DSS LABs, LabTech e outros — em inovação colaborativa de tecnologia e infraestrutura digital.',
+    cta: 'Abrir LAB+',
+    href: 'https://rnpmais.rnp.br/lab',
+  },
+];
 ---
-<Stub
-  title="Casos."
-  subtitle="Inspiração com lastro: exemplos reais com decisões e resultados."
+<Base
+  title="Ecossistema de Inovação · Alavanca"
+  description="Mapas, programas e ferramentas que formam o ecossistema de inovação no setor público brasileiro."
   current="casos"
-/>
+>
+  <main class="redes">
+    <div class="shell">
+      <header class="section-head">
+        <div class="section-head-meta">
+          <span class="section-head-id">/04</span>
+          <span class="section-head-line"></span>
+          <span class="section-head-tag">IV · Ecossistema</span>
+        </div>
+        <h2 class="section-head-title">
+          Ecossistema de Inovação.
+        </h2>
+      </header>
+
+      <p class="redes-sub">
+        Quem está em campo, quem ainda não foi mapeado, e como ligar quem trabalha em pautas próximas.
+      </p>
+
+      <aside class="redes-rationale">
+        <p class="redes-rationale-text">
+          Os 5 verbos são o motor metodológico do seu lab. Mas o método
+          sozinho não sustenta o impacto. A especialização da nova geração
+          de laboratórios é atuar como <em>construtores de ecossistemas</em>,
+          articulando cidadãos, academia e outras instituições para que a
+          inovação ganhe escala e não morra isolada.
+        </p>
+        <p class="redes-rationale-cite">
+          Programa I.LAB — laboratórios como <em>ecosystem builders</em>
+          (Isidro &amp; Queiroz-Isidro, 2025).
+        </p>
+      </aside>
+
+      <div class="redes-grid">
+        {links.map((l) => (
+          <a
+            href={l.href}
+            class="redes-card surface"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="redes-card-top">
+              <span class="redes-card-id">/{l.id}</span>
+              <span class="redes-card-arrow">↗</span>
+            </div>
+
+            <div>
+              <div class="redes-card-label">{l.label}</div>
+              <h3 class="redes-card-title">{l.title}</h3>
+              <p class="redes-card-body">{l.body}</p>
+            </div>
+
+            <div class="redes-card-foot">
+              <span class="redes-card-foot-mark">↳</span>
+              <span>{l.cta}</span>
+            </div>
+
+            <span class="bracket bracket-tl"></span>
+            <span class="bracket bracket-tr"></span>
+            <span class="bracket bracket-bl"></span>
+            <span class="bracket bracket-br"></span>
+          </a>
+        ))}
+      </div>
+
+      <!-- Sugerir -->
+      <section class="suggest surface">
+        <header class="suggest-head">
+          <div class="suggest-head-meta">
+            <span class="suggest-head-id">/SUG</span>
+            <span class="suggest-head-tag">Contribuir</span>
+          </div>
+          <h3 class="suggest-title">
+            Conhece uma rede, prática ou ferramenta?
+          </h3>
+          <p class="suggest-dek">
+            Indique o que falta. As sugestões vão pra revisão antes de entrar
+            no ecossistema.
+          </p>
+        </header>
+
+        <form id="eco-form" class="suggest-form" novalidate>
+          <div class="suggest-fields">
+            <label class="suggest-field">
+              <span class="suggest-label">Tipo</span>
+              <select name="subkind" required>
+                <option value="">Selecione…</option>
+                <option value="rede">Rede</option>
+                <option value="pratica">Prática</option>
+                <option value="ferramenta">Ferramenta</option>
+              </select>
+            </label>
+
+            <label class="suggest-field">
+              <span class="suggest-label">Nome da iniciativa</span>
+              <input
+                name="initiativeName"
+                type="text"
+                maxlength="200"
+                required
+                placeholder="Ex: Observatório de IA Pública"
+              />
+            </label>
+
+            <label class="suggest-field suggest-field-wide">
+              <span class="suggest-label">Escopo</span>
+              <textarea
+                name="scope"
+                rows="3"
+                maxlength="2000"
+                required
+                placeholder="O que faz, para quem, e por que vale ser conhecido."
+              ></textarea>
+            </label>
+
+            <label class="suggest-field suggest-field-wide">
+              <span class="suggest-label">Link ou contato do responsável</span>
+              <input
+                name="contact"
+                type="text"
+                maxlength="400"
+                required
+                placeholder="URL, e-mail ou outro canal"
+              />
+            </label>
+
+            <!-- honeypot -->
+            <input
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+              style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;"
+              aria-hidden="true"
+            />
+          </div>
+
+          <div class="suggest-feedback" id="eco-feedback" role="status" aria-live="polite"></div>
+
+          <div class="suggest-actions">
+            <button class="suggest-submit" type="submit" id="eco-submit">
+              Enviar sugestão →
+            </button>
+          </div>
+        </form>
+
+        <div class="suggest-success" id="eco-success" hidden>
+          <p>Recebido. Vou revisar antes de incluir. Obrigada pela contribuição.</p>
+          <button class="suggest-success-again" id="eco-again" type="button">Enviar outra</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .redes {
+    padding: 140px 0 120px;
+  }
+
+  .redes-sub {
+    margin-top: 32px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    font-style: italic;
+  }
+  @media (min-width: 880px) {
+    .redes-sub { margin-left: 25%; }
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 24px;
+  }
+  .section-head-meta {
+    grid-column: span 12;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .section-head-id { color: var(--signal); }
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
+  }
+  .section-head-title {
+    grid-column: span 12;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  @media (min-width: 880px) {
+    .section-head-meta  { grid-column: span 3; }
+    .section-head-title { grid-column: span 9; }
+  }
+
+  /* ---------- RATIONALE ---------- */
+  .redes-rationale {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--hairline);
+    max-width: 640px;
+  }
+  @media (min-width: 880px) {
+    .redes-rationale { margin-left: 25%; }
+  }
+  .redes-rationale-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.45;
+    color: var(--bone);
+    letter-spacing: -0.01em;
+  }
+  .redes-rationale-text em {
+    color: var(--signal);
+    font-style: italic;
+  }
+  .redes-rationale-cite {
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--fg-50);
+    line-height: 1.55;
+  }
+  .redes-rationale-cite em {
+    font-style: italic;
+    color: var(--fg-65);
+  }
+
+  /* ---------- CARDS ---------- */
+  .redes-grid {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 720px) {
+    .redes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .redes-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .redes-card {
+    position: relative;
+    overflow: hidden;
+    padding: 36px 32px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    text-decoration: none;
+    color: var(--bone);
+  }
+
+  .redes-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .redes-card-id { color: var(--signal); }
+
+  .redes-card-arrow {
+    font-size: 14px;
+    opacity: 0.6;
+    transition: transform 250ms ease, color 250ms ease;
+  }
+  .redes-card:hover .redes-card-arrow {
+    transform: translate(2px, -2px);
+    color: var(--signal);
+    opacity: 1;
+  }
+
+  .redes-card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    opacity: 0.85;
+    margin-bottom: 14px;
+  }
+
+  .redes-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2vw, 1.7rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+
+  .redes-card-body {
+    margin-top: 14px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-78);
+  }
+
+  .redes-card-foot {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+  }
+
+  .redes-card-foot-mark {
+    color: var(--signal);
+  }
+
+  @media (max-width: 720px) {
+    .redes-card { padding: 28px 24px; min-height: auto; }
+  }
+
+  /* ---------- SUGGEST ---------- */
+  .suggest {
+    position: relative;
+    margin-top: 80px;
+    padding: 48px 40px;
+  }
+
+  .suggest-head-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 16px;
+  }
+  .suggest-head-id { color: var(--signal); }
+
+  .suggest-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.018em;
+    color: var(--bone);
+    margin-bottom: 8px;
+  }
+
+  .suggest-dek {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg-65);
+    max-width: 60ch;
+  }
+
+  .suggest-form {
+    margin-top: 32px;
+  }
+
+  .suggest-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .suggest-fields { grid-template-columns: 1fr 1fr; }
+    .suggest-field-wide { grid-column: 1 / -1; }
+  }
+
+  .suggest-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .suggest-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .suggest-label em {
+    font-style: normal;
+    color: var(--fg-50);
+    opacity: 0.6;
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 10px;
+  }
+
+  .suggest-field input,
+  .suggest-field select,
+  .suggest-field textarea {
+    width: 100%;
+    background: rgba(245, 242, 235, 0.04);
+    border: 0.5px solid var(--hairline);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--bone);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .suggest-field textarea { resize: vertical; min-height: 96px; }
+  .suggest-field input:focus,
+  .suggest-field select:focus,
+  .suggest-field textarea:focus {
+    outline: none;
+    border-color: var(--signal);
+    background: rgba(245, 242, 235, 0.06);
+  }
+  .suggest-field select option {
+    background: var(--bg);
+    color: var(--bone);
+  }
+
+  .suggest-feedback {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 100, 100, 0.85);
+    min-height: 18px;
+  }
+
+  .suggest-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .suggest-submit {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid var(--signal);
+    background: rgba(217, 119, 6, 0.08);
+    color: var(--signal);
+    cursor: pointer;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .suggest-submit:hover:not(:disabled) {
+    background: rgba(217, 119, 6, 0.16);
+    transform: translateY(-1px);
+  }
+  .suggest-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .suggest-success {
+    padding: 24px 0 4px;
+    border-top: 0.5px solid var(--hairline);
+    margin-top: 32px;
+    text-align: center;
+  }
+  .suggest-success p {
+    font-size: 14px;
+    color: var(--fg-78);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .suggest-success-again {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .suggest-success-again:hover { color: var(--signal); }
+
+  @media (max-width: 720px) {
+    .suggest { padding: 32px 24px; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('eco-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('eco-submit') as HTMLButtonElement | null;
+  const feedback = document.getElementById('eco-feedback') as HTMLElement | null;
+  const success = document.getElementById('eco-success') as HTMLElement | null;
+  const again = document.getElementById('eco-again') as HTMLButtonElement | null;
+
+  function setFeedback(msg: string) {
+    if (feedback) feedback.textContent = msg;
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!submitBtn) return;
+
+    setFeedback('');
+    const fd = new FormData(form);
+    const subkind = String(fd.get('subkind') ?? '');
+    const initiativeName = String(fd.get('initiativeName') ?? '').trim();
+    const scope = String(fd.get('scope') ?? '').trim();
+    const contact = String(fd.get('contact') ?? '').trim();
+    const website = String(fd.get('website') ?? '');
+
+    if (!['rede', 'pratica', 'ferramenta'].includes(subkind)) {
+      setFeedback('Escolha o tipo (rede, prática ou ferramenta).');
+      return;
+    }
+    if (initiativeName.length < 2) {
+      setFeedback('Coloque o nome da iniciativa.');
+      return;
+    }
+    if (scope.length < 4) {
+      setFeedback('Descreva brevemente o escopo.');
+      return;
+    }
+    if (contact.length < 3) {
+      setFeedback('Coloque um link ou contato do responsável.');
+      return;
+    }
+
+    // Servidor armazena tudo no campo `content` — fácil revisar manualmente.
+    const content = `Iniciativa: ${initiativeName}\nEscopo: ${scope}\nContato: ${contact}`;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    try {
+      const res = await fetch('/api/sugestoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'ecossistema',
+          subkind,
+          content,
+          page: '/casos',
+          website,
+        }),
+      });
+      const data = await res.json().catch(() => ({} as Record<string, unknown>));
+      if (!res.ok) {
+        setFeedback(typeof data?.error === 'string' ? data.error : 'Erro ao registrar — tenta de novo em instantes.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar sugestão →';
+        return;
+      }
+      form.hidden = true;
+      if (success) success.hidden = false;
+    } catch {
+      setFeedback('Sem conexão. Tenta de novo em instantes.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar sugestão →';
+    }
+  });
+
+  again?.addEventListener('click', () => {
+    if (!form) return;
+    form.reset();
+    form.hidden = false;
+    if (success) success.hidden = true;
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar sugestão →';
+    }
+    setFeedback('');
+  });
+</script>

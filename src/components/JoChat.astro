@@ -23,16 +23,6 @@ const { conversationId, variant = 'page' } = Astro.props;
     </div>
   </div>
 
-  <div class="jo-chat__lgpd" data-role="lgpd" hidden>
-    Suas conversas ficam salvas pra você consultar depois. Nada é compartilhado.
-    <button type="button" class="jo-chat__lgpd-close" data-role="lgpd-close" aria-label="Fechar">×</button>
-  </div>
-
-  <div class="jo-chat__mode-banner" data-role="mode-banner" hidden>
-    <span class="jo-chat__mode-chip" data-role="mode-chip">Modo Estruturar</span>
-    <span class="jo-chat__mode-text" data-role="mode-text">próximo envio gera Blueprint de Sprint (MINDS · GNova).</span>
-  </div>
-
   <form class="jo-chat__form" data-role="form">
     <textarea
       class="jo-chat__input"
@@ -218,65 +208,6 @@ const { conversationId, variant = 'page' } = Astro.props;
   }
   @keyframes jo-blink { 50% { opacity: 0; } }
 
-  /* LGPD banner */
-  .jo-chat__lgpd {
-    position: relative;
-    margin: 0 24px 10px;
-    padding: 10px 36px 10px 14px;
-    border: 0.5px solid var(--fg-22);
-    border-radius: 8px;
-    background: rgba(245, 242, 235, 0.03);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--fg-86);
-    line-height: 1.5;
-  }
-  .jo-chat__lgpd-close {
-    position: absolute;
-    top: 4px;
-    right: 6px;
-    background: transparent;
-    border: 0;
-    color: var(--fg-50);
-    font-size: 18px;
-    cursor: pointer;
-    line-height: 1;
-    padding: 4px 8px;
-  }
-  .jo-chat__lgpd-close:hover { color: var(--fg); }
-
-  /* Modo Estruturar — banner sticky pra um envio só */
-  .jo-chat__mode-banner {
-    margin: 0 24px 10px;
-    padding: 10px 14px;
-    border: 0.5px solid var(--amber);
-    border-radius: 8px;
-    background: rgba(217, 119, 6, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--fg-86);
-  }
-  .jo-chat__mode-chip {
-    flex: 0 0 auto;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: var(--amber);
-    color: var(--bg);
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    font-size: 9.5px;
-    text-transform: uppercase;
-  }
-  .jo-chat__mode-text {
-    color: var(--fg-86);
-    letter-spacing: 0.04em;
-  }
-
   /* Form */
   .jo-chat__form {
     flex: 0 0 auto;
@@ -431,13 +362,6 @@ const { conversationId, variant = 'page' } = Astro.props;
     'provar',
   ]);
 
-  const MODE_BANNERS: Partial<Record<Mode, { chip: string; text: string }>> = {
-    estruturar: { chip: 'Modo Estruturar', text: 'próximo envio gera Blueprint de Sprint (MINDS · GNova).' },
-    formalizar: { chip: 'Modo Formalizar', text: 'próximo envio gera Minuta jurídica (Marco Legal CT&I · Lei 14.129/2021).' },
-    construir:  { chip: 'Modo Construir',  text: 'próximo envio gera Plano de Implementação + Handoff (AGU).' },
-    avaliar:    { chip: 'Modo Avaliar',    text: 'próximo envio gera Teoria de Mudança + Indicadores SMART.' },
-    provar:     { chip: 'Modo Provar',     text: 'próximo envio gera Dossiê + Pitch adaptável.' },
-  };
   interface ServerMessage {
     id?: string;
     role: Role;
@@ -445,8 +369,6 @@ const { conversationId, variant = 'page' } = Astro.props;
     mode_used?: Mode | null;
     is_partial?: boolean;
   }
-
-  const LGPD_KEY = 'jo-lgpd-acknowledged';
 
   function escapeHtml(text: string): string {
     return text
@@ -568,30 +490,49 @@ const { conversationId, variant = 'page' } = Astro.props;
     const submitEl = root.querySelector<HTMLButtonElement>('[data-role="submit"]')!;
     const submitLabelEl = root.querySelector<HTMLSpanElement>('[data-role="submit-label"]')!;
     const counterEl = root.querySelector<HTMLDivElement>('[data-role="counter"]')!;
-    const lgpdEl = root.querySelector<HTMLDivElement>('[data-role="lgpd"]')!;
-    const lgpdCloseEl = root.querySelector<HTMLButtonElement>('[data-role="lgpd-close"]')!;
-    const modeBannerEl = root.querySelector<HTMLDivElement>('[data-role="mode-banner"]')!;
-    const modeChipEl = root.querySelector<HTMLSpanElement>('[data-role="mode-chip"]')!;
-    const modeTextEl = root.querySelector<HTMLSpanElement>('[data-role="mode-text"]')!;
 
     let sending = false;
-    // Modo aberto pré-demo: histórico vive em memória, zera a cada page load.
-    // Sem persistência no Supabase, sem auth, sem sidebar.
+    // Modo aberto pré-demo: histórico vive em sessionStorage (não Supabase, sem auth).
+    // sessionStorage sobrevive navegação entre /jo e o drawer (mesmo tab), mas zera
+    // quando o tab/janela fecha — sem coleta entre sessões.
+    const HISTORY_KEY = 'jo-open-history';
     const localHistory: { role: Role; content: string }[] = [];
+
+    function loadHistoryFromStorage() {
+      try {
+        const raw = sessionStorage.getItem(HISTORY_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return;
+        for (const m of parsed) {
+          if (
+            m &&
+            typeof m === 'object' &&
+            (m.role === 'user' || m.role === 'assistant') &&
+            typeof m.content === 'string'
+          ) {
+            localHistory.push({ role: m.role, content: m.content });
+            appendMessage({ role: m.role, content: m.content });
+          }
+        }
+      } catch {
+        /* sessionStorage may be unavailable / quota exceeded */
+      }
+    }
+
+    function saveHistoryToStorage() {
+      try {
+        sessionStorage.setItem(HISTORY_KEY, JSON.stringify(localHistory));
+      } catch {
+        /* ignore */
+      }
+    }
     // Sticky overrides usados apenas no próximo envio (vêm do wizard / prefill).
     let nextModeOverride: Mode | null = null;
     let nextHookOverride: string | null = null;
 
     function setNextModeOverride(mode: Mode | null) {
       nextModeOverride = mode;
-      const banner = mode ? MODE_BANNERS[mode] : null;
-      if (banner) {
-        modeChipEl.textContent = banner.chip;
-        modeTextEl.textContent = banner.text;
-        modeBannerEl.hidden = false;
-      } else {
-        modeBannerEl.hidden = true;
-      }
       // Esconde o toggle "ampliar com refs" em qualquer modo curado
       // (provider fixado, lastro no system prompt — ampliar não se aplica).
       const isCurated = !!mode && CURATED_MODES.has(mode);
@@ -620,25 +561,6 @@ const { conversationId, variant = 'page' } = Astro.props;
       const max = 180;
       inputEl.style.height = Math.min(inputEl.scrollHeight, max) + 'px';
     }
-
-    function showLgpdIfNeeded() {
-      try {
-        if (!sessionStorage.getItem(LGPD_KEY)) {
-          lgpdEl.hidden = false;
-        }
-      } catch {
-        lgpdEl.hidden = false;
-      }
-    }
-
-    lgpdCloseEl.addEventListener('click', () => {
-      lgpdEl.hidden = true;
-      try {
-        sessionStorage.setItem(LGPD_KEY, '1');
-      } catch {
-        /* ignore */
-      }
-    });
 
     function ensureEmptyHidden() {
       emptyEl.hidden = true;
@@ -766,6 +688,7 @@ const { conversationId, variant = 'page' } = Astro.props;
       if (acc.trim()) {
         localHistory.push({ role: 'user', content: message });
         localHistory.push({ role: 'assistant', content: acc });
+        saveHistoryToStorage();
       }
     }
 
@@ -783,7 +706,6 @@ const { conversationId, variant = 'page' } = Astro.props;
       const hookForThisSend = nextHookOverride;
 
       setSending(true);
-      showLgpdIfNeeded();
 
       appendMessage({ role: 'user', content: message });
       const assistantBubble = appendMessage({ role: 'assistant', content: '' }) as HTMLDivElement;
@@ -834,6 +756,9 @@ const { conversationId, variant = 'page' } = Astro.props;
 
     updateCounter();
     autoresize();
+
+    // Reconstroi conversa em andamento (drawer ↔ /jo no mesmo tab).
+    loadHistoryFromStorage();
 
     // Pré-fill vindo do diagnóstico/wizard (sessionStorage). O servidor revisa/edita
     // antes de enviar — "Você decide. A Jô redige."

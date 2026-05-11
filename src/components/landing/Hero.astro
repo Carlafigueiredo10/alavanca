@@ -105,22 +105,6 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
         </p>
       </div>
 
-      <div class="hero-grid-readouts">
-        <p class="hero-label">Sistema</p>
-        <div class="hero-readout">
-          <span>Verbos do método</span>
-          <span class="hero-readout-value">05</span>
-        </div>
-        <div class="hero-readout">
-          <span>Frentes do sistema</span>
-          <span class="hero-readout-value">04</span>
-        </div>
-        <div class="hero-readout">
-          <span>Casos de prova</span>
-          <span class="hero-readout-value">03</span>
-        </div>
-      </div>
-
       <div class="hero-grid-ctas">
         <a class="hero-cta hero-cta-primary" href="/diagnostico">
           <span class="hero-cta-label">Diagnóstico</span>
@@ -297,12 +281,10 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
   }
 
   .hero-grid-premise   { grid-column: span 12; }
-  .hero-grid-readouts  { grid-column: span 12; display: flex; flex-direction: column; gap: 8px; }
   .hero-grid-ctas      { grid-column: span 12; display: flex; flex-direction: column; gap: 12px; align-self: end; }
 
   @media (min-width: 880px) {
-    .hero-grid-premise   { grid-column: span 5; }
-    .hero-grid-readouts  { grid-column: 7 / span 3; }
+    .hero-grid-premise   { grid-column: span 7; }
     .hero-grid-ctas      { grid-column: 10 / span 3; }
   }
 
@@ -333,27 +315,6 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
   }
   .hero-byline span {
     color: var(--bone);
-  }
-
-  /* ---------- READOUTS ---------- */
-  .hero-readout {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-top: 1px solid var(--hairline);
-    padding-top: 8px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-50);
-  }
-
-  .hero-readout-value {
-    font-family: var(--font-display);
-    font-size: 26px;
-    color: var(--bone);
-    letter-spacing: 0;
   }
 
   /* ---------- CTAs ---------- */
