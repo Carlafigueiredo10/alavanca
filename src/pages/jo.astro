@@ -1,65 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import JoChat from '../components/JoChat.astro';
-import { createSupabaseServerClient } from '../lib/supabase/server';
 
-export const prerender = false;
-
-const supabase = createSupabaseServerClient(Astro.cookies);
-const { data: auth } = await supabase.auth.getUser();
-
-if (!auth?.user) {
-  return Astro.redirect('/login?next=/jo');
-}
-
-const activeId = Astro.url.searchParams.get('c') ?? '';
-
-const { data: conversations } = await supabase
-  .from('conversations')
-  .select('id, title, created_at')
-  .order('created_at', { ascending: false })
-  .limit(50);
-
-const userEmail = auth.user.email ?? '';
-
-function fmtDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-}
+// Modo aberto pré-demo: página acessível a qualquer visitante, sem auth.
+// Chat funciona stateless (sem persistência no Supabase, sem sidebar de
+// conversas). Para restaurar o fluxo autenticado: git checkout main.
 ---
 <Base title="Jô · Alavanca" description="Assistente embarcada da Alavanca.">
   <main class="jo-page">
-    <aside class="jo-sidebar">
-      <div class="jo-sidebar__header">
-        <div class="jo-sidebar__id">↳ Conversas</div>
-        <button class="jo-sidebar__new" id="jo-new" type="button">
-          + Nova
-        </button>
-      </div>
-
-      <div class="jo-sidebar__list">
-        {(conversations ?? []).length === 0 && (
-          <p class="jo-sidebar__empty">
-            Suas conversas com a Jô aparecem aqui.
-          </p>
-        )}
-        {(conversations ?? []).map((c) => (
-          <a
-            href={`/jo?c=${c.id}`}
-            class={`jo-sidebar__item ${c.id === activeId ? 'is-active' : ''}`}
-          >
-            <span class="jo-sidebar__title">{c.title || 'Nova conversa'}</span>
-            <span class="jo-sidebar__date">{fmtDate(c.created_at)}</span>
-          </a>
-        ))}
-      </div>
-
-      <div class="jo-sidebar__footer">
-        <div class="jo-sidebar__user" title={userEmail}>{userEmail}</div>
-        <button class="jo-sidebar__logout" id="jo-logout" type="button">sair</button>
-      </div>
-    </aside>
-
     <section class="jo-main">
       <header class="jo-main__header">
         <img
@@ -74,137 +22,24 @@ function fmtDate(iso: string): string {
         </div>
       </header>
       <div class="jo-main__chat">
-        <JoChat conversationId={activeId} variant="page" />
+        <JoChat variant="page" />
       </div>
     </section>
   </main>
 
   <style>
     .jo-page {
-      display: grid;
-      grid-template-columns: 280px 1fr;
+      display: flex;
+      justify-content: center;
       min-height: calc(100vh - 65px);
       max-height: calc(100vh - 65px);
     }
-
-    .jo-sidebar {
-      border-right: 0.5px solid var(--fg-14);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      background: rgba(0, 0, 0, 0.18);
-    }
-    .jo-sidebar__header {
-      padding: 22px 22px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 0.5px solid var(--fg-14);
-    }
-    .jo-sidebar__id {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      color: var(--fg-50);
-    }
-    .jo-sidebar__new {
-      font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--amber);
-      background: transparent;
-      border: 0.5px solid var(--amber-faint);
-      border-radius: 999px;
-      padding: 5px 12px;
-      cursor: pointer;
-      transition: background 200ms ease, color 200ms ease;
-    }
-    .jo-sidebar__new:hover {
-      background: rgba(217, 119, 6, 0.10);
-    }
-
-    .jo-sidebar__list {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      padding: 8px 12px;
-    }
-    .jo-sidebar__empty {
-      font-family: var(--sans);
-      font-size: 12.5px;
-      color: var(--fg-50);
-      padding: 18px 10px;
-      line-height: 1.55;
-    }
-    .jo-sidebar__item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--fg-86);
-      transition: background 180ms ease, color 180ms ease;
-    }
-    .jo-sidebar__item:hover {
-      background: rgba(245, 242, 235, 0.04);
-      color: var(--fg);
-    }
-    .jo-sidebar__item.is-active {
-      background: rgba(217, 119, 6, 0.10);
-      color: var(--fg);
-    }
-    .jo-sidebar__title {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      line-height: 1.35;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-    .jo-sidebar__date {
-      font-family: var(--mono);
-      font-size: 10.5px;
-      color: var(--fg-45);
-      letter-spacing: 0.04em;
-    }
-
-    .jo-sidebar__footer {
-      border-top: 0.5px solid var(--fg-14);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-    .jo-sidebar__user {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--fg-50);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .jo-sidebar__logout {
-      font-family: var(--mono);
-      font-size: 10.5px;
-      color: var(--fg-50);
-      background: transparent;
-      border: 0;
-      cursor: pointer;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 4px 8px;
-    }
-    .jo-sidebar__logout:hover { color: var(--fg); }
-
     .jo-main {
       display: flex;
       flex-direction: column;
       min-height: 0;
+      width: 100%;
+      max-width: 900px;
     }
     .jo-main__header {
       flex: 0 0 auto;
@@ -239,49 +74,5 @@ function fmtDate(iso: string): string {
       flex: 1 1 auto;
       min-height: 0;
     }
-
-    @media (max-width: 760px) {
-      .jo-page {
-        grid-template-columns: 1fr;
-      }
-      .jo-sidebar { display: none; }
-    }
   </style>
-
-  <script>
-    import { getSupabaseBrowserClient } from '../lib/supabase/browser';
-
-    const newBtn = document.getElementById('jo-new') as HTMLButtonElement | null;
-    newBtn?.addEventListener('click', async () => {
-      newBtn.disabled = true;
-      try {
-        const res = await fetch('/api/jo/conversations', { method: 'POST' });
-        if (res.status === 401) {
-          window.location.href = '/login?next=/jo';
-          return;
-        }
-        if (!res.ok) {
-          newBtn.disabled = false;
-          return;
-        }
-        const data = await res.json();
-        if (data?.conversation?.id) {
-          window.location.href = `/jo?c=${data.conversation.id}`;
-        }
-      } catch {
-        newBtn.disabled = false;
-      }
-    });
-
-    const logoutBtn = document.getElementById('jo-logout');
-    logoutBtn?.addEventListener('click', async () => {
-      try {
-        const supabase = getSupabaseBrowserClient();
-        await supabase.auth.signOut();
-      } catch {
-        /* ignore */
-      }
-      window.location.href = '/login';
-    });
-  </script>
 </Base>

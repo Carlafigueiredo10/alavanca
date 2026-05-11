@@ -76,21 +76,9 @@
 </style>
 
 <script>
-  import { getSupabaseBrowserClient } from '../lib/supabase/browser';
-
+  // Modo aberto pré-demo: clique abre o drawer direto, sem checagem de sessão.
   const fab = document.getElementById('jo-fab');
-  fab?.addEventListener('click', async () => {
-    try {
-      const supabase = getSupabaseBrowserClient();
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        const next = encodeURIComponent(window.location.pathname + window.location.search);
-        window.location.href = `/login?next=${next}`;
-        return;
-      }
-      document.dispatchEvent(new CustomEvent('jo:open'));
-    } catch {
-      window.location.href = '/login';
-    }
+  fab?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('jo:open'));
   });
 </script>

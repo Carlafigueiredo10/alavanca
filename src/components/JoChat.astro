@@ -574,8 +574,10 @@ const { conversationId, variant = 'page' } = Astro.props;
     const modeChipEl = root.querySelector<HTMLSpanElement>('[data-role="mode-chip"]')!;
     const modeTextEl = root.querySelector<HTMLSpanElement>('[data-role="mode-text"]')!;
 
-    let conversationId = root.dataset.conversationId || '';
     let sending = false;
+    // Modo aberto pré-demo: histórico vive em memória, zera a cada page load.
+    // Sem persistência no Supabase, sem auth, sem sidebar.
+    const localHistory: { role: Role; content: string }[] = [];
     // Sticky overrides usados apenas no próximo envio (vêm do wizard / prefill).
     let nextModeOverride: Mode | null = null;
     let nextHookOverride: string | null = null;
@@ -683,36 +685,6 @@ const { conversationId, variant = 'page' } = Astro.props;
       return bubble;
     }
 
-    async function loadHistory() {
-      if (!conversationId) return;
-      try {
-        const res = await fetch(`/api/jo/messages?conversationId=${encodeURIComponent(conversationId)}`);
-        if (!res.ok) return;
-        const data = (await res.json()) as { messages: ServerMessage[] };
-        for (const m of data.messages || []) appendMessage(m);
-      } catch {
-        /* ignore */
-      }
-    }
-
-    async function ensureConversation(): Promise<string | null> {
-      if (conversationId) return conversationId;
-      try {
-        const res = await fetch('/api/jo/conversations', { method: 'POST' });
-        if (res.status === 401) {
-          window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
-          return null;
-        }
-        if (!res.ok) return null;
-        const data = (await res.json()) as { conversation: { id: string } };
-        conversationId = data.conversation.id;
-        root.dataset.conversationId = conversationId;
-        return conversationId;
-      } catch {
-        return null;
-      }
-    }
-
     async function streamChat(
       message: string,
       mode: Mode,
@@ -720,16 +692,12 @@ const { conversationId, variant = 'page' } = Astro.props;
       assistantBubble: HTMLDivElement,
       partialTagOnError: () => void,
     ) {
-      const res = await fetch('/api/jo/chat', {
+      const res = await fetch('/api/jo/chat-open', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, message, mode, hookId }),
+        body: JSON.stringify({ messages: localHistory, message, mode, hookId }),
       });
 
-      if (res.status === 401) {
-        window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
-        return;
-      }
       if (!res.ok || !res.body) {
         let msg = 'A Jô engasgou. Tenta de novo daqui a pouco.';
         try {
@@ -793,6 +761,12 @@ const { conversationId, variant = 'page' } = Astro.props;
         tag.textContent = 'resposta incompleta';
         assistantBubble.appendChild(tag);
       }
+
+      // Atualiza histórico local pra próxima rodada — só se resposta tiver conteúdo.
+      if (acc.trim()) {
+        localHistory.push({ role: 'user', content: message });
+        localHistory.push({ role: 'assistant', content: acc });
+      }
     }
 
     formEl.addEventListener('submit', async (e) => {
@@ -810,12 +784,6 @@ const { conversationId, variant = 'page' } = Astro.props;
 
       setSending(true);
       showLgpdIfNeeded();
-
-      const cid = await ensureConversation();
-      if (!cid) {
-        setSending(false);
-        return;
-      }
 
       appendMessage({ role: 'user', content: message });
       const assistantBubble = appendMessage({ role: 'assistant', content: '' }) as HTMLDivElement;
@@ -893,9 +861,6 @@ const { conversationId, variant = 'page' } = Astro.props;
       /* ignore */
     }
 
-    if (conversationId) {
-      loadHistory();
-    }
   }
 
   document.querySelectorAll<HTMLElement>('.jo-chat').forEach(initJoChat);
