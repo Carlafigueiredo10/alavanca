@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { eixos, allPrompts } from '../../data/prompts';
+import { eixos, allPrompts, promptCount, eixoCount, methodEixoCount, numToPt } from '../../data/prompts';
 
 // Lista plana para o sumário-livro: eixo verbo aparece só na primeira
 // linha do grupo (como sumário literário).
@@ -19,7 +19,7 @@ const tocRows = eixos.flatMap((eixo) =>
 ---
 <Base
   title="Assistentes de laboratório · Alavanca"
-  description="Dezenove prompts pré-configurados para que laboratórios de inovação pública construam no mesmo dia, sem depender da fila da TI."
+  description={`${numToPt(promptCount)} prompts pré-configurados para que laboratórios de inovação pública construam no mesmo dia, sem depender da fila da TI.`}
   current="assistente"
 >
 
@@ -39,7 +39,7 @@ const tocRows = eixos.flatMap((eixo) =>
 
       <h1 class="ahero-title">Assistentes de laboratório.</h1>
 
-      <p class="ahero-dek">Dezenove prompts para o lab construir<br />no mesmo dia.</p>
+      <p class="ahero-dek">{numToPt(promptCount)} prompts para o lab construir<br />no mesmo dia.</p>
 
       <p class="ahero-kicker">↑ Quem organiza o pensamento, organiza a tecnologia</p>
 
@@ -51,7 +51,7 @@ const tocRows = eixos.flatMap((eixo) =>
         </div>
         <div class="ahero-meta-block ahero-meta-right">
           <div class="ahero-meta-label">↳ Itens</div>
-          <div>19 prompts · 6 eixos</div>
+          <div>{promptCount} prompts · {eixoCount} eixos</div>
           <div class="ahero-meta-sub">Estruturar · Formalizar · Construir · Avaliar · Provar · Aplicar</div>
         </div>
       </div>
@@ -95,7 +95,7 @@ const tocRows = eixos.flatMap((eixo) =>
     <div class="container">
       <div class="toc-head">
         <span class="toc-label">↳ Índice</span>
-        <span class="toc-meta">19 prompts · 6 eixos · clique para abrir</span>
+        <span class="toc-meta">{promptCount} prompts · {eixoCount} eixos · clique para abrir</span>
       </div>
       <ol class="toc-list">
         {tocRows.map((r) => (
@@ -117,7 +117,7 @@ const tocRows = eixos.flatMap((eixo) =>
     <div class="container">
       <div class="closing-id">↳ Próximo passo</div>
       <h2 class="closing-title">Do prompt copiado ao assistente em produção.</h2>
-      <p class="closing-dek">Dezenove prompts em seis eixos. Cinco verbos do método — estruturar, formalizar, construir, avaliar, provar — para o trabalho de pensar e escrever; e um sexto eixo, aplicar, com utilitários para sair do prompt copiado direto ao protótipo navegável. O nono ensina o caminho de criar o seu próprio assistente; os demais dão matéria-prima para começar hoje.</p>
+      <p class="closing-dek">{numToPt(promptCount)} prompts em {numToPt(eixoCount).toLowerCase()} eixos. {numToPt(methodEixoCount)} verbos do método — estruturar, formalizar, construir, avaliar, provar — para o trabalho de pensar e escrever; e um sexto eixo, aplicar, com utilitários para sair do prompt copiado direto ao protótipo navegável. O nono ensina o caminho de criar o seu próprio assistente; os demais dão matéria-prima para começar hoje.</p>
 
       <div class="closing-ctas">
         <a href="#" class="closing-cta">
