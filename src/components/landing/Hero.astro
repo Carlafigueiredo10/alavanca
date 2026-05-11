@@ -7,10 +7,10 @@
  */
 
 const headlineWords = [
-  { t: 'A força',          italic: false },
-  { t: 'que multiplica',   italic: true  },
-  { t: 'laboratórios de',  italic: false },
-  { t: 'inovação pública.', italic: false },
+  { t: 'Multiplicando',       italic: true  },
+  { t: 'a força dos',         italic: false },
+  { t: 'laboratórios de',     italic: false },
+  { t: 'inovação pública.',   italic: false },
 ];
 
 const ticks = Array.from({ length: 60 }, (_, i) => {
@@ -96,9 +96,9 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
       <div class="hero-grid-premise">
         <p class="hero-label">↑ Premissa</p>
         <p class="hero-premise">
-          Mais entrega, com a equipe que você tem. A Alavanca é a plataforma do
-          CLIC para apoiar laboratórios de inovação pública — do diagnóstico à
-          prova de valor — com IA aplicada e método.
+          Mais entrega, com a equipe que você tem. Alavanca é a plataforma para
+          apoiar laboratórios de inovação pública, do diagnóstico à prova de
+          valor, com IA aplicada e método.
         </p>
         <p class="hero-byline">
           ↳ Por <span>CLIC · Centro de letramento digital</span> · Edição I · Encontro de Labs · MMXXVI
@@ -215,7 +215,7 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: 120px;
+    padding-top: 72px;
     padding-bottom: 80px;
     transform: translateY(calc(var(--p, 0) * 180px));
     opacity: calc(1 - var(--p, 0) * 0.8);
@@ -223,7 +223,7 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
 
   @media (min-height: 900px) {
     /* Em viewports altos, dá ar acima — evita o conteúdo grudar no topo */
-    .hero-content { padding-top: 160px; }
+    .hero-content { padding-top: 96px; }
   }
 
   /* ---------- EDITION ROW ---------- */
@@ -285,6 +285,7 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
   .hero-italic {
     font-style: italic;
     font-weight: 300;
+    padding-right: 0.08em;
   }
 
   /* ---------- GRID ---------- */
