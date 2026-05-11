@@ -37,6 +37,13 @@ const eixos = [
     dek: 'Da entrega silenciosa à defesa do lab na transição.',
     note: 'Três assistentes para defender o lab, traduzir entrega em narrativa que mobiliza, e atravessar a troca de gestão com argumento na mão.',
   },
+  {
+    id: 'aplicar',
+    num: '06',
+    verb: 'Aplicar.',
+    dek: 'Do prompt copiado ao protótipo pronto — sem fila da TI.',
+    note: 'Utilitários para colar no Claude Code, Lovable ou ChatGPT e sair com produto navegável: página do lab, prateleira de serviços, apresentação de impacto, minuta de política. Banco de prompts — a IA é a sua de preferência.',
+  },
 ];
 
 const prompts = [
@@ -456,7 +463,7 @@ Não suavize quando o conteúdo precisa ser firme. Linguagem simples não signif
   },
   {
     id: 'p09', num: '09', eixoId: 'construir',
-    eyebrow: 'Meta · Crie a Sueli do seu lab',
+    eyebrow: 'Meta · Crie o assistente permanente do seu lab',
     title: 'O prompt que escreve seu próprio assistente permanente.',
     purpose: 'Para deixar de copiar prompts soltos e criar o System Prompt definitivo do assistente do laboratório.',
     promptLabel: 'Prompt · Meta-prompt (System)',
@@ -464,7 +471,7 @@ Não suavize quando o conteúdo precisa ser firme. Linguagem simples não signif
 
 <strong>Sua tarefa:</strong>
 
-Desenhar o System Prompt definitivo de um assistente permanente para o nosso laboratório, no espírito da "Sueli" da plataforma ASCENDA. O assistente deve resolver o seguinte objetivo:
+Desenhar o System Prompt definitivo de um assistente permanente para o nosso laboratório — colega especialista que vive nas instruções personalizadas e responde no dia a dia sem precisar ser reformulado a cada uso. O assistente deve resolver o seguinte objetivo:
 
 <span class="placeholder">[DESCREVER O OBJETIVO ESPECÍFICO]</span>
 
@@ -845,11 +852,72 @@ Demonstre que elas se reforçam — não competem. Aponte qual é a porta de ent
 Tom: prático e político, não acadêmico. Quero argumentos que possam ser levados para a próxima reunião de gabinete sem reescrita.`,
     when: 'Revisão de PPA · construção de portfólio anual · reposicionamento institucional · justificativa para recusar demanda fora do escopo.',
   },
+  {
+    id: 'p16', num: '16', eixoId: 'aplicar',
+    eyebrow: 'Utilitário · Landing institucional',
+    title: 'Página única para apresentar o lab a quem chega.',
+    purpose: 'Para o lab ter cara pública sem depender da fila da comunicação ou da TI — cola o prompt na IA de preferência e sai com landing pronta para abrir no navegador.',
+    promptLabel: 'Prompt · Página do Lab',
+    body: `Você é um <em>designer de produto digital</em> especialista em comunicação institucional para o setor público brasileiro. Você domina a estética entre o sóbrio institucional e o contemporâneo acessível — sem cair em caricatura de startup, sem cair em portal de prefeitura de 2009. Seu papel é traduzir a identidade de um laboratório de inovação pública em uma página única que apresente o lab a quem chega pela primeira vez: gestor, parceiro, servidor curioso, jornalista.
+
+<strong>Sua tarefa:</strong>
+
+Construir uma landing page institucional auto-contida (HTML + CSS em arquivo único, pronta para salvar como <code>index.html</code> e abrir no navegador), seguindo os parâmetros abaixo.
+
+<strong>1. Identidade do lab</strong>
+
+- Nome do lab: <span class="placeholder">[INSERIR NOME]</span>
+- Órgão ou instituição vinculada: <span class="placeholder">[INSERIR ÓRGÃO]</span>
+- Missão em uma frase (verbo + público + valor concreto, sem genéricos): <span class="placeholder">[INSERIR MISSÃO]</span>
+- Estética desejada (escolha uma): <span class="placeholder">[sóbria institucional · contemporânea acessível · técnica-experimental]</span>
+- Cor primária (hex ou nome — ex: #1F4F86, terracota, verde-floresta): <span class="placeholder">[INSERIR COR PRIMÁRIA]</span>
+
+<strong>2. Conteúdo da página</strong>
+
+- 3 a 5 serviços ou ofertas principais do lab, uma linha cada: <span class="placeholder">[LISTAR SERVIÇOS]</span>
+- Equipe central, nome e papel — até 4 pessoas: <span class="placeholder">[LISTAR EQUIPE]</span>
+- Chamada principal para ação (o que a pessoa deve fazer ao cair na página — agendar conversa, conhecer projetos, baixar relatório, etc.): <span class="placeholder">[INSERIR CTA]</span>
+- Forma real de contato (e-mail institucional, telefone, link de agendamento): <span class="placeholder">[INSERIR CONTATO]</span>
+
+<strong>3. Estrutura obrigatória da página</strong>
+
+1. Hero — nome do lab, missão em frase única, CTA principal visível na primeira dobra.
+2. O que fazemos — os serviços apresentados com hierarquia tipográfica clara (não cards genéricos vazios).
+3. Time — nome e papel de cada pessoa, sem foto exigida (não invente avatar).
+4. Como acessar — formas reais de contato e o CTA principal repetido.
+5. Rodapé institucional — vinculação ao órgão, ano, links institucionais quando informados.
+
+<strong>4. Diretrizes técnicas</strong>
+
+- HTML semântico (header, main, section, footer — não use div para tudo).
+- CSS dentro do mesmo arquivo, em &lt;style&gt; no &lt;head&gt;. Sem framework externo, sem CDN, sem Tailwind.
+- Mobile-first. Quebra confortável até 360px de largura.
+- Contraste mínimo WCAG AA. Tipografia legível, hierarquia tipográfica clara (h1 ≫ h2 ≫ corpo).
+- Use variáveis CSS (--cor-primaria, --cor-fundo, --cor-texto, --espaco) para que o lab consiga ajustar paleta sem mexer no resto.
+- Sem JavaScript, a menos que estritamente necessário (e justifique se usar).
+- Derive 3 a 4 tons a partir da cor primária informada. Não use mais de 4 cores no total.
+
+<strong>5. Restrições absolutas</strong>
+
+❌ Não invente entregas, números, datas, projetos ou histórico do lab. Use apenas o que foi informado nos campos.
+❌ Não inclua frases vazias ("transformando o futuro", "inovação que importa", "mindset disruptivo"). Tom institucional brasileiro adulto.
+❌ Não use imagens placeholder de bancos de imagem genéricos (Unsplash etc.). Se for usar imagem, marque com comentário HTML para o lab substituir.
+❌ Não imite estética de Big Tech (gradiente radial cyberpunk, fonte geométrica exagerada, dark mode glassmorphism). Isto é uma página institucional do Estado brasileiro.
+❌ Não use Lorem Ipsum. Se faltar conteúdo, marque o trecho com comentário pedindo que o lab preencha.
+
+<strong>6. Saída esperada</strong>
+
+Um único bloco de código HTML completo, pronto para salvar e abrir no navegador. Após o código, em até 6 linhas, indique:
+- Quais variáveis CSS você criou (e o que cada uma controla).
+- Qual decisão de hierarquia tomou (qual elemento ganha mais peso visual e por quê).
+- Onde o lab pode trocar imagem ou ampliar conteúdo sem quebrar o layout.`,
+    when: 'Lab recém-formado · transição de gestão · necessidade de cara pública para captação · primeira apresentação a parceiro novo · pressão para "ter site" sem orçamento de TI.',
+  },
 ];
 ---
 <Base
   title="Assistentes de laboratório · Alavanca"
-  description="Quinze prompts pré-configurados para que laboratórios de inovação pública construam no mesmo dia, sem depender da fila da TI."
+  description="Dezesseis prompts pré-configurados para que laboratórios de inovação pública construam no mesmo dia, sem depender da fila da TI."
   current="assistente"
 >
 
@@ -869,7 +937,7 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
 
       <h1 class="ahero-title">Assistentes de laboratório.</h1>
 
-      <p class="ahero-dek">Quinze prompts para o lab construir<br />no mesmo dia.</p>
+      <p class="ahero-dek">Dezesseis prompts para o lab construir<br />no mesmo dia.</p>
 
       <p class="ahero-kicker">↑ Quem organiza o pensamento, organiza a tecnologia</p>
 
@@ -881,8 +949,8 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
         </div>
         <div class="ahero-meta-block ahero-meta-right">
           <div class="ahero-meta-label">↳ Itens</div>
-          <div>15 prompts · 5 eixos</div>
-          <div class="ahero-meta-sub">Estruturar · Formalizar · Construir · Avaliar · Provar</div>
+          <div>16 prompts · 6 eixos</div>
+          <div class="ahero-meta-sub">Estruturar · Formalizar · Construir · Avaliar · Provar · Aplicar</div>
         </div>
       </div>
     </div>
@@ -933,7 +1001,7 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
       </section>
 
       {prompts.filter((p) => p.eixoId === eixo.id).map((p) => (
-        <article class="prompt">
+        <article class="prompt" id={p.id}>
           <div class="container">
             <div class="prompt-rule"></div>
             <div class="prompt-head">
@@ -948,12 +1016,12 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
               <div class="prompt-card">
                 <div class="prompt-card-head">
                   <span class="prompt-card-label">{p.promptLabel}</span>
-                  <button class="copy-btn" data-target={p.id} type="button">
+                  <button class="copy-btn" data-target={`${p.id}-body`} type="button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                     <span>Copiar</span>
                   </button>
                 </div>
-                <div class="prompt-text" id={p.id} set:html={p.body}></div>
+                <div class="prompt-text" id={`${p.id}-body`} set:html={p.body}></div>
               </div>
               <div class="prompt-when">
                 <span class="prompt-when-label">Quando usar</span>{p.when}
@@ -970,15 +1038,15 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
     <div class="container">
       <div class="closing-id">↳ Próximo passo</div>
       <h2 class="closing-title">Do prompt copiado ao assistente em produção.</h2>
-      <p class="closing-dek">Quinze prompts, cinco eixos, um único método. Estruturar, formalizar, construir, avaliar — e provar valor para sobreviver à próxima troca de gestão. O nono ensina o caminho de criar o seu próprio assistente; os demais dão matéria-prima para começar hoje.</p>
+      <p class="closing-dek">Dezesseis prompts em seis eixos. Cinco verbos do método — estruturar, formalizar, construir, avaliar, provar — para o trabalho de pensar e escrever; e um sexto eixo, aplicar, com utilitários para sair do prompt copiado direto ao protótipo navegável. O nono ensina o caminho de criar o seu próprio assistente; os demais dão matéria-prima para começar hoje.</p>
 
       <div class="closing-ctas">
         <a href="#" class="closing-cta">
           Ver método PTCF e templates
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#" class="closing-cta-secondary">
-          Conhecer a Sueli
+        <a href="/sobre-jo" class="closing-cta-secondary">
+          Conhecer a Jô
         </a>
       </div>
     </div>
@@ -1214,6 +1282,7 @@ Tom: prático e político, não acadêmico. Quero argumentos que possam ser leva
      ============================================================ */
   .prompt {
     padding: 0 0 56px;
+    scroll-margin-top: 32px;
   }
 
   .prompt-rule {
