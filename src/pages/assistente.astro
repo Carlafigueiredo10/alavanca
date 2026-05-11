@@ -988,6 +988,36 @@ Um único bloco de código HTML completo, pronto para salvar e abrir no navegado
     </div>
   </section>
 
+  <!-- ÍNDICE (sticky) -->
+  <nav class="toc" aria-label="Índice de prompts">
+    <div class="container">
+      <div class="toc-head">
+        <span class="toc-label">↳ Índice</span>
+        <span class="toc-meta">16 prompts · 6 eixos · clique para saltar</span>
+      </div>
+      <div class="toc-grid">
+        {eixos.map((eixo) => (
+          <div class="toc-col">
+            <a href={`#${eixo.id}`} class="toc-col-head">
+              <span class="toc-col-num">/{eixo.num}</span>
+              <span class="toc-col-verb">{eixo.verb}</span>
+            </a>
+            <ul class="toc-list">
+              {prompts.filter((p) => p.eixoId === eixo.id).map((p) => (
+                <li>
+                  <a href={`#${p.id}`} class="toc-link" title={p.title}>
+                    <span class="toc-link-num">{p.num}</span>
+                    <span class="toc-link-title">{p.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </nav>
+
   <!-- EIXOS + PROMPTS -->
   {eixos.map((eixo) => (
     <>
@@ -1234,6 +1264,132 @@ Um único bloco de código HTML completo, pronto para salvar e abrir no navegado
   }
 
   /* ============================================================
+     TOC (sticky)
+     ============================================================ */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-top: 0.5px solid var(--fg-22);
+    border-bottom: 0.5px solid var(--fg-22);
+    padding: 18px 0 20px;
+    margin-top: 32px;
+  }
+
+  .toc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    flex-wrap: wrap;
+  }
+
+  .toc-label { color: var(--amber); }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+  }
+
+  .toc-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .toc-col-head {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--fg);
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid var(--fg-22);
+    transition: border-color 0.18s ease, color 0.18s ease;
+  }
+  .toc-col-head:hover { border-bottom-color: var(--amber); color: var(--amber); }
+
+  .toc-col-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--amber);
+  }
+
+  .toc-col-verb {
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--fg-78);
+    font-family: var(--sans);
+    font-size: 11px;
+    line-height: 1.35;
+    padding: 3px 0;
+    min-width: 0;
+  }
+  .toc-link:hover { color: var(--amber); }
+
+  .toc-link-num {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--fg-50);
+    flex-shrink: 0;
+  }
+  .toc-link:hover .toc-link-num { color: var(--amber); }
+
+  .toc-link-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-width: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .toc-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 680px) {
+    .toc {
+      position: relative;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: var(--bg);
+    }
+    .toc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .toc-col-verb { font-size: 13px; }
+    .toc-link { font-size: 10.5px; }
+  }
+
+  /* ============================================================
      EIXO (section header)
      ============================================================ */
   .axis {
@@ -1282,7 +1438,15 @@ Um único bloco de código HTML completo, pronto para salvar e abrir no navegado
      ============================================================ */
   .prompt {
     padding: 0 0 56px;
-    scroll-margin-top: 32px;
+    scroll-margin-top: 220px;
+  }
+
+  .axis {
+    scroll-margin-top: 220px;
+  }
+
+  @media (max-width: 680px) {
+    .prompt, .axis { scroll-margin-top: 32px; }
   }
 
   .prompt-rule {
