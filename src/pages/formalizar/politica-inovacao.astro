@@ -1,0 +1,361 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Política de Inovação · Formalizar · Alavanca"
+  description="Cinco respostas, com pré-requisito de Enquadramento como ICT. A Jô redige a Política de Inovação da ICT (art. 15-A da Lei 10.973/2004) em Modelo Integrado (Diretrizes) ou Fragmentado (núcleo + resoluções)."
+>
+
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Formalizar · 06 · Política de Inovação da ICT</div>
+    <h1 class="intro-headline animate-in delay-100">A peça do art. 15-A.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">A Política pertence à ICT, não ao NIT. Sem Política, o NIT atua sem diretrizes substantivas.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Lastro · Modelo · Policy · PI/Transferência · Remuneração/FORMICT</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Lastros: <strong>Lei 10.973/2004 arts. 6º-13 e 15-A · Decreto 9.283/2018 · FORMICT/MCTI</strong>.<br />
+        <strong>Pré-requisito rígido: Ato de Enquadramento como ICT publicado.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stepper-bar">
+  <div class="container">
+    <div class="stepper" id="stepper">
+      <div class="step is-active" data-step="1"><span class="step-num">01</span><span class="step-label">Lastro</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="2"><span class="step-num">02</span><span class="step-label">Modelo</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="3"><span class="step-num">03</span><span class="step-label">Policy</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="4"><span class="step-num">04</span><span class="step-label">PI/Transferência</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="5"><span class="step-num">05</span><span class="step-label">Remuneração/FORMICT</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wizard">
+  <div class="container">
+    <!-- TELA 01 · GATEKEEPER -->
+    <div class="wizard-step is-active" data-step="1">
+      <div class="step-header">
+        <div class="step-tag">01 · <span class="verb">Verificação de lastro · gatekeeper</span></div>
+        <h2 class="step-headline">O seu órgão já formalizou o Ato de Enquadramento como ICT?</h2>
+        <p class="step-hint">
+          A Política de Inovação pertence à ICT. Sem o enquadramento formal nos termos do art. 2º, IV da Lei nº 10.973/2004, a peça vira documento juridicamente nulo — atribuiria à entidade competência que ela não tem.
+          <br><br>
+          O ciclo legal é: <strong>Enquadramento → NIT → Política</strong>. Se você ainda não rodou a Frente 04, vamos voltar lá primeiro.
+        </p>
+      </div>
+      <div class="gate-options">
+        <button class="gate-option gate-option--yes" data-gate="sim">
+          <span class="gate-option-icon">✓</span>
+          <span class="gate-option-label">Sim, já temos o ato publicado</span>
+          <span class="gate-option-sub">Seguir para a redação da Política</span>
+        </button>
+        <button class="gate-option gate-option--no" data-gate="nao">
+          <span class="gate-option-icon">←</span>
+          <span class="gate-option-label">Não, ou não tenho certeza</span>
+          <span class="gate-option-sub">Voltar para a Frente 04 (Enquadramento como ICT)</span>
+        </button>
+      </div>
+      <div class="step-actions">
+        <span class="step-back-placeholder"></span>
+        <span class="step-back-placeholder"></span>
+      </div>
+    </div>
+
+    <!-- TELA 02 · MODELO -->
+    <div class="wizard-step" data-step="2">
+      <div class="step-header">
+        <div class="step-tag">02 · <span class="verb">Modelo de redação</span></div>
+        <h2 class="step-headline">Como você quer estruturar a Política?</h2>
+        <p class="step-hint">
+          A diferença é estratégica e tem implicação técnica. <strong>Modelo Integrado</strong> entrega uma espinha dorsal coesa de Diretrizes (não o texto completo). <strong>Modelo Fragmentado</strong> entrega um núcleo + 4 resoluções autônomas e mais profundas em cada tema. Recomendado para ICTs maduras o Fragmentado; para ICTs novas o Integrado.
+        </p>
+      </div>
+      <div class="modelo-options">
+        <button class="modelo-option" data-modelo="integrado">
+          <div class="modelo-option-head">
+            <span class="modelo-option-tag">Recomendado para ICTs novas</span>
+          </div>
+          <h3 class="modelo-option-title">Modelo Integrado</h3>
+          <p class="modelo-option-body">Documento único cobrindo Policy + Regramento. Entrega <strong>Minuta de Diretrizes Gerais e Estrutura Normativa</strong> — espinha dorsal com capítulos e macro-regras, com marcadores para preenchimento institucional. Atualizações futuras exigem revisão global.</p>
+        </button>
+        <button class="modelo-option" data-modelo="fragmentado">
+          <div class="modelo-option-head">
+            <span class="modelo-option-tag">Recomendado para ICTs maduras</span>
+          </div>
+          <h3 class="modelo-option-title">Modelo Fragmentado</h3>
+          <p class="modelo-option-body">Documento-núcleo (Policy + governança macro) + <strong>4 resoluções autônomas</strong> (PI · Transferência · Remuneração · Cooperação Aberta). Cada resolução com profundidade média e foco. Atualizações pontuais sem revisar tudo.</p>
+        </button>
+      </div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <span class="step-back-placeholder"></span>
+      </div>
+    </div>
+
+    <!-- TELA 03 · POLICY -->
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Pilar Policy · vocação institucional</span></div>
+        <h2 class="step-headline">Missão e princípios da Política.</h2>
+        <p class="step-hint">Missão da ICT · linhas temáticas prioritárias · princípios orientadores do relacionamento com parceiros (centralidade no cidadão, transparência, abertura à cooperação, etc).</p>
+      </div>
+      <textarea class="step-input" data-step-input="3" rows="6" maxlength="800" placeholder="Ex: missão de pesquisa e desenvolvimento de soluções tecnológicas aplicadas à prestação de serviços previdenciários ao cidadão; linhas prioritárias: automação conversacional, analítica preditiva, redesenho de fluxos. Princípios: centralidade no cidadão, transparência, abertura à cooperação com universidades, empresas e demais ICTs."></textarea>
+      <div class="step-counter"><span data-step-counter="3">0</span> / 800</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- TELA 04 · PI + TRANSFERÊNCIA -->
+    <div class="wizard-step" data-step="4">
+      <div class="step-header">
+        <div class="step-tag">04 · <span class="verb">Pilar Regramento · PI e Transferência</span></div>
+        <h2 class="step-headline">Como a ICT cuida da propriedade intelectual?</h2>
+        <p class="step-hint">Titularidade (preferencial da ICT? cotitularidade?) · licenciamento (exclusivo? não-exclusivo padrão?) · hipóteses de transferência · atendimento a inventores independentes · compartilhamento de laboratórios e infraestrutura (art. 11).</p>
+      </div>
+      <textarea class="step-input" data-step-input="4" rows="6" maxlength="900" placeholder="Ex: titularidade preferencial da ICT, admitida cotitularidade em parcerias formalizadas com universidades; licenciamento não-exclusivo como modalidade padrão, exclusivo apenas mediante deliberação fundamentada do NIT; atendimento a inventor independente conforme art. 22 da Lei 10.973; compartilhamento de infraestrutura mediante acordo prévio com previsão de contrapartidas."></textarea>
+      <div class="step-counter"><span data-step-counter="4">0</span> / 900</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="4" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- TELA 05 · REMUNERAÇÃO + FORMICT -->
+    <div class="wizard-step" data-step="5">
+      <div class="step-header">
+        <div class="step-tag">05 · <span class="verb">Pilar Regramento · Remuneração e FORMICT</span></div>
+        <h2 class="step-headline">Participação dos inventores e prestação ao MCTI.</h2>
+        <p class="step-hint">
+          <strong>Percentual de participação dos servidores inventores</strong> nos ganhos econômicos — sempre dentro da faixa legal do <em>art. 13: mínimo 5%, máximo 1/3</em>. Fluxo de declaração anual ao <strong>FORMICT/MCTI</strong> (sem isso, a ICT fica irregular perante o Estado). Governança de conflito de interesses.
+        </p>
+      </div>
+      <textarea class="step-input" data-step-input="5" rows="6" maxlength="900" placeholder="Ex: percentual de participação dos inventores entre 10% (piso institucional) e 1/3 (teto legal do art. 13), com ajuste por mérito decidido pela direção. FORMICT preenchido anualmente pelo NIT (status de pedidos de PI, contratos de transferência, ganhos econômicos, partilha aos inventores). Governança de conflito: declaração obrigatória de interesses econômicos pelos pesquisadores envolvidos em contratos comerciais."></textarea>
+      <div class="step-counter"><span data-step-counter="5">0</span> / 900</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="5">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Política de Inovação →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="footnote">
+  <div class="container">
+    <div class="footnote-grid">
+      <div>
+        <div class="footnote-label">↳ Saída</div>
+        <p>
+          <strong>Modelo Integrado:</strong> Minuta de Diretrizes Gerais e Estrutura Normativa (7 capítulos com macro-regras + marcadores de preenchimento + cláusula explícita de aprofundamento em ato complementar).
+          <br><br>
+          <strong>Modelo Fragmentado:</strong> Documento-núcleo + 4 Resoluções (PI · Transferência · Remuneração · Cooperação Aberta).
+        </p>
+      </div>
+      <div>
+        <div class="footnote-label">↳ Princípio</div>
+        <p>O LLM tem limite de profundidade em uma chamada. Modelo Integrado entrega <strong>Diretrizes</strong>, não documento exaustivo — preserva profundidade institucional sem virar casca genérica. Percentual de participação sempre dentro da faixa legal de 5% a 1/3 (art. 13).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 760px; }
+  .intro { padding-top: 80px; padding-bottom: 60px; }
+  .intro-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(48px, 7vw, 72px); line-height: 1.02; letter-spacing: -0.028em; color: var(--fg); margin-bottom: 26px; max-width: 640px; }
+  .intro-subhead { margin-bottom: 18px; } .intro-kicker { margin-bottom: 56px; }
+  .intro-meta { padding-top: 22px; border-top: 0.5px solid var(--fg-14); }
+  .intro-meta-text { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--fg-45); line-height: 1.7; }
+  .intro-meta-text strong { font-weight: 500; color: var(--fg-86); }
+  .stepper-bar { padding: 16px 0 32px; border-top: 0.5px solid var(--fg-14); border-bottom: 0.5px solid var(--fg-14); background: rgba(0, 0, 0, 0.18); }
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px 0; flex-wrap: wrap; }
+  .step { display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: opacity 240ms ease, color 240ms ease; }
+  .step.is-active, .step.is-done { opacity: 1; }
+  .step-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-num { color: var(--amber); } .step.is-done .step-num { color: var(--fg-86); }
+  .step-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-label { color: var(--fg); }
+  .step-divider { width: 18px; height: 0.5px; background: var(--fg-22); }
+  @media (max-width: 720px) { .stepper { gap: 6px; } .step-divider { width: 10px; } .step-label { font-size: 9px; letter-spacing: 0.1em; } }
+  .wizard { padding: 56px 0 64px; min-height: 60vh; }
+  .wizard-step { display: none; opacity: 0; transform: translateY(8px); transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1), transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1); }
+  .wizard-step.is-active { display: block; } .wizard-step.is-active.is-visible { opacity: 1; transform: translateY(0); }
+  .step-header { margin-bottom: 26px; }
+  .step-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 22px; }
+  .step-tag .verb { color: var(--amber); }
+  .step-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.18; letter-spacing: -0.018em; color: var(--fg); margin-bottom: 18px; max-width: 640px; }
+  .step-hint { font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--fg-86); max-width: 640px; margin-bottom: 24px; }
+  .step-hint em { font-family: var(--serif); font-style: italic; color: var(--fg); } .step-hint strong { color: var(--fg); }
+  .step-input { width: 100%; background: rgba(245, 242, 235, 0.04); border: 0.5px solid var(--fg-22); border-radius: 12px; padding: 16px 18px; color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55; resize: vertical; min-height: 120px; transition: border-color 200ms ease, background 200ms ease; }
+  .step-input:focus { outline: none; border-color: var(--amber); background: rgba(245, 242, 235, 0.06); }
+  .step-input::placeholder { color: var(--fg-45); font-style: italic; }
+  .step-counter { margin-top: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--fg-45); text-align: right; }
+  .step-actions { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; }
+  .step-back-placeholder { display: inline-block; width: 1px; }
+
+  /* Gatekeeper · Tela 01 */
+  .gate-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 32px; }
+  @media (max-width: 720px) { .gate-options { grid-template-columns: 1fr; } }
+  .gate-option { display: flex; flex-direction: column; align-items: flex-start; padding: 22px 24px; background: rgba(245, 242, 235, 0.03); border: 0.5px solid var(--fg-22); border-radius: 12px; cursor: pointer; transition: border-color 200ms ease, background 200ms ease, transform 200ms ease; text-align: left; font-family: var(--sans); color: var(--fg); }
+  .gate-option:hover { border-color: var(--amber); background: rgba(245, 242, 235, 0.06); transform: translateY(-2px); }
+  .gate-option--yes:hover { border-color: oklch(0.65 0.15 145); }
+  .gate-option--no:hover { border-color: oklch(0.65 0.15 28); }
+  .gate-option-icon { font-family: var(--mono); font-size: 22px; color: var(--amber); margin-bottom: 10px; }
+  .gate-option--yes .gate-option-icon { color: oklch(0.65 0.15 145); }
+  .gate-option--no .gate-option-icon { color: oklch(0.65 0.15 28); }
+  .gate-option-label { font-family: var(--serif); font-size: 18px; font-weight: 500; color: var(--fg); margin-bottom: 6px; }
+  .gate-option-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--fg-50); }
+
+  /* Modelo · Tela 02 */
+  .modelo-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 32px; }
+  @media (max-width: 720px) { .modelo-options { grid-template-columns: 1fr; } }
+  .modelo-option { display: flex; flex-direction: column; align-items: flex-start; padding: 22px 24px; background: rgba(245, 242, 235, 0.03); border: 0.5px solid var(--fg-22); border-radius: 12px; cursor: pointer; transition: border-color 200ms ease, background 200ms ease, transform 200ms ease; text-align: left; font-family: var(--sans); color: var(--fg); }
+  .modelo-option:hover { border-color: var(--amber); background: rgba(245, 242, 235, 0.06); transform: translateY(-2px); }
+  .modelo-option.is-selected { border-color: var(--amber); background: rgba(245, 242, 235, 0.08); }
+  .modelo-option-head { margin-bottom: 12px; }
+  .modelo-option-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); padding: 3px 8px; border: 0.5px solid var(--amber); border-radius: 4px; }
+  .modelo-option-title { font-family: var(--serif); font-size: 22px; font-weight: 500; color: var(--fg); margin-bottom: 10px; }
+  .modelo-option-body { font-family: var(--sans); font-size: 13px; line-height: 1.55; color: var(--fg-86); } .modelo-option-body strong { color: var(--fg); }
+
+  .footnote { padding: 56px 0 80px; border-top: 0.5px solid var(--fg-14); }
+  .footnote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footnote-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 12px; }
+  .footnote p { font-family: var(--sans); font-size: 13.5px; line-height: 1.6; color: var(--fg-86); }
+  .footnote p strong { color: var(--fg); }
+  @media (max-width: 640px) { .footnote-grid { grid-template-columns: 1fr; gap: 28px; } }
+</style>
+
+<script>
+  type StepNum = 1 | 2 | 3 | 4 | 5;
+  const STATE_KEY = 'alavanca:wizard-state-formalizar-politica-inovacao';
+  const MODE = 'formalizar';
+  const FRENTE = 'politica-inovacao';
+  const stepNums: StepNum[] = [1, 2, 3, 4, 5];
+  // T1 (gatekeeper) e T2 (modelo) são escolhas; T3-T5 são textareas.
+  const answers: {
+    enquadramentoIctPublicado: 'sim' | null;
+    modelo: 'integrado' | 'fragmentado' | null;
+    3: string;
+    4: string;
+    5: string;
+  } = { enquadramentoIctPublicado: null, modelo: null, 3: '', 4: '', 5: '' };
+  let current: StepNum = 1;
+  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
+  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
+  function showStep(n: StepNum) {
+    current = n;
+    steps.forEach((el) => { const num = Number(el.dataset.step) as StepNum; const isActive = num === n; el.classList.toggle('is-active', isActive); el.classList.remove('is-visible'); if (isActive) { requestAnimationFrame(() => el.classList.add('is-visible')); const input = el.querySelector<HTMLTextAreaElement>('.step-input'); setTimeout(() => input?.focus(), 80); } });
+    stepperItems.forEach((el) => { const num = Number(el.dataset.step) as StepNum; el.classList.toggle('is-active', num === n); el.classList.toggle('is-done', num < n); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // T1 · Gatekeeper
+  document.querySelectorAll<HTMLButtonElement>('[data-gate]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const choice = btn.dataset.gate as 'sim' | 'nao';
+      if (choice === 'sim') {
+        answers.enquadramentoIctPublicado = 'sim';
+        showStep(2);
+      } else {
+        // Redireciona pra Frente 04 com query param sinalizando a origem.
+        window.location.href = '/formalizar/enquadramento-ict?from=politica-inovacao';
+      }
+    });
+  });
+
+  // T2 · Modelo
+  document.querySelectorAll<HTMLButtonElement>('[data-modelo]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const modelo = btn.dataset.modelo as 'integrado' | 'fragmentado';
+      answers.modelo = modelo;
+      document.querySelectorAll('.modelo-option').forEach((el) => el.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      setTimeout(() => showStep(3), 220);
+    });
+  });
+
+  // T3-T5 · Textareas
+  ([3, 4, 5] as const).forEach((n) => {
+    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const nextBtn = document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) || (n === 5 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+    function refresh() { const val = input.value.trim(); answers[n] = val; counter.textContent = String(input.value.length); if (nextBtn) nextBtn.disabled = val.length < 20; }
+    input.addEventListener('input', refresh);
+    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
+    backBtn?.addEventListener('click', () => { showStep((n - 1) as StepNum); });
+    if (n < 5) nextBtn?.addEventListener('click', () => { if (answers[n].length < 20) return; showStep((n + 1) as StepNum); });
+  });
+
+  // T2 · Voltar pra T1
+  document.querySelector<HTMLButtonElement>('[data-step-back="2"]')?.addEventListener('click', () => { showStep(1); });
+
+  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
+  generateBtn.textContent = 'Gerar Política de Inovação →';
+  generateBtn.addEventListener('click', () => {
+    if (!answers.enquadramentoIctPublicado || !answers.modelo) return;
+    if (answers[3].length < 20 || answers[4].length < 20 || answers[5].length < 20) return;
+    const prompt = buildPrompt();
+    try { sessionStorage.setItem('alavanca:diag-prefill', JSON.stringify({ text: prompt, mode: MODE, frente: FRENTE, source: 'wizard-formalizar-politica-inovacao', ts: Date.now() })); } catch { /* ignore */ }
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Encaminhando à Jô…';
+    window.location.href = '/jo';
+  });
+
+  function buildPrompt(): string {
+    return [
+      '[ Contexto · Wizard Formalizar / Frente Política de Inovação da ICT ]', '',
+      'Cenário pré-estruturado pelo gestor público nas cinco variáveis canônicas:', '',
+      `Verificação de lastro: enquadramento_ict_publicado = '${answers.enquadramentoIctPublicado}' (gatekeeper aprovado).`,
+      `Modelo de redação escolhido: '${answers.modelo}'.`,
+      `Pilar Policy (vocação institucional): ${answers[3]}`,
+      `Pilar Regramento — PI e Transferência: ${answers[4]}`,
+      `Pilar Regramento — Remuneração e FORMICT: ${answers[5]}`, '',
+      '[ Pedido ]',
+      answers.modelo === 'integrado'
+        ? 'Modelo INTEGRADO: redija a MINUTA DE DIRETRIZES GERAIS E ESTRUTURA NORMATIVA da Política de Inovação — espinha dorsal com capítulos e macro-regras, NÃO o texto completo exaustivo. Estrutura: Cabeçalho · Considerandos (Lei 10.973/2004 arts. 6º-13 e 15-A + Decreto 9.283/2018 + Ato de Enquadramento como ICT) · Cap. I Disposições Gerais e Policy · Cap. II Propriedade Intelectual (diretrizes macro + marcadores de preenchimento) · Cap. III Transferência de Tecnologia (diretrizes macro + marcadores) · Cap. IV Participação dos Inventores (faixa legal art. 13 explícita: 5% a 1/3, com piso institucional declarado pelo usuário) · Cap. V Cooperação e Compartilhamento (art. 11 e art. 22) · Cap. VI Governança e Prestação de Contas (NIT + FORMICT obrigatório) · Cap. VII Disposições Finais (cláusula explícita de aprofundamento em ato complementar) · Fundamentação Tripartite · Caveat.'
+        : 'Modelo FRAGMENTADO: redija (a) DOCUMENTO-NÚCLEO (Marco Regulatório Institucional de Inovação) com Considerandos, Cap. I Policy, Cap. II Governança, Cap. III Índice de Resoluções, Cap. IV FORMICT e Prestação de Contas, Caveat; e (b) 4 RESOLUÇÕES AUTÔNOMAS enxutas mas focadas: Resolução de PI, Resolução de Transferência de Tecnologia, Resolução de Remuneração (com faixa legal do art. 13 explícita), Resolução de Cooperação Aberta. Cada resolução com cabeçalho próprio, considerandos curtos, artigos focados e caveat.',
+      '',
+      'TRAVAS:',
+      '- Percentual de participação dos inventores sempre dentro da faixa legal de 5% a 1/3 (art. 13). Fora dessa faixa, corrigir e declarar o motivo.',
+      '- Cláusula de FORMICT (declaração anual ao MCTI) obrigatória — sem ela a ICT é irregular.',
+      '- A Política é da ICT, não do NIT. NIT apoia a execução (art. 17, I). Não atribuir autoria ao NIT.',
+      '- Marco CT&I sempre citado como "Lei nº 10.973/2004 (com redação dada pela Lei nº 13.243/2016)".',
+    ].join('\n');
+  }
+
+  function restoreState(): boolean {
+    try {
+      const raw = localStorage.getItem(STATE_KEY); if (!raw) return false;
+      localStorage.removeItem(STATE_KEY);
+      const saved = JSON.parse(raw) as Record<string, unknown>;
+      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
+      if (Date.now() - ts > 3_600_000) return false;
+      // Restauração só dos textareas 3-5; o gatekeeper e o modelo devem ser refeitos.
+      let restored = false;
+      ([3, 4, 5] as const).forEach((n) => {
+        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
+        if (val.length === 0) return;
+        answers[n] = val;
+        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (input) { input.value = val; input.dispatchEvent(new Event('input')); }
+        if (counter) counter.textContent = String(val.length);
+        restored = true;
+      });
+      return restored;
+    } catch { return false; }
+  }
+  restoreState();
+  showStep(1);
+</script>
+</Base>

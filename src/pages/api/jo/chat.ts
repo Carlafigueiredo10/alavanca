@@ -1,6 +1,11 @@
 import type { APIRoute } from 'astro';
 import { requireUser, type SupabaseServerClient } from '../../../lib/server/auth';
-import { buildSystemPrompt, type JoMode } from '../../../lib/ai/prompts';
+import {
+  buildSystemPrompt,
+  isFormalizarFrente,
+  type JoMode,
+  type FormalizarFrente,
+} from '../../../lib/ai/prompts';
 import { truncateByChars, type ChatMessage } from '../../../lib/ai/history/truncate';
 import { getProviderForMode } from '../../../lib/ai/orchestrator';
 import { logEvent, safeErrorMessage, type Provider } from '../../../lib/server/log';
@@ -24,6 +29,7 @@ interface ChatBody {
   message?: string;
   mode?: string;
   hookId?: string;
+  frente?: string;
 }
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -94,6 +100,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       ? (body.mode as JoMode)
       : 'decisao';
   const hookId = typeof body.hookId === 'string' && body.hookId.length > 0 ? body.hookId : null;
+  const frente: FormalizarFrente | null =
+    mode === 'formalizar' && isFormalizarFrente(body.frente) ? body.frente : null;
   const adapter = getProviderForMode(mode);
   const provider: Provider = adapter.key;
 
@@ -208,7 +216,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  const systemPrompt = buildSystemPrompt(mode, hookId, contextBlock);
+  const systemPrompt = buildSystemPrompt(mode, hookId, contextBlock, frente);
 
   let stream: ReadableStream<string>;
   try {

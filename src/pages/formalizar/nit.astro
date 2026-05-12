@@ -1,0 +1,239 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Criação do NIT · Formalizar · Alavanca"
+  description="Quatro respostas. A Jô redige a Portaria de Criação do NIT + Regimento Interno com as atribuições do art. 17, incluindo cláusula condicional que suspende o funcionamento até a publicação do Ato de Enquadramento como ICT."
+>
+
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Formalizar · 05 · Criação do NIT</div>
+    <h1 class="intro-headline animate-in delay-100">O Núcleo obrigatório do art. 16.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Com cláusula condicional embutida — porque NIT sem ICT é ato eivado.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Composição · Atribuições · Vínculo · Atos correlatos</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Lastros: <strong>Lei 10.973/2004 art. 16, 17 e 2º VI · Decreto 9.283/2018</strong>.<br />
+        <strong>Recomendação: rode a Frente 04 (Enquadramento como ICT) antes.</strong>
+      </div>
+    </div>
+    <div class="soft-alert animate-in delay-400">
+      ⚠ <strong>Pré-requisito recomendado:</strong> o NIT é órgão da ICT (art. 16 da Lei 10.973/2004). Se o órgão ainda não foi enquadrado como ICT, o ato administrativo de criação do NIT fica com eficácia suspensa — a Jô embute essa cláusula no texto. Mas o ideal é rodar a <a href="/formalizar/enquadramento-ict">Frente 04 (Enquadramento como ICT)</a> antes.
+    </div>
+  </div>
+</section>
+
+<section class="stepper-bar">
+  <div class="container">
+    <div class="stepper" id="stepper">
+      <div class="step is-active" data-step="1"><span class="step-num">01</span><span class="step-label">Composição</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="2"><span class="step-num">02</span><span class="step-label">Atribuições</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="3"><span class="step-num">03</span><span class="step-label">Vínculo</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="4"><span class="step-num">04</span><span class="step-label">Atos correlatos</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wizard">
+  <div class="container">
+    <div class="wizard-step is-active" data-step="1">
+      <div class="step-header">
+        <div class="step-tag">01 · <span class="verb">Composição mínima</span></div>
+        <h2 class="step-headline">Quem integra o NIT?</h2>
+        <p class="step-hint">Coordenador-Geral · servidores técnicos · servidores jurídicos. <strong>Inclua pelo menos um servidor com formação em PI ou Direito da Inovação</strong> — sem perfil jurídico, o NIT é casca formal.</p>
+      </div>
+      <textarea class="step-input" data-step-input="1" rows="5" maxlength="700" placeholder="Ex: 1 Coordenador-Geral (DAS-4) com formação em Direito da Inovação; 1 Analista técnico com formação em Engenharia de Software; 1 Analista jurídico com formação em Propriedade Intelectual."></textarea>
+      <div class="step-counter"><span data-step-counter="1">0</span> / 700</div>
+      <div class="step-actions">
+        <span class="step-back-placeholder"></span>
+        <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" data-step="2">
+      <div class="step-header">
+        <div class="step-tag">02 · <span class="verb">Atribuições pretendidas</span></div>
+        <h2 class="step-headline">Quais das 10 atribuições do art. 17 serão exercidas?</h2>
+        <p class="step-hint">
+          O art. 17 lista 10 atribuições mínimas. Selecione as prioritárias agora (mínimo 4) — as remanescentes ficam declaradas como "a serem incorporadas conforme amadurecimento institucional".
+          <br><br>
+          <em>I — manter política de PI; II — avaliar resultados de projetos; III — avaliar inventor independente; IV — proteção de criações; V — divulgação; VI — acompanhar pedidos de PI; VII — prospecção tecnológica; VIII — estratégia de transferência; IX — relacionamento com empresas; X — gerenciar acordos de transferência.</em>
+        </p>
+      </div>
+      <textarea class="step-input" data-step-input="2" rows="6" maxlength="800" placeholder="Ex: prioridade inicial nas atribuições I (manutenção de política), IV (proteção das criações), VI (acompanhamento de pedidos de PI) e VIII (estratégia de transferência). Atribuições II, III, V, VII, IX e X serão incorporadas conforme amadurecimento."></textarea>
+      <div class="step-counter"><span data-step-counter="2">0</span> / 800</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Vínculo organizacional</span></div>
+        <h2 class="step-headline">Onde o NIT se encaixa no organograma?</h2>
+        <p class="step-hint">Vinculação direta (Diretoria-Executiva · Presidência · etc) · subordinação técnica vs administrativa · interface com o lab e demais unidades.</p>
+      </div>
+      <textarea class="step-input" data-step-input="3" rows="5" maxlength="600" placeholder="Ex: NIT vinculado diretamente à Diretoria-Executiva do órgão, com subordinação técnica ao Diretor-Executivo e interface operacional permanente com o Laboratório de Inovação. Reuniões mensais com a área jurídica e com a Coordenação do lab."></textarea>
+      <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" data-step="4">
+      <div class="step-header">
+        <div class="step-tag">04 · <span class="verb">Atos correlatos</span></div>
+        <h2 class="step-headline">Que peças já existem ou estão em curso?</h2>
+        <p class="step-hint">Ato de Enquadramento como ICT publicado? Em curso? Política de Inovação editada? Acordo de cooperação modelo? Esses atos correlatos vão ser referenciados no texto da Portaria do NIT.</p>
+      </div>
+      <textarea class="step-input" data-step-input="4" rows="4" maxlength="500" placeholder="Ex: Ato de Enquadramento como ICT em fase de aprovação pela alta gestão; Política de Inovação ainda não editada (será desenvolvida na Frente 06); modelo de acordo de cooperação técnica em uso pela área jurídica."></textarea>
+      <div class="step-counter"><span data-step-counter="4">0</span> / 500</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Portaria do NIT →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="footnote">
+  <div class="container">
+    <div class="footnote-grid">
+      <div>
+        <div class="footnote-label">↳ Saída</div>
+        <p>Portaria SEI-Ready + Regimento Interno Anexo com composição, atribuições do art. 17, vínculo organizacional, <strong>cláusula condicional obrigatória</strong> suspendendo o funcionamento até a publicação do Ato de Enquadramento como ICT, vigência, Fundamentação Tripartite e Caveat.</p>
+      </div>
+      <div>
+        <div class="footnote-label">↳ Princípio</div>
+        <p>Soft lock na UX (permite preparar minutas em paralelo), <strong>hard lock no texto</strong> (cláusula condicional embutida). A Jô blinda o gestor: redige a peça e impede a prevaricação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 760px; }
+  .intro { padding-top: 80px; padding-bottom: 60px; }
+  .intro-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(48px, 7vw, 72px); line-height: 1.02; letter-spacing: -0.028em; color: var(--fg); margin-bottom: 26px; max-width: 640px; }
+  .intro-subhead { margin-bottom: 18px; } .intro-kicker { margin-bottom: 44px; }
+  .intro-meta { padding-top: 22px; border-top: 0.5px solid var(--fg-14); margin-bottom: 24px; }
+  .intro-meta-text { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--fg-45); line-height: 1.7; }
+  .intro-meta-text strong { font-weight: 500; color: var(--fg-86); }
+  .soft-alert { padding: 14px 18px; border-radius: 8px; border: 0.5px solid oklch(0.72 0.12 78 / 0.45); background: oklch(0.72 0.12 78 / 0.06); font-family: var(--sans); font-size: 13.5px; line-height: 1.55; color: var(--fg-86); }
+  .soft-alert strong { color: var(--fg); } .soft-alert a { color: var(--amber); text-decoration: underline; }
+  .stepper-bar { padding: 16px 0 32px; border-top: 0.5px solid var(--fg-14); border-bottom: 0.5px solid var(--fg-14); background: rgba(0, 0, 0, 0.18); }
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 8px 0; }
+  .step { display: flex; align-items: center; gap: 10px; opacity: 0.4; transition: opacity 240ms ease, color 240ms ease; }
+  .step.is-active, .step.is-done { opacity: 1; }
+  .step-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-num { color: var(--amber); } .step.is-done .step-num { color: var(--fg-86); }
+  .step-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-label { color: var(--fg); }
+  .step-divider { width: 28px; height: 0.5px; background: var(--fg-22); }
+  @media (max-width: 720px) { .stepper { gap: 8px; flex-wrap: wrap; } .step-divider { width: 14px; } .step-label { font-size: 10px; letter-spacing: 0.1em; } }
+  .wizard { padding: 56px 0 64px; min-height: 60vh; }
+  .wizard-step { display: none; opacity: 0; transform: translateY(8px); transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1), transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1); }
+  .wizard-step.is-active { display: block; } .wizard-step.is-active.is-visible { opacity: 1; transform: translateY(0); }
+  .step-header { margin-bottom: 26px; }
+  .step-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 22px; }
+  .step-tag .verb { color: var(--amber); }
+  .step-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.18; letter-spacing: -0.018em; color: var(--fg); margin-bottom: 18px; max-width: 640px; }
+  .step-hint { font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--fg-86); max-width: 600px; margin-bottom: 24px; }
+  .step-hint em { font-family: var(--serif); font-style: italic; color: var(--fg); } .step-hint strong { color: var(--fg); }
+  .step-input { width: 100%; background: rgba(245, 242, 235, 0.04); border: 0.5px solid var(--fg-22); border-radius: 12px; padding: 16px 18px; color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55; resize: vertical; min-height: 120px; transition: border-color 200ms ease, background 200ms ease; }
+  .step-input:focus { outline: none; border-color: var(--amber); background: rgba(245, 242, 235, 0.06); }
+  .step-input::placeholder { color: var(--fg-45); font-style: italic; }
+  .step-counter { margin-top: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--fg-45); text-align: right; }
+  .step-actions { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; }
+  .step-back-placeholder { display: inline-block; width: 1px; }
+  .footnote { padding: 56px 0 80px; border-top: 0.5px solid var(--fg-14); }
+  .footnote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footnote-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 12px; }
+  .footnote p { font-family: var(--sans); font-size: 13.5px; line-height: 1.6; color: var(--fg-86); }
+  .footnote p strong { color: var(--fg); }
+  @media (max-width: 640px) { .footnote-grid { grid-template-columns: 1fr; gap: 28px; } }
+</style>
+
+<script>
+  type StepNum = 1 | 2 | 3 | 4;
+  const STATE_KEY = 'alavanca:wizard-state-formalizar-nit';
+  const MODE = 'formalizar';
+  const FRENTE = 'nit';
+  const stepNums: StepNum[] = [1, 2, 3, 4];
+  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '', 4: '' };
+  let current: StepNum = 1;
+  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
+  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
+  function showStep(n: StepNum) {
+    current = n;
+    steps.forEach((el) => { const num = Number(el.dataset.step) as StepNum; const isActive = num === n; el.classList.toggle('is-active', isActive); el.classList.remove('is-visible'); if (isActive) { requestAnimationFrame(() => el.classList.add('is-visible')); const input = el.querySelector<HTMLTextAreaElement>('.step-input'); setTimeout(() => input?.focus(), 80); } });
+    stepperItems.forEach((el) => { const num = Number(el.dataset.step) as StepNum; el.classList.toggle('is-active', num === n); el.classList.toggle('is-done', num < n); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  stepNums.forEach((n) => {
+    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const nextBtn = document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) || (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+    function refresh() { const val = input.value.trim(); answers[n] = val; counter.textContent = String(input.value.length); if (nextBtn) nextBtn.disabled = val.length < 12; }
+    input.addEventListener('input', refresh);
+    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
+    backBtn?.addEventListener('click', () => { if (n > 1) showStep((n - 1) as StepNum); });
+    if (n < 4) nextBtn?.addEventListener('click', () => { if (answers[n].length < 12) return; showStep((n + 1) as StepNum); });
+  });
+  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
+  generateBtn.textContent = 'Gerar Portaria do NIT →';
+  generateBtn.addEventListener('click', () => {
+    if (Object.values(answers).some((v) => v.length < 12)) return;
+    const prompt = buildPrompt(answers[1], answers[2], answers[3], answers[4]);
+    try { sessionStorage.setItem('alavanca:diag-prefill', JSON.stringify({ text: prompt, mode: MODE, frente: FRENTE, source: 'wizard-formalizar-nit', ts: Date.now() })); } catch { /* ignore */ }
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Encaminhando à Jô…';
+    window.location.href = '/jo';
+  });
+  function buildPrompt(composicao: string, atribuicoes: string, vinculo: string, atos: string): string {
+    return [
+      '[ Contexto · Wizard Formalizar / Frente Criação do NIT ]', '',
+      'Cenário pré-estruturado pelo gestor público nas quatro variáveis canônicas:', '',
+      `Composição mínima: ${composicao}`,
+      `Atribuições pretendidas (do art. 17): ${atribuicoes}`,
+      `Vínculo organizacional: ${vinculo}`,
+      `Atos correlatos: ${atos}`, '',
+      '[ Pedido ]',
+      'Redija a Portaria de Criação do NIT + Regimento Interno SEI-Ready nos termos dos arts. 16, 17 e 2º VI da Lei 10.973/2004 (com redação dada pela Lei 13.243/2016). Estrutura: Cabeçalho · Considerandos · Cláusulas dispositivas (Art. 1º criação; Art. 2º composição; Art. 3º atribuições do art. 17 aplicáveis ao caso, com declaração explícita das remanescentes como "a serem incorporadas conforme amadurecimento institucional"; Art. 4º vínculo organizacional e interface; Art. 5º CLÁUSULA CONDICIONAL OBRIGATÓRIA suspendendo o funcionamento até a publicação do Ato de Enquadramento do órgão como ICT; Art. 6º vigência) · Regimento Interno Anexo (Cap. I-V) · Da Fundamentação · Caveat.',
+      'OBRIGATÓRIO: o Art. 5º da Portaria DEVE conter cláusula condicional explícita: "O funcionamento do Núcleo de Inovação Tecnológica fica condicionado à publicação oficial do Ato de Enquadramento do [Órgão] como Instituição Científica, Tecnológica e de Inovação (ICT), nos termos do art. 2º, IV da Lei nº 10.973/2004. Sem o referido enquadramento, esta Portaria permanece com eficácia suspensa, sob pena de incorrer em vício de competência." Sem essa cláusula, NÃO entregue a peça — ato eivado de prevaricação.',
+    ].join('\n');
+  }
+  function restoreState(): boolean {
+    try {
+      const raw = localStorage.getItem(STATE_KEY); if (!raw) return false;
+      localStorage.removeItem(STATE_KEY);
+      const saved = JSON.parse(raw) as Record<string, string | number>;
+      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
+      if (Date.now() - ts > 3_600_000) return false;
+      let restored = false;
+      stepNums.forEach((n) => {
+        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
+        if (val.length === 0) return;
+        answers[n] = val;
+        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (input) { input.value = val; input.dispatchEvent(new Event('input')); }
+        if (counter) counter.textContent = String(val.length);
+        restored = true;
+      });
+      return restored;
+    } catch { return false; }
+  }
+  const restored = restoreState();
+  if (restored && Object.values(answers).every((v) => v.length >= 12)) showStep(4);
+  else showStep(1);
+</script>
+</Base>

@@ -1,5 +1,10 @@
 import type { APIRoute } from 'astro';
-import { buildSystemPrompt, type JoMode } from '../../../lib/ai/prompts';
+import {
+  buildSystemPrompt,
+  isFormalizarFrente,
+  type JoMode,
+  type FormalizarFrente,
+} from '../../../lib/ai/prompts';
 import { truncateByChars, type ChatMessage } from '../../../lib/ai/history/truncate';
 import { getProviderForMode } from '../../../lib/ai/orchestrator';
 import { logEvent, safeErrorMessage, type Provider } from '../../../lib/server/log';
@@ -25,6 +30,7 @@ interface OpenChatBody {
   message?: string;
   mode?: string;
   hookId?: string;
+  frente?: string;
 }
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -84,10 +90,12 @@ export const POST: APIRoute = async ({ request }) => {
       ? (body.mode as JoMode)
       : 'decisao';
   const hookId = typeof body.hookId === 'string' && body.hookId.length > 0 ? body.hookId : null;
+  const frente: FormalizarFrente | null =
+    mode === 'formalizar' && isFormalizarFrente(body.frente) ? body.frente : null;
 
   const history = parseHistory(body.messages);
   const trimmed = truncateByChars(history);
-  const systemPrompt = buildSystemPrompt(mode, hookId);
+  const systemPrompt = buildSystemPrompt(mode, hookId, null, frente);
 
   const adapter = getProviderForMode(mode);
   const provider: Provider = adapter.key;

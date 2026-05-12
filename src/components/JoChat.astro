@@ -533,6 +533,7 @@ const { conversationId, variant = 'page' } = Astro.props;
     // Sticky overrides usados apenas no próximo envio (vêm do wizard / prefill).
     let nextModeOverride: Mode | null = null;
     let nextHookOverride: string | null = null;
+    let nextFrenteOverride: string | null = null;
 
     function setNextModeOverride(mode: Mode | null) {
       nextModeOverride = mode;
@@ -614,13 +615,14 @@ const { conversationId, variant = 'page' } = Astro.props;
       message: string,
       mode: Mode,
       hookId: string | null,
+      frente: string | null,
       assistantBubble: HTMLDivElement,
       partialTagOnError: () => void,
     ) {
       const res = await fetch('/api/jo/chat-open', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: localHistory, message, mode, hookId }),
+        body: JSON.stringify({ messages: localHistory, message, mode, hookId, frente }),
       });
 
       if (!res.ok || !res.body) {
@@ -707,6 +709,7 @@ const { conversationId, variant = 'page' } = Astro.props;
           ? 'possibilidades'
           : 'decisao';
       const hookForThisSend = nextHookOverride;
+      const frenteForThisSend = nextFrenteOverride;
 
       setSending(true);
 
@@ -723,9 +726,10 @@ const { conversationId, variant = 'page' } = Astro.props;
       // Overrides do wizard / gancho valem uma vez: limpa ao enviar.
       if (nextModeOverride) setNextModeOverride(null);
       if (nextHookOverride) nextHookOverride = null;
+      if (nextFrenteOverride) nextFrenteOverride = null;
 
       try {
-        await streamChat(message, mode, hookForThisSend, assistantBubble, () => {
+        await streamChat(message, mode, hookForThisSend, frenteForThisSend, assistantBubble, () => {
           const tag = document.createElement('div');
           tag.className = 'jo-chat__partial-tag';
           tag.textContent = 'resposta incompleta';
@@ -768,7 +772,12 @@ const { conversationId, variant = 'page' } = Astro.props;
     try {
       const raw = sessionStorage.getItem('alavanca:diag-prefill');
       if (raw) {
-        const data = JSON.parse(raw) as { text?: string; mode?: string; hookId?: string };
+        const data = JSON.parse(raw) as {
+          text?: string;
+          mode?: string;
+          hookId?: string;
+          frente?: string;
+        };
         if (data && typeof data.text === 'string' && data.text.length > 0) {
           inputEl.value = data.text;
           sessionStorage.removeItem('alavanca:diag-prefill');
@@ -777,6 +786,9 @@ const { conversationId, variant = 'page' } = Astro.props;
           }
           if (typeof data.hookId === 'string' && data.hookId.length > 0) {
             nextHookOverride = data.hookId;
+          }
+          if (typeof data.frente === 'string' && data.frente.length > 0) {
+            nextFrenteOverride = data.frente;
           }
           updateCounter();
           autoresize();

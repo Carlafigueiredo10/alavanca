@@ -1,189 +1,131 @@
 ---
 import Base from '../../layouts/Base.astro';
+
+interface Frente {
+  num: string;
+  slug: string;
+  title: string;
+  tagline: string;
+  body: string;
+  meta: string;
+  prereq?: 'soft' | 'hard' | null;
+}
+
+const frentes: Frente[] = [
+  {
+    num: '01',
+    slug: 'portaria',
+    title: 'Portaria de Criação / Institucionalização',
+    tagline: 'O ato fundacional. Sem ele, a Procuradoria trava parceria externa.',
+    body: 'Minuta SEI-Ready de portaria com vinculação, mandato, competências, composição e vigência. Lastro: Lei 14.129/2021, CF/88 art. 37, decreto interno da casa.',
+    meta: '3 telas · 5 a 8 minutos',
+  },
+  {
+    num: '02',
+    slug: 'catalogo',
+    title: 'Catálogo de Serviços',
+    tagline: 'O antídoto do "balcão de pedidos". Define o que o lab faz e o que NÃO faz.',
+    body: 'Documento de governança com Ofertas explícitas + Anti-balcão obrigatório + Critérios de Acionamento + SLA. Lastro: Sano (2020), I.LAB, Lei 13.460/2017.',
+    meta: '3 telas · 6 a 10 minutos',
+  },
+  {
+    num: '03',
+    slug: 'dedicacao',
+    title: 'Nota Técnica de Dedicação Exclusiva',
+    tagline: 'A defesa da carga horária. RH lê legalidade, não consultoria internacional.',
+    body: 'NT fundamentando dedicação primeiro pelo Marco CT&I (art. 9º-A bolsa, art. 14-A afastamento) e depois por OCDE/ENAP. Inclui análise de risco pela IN 01/2016 CGU/MP.',
+    meta: '3 telas · 6 a 8 minutos',
+  },
+  {
+    num: '04',
+    slug: 'enquadramento-ict',
+    title: 'Ato de Enquadramento como ICT',
+    tagline: 'O passaporte do Marco CT&I. Sem ICT, não há Encomenda Tecnológica nem NIT.',
+    body: 'Alteração de regimento incluindo PD&I entre as competências do órgão. Anti-fachada: só enquadra se houver atividade-meio de PD&I declarada. Lastro: Lei 10.973/2004 art. 2º IV.',
+    meta: '3 telas · 7 a 10 minutos',
+  },
+  {
+    num: '05',
+    slug: 'nit',
+    title: 'Criação do NIT',
+    tagline: 'O núcleo obrigatório do art. 16. Com cláusula condicional para não prevaricar.',
+    body: 'Portaria + Regimento Interno do Núcleo de Inovação Tecnológica, com as atribuições do art. 17. Embute cláusula condicional suspendendo o funcionamento até a publicação do Ato de Enquadramento como ICT.',
+    meta: '4 telas · 8 a 12 minutos',
+    prereq: 'soft',
+  },
+  {
+    num: '06',
+    slug: 'politica-inovacao',
+    title: 'Política de Inovação da ICT',
+    tagline: 'A peça do art. 15-A. Modelo Integrado entrega Diretrizes; Fragmentado entrega resoluções.',
+    body: 'Trava de pré-requisito (gatekeeper): exige confirmação prévia do Enquadramento como ICT. Modelo Integrado = espinha dorsal de Diretrizes; Modelo Fragmentado = núcleo + 4 resoluções (PI · Transferência · Remuneração · Cooperação). FORMICT embutido.',
+    meta: '5 telas · 10 a 15 minutos',
+    prereq: 'hard',
+  },
+];
 ---
 <Base
-  title="Minuta jurídica · Formalizar · Alavanca"
-  description="Quatro respostas. A Jô devolve uma Minuta SEI-Ready com fundamentação tripartite e caveat de revisão jurídica."
+  title="Frentes do Formalizar · Alavanca"
+  description="Seis frentes autônomas: Portaria · Catálogo · Dedicação · Enquadramento ICT · NIT · Política de Inovação. Cada frente é um sub-wizard isolado com base de conhecimento cirúrgica — sem alucinação cruzada entre regras."
 >
 
-<!-- ============================================================
-     INTRO
-     ============================================================ -->
 <section class="intro">
   <div class="container">
-    <div class="section-label animate-in">/ Formalizar · Minuta</div>
-    <h1 class="intro-headline animate-in delay-100">Do projeto interno à instituição reconhecida.</h1>
-    <p class="subhead-italic intro-subhead animate-in delay-180">Em quatro respostas — não em quatro reuniões com o jurídico.</p>
-    <p class="kicker intro-kicker animate-in delay-260">↓ Tipo · Vinculação · Mandato · Lastro</p>
+    <div class="section-label animate-in">/ Formalizar · Seis Frentes Autônomas</div>
+    <h1 class="intro-headline animate-in delay-100">Escolha a peça que vai redigir.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Cada frente é uma chamada isolada da Jô, com escopo cirúrgico — sem confusão de regras entre verbos.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ 6 frentes · você decide por onde começar</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
-        Lastros embarcados: <strong>Marco Legal CT&I</strong> (Lei 10.973/2004 c/ redação 13.243/2016),<br />
-        <strong>Lei do Governo Digital</strong> (Lei 14.129/2021) e padrão SEI/ABNT.<br />
-        <strong>O técnico decide — o volume deixa de travar.</strong>
+        A Jô do Catálogo não conhece regras do Marco CT&I.<br />
+        A Jô da Política de Inovação não conhece regras de RH.<br />
+        <strong>Cada peça com a profundidade que merece.</strong>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     STEPPER
-     ============================================================ -->
-<section class="stepper-bar">
+<section class="grid-section">
   <div class="container">
-    <div class="stepper" id="stepper">
-      <div class="step is-active" data-step="1">
-        <span class="step-num">01</span>
-        <span class="step-label">Tipo</span>
-      </div>
-      <div class="step-divider"></div>
-      <div class="step" data-step="2">
-        <span class="step-num">02</span>
-        <span class="step-label">Vinculação</span>
-      </div>
-      <div class="step-divider"></div>
-      <div class="step" data-step="3">
-        <span class="step-num">03</span>
-        <span class="step-label">Mandato</span>
-      </div>
-      <div class="step-divider"></div>
-      <div class="step" data-step="4">
-        <span class="step-num">04</span>
-        <span class="step-label">Lastro</span>
-      </div>
+    <div class="grid">
+      {frentes.map((f) => (
+        <a class="card" href={`/formalizar/${f.slug}`} data-slug={f.slug}>
+          <div class="card-top">
+            <span class="card-num">/{f.num}</span>
+            {f.prereq === 'soft' && (
+              <span class="card-prereq card-prereq--soft" title="Recomenda Enquadramento ICT antes">
+                ⚠ recomenda 04 antes
+              </span>
+            )}
+            {f.prereq === 'hard' && (
+              <span class="card-prereq card-prereq--hard" title="Exige Enquadramento ICT publicado">
+                🔒 exige 04 publicado
+              </span>
+            )}
+          </div>
+          <h2 class="card-title">{f.title}</h2>
+          <p class="card-tagline">{f.tagline}</p>
+          <p class="card-body">{f.body}</p>
+          <div class="card-foot">
+            <span class="card-meta">{f.meta}</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      ))}
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     WIZARD STEPS
-     ============================================================ -->
-<section class="wizard">
-  <div class="container">
-
-    <!-- ── 01 · TIPO ── -->
-    <div class="wizard-step is-active" data-step="1">
-      <div class="step-header">
-        <div class="step-tag">01 · <span class="verb">Tipo de instrumento</span></div>
-        <h2 class="step-headline">Que peça você precisa redigir?</h2>
-        <p class="step-hint">
-          Especifique a espécie do ato: portaria de criação, regimento, edital de
-          desafio, termo de cooperação técnica, sandbox regulatório. Quanto mais
-          específico, mais aderente ao SEI será o rascunho.
-        </p>
-      </div>
-
-      <textarea
-        class="step-input"
-        data-step-input="1"
-        rows="3"
-        maxlength="400"
-        placeholder="Ex: portaria de criação do laboratório de inovação no âmbito da Secretaria-Executiva."
-      ></textarea>
-      <div class="step-counter"><span data-step-counter="1">0</span> / 400</div>
-
-      <div class="step-actions">
-        <span class="step-back-placeholder"></span>
-        <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
-      </div>
-    </div>
-
-    <!-- ── 02 · VINCULAÇÃO ── -->
-    <div class="wizard-step" data-step="2">
-      <div class="step-header">
-        <div class="step-tag">02 · <span class="verb">Vinculação hierárquica</span></div>
-        <h2 class="step-headline">A qual estrutura o lab se ancora?</h2>
-        <p class="step-hint">
-          Diga o ordenador, secretaria, ministério ou autarquia. A Jô vai checar
-          se a vinculação proposta sustenta o mandato — se a unidade-mãe não tem
-          a competência, a peça não cola.
-        </p>
-      </div>
-
-      <textarea
-        class="step-input"
-        data-step-input="2"
-        rows="3"
-        maxlength="400"
-        placeholder="Ex: Secretaria-Executiva do Ministério X, conforme decreto de organização interna."
-      ></textarea>
-      <div class="step-counter"><span data-step-counter="2">0</span> / 400</div>
-
-      <div class="step-actions">
-        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
-        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
-      </div>
-    </div>
-
-    <!-- ── 03 · MANDATO ── -->
-    <div class="wizard-step" data-step="3">
-      <div class="step-header">
-        <div class="step-tag">03 · <span class="verb">Mandato pretendido</span></div>
-        <h2 class="step-headline">Quais competências o lab terá?</h2>
-        <p class="step-hint">
-          Liste as competências e a amplitude da atribuição. Se o mandato exceder
-          o que a vinculação permite, a Jô vai apontar a inconsistência antes de
-          redigir.
-        </p>
-      </div>
-
-      <textarea
-        class="step-input"
-        data-step-input="3"
-        rows="4"
-        maxlength="600"
-        placeholder="Ex: prototipar serviços digitais; facilitar oficinas de ideação intersetorial; capacitar servidores em métodos de inovação; manter relacionamento técnico com a Rede InovaGov."
-      ></textarea>
-      <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
-
-      <div class="step-actions">
-        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
-        <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
-      </div>
-    </div>
-
-    <!-- ── 04 · LASTRO ── -->
-    <div class="wizard-step" data-step="4">
-      <div class="step-header">
-        <div class="step-tag">04 · <span class="verb">Lastro normativo</span></div>
-        <h2 class="step-headline">Que norma da casa já existe?</h2>
-        <p class="step-hint">
-          Indique decreto, regimento, IN ou portaria que sustenta a competência —
-          ou declare a lacuna. Se faltar respaldo, a Jô propõe a Camada Tripartite
-          com Lacuna Normativa Reconhecida.
-        </p>
-      </div>
-
-      <textarea
-        class="step-input"
-        data-step-input="4"
-        rows="4"
-        maxlength="600"
-        placeholder="Ex: decreto de organização interna do Ministério prevê unidades técnicas vinculadas à Secretaria-Executiva; não há IN específica sobre laboratórios de inovação."
-      ></textarea>
-      <div class="step-counter"><span data-step-counter="4">0</span> / 600</div>
-
-      <div class="step-actions">
-        <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
-        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Minuta →</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ============================================================
-     RODAPÉ TÉCNICO
-     ============================================================ -->
 <section class="footnote">
   <div class="container">
     <div class="footnote-grid">
       <div>
-        <div class="footnote-label">↳ Saída</div>
-        <p>Minuta SEI-Ready com cabeçalho institucional, considerandos lastreados em norma, cláusulas dispositivas em artigos, seção "Da Fundamentação" (Camada Tripartite: Base · Operacional · Lacuna) e caveat obrigatório de revisão jurídica.</p>
+        <div class="footnote-label">↳ Arquitetura</div>
+        <p>Seis system prompts isolados (`src/prompts/jo-formalizar-*.md`). Backend escolhe o `.md` exato pela frente declarada — a Jô da peça acionada não tem contexto das outras. Engenharia anti-alucinação cruzada.</p>
       </div>
       <div>
-        <div class="footnote-label">↳ Princípio</div>
-        <p>O lastro normativo permanece. A Jô atua como redatora institucional que comprime o ciclo de proposição-revisão jurídica de semanas para horas. Você decide. A Jô redige.</p>
+        <div class="footnote-label">↳ Ordem recomendada</div>
+        <p>Lab novo: 01 Portaria → 02 Catálogo → 03 Dedicação. Lab buscando segurança jurídica plena: 04 Enquadramento ICT → 05 NIT → 06 Política de Inovação. Você pode rodar uma de cada vez.</p>
       </div>
     </div>
   </div>
@@ -192,30 +134,21 @@ import Base from '../../layouts/Base.astro';
 </Base>
 
 <style>
-  /* ============================================================
-     OVERRIDE — coluna estreita pra leitura.
-     ============================================================ */
-  .container { max-width: 760px; }
+  .container { max-width: 1080px; }
 
-  /* ============================================================
-     INTRO
-     ============================================================ */
-  .intro { padding-top: 80px; padding-bottom: 60px; }
-
+  .intro { padding-top: 80px; padding-bottom: 48px; }
   .intro-headline {
     font-family: var(--serif);
     font-weight: 500;
-    font-size: clamp(48px, 7vw, 72px);
-    line-height: 1.02;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.04;
     letter-spacing: -0.028em;
     color: var(--fg);
-    margin-bottom: 26px;
-    max-width: 640px;
+    margin-bottom: 22px;
+    max-width: 720px;
   }
-
-  .intro-subhead { margin-bottom: 18px; }
-  .intro-kicker { margin-bottom: 56px; }
-
+  .intro-subhead { margin-bottom: 14px; max-width: 720px; }
+  .intro-kicker { margin-bottom: 44px; }
   .intro-meta {
     padding-top: 22px;
     border-top: 0.5px solid var(--fg-14);
@@ -232,170 +165,112 @@ import Base from '../../layouts/Base.astro';
     color: var(--fg-86);
   }
 
-  /* ============================================================
-     STEPPER
-     ============================================================ */
-  .stepper-bar {
-    padding: 16px 0 32px;
-    border-top: 0.5px solid var(--fg-14);
-    border-bottom: 0.5px solid var(--fg-14);
-    background: rgba(0, 0, 0, 0.18);
+  .grid-section { padding: 32px 0 64px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
   }
-  .stepper {
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 28px 24px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    background: rgba(245, 242, 235, 0.02);
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 200ms ease, transform 200ms ease, background 200ms ease;
+    min-height: 240px;
+  }
+  .card:hover {
+    border-color: var(--amber);
+    transform: translateY(-2px);
+    background: rgba(245, 242, 235, 0.05);
+  }
+
+  .card-top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 8px 0;
-    flex-wrap: wrap;
-  }
-  .step {
-    display: flex;
-    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
     gap: 10px;
-    opacity: 0.4;
-    transition: opacity 240ms ease, color 240ms ease;
   }
-  .step.is-active,
-  .step.is-done {
-    opacity: 1;
-  }
-  .step-num {
+  .card-num {
     font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--fg-50);
-    transition: color 240ms ease;
+    letter-spacing: 0.2em;
+    color: var(--amber);
   }
-  .step.is-active .step-num { color: var(--amber); }
-  .step.is-done .step-num { color: var(--fg-86); }
-  .step-label {
+  .card-prereq {
     font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--fg-50);
-    transition: color 240ms ease;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 0.5px solid;
   }
-  .step.is-active .step-label { color: var(--fg); }
-  .step-divider {
-    width: 36px;
-    height: 0.5px;
-    background: var(--fg-22);
+  .card-prereq--soft {
+    color: oklch(0.72 0.12 78);
+    border-color: oklch(0.72 0.12 78 / 0.45);
+    background: oklch(0.72 0.12 78 / 0.06);
   }
-
-  @media (max-width: 540px) {
-    .stepper { gap: 8px; }
-    .step-divider { width: 14px; }
-    .step-label { font-size: 10px; letter-spacing: 0.1em; }
+  .card-prereq--hard {
+    color: oklch(0.65 0.18 28);
+    border-color: oklch(0.65 0.18 28 / 0.50);
+    background: oklch(0.65 0.18 28 / 0.06);
   }
 
-  /* ============================================================
-     WIZARD STEPS
-     ============================================================ */
-  .wizard { padding: 56px 0 64px; min-height: 60vh; }
-
-  .wizard-step {
-    display: none;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1),
-                transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-  .wizard-step.is-active {
-    display: block;
-  }
-  .wizard-step.is-active.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .step-header { margin-bottom: 26px; }
-
-  .step-tag {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--fg-50);
-    margin-bottom: 22px;
-  }
-  .step-tag .verb { color: var(--amber); }
-
-  .step-headline {
+  .card-title {
     font-family: var(--serif);
     font-weight: 500;
-    font-size: clamp(28px, 3.6vw, 40px);
+    font-size: 22px;
     line-height: 1.18;
-    letter-spacing: -0.018em;
+    letter-spacing: -0.01em;
     color: var(--fg);
-    margin-bottom: 18px;
-    max-width: 640px;
+    margin-bottom: 10px;
   }
-
-  .step-hint {
-    font-family: var(--sans);
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--fg-86);
-    max-width: 600px;
-    margin-bottom: 24px;
-  }
-  .step-hint em {
+  .card-tagline {
     font-family: var(--serif);
     font-style: italic;
-    color: var(--fg);
+    font-size: 14px;
+    color: var(--amber);
+    margin-bottom: 12px;
+    line-height: 1.4;
   }
-
-  .step-input {
-    width: 100%;
-    background: rgba(245, 242, 235, 0.04);
-    border: 0.5px solid var(--fg-22);
-    border-radius: 12px;
-    padding: 16px 18px;
-    color: var(--fg);
+  .card-body {
     font-family: var(--sans);
-    font-size: 15px;
+    font-size: 13.5px;
     line-height: 1.55;
-    resize: vertical;
-    min-height: 120px;
-    transition: border-color 200ms ease, background 200ms ease;
+    color: var(--fg-86);
+    flex-grow: 1;
+    margin-bottom: 18px;
   }
-  .step-input:focus {
-    outline: none;
-    border-color: var(--amber);
-    background: rgba(245, 242, 235, 0.06);
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--fg-14);
   }
-  .step-input::placeholder {
-    color: var(--fg-45);
-    font-style: italic;
-  }
-
-  .step-counter {
-    margin-top: 8px;
+  .card-meta {
     font-family: var(--mono);
     font-size: 10.5px;
-    letter-spacing: 0.04em;
-    color: var(--fg-45);
-    text-align: right;
+    letter-spacing: 0.12em;
+    color: var(--fg-50);
+  }
+  .card-arrow {
+    font-family: var(--mono);
+    color: var(--amber);
+    font-size: 14px;
   }
 
-  .step-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-top: 32px;
-  }
-  .step-back-placeholder {
-    display: inline-block;
-    width: 1px;
-  }
-
-  /* ============================================================
-     RODAPÉ TÉCNICO
-     ============================================================ */
   .footnote {
-    padding: 56px 0 80px;
+    padding: 48px 0 80px;
     border-top: 0.5px solid var(--fg-14);
   }
   .footnote-grid {
@@ -417,175 +292,7 @@ import Base from '../../layouts/Base.astro';
     color: var(--fg-86);
   }
   @media (max-width: 640px) {
-    .footnote-grid {
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
+    .footnote-grid { grid-template-columns: 1fr; gap: 28px; }
   }
 </style>
-
-<script>
-  // ============================================================
-  // WIZARD · 4 telas → consolidação → handoff pro modo Formalizar
-  // ============================================================
-  import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
-  import { submitWizard } from '../../lib/journey/wizard-submit';
-
-  type StepNum = 1 | 2 | 3 | 4;
-
-  const STATE_KEY = 'alavanca:wizard-state-formalizar';
-  const MODE = 'formalizar';
-
-  const stepNums: StepNum[] = [1, 2, 3, 4];
-  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '', 4: '' };
-  let current: StepNum = 1;
-  // Modo demo aberto: pula o gate de login.
-  let isAuthed: boolean = true;
-
-  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
-  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
-
-  function showStep(n: StepNum) {
-    current = n;
-    steps.forEach((el) => {
-      const num = Number(el.dataset.step) as StepNum;
-      const isActive = num === n;
-      el.classList.toggle('is-active', isActive);
-      el.classList.remove('is-visible');
-      if (isActive) {
-        requestAnimationFrame(() => el.classList.add('is-visible'));
-        const input = el.querySelector<HTMLTextAreaElement>('.step-input');
-        setTimeout(() => input?.focus(), 80);
-      }
-    });
-    stepperItems.forEach((el) => {
-      const num = Number(el.dataset.step) as StepNum;
-      el.classList.toggle('is-active', num === n);
-      el.classList.toggle('is-done', num < n);
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  stepNums.forEach((n) => {
-    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
-    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
-    const nextBtn =
-      document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
-      (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
-
-    function refresh() {
-      const val = input.value.trim();
-      answers[n] = val;
-      counter.textContent = String(input.value.length);
-      if (nextBtn) nextBtn.disabled = val.length < 8;
-    }
-
-    input.addEventListener('input', refresh);
-
-    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
-    backBtn?.addEventListener('click', () => {
-      if (n > 1) showStep((n - 1) as StepNum);
-    });
-
-    if (n < 4) {
-      nextBtn?.addEventListener('click', () => {
-        if (answers[n].length < 8) return;
-        showStep((n + 1) as StepNum);
-      });
-    }
-  });
-
-  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
-
-  function setGenerateLabel() {
-    if (isAuthed === false) {
-      generateBtn.textContent = 'Gerar Minuta (faz login) →';
-    } else {
-      generateBtn.textContent = 'Gerar Minuta →';
-    }
-  }
-
-  generateBtn.addEventListener('click', async () => {
-    if (Object.values(answers).some((v) => v.length < 8)) return;
-
-    generateBtn.disabled = true;
-    generateBtn.textContent = 'Encaminhando à Jô…';
-
-    await submitWizard({
-      verb: 'formalizar',
-      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3], 4: answers[4] },
-      fallbackText: buildPrompt(answers[1], answers[2], answers[3], answers[4]),
-      fallbackSource: 'wizard-formalizar',
-    });
-  });
-
-  function buildPrompt(tipo: string, vinculacao: string, mandato: string, lastro: string): string {
-    return [
-      '[ Contexto · Wizard Formalizar / Minuta ]',
-      '',
-      'Cenário pré-estruturado pelo gestor público nas quatro variáveis canônicas:',
-      '',
-      `Tipo de instrumento: ${tipo}`,
-      `Vinculação hierárquica: ${vinculacao}`,
-      `Mandato pretendido: ${mandato}`,
-      `Lastro normativo disponível: ${lastro}`,
-      '',
-      '[ Pedido ]',
-      'Redija uma Minuta SEI-Ready, aplicando o Marco Legal de CT&I (Lei 10.973/2004 c/ redação 13.243/2016)',
-      'e a Lei do Governo Digital (Lei 14.129/2021) onde couber. Inclua a Camada Normativa Tripartite',
-      '(Base Estruturante / Norma Operacional / Lacuna) e o caveat obrigatório de revisão jurídica.',
-      'Linguagem formal de administração pública, padrão SEI/ABNT.',
-      'Se o mandato pretendido exceder o que a vinculação permite, aponte a inconsistência antes de redigir.',
-    ].join('\n');
-  }
-
-  function restoreState(): boolean {
-    try {
-      const raw = localStorage.getItem(STATE_KEY);
-      if (!raw) return false;
-      localStorage.removeItem(STATE_KEY);
-
-      const saved = JSON.parse(raw) as Record<string, string | number>;
-      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
-      if (Date.now() - ts > 3_600_000) return false;
-
-      let restored = false;
-      stepNums.forEach((n) => {
-        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
-        if (val.length === 0) return;
-        answers[n] = val;
-        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
-        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
-        if (input) {
-          input.value = val;
-          input.dispatchEvent(new Event('input'));
-        }
-        if (counter) counter.textContent = String(val.length);
-        restored = true;
-      });
-      return restored;
-    } catch {
-      return false;
-    }
-  }
-
-  async function checkAuth() {
-    try {
-      const sb = getSupabaseBrowserClient();
-      const { data } = await sb.auth.getSession();
-      isAuthed = !!data?.session;
-    } catch {
-      isAuthed = false;
-    }
-    setGenerateLabel();
-  }
-
-  const restored = restoreState();
-  if (restored && Object.values(answers).every((v) => v.length >= 8)) {
-    showStep(4);
-  } else {
-    showStep(1);
-  }
-  setGenerateLabel();
-  // checkAuth(); // desativado em modo demo aberto
-</script>
+</Base>

@@ -1,0 +1,248 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Catálogo de Serviços · Formalizar · Alavanca"
+  description="Três respostas. A Jô redige o Catálogo de Serviços SEI-Ready com Ofertas, Anti-balcão obrigatório e Modelo de Acionamento — o antídoto do balcão de pedidos."
+>
+
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Formalizar · 02 · Catálogo de Serviços</div>
+    <h1 class="intro-headline animate-in delay-100">O que o lab faz. E o que o lab NÃO faz.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Sem Anti-balcão explícito, vira vitrine — e a equipe esgota.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Ofertas · Anti-balcão · Critérios de Acionamento</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Documento de governança · Lastros: <strong>Sano (2020) · RNP Labs no I.LAB · Lei 13.460/2017</strong>.<br />
+        <strong>Lab que aceita qualquer demanda vira help-desk.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stepper-bar">
+  <div class="container">
+    <div class="stepper" id="stepper">
+      <div class="step is-active" data-step="1"><span class="step-num">01</span><span class="step-label">Ofertas</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="2"><span class="step-num">02</span><span class="step-label">Anti-balcão</span></div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="3"><span class="step-num">03</span><span class="step-label">Acionamento</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wizard">
+  <div class="container">
+    <div class="wizard-step is-active" data-step="1">
+      <div class="step-header">
+        <div class="step-tag">01 · <span class="verb">Ofertas</span></div>
+        <h2 class="step-headline">Que serviços o lab oferece concretamente?</h2>
+        <p class="step-hint">Verbos concretos com entregável nominado: <em>facilitar oficinas (entregável: ata + protótipo) · prototipar fluxos (entregável: wireframe navegável) · redigir NTs · capacitar servidores</em>. Promessa vaga ("inovamos serviços") não cabe aqui — a Jô recusa.</p>
+      </div>
+      <textarea class="step-input" data-step-input="1" rows="6" maxlength="800" placeholder="Ex: (i) facilitação de oficinas de ideação Design Sprint (entregável: ata + protótipo conceitual, prazo 2 sem); (ii) prototipação de fluxos em baixa fidelidade (entregável: wireframe + relatório de teste, prazo 4 sem); (iii) redação de NT de Análise de Impacto Regulatório (prazo 6 sem); (iv) trilha de capacitação em métodos de inovação."></textarea>
+      <div class="step-counter"><span data-step-counter="1">0</span> / 800</div>
+      <div class="step-actions">
+        <span class="step-back-placeholder"></span>
+        <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" data-step="2">
+      <div class="step-header">
+        <div class="step-tag">02 · <span class="verb">Anti-balcão · O lab NÃO faz</span></div>
+        <h2 class="step-headline">Que demandas o lab recusa, e pra quem redireciona?</h2>
+        <p class="step-hint">
+          <strong>Obrigatório:</strong> liste pelo menos 3 limites concretos. Sem isso, a Jô recusa redigir o Catálogo. Exemplos: não substitui contratação de software via CTI; não atua como help-desk; não conduz pesquisa acadêmica abstrata; não redige minutas jurídicas finais (competência da assessoria jurídica).
+        </p>
+      </div>
+      <textarea class="step-input" data-step-input="2" rows="6" maxlength="800" placeholder="Ex: (i) não substitui contratação convencional de software via CTI — demandas de aquisição seguem rito licitatório; (ii) não atua como help-desk de TI nem suporte operacional — incidentes vão para a área de TI; (iii) não conduz pesquisa acadêmica abstrata sem aplicação institucional — academia busca parceria com universidades; (iv) não redige minutas jurídicas finais — competência da assessoria jurídica."></textarea>
+      <div class="step-counter"><span data-step-counter="2">0</span> / 800</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Critérios de Acionamento</span></div>
+        <h2 class="step-headline">Quem aciona, em que situação, com que prazo?</h2>
+        <p class="step-hint">Canal de entrada (memorando · sistema interno · e-mail), informações mínimas exigidas, ciclo de priorização, prazos de resposta inicial e de entrega. Se houver capacidade de SLA, declare.</p>
+      </div>
+      <textarea class="step-input" data-step-input="3" rows="5" maxlength="700" placeholder="Ex: acionado por qualquer Coordenação-Geral via memorando institucional à Coordenação do Lab; informações mínimas: problema, público-alvo, prazo restrição, patrocinador; ciclo: revisão mensal de fila, alinhamento estratégico com Secretaria-Executiva; SLA: resposta inicial 5 dias úteis, análise técnica 15 dias, entrega 4 a 12 semanas."></textarea>
+      <div class="step-counter"><span data-step-counter="3">0</span> / 700</div>
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Catálogo de Serviços →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="footnote">
+  <div class="container">
+    <div class="footnote-grid">
+      <div>
+        <div class="footnote-label">↳ Saída</div>
+        <p>Catálogo SEI-Ready com Identificação · Apresentação · Ofertas (verbo+objeto+entregável+prazo) · Anti-balcão (mínimo 3 itens) · Critérios de Acionamento · SLA · Revisão Periódica · Fundamentação · Caveat.</p>
+      </div>
+      <div>
+        <div class="footnote-label">↳ Princípio</div>
+        <p>A literatura é taxativa (Sano 2020): a dor nº 1 dos labs é "explicar o que é e como funciona". Catálogo honesto sobre limites é o que sustenta o lab. Vitrine que promete tudo, entrega esgotamento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .container { max-width: 760px; }
+  .intro { padding-top: 80px; padding-bottom: 60px; }
+  .intro-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(48px, 7vw, 72px); line-height: 1.02; letter-spacing: -0.028em; color: var(--fg); margin-bottom: 26px; max-width: 640px; }
+  .intro-subhead { margin-bottom: 18px; } .intro-kicker { margin-bottom: 56px; }
+  .intro-meta { padding-top: 22px; border-top: 0.5px solid var(--fg-14); }
+  .intro-meta-text { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--fg-45); line-height: 1.7; }
+  .intro-meta-text strong { font-weight: 500; color: var(--fg-86); }
+  .stepper-bar { padding: 16px 0 32px; border-top: 0.5px solid var(--fg-14); border-bottom: 0.5px solid var(--fg-14); background: rgba(0, 0, 0, 0.18); }
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 8px 0; }
+  .step { display: flex; align-items: center; gap: 10px; opacity: 0.4; transition: opacity 240ms ease, color 240ms ease; }
+  .step.is-active, .step.is-done { opacity: 1; }
+  .step-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-num { color: var(--amber); } .step.is-done .step-num { color: var(--fg-86); }
+  .step-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-50); transition: color 240ms ease; }
+  .step.is-active .step-label { color: var(--fg); }
+  .step-divider { width: 28px; height: 0.5px; background: var(--fg-22); }
+  @media (max-width: 720px) { .stepper { gap: 8px; flex-wrap: wrap; } .step-divider { width: 14px; } .step-label { font-size: 10px; letter-spacing: 0.1em; } }
+  .wizard { padding: 56px 0 64px; min-height: 60vh; }
+  .wizard-step { display: none; opacity: 0; transform: translateY(8px); transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1), transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1); }
+  .wizard-step.is-active { display: block; }
+  .wizard-step.is-active.is-visible { opacity: 1; transform: translateY(0); }
+  .step-header { margin-bottom: 26px; }
+  .step-tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 22px; }
+  .step-tag .verb { color: var(--amber); }
+  .step-headline { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.18; letter-spacing: -0.018em; color: var(--fg); margin-bottom: 18px; max-width: 640px; }
+  .step-hint { font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--fg-86); max-width: 600px; margin-bottom: 24px; }
+  .step-hint em { font-family: var(--serif); font-style: italic; color: var(--fg); } .step-hint strong { color: var(--fg); }
+  .step-input { width: 100%; background: rgba(245, 242, 235, 0.04); border: 0.5px solid var(--fg-22); border-radius: 12px; padding: 16px 18px; color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55; resize: vertical; min-height: 120px; transition: border-color 200ms ease, background 200ms ease; }
+  .step-input:focus { outline: none; border-color: var(--amber); background: rgba(245, 242, 235, 0.06); }
+  .step-input::placeholder { color: var(--fg-45); font-style: italic; }
+  .step-counter { margin-top: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--fg-45); text-align: right; }
+  .step-actions { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; }
+  .step-back-placeholder { display: inline-block; width: 1px; }
+  .footnote { padding: 56px 0 80px; border-top: 0.5px solid var(--fg-14); }
+  .footnote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footnote-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--fg-50); margin-bottom: 12px; }
+  .footnote p { font-family: var(--sans); font-size: 13.5px; line-height: 1.6; color: var(--fg-86); }
+  @media (max-width: 640px) { .footnote-grid { grid-template-columns: 1fr; gap: 28px; } }
+</style>
+
+<script>
+  type StepNum = 1 | 2 | 3;
+  const STATE_KEY = 'alavanca:wizard-state-formalizar-catalogo';
+  const MODE = 'formalizar';
+  const FRENTE = 'catalogo';
+  const stepNums: StepNum[] = [1, 2, 3];
+  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '' };
+  let current: StepNum = 1;
+  const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
+  const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
+  function showStep(n: StepNum) {
+    current = n;
+    steps.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      const isActive = num === n;
+      el.classList.toggle('is-active', isActive);
+      el.classList.remove('is-visible');
+      if (isActive) {
+        requestAnimationFrame(() => el.classList.add('is-visible'));
+        const input = el.querySelector<HTMLTextAreaElement>('.step-input');
+        setTimeout(() => input?.focus(), 80);
+      }
+    });
+    stepperItems.forEach((el) => {
+      const num = Number(el.dataset.step) as StepNum;
+      el.classList.toggle('is-active', num === n);
+      el.classList.toggle('is-done', num < n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  stepNums.forEach((n) => {
+    const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const nextBtn = document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`)
+      || (n === 3 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+    function refresh() {
+      const val = input.value.trim();
+      answers[n] = val;
+      counter.textContent = String(input.value.length);
+      if (nextBtn) nextBtn.disabled = val.length < 12;
+    }
+    input.addEventListener('input', refresh);
+    const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
+    backBtn?.addEventListener('click', () => { if (n > 1) showStep((n - 1) as StepNum); });
+    if (n < 3) {
+      nextBtn?.addEventListener('click', () => {
+        if (answers[n].length < 12) return;
+        showStep((n + 1) as StepNum);
+      });
+    }
+  });
+  const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
+  generateBtn.textContent = 'Gerar Catálogo de Serviços →';
+  generateBtn.addEventListener('click', () => {
+    if (Object.values(answers).some((v) => v.length < 12)) return;
+    const prompt = buildPrompt(answers[1], answers[2], answers[3]);
+    try {
+      sessionStorage.setItem('alavanca:diag-prefill', JSON.stringify({
+        text: prompt, mode: MODE, frente: FRENTE, source: 'wizard-formalizar-catalogo', ts: Date.now(),
+      }));
+    } catch { /* ignore */ }
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Encaminhando à Jô…';
+    window.location.href = '/jo';
+  });
+  function buildPrompt(ofertas: string, antibalcao: string, acionamento: string): string {
+    return [
+      '[ Contexto · Wizard Formalizar / Frente Catálogo de Serviços ]',
+      '',
+      'Cenário pré-estruturado pelo gestor público nas três variáveis canônicas:',
+      '',
+      `Ofertas declaradas: ${ofertas}`,
+      `Anti-balcão · O lab NÃO faz: ${antibalcao}`,
+      `Critérios de acionamento: ${acionamento}`,
+      '',
+      '[ Pedido ]',
+      'Redija o Catálogo de Serviços SEI-Ready (documento de governança, não ato normativo) com Identificação institucional, Apresentação, Ofertas estruturadas (verbo + objeto + entregável + prazo médio), Anti-balcão obrigatório (mínimo 3 itens declarando o foro correto de redirecionamento), Critérios de Acionamento, Modelo de SLA (quando aplicável), Cláusula de Revisão Periódica (anual), Da Fundamentação (Tripartite enxuta) e Caveat institucional.',
+      'Se houver menos de 3 itens no Anti-balcão, devolva pergunta solicitando complementação — sem isso o documento vira vitrine.',
+    ].join('\n');
+  }
+  function restoreState(): boolean {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (!raw) return false;
+      localStorage.removeItem(STATE_KEY);
+      const saved = JSON.parse(raw) as Record<string, string | number>;
+      const ts = typeof saved.ts === 'number' ? saved.ts : 0;
+      if (Date.now() - ts > 3_600_000) return false;
+      let restored = false;
+      stepNums.forEach((n) => {
+        const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
+        if (val.length === 0) return;
+        answers[n] = val;
+        const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (input) { input.value = val; input.dispatchEvent(new Event('input')); }
+        if (counter) counter.textContent = String(val.length);
+        restored = true;
+      });
+      return restored;
+    } catch { return false; }
+  }
+  const restored = restoreState();
+  if (restored && Object.values(answers).every((v) => v.length >= 12)) showStep(3);
+  else showStep(1);
+</script>
+</Base>

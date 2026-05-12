@@ -58,13 +58,20 @@ Se dois verbos têm a mesma resposta em 3 dos 4 slots, **um deles é redundante*
 - **Recorte:** **Antes de fazer.** Desenha o caminho metodológico.
 - **Não faz:** portaria, edital, indicador de outcome, dashboard, narrativa.
 
-### 3.2 · Formalizar
+### 3.2 · Formalizar (modular · 6 frentes autônomas)
 
-- **Entrada:** Tipo de instrumento · Vinculação hierárquica · Mandato pretendido · Lastro normativo disponível (4 telas).
-- **Saída:** Minuta jurídica (portaria, regimento, edital, cooperação técnica, sandbox).
-- **Domínio:** Marco Legal CT&I (Lei 10.973/2004 c/ redação 13.243/2016), Lei 14.129/2021, INs aplicáveis, padrão SEI/ABNT.
+- **Arquitetura:** seletor em `/formalizar/sprint` + 6 sub-wizards autônomos em `/formalizar/{portaria,catalogo,dedicacao,enquadramento-ict,nit,politica-inovacao}`. Cada frente é uma chamada isolada da Jô, com system prompt cirúrgico (`src/prompts/jo-formalizar-*.md`) — sem condicionais no prompt, sem alucinação cruzada.
+- **6 frentes:**
+  1. **Portaria de Criação/Institucionalização** (3 telas) · saída: Minuta SEI-Ready · lastro: Lei 14.129/2021, CF/88 art. 37.
+  2. **Catálogo de Serviços** (3 telas) · saída: Documento de Governança com Anti-balcão obrigatório · lastro: Sano (2020), I.LAB, Lei 13.460/2017.
+  3. **NT de Dedicação Exclusiva** (3 telas) · saída: NT ancorada PRIMEIRO no Marco CT&I (art. 9º-A bolsa, art. 14/14-A afastamento) e DEPOIS em OCDE/ENAP · análise de risco pela IN 01/2016 CGU/MP.
+  4. **Ato de Enquadramento como ICT** (3 telas) · saída: alteração de regimento incluindo PD&I nas competências · anti-fachada · lastro: Lei 10.973/2004 art. 2º IV, Decreto 9.283/2018.
+  5. **Criação do NIT** (4 telas) · saída: Portaria + Regimento Interno com atribuições do art. 17 + **cláusula condicional embutida** suspendendo funcionamento até publicação do Ato de Enquadramento · soft lock UX + hard lock no texto · lastro: Lei 10.973/2004 art. 16-17.
+  6. **Política de Inovação da ICT** (5 telas com **gatekeeper rígido**) · saída: Modelo Integrado (Diretrizes Gerais + Estrutura Normativa) OU Modelo Fragmentado (núcleo + 4 resoluções: PI · Transferência · Remuneração · Cooperação) · faixa legal art. 13 (5%-1/3) embutida · FORMICT obrigatório · lastro: Lei 10.973/2004 arts. 6º-13 e 15-A.
+- **Domínio comum:** Marco Legal CT&I (Lei 10.973/2004 c/ redação 13.243/2016), Lei 14.129/2021, INs aplicáveis, padrão SEI/ABNT.
 - **Recorte:** **Quando o lab precisa virar instituição** ou um instrumento jurídico precisa existir para destravar uma ação.
 - **Não faz:** blueprint metodológico, plano técnico de implementação, indicador de impacto, defesa institucional.
+- **Banco:** `mode_used='formalizar'` (não quebra constraint), com `frente` armazenado em `wizard_input` (JSONB opaco).
 
 ### 3.3 · Construir
 
@@ -153,9 +160,9 @@ Suffixes por modo em [src/prompts/jo-{verbo}.md](src/prompts/):
 
 | Modo | Lastros embarcados | Formato de saída |
 |---|---|---|
-| `mapear` | IN Conjunta 01/2016 CGU/MP · CF/88 art. 37 · Lei 13.655/2018 (LINDB) · LAI quando aplicável | Relatório de Diagnóstico SEI-Ready + Matriz de Riscos + Go/No-Go + Roteamento |
+| `mapear` | IN Conjunta 01/2016 CGU/MP · CF/88 art. 37 · Lei 13.655/2018 (LINDB) · LAI quando aplicável | Relatório de Diagnóstico SEI-Ready + Matriz de Riscos + Go/No-Go + Roteamento + Apêndice Técnico de Tags de Diagnóstico (24 hookIds canônicos) |
 | `estruturar` | MINDS, InovaGov, SIMPLES MENTE | Blueprint de Sprint (3 fases) |
-| `formalizar` | Marco Legal CT&I, Lei 14.129/2021, INs aplicáveis, padrão SEI | Minuta jurídica |
+| `formalizar` (modular · 6 frentes) | **Portaria:** Lei 14.129/2021, CF/88 art. 37. **Catálogo:** Sano (2020), I.LAB, Lei 13.460/2017. **Dedicação:** Marco CT&I art. 9º-A, 14, 14-A + OCDE/ENAP. **Enquadramento ICT:** Lei 10.973/2004 art. 2º IV. **NIT:** Lei 10.973/2004 art. 16-17. **Política:** Lei 10.973/2004 arts. 6º-13 e 15-A, FORMICT/MCTI. | 6 saídas autônomas conforme a frente acionada |
 | `construir` | Engenharia pública, no-code, handoff GNova, Guia AGU Sandbox | Plano Técnico + TCT + Handoff/Descontinuidade |
 | `avaliar` | Theory of Change, OCDE/CGU avaliação, indicadores SMART | Matriz de Indicadores + ToC |
 | `manter` | I.LAB · Sano (2020) · Mapeamento LISP Brasil · InovaGov · RenovaJud · gestão do conhecimento | Dossiê + Briefing Executivo + Plano de Sustentabilidade SEI + Minutas de Adesão à Rede |
@@ -172,7 +179,7 @@ Padrão = wizard client-side de N telas → consolida prompt denso → Jô proce
 |---|---|
 | Mapear | Cenário · Atores · Gargalo · Risco de não agir |
 | Estruturar | Problema · Hipótese · Experimento |
-| Formalizar | Tipo de instrumento · Vinculação · Mandato · Lastro |
+| Formalizar (modular) | Seletor → 6 sub-wizards: Portaria (3) · Catálogo (3) · Dedicação (3) · Enquadramento ICT (3) · NIT (4) · Política de Inovação (5 com gatekeeper) |
 | Construir | Solução validada · Stack · Restrição TI · Destinatário |
 | Avaliar | Intervenção · Outcome · Dados disponíveis |
 | Manter | Entregas · Janela e audiência · Risco de descontinuidade · Pedido de continuidade |
