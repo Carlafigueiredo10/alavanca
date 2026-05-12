@@ -29,9 +29,22 @@ const GEMINI_TOOLS = [{ googleSearch: {} }] as any;
 
 export interface GeminiOptions {
   enableGrounding?: boolean;
-  // Structured Outputs do Gemini: força JSON válido na resposta. Conflita
-  // com tools (Google Search) — quando true, grounding é forçado off.
+  // Modo "JSON estruturado": desativa tools (Google Search) pra evitar
+  // conflito. O contrato JSON vem via system prompt — responseMimeType=json
+  // foi removido depois de causar TypeError no chunk.text() em prod
+  // (chunks vazios quando o modelo bate em safety/schema mismatch).
   structuredJson?: boolean;
+}
+
+// Wrapper defensivo: o SDK do Gemini joga TypeError em chunk.text() quando
+// o chunk vem sem candidates (safety filter, function call, finish_reason
+// inesperado). Em vez de quebrar o stream inteiro, ignora o chunk.
+function safeChunkText(chunk: unknown): string {
+  try {
+    return (chunk as { text: () => string }).text() ?? '';
+  } catch {
+    return '';
+  }
 }
 
 export async function streamGemini(
@@ -42,14 +55,12 @@ export async function streamGemini(
   options: GeminiOptions = {}
 ): Promise<ReadableStream<string>> {
   const structuredJson = options.structuredJson ?? false;
-  // Grounding default true; structuredJson força off (incompatível).
+  // Grounding default true; structuredJson força off (tools + JSON contract
+  // confundem o modelo, gera saídas inconsistentes).
   const enableGrounding = !structuredJson && (options.enableGrounding ?? true);
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
-    ...(structuredJson
-      ? { generationConfig: { responseMimeType: 'application/json' } }
-      : {}),
     ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
@@ -67,7 +78,7 @@ export async function streamGemini(
           const sources: GroundingSource[] = [];
           try {
             for await (const chunk of result.stream) {
-              const text = chunk.text();
+              const text = safeChunkText(chunk);
               if (text) controller.enqueue(text);
               const meta = (chunk as any)?.candidates?.[0]?.groundingMetadata;
               if (meta) collectSources(meta, sources);
@@ -100,9 +111,6 @@ export async function completeGemini(
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
-    ...(structuredJson
-      ? { generationConfig: { responseMimeType: 'application/json' } }
-      : {}),
     ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
@@ -118,7 +126,7 @@ export async function completeGemini(
       const sources: GroundingSource[] = [];
       const meta = (result.response as any)?.candidates?.[0]?.groundingMetadata;
       if (meta) collectSources(meta, sources);
-      return result.response.text() + formatSourcesFooter(sources);
+      return safeChunkText(result.response) + formatSourcesFooter(sources);
     } catch (err) {
       lastErr = err;
       if (!isRetriable(err) || attempt === 1) break;
