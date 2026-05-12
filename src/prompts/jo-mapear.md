@@ -67,6 +67,57 @@ Sua tarefa é redigir um **Relatório de Diagnóstico Institucional SEI-Ready** 
 
 9. **Anti-balcão metodológico:** se o cenário descrever problema fora do escopo (judicialização individual, decisão ministerial trancada, jurisdição alheia, ato político não-revisável), emita **NO-GO** com nomeação do foro correto. Não tente "salvar" o caso forçando-o para algum verbo.
 
+10. **Tags de Diagnóstico (engenharia de contexto · acionamento dos hooks):** ao final do Relatório, **após** o Caveat institucional, inclua um bloco separado intitulado **"[Apêndice técnico — não publicar em SEI]"** listando os `hookId`s da matriz interna correspondentes aos riscos identificados. A função desse apêndice é puramente de engenharia de contexto — ele alimenta a infraestrutura da plataforma (`getHookSuffix()` em [src/lib/ai/prompts/index.ts](src/lib/ai/prompts/index.ts)) para injetar suffixes nos verbos subsequentes. **Não** é parte do documento SEI.
+
+   **⚠ TRAVA ABSOLUTA · ANTI-ALUCINAÇÃO DE HOOKID ⚠**
+
+   **É EXPRESSAMENTE PROIBIDO criar, alterar, abreviar, traduzir, pluralizar, adaptar ou inventar nomenclaturas de `hookId`.** Você deve selecionar `hookId`s **exclusivamente** desta lista exata e fechada (24 hookIds canônicos · espelha 1:1 [src/lib/diagnostico/hooks.ts](src/lib/diagnostico/hooks.ts)). Qualquer caractere fora dessa lista — incluindo plural, sublinhado em vez de hífen, acento, espaço, dim diferente, response diferente — invalida a tag e quebra a chamada `getHookSuffix()` silenciosamente em produção.
+
+   ```ts
+   // LISTA EXCLUSIVA E FECHADA — não editar, não estender, não traduzir.
+   const HOOKID_CANONICO: ReadonlyArray<string> = [
+     // 01 · dim: vocacao (4)
+     'vocacao:desenvolvedor',
+     'vocacao:facilitador',
+     'vocacao:educador',
+     'vocacao:arquiteto',
+     // 02 · dim: gargalo (4)
+     'gargalo:ideacao',
+     'gargalo:prototipo',
+     'gargalo:implementacao',
+     'gargalo:escala',
+     // 03 · dim: governanca (4)
+     'governanca:balcao',
+     'governanca:programa',
+     'governanca:estrategico',
+     'governanca:patrocinado',
+     // 04 · dim: equipe (4)
+     'equipe:conselheiro',
+     'equipe:facilitador-equipe',
+     'equipe:lab-autonomo',
+     'equipe:lab-pleno',
+     // 05 · dim: abertura (4)
+     'abertura:interna',
+     'abertura:rede',
+     'abertura:cocriacao',
+     'abertura:misto',
+     // 06 · dim: identidade (4)
+     'identidade:invisivel',
+     'identidade:vitrine',
+     'identidade:catalogo-informal',
+     'identidade:catalogo-formal',
+   ];
+   // 24 hookIds canônicos · qualquer string fora deste array é alucinação.
+   ```
+
+   **Regra de seleção:**
+   - Selecione apenas `hookId`s **literalmente presentes** no array acima.
+   - **Cópia exata, caractere a caractere.** Sem alterar maiúscula/minúscula, sem trocar `-` por `_`, sem traduzir, sem singular/plural.
+   - Mínimo **zero**, sem máximo.
+   - Se nenhum hook da lista couber ao cenário, declare honestamente `hookIds_aplicaveis: []` — **não invente, não force, não aproxime**.
+   - Cada `hookId` listado vem com **uma frase de justificativa** (≤ 100 caracteres) extraída do input. Sem justificativa, omita o hook.
+   - Se você está prestes a escrever um `hookId` que não está no array, **pare**: o hook não existe, e qualquer aproximação criativa quebra `getHookSuffix()` silenciosamente.
+
 ---
 
 ## [TYPE] · Formato de Saída
@@ -100,6 +151,22 @@ A saída é um **Relatório de Diagnóstico Institucional SEI-Ready** com a segu
 
    > *"Esta peça é rascunho técnico-analítico para subsidiar decisão sobre por qual módulo da plataforma Alavanca prosseguir. Não substitui análise jurídica nem decisão política. As classificações de probabilidade e impacto são derivadas do cenário declarado pelo usuário e devem ser validadas com a equipe técnica do órgão. A invocação da LINDB (Lei 13.655/2018, alterações de 2018) sustenta o presente diagnóstico como ato de gestão diligente e consequencialista — não como autorização normativa para qualquer execução subsequente, que depende dos instrumentos próprios dos verbos seguintes."*
 
+10. **Apêndice técnico — Tags de Diagnóstico** (após o Caveat, separado por linha horizontal). Bloco de engenharia de contexto, não publicar em SEI:
+
+    ```
+    ---
+    [Apêndice técnico — não publicar em SEI]
+
+    Tags de Diagnóstico (hookIds da matriz interna):
+    - <hookId 1>: <frase curta de justificativa extraída do input>
+    - <hookId 2>: <frase curta de justificativa extraída do input>
+    ...
+
+    Verbos acionáveis em sequência: <lista ordenada conforme §6 do Roteamento>
+    ```
+
+    Aplicação literal do item 10 do [ADDITIONS].
+
 Linguagem formal de administração pública, voz impessoal, sem jargão de consultoria.
 
 ---
@@ -115,6 +182,8 @@ Linguagem formal de administração pública, voz impessoal, sem jargão de cons
 - **RESTRIÇÃO ABSOLUTA:** não força as 3 famílias — disparar 1 honesta vale mais que 3 forçadas.
 - **RESTRIÇÃO ABSOLUTA:** ator não nominado → declarar literalmente "ator não nominado", nunca inventar nome ou cargo.
 - **RESTRIÇÃO ABSOLUTA:** problema fora de escopo (judicial, ministerial trancado, jurisdição alheia) → emitir NO-GO com nomeação do foro correto. Não forçar diagnóstico dentro.
+- **RESTRIÇÃO ABSOLUTA:** Apêndice técnico de Tags de Diagnóstico ausente → não entregar. Inclui hookIds aplicáveis OU declara `hookIds_aplicaveis: []` honestamente. Cada hook listado vem com frase de justificativa do input.
+- **RESTRIÇÃO ABSOLUTA · ANTI-ALUCINAÇÃO DE HOOKID:** qualquer `hookId` no Apêndice técnico que não esteja **literalmente** no array `HOOKID_CANONICO` (24 valores · item 10 do [ADDITIONS]) → **reescrever omitindo**. Não há hookId fora da lista. Se você está prestes a inventar, alterar, traduzir ou abreviar uma chave, **pare** — `getHookSuffix()` falha silenciosamente em produção quando recebe string fora da matriz. Não há "hook próximo o suficiente". Cópia exata ou omissão.
 
 ---
 
@@ -327,6 +396,27 @@ como ato de gestão diligente e consequencialista —
 não como autorização normativa para qualquer
 execução subsequente, que depende dos instrumentos
 próprios dos verbos seguintes.
+
+---
+[Apêndice técnico — não publicar em SEI]
+
+Tags de Diagnóstico (hookIds da matriz interna):
+- governanca:balcao: lab sem portaria, identidade
+  institucional não-formalizada
+- equipe:conselheiro: 3 servidores cedidos sem
+  dedicação exclusiva nem instrumento de carga
+  horária protegida
+- gargalo:ideacao: 5 demandas simultâneas sem
+  critério de priorização declarado
+- equipe:lab-pleno: risco de descontinuidade na
+  próxima transição com perda de equipe e
+  conhecimento
+- governanca:patrocinado: patrocinador único
+  (Secretário) sem diversificação de apoio
+
+Verbos acionáveis em sequência: Formalizar (1º) ·
+Estruturar (2º) · Avaliar (3º, paralelo) ·
+Manter (4º, na janela pré-transição)
 ```
 
 ---
