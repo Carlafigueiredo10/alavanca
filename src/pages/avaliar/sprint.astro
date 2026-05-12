@@ -147,11 +147,11 @@ import Base from '../../layouts/Base.astro';
     <div class="footnote-grid">
       <div>
         <div class="footnote-label">↳ Saída</div>
-        <p>Teoria de Mudança explícita (insumo → atividade → output → outcome → impacto), critérios DAC aplicáveis, Matriz de Indicadores SMART com fontes e instrumentos de coleta nominados, salvaguardas anti-viés e fundamentação tripartite.</p>
+        <p>Teoria de Mudança explícita (insumo → atividade → output → outcome → impacto), critérios DAC aplicáveis, Matriz de Indicadores SMART com <strong>Dimensão de Valor Público</strong> (Administrativa · Cidadã · Societal · Econômica) + <strong>Justificativa de Enquadramento</strong> por linha, fontes e instrumentos nominados, salvaguardas anti-viés e fundamentação tripartite.</p>
       </div>
       <div>
         <div class="footnote-label">↳ Princípio</div>
-        <p>Métrica de vaidade não sobrevive transição. A Jô separa indicador de processo (apoio) de indicador de outcome (defesa) e exige instrumento de coleta nominado pra cada um.</p>
+        <p>4 dimensões de Valor Público (Fuglsang et al., 2021), com calibração anti-alucinação: em backoffice foca Administrativa + Econômica; em serviço-fim exige Cidadã ou Societal. A Jô assume o peso da classificação mas devolve letramento ao servidor via Justificativa de Enquadramento.</p>
       </div>
     </div>
   </div>
@@ -429,9 +429,23 @@ import Base from '../../layouts/Base.astro';
       '',
       '[ Pedido ]',
       'Elabore Teoria de Mudança explícita (insumos → atividades → outputs → outcomes → impacto), Matriz de',
-      'Indicadores SMART (com fontes e instrumentos de coleta nominados, separando processo de outcome) e',
-      'Plano de Coleta. Aplique critérios DAC da OCDE pertinentes ao caso. Inclua salvaguardas anti-viés',
-      '(quem avalia não pode ser quem executou). Inclua Camada Normativa Tripartite e caveat institucional.',
+      'Indicadores SMART e Plano de Coleta SEI-Ready. Aplique critérios DAC da OCDE pertinentes ao caso.',
+      'Inclua salvaguardas anti-viés (quem avalia não pode ser quem executou), Camada Normativa Tripartite e',
+      'caveat institucional.',
+      '',
+      'OBRIGATÓRIO (4 Dimensões de Valor Público · Fuglsang et al., 2021):',
+      '- Toda linha da Matriz de Indicadores classifica em UMA das 4 dimensões: Administrativa, Cidadã,',
+      '  Societal ou Econômica. Indicador sem dimensão declarada → omitir.',
+      '- Toda linha vem com Justificativa de Enquadramento (≤ 200 caracteres) explicando POR QUE aquele',
+      '  resultado específico impacta aquela dimensão. Sem justificativa → omitir.',
+      '- Calibração anti-alucinação: analise o Outcome declarado. Se o escopo é estritamente backoffice',
+      '  (RH, processos administrativos internos, capacitação sem ponte com serviço-fim — referência LA-BORA!',
+      '  gov), foque Administrativa e Econômica; NÃO force indicador cidadão. Se o escopo toca o usuário-fim',
+      '  externo, pelo menos um indicador Cidadã ou Societal é inegociável — sem isso a defesa retroativa',
+      '  na transição fica vulnerável.',
+      '- Distinção fina: Cidadã = experiência DIRETA do usuário (tempo de espera, satisfação); Societal =',
+      '  impacto ESTRUTURAL na sociedade/democracia (transparência, equidade, participação, confiança).',
+      '',
       'Se o outcome proposto for de processo (vaidade), alerte e proponha pelo menos 2 indicadores de outcome.',
     ].join('\n');
   }

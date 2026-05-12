@@ -84,10 +84,13 @@ Se dois verbos têm a mesma resposta em 3 dos 4 slots, **um deles é redundante*
 ### 3.4 · Avaliar
 
 - **Entrada:** Intervenção em curso · Outcome pretendido · Dados disponíveis (3 telas).
-- **Saída:** Teoria de Mudança + Matriz de Indicadores de Outcome + Plano de Coleta.
-- **Domínio:** Theory of Change, avaliação de impacto (CGU, GAO, OCDE), viés de avaliação, indicadores SMART.
+- **Saída:** Teoria de Mudança + Matriz de Indicadores SMART (com Dimensão de Valor + Justificativa de Enquadramento por linha) + Plano de Coleta + Salvaguardas Anti-Viés.
+- **Domínio:** Theory of Change (Kellogg/ActKnowledge), Critérios DAC da OCDE, indicadores SMART, **4 Dimensões de Valor Público (Fuglsang et al., 2021): Administrativa · Cidadã · Societal · Econômica**, viés de avaliação.
+- **Quarteto de Valor Público (regra obrigatória):** toda linha da Matriz classifica em uma das 4 dimensões + Justificativa de Enquadramento (frase ≤ 200 caracteres explicando por que aquele resultado impacta aquela dimensão — letramento anti-caixa-preta).
+- **Calibração anti-alucinação:** em backoffice (interno ao Estado, ex: LA-BORA! gov), foca Administrativa + Econômica, **não força cidadã**. Em serviço-fim ao usuário externo, **pelo menos um indicador Cidadã ou Societal é inegociável**.
+- **Distinção fina Cidadã × Societal:** Cidadã mede experiência **direta** do usuário (tempo de espera, satisfação); Societal mede impacto **estrutural** na sociedade/democracia (transparência, equidade, participação social, confiança institucional).
 - **Recorte:** **Durante e depois da entrega.** Mede valor público da intervenção, não eficiência operacional do lab.
-- **Não faz:** KPIs de gestão do lab (isso é Governança/Formalizar), pitch para audiência política, dashboard de acumulado histórico.
+- **Não faz:** KPIs de gestão do lab (isso é Governança/Formalizar), pitch para audiência política, dashboard de acumulado histórico (isso é Manter).
 
 ### 3.5 · Manter (ex-Provar)
 
@@ -164,7 +167,7 @@ Suffixes por modo em [src/prompts/jo-{verbo}.md](src/prompts/):
 | `estruturar` | MINDS, InovaGov, SIMPLES MENTE | Blueprint de Sprint (3 fases) |
 | `formalizar` (modular · 6 frentes) | **Portaria:** Lei 14.129/2021, CF/88 art. 37. **Catálogo:** Sano (2020), I.LAB, Lei 13.460/2017. **Dedicação:** Marco CT&I art. 9º-A, 14, 14-A + OCDE/ENAP. **Enquadramento ICT:** Lei 10.973/2004 art. 2º IV. **NIT:** Lei 10.973/2004 art. 16-17. **Política:** Lei 10.973/2004 arts. 6º-13 e 15-A, FORMICT/MCTI. | 6 saídas autônomas conforme a frente acionada |
 | `construir` | Engenharia pública, no-code, handoff GNova, Guia AGU Sandbox | Plano Técnico + TCT + Handoff/Descontinuidade |
-| `avaliar` | Theory of Change, OCDE/CGU avaliação, indicadores SMART | Matriz de Indicadores + ToC |
+| `avaliar` | Theory of Change, OCDE/CGU avaliação, indicadores SMART, **4 Dimensões de Valor Público (Fuglsang et al., 2021)** | Matriz de Indicadores (com Dimensão + Justificativa de Enquadramento por linha) + ToC + Plano de Coleta + Salvaguardas Anti-Viés |
 | `manter` | I.LAB · Sano (2020) · Mapeamento LISP Brasil · InovaGov · RenovaJud · gestão do conhecimento | Dossiê + Briefing Executivo + Plano de Sustentabilidade SEI + Minutas de Adesão à Rede |
 
 Hooks (20 legados) **continuam funcionando como suffixes one-shot no Modo Decisão**, agora classificados por verbo dono na matriz acima. Nada quebra.
