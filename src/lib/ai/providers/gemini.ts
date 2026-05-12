@@ -3,7 +3,10 @@ import type { ChatMessage } from '../history/truncate';
 import { collectSources, formatSourcesFooter, type GroundingSource } from '../grounding/gemini';
 import { isRetriable, withTimeout } from './shared';
 
-export const TIMEOUT_GEMINI_MS = 15_000;
+// 15s era apertado pra prompts longos com responseMimeType=json (modelo
+// demora mais pra preparar a primeira resposta válida). 30s cobre o caso
+// do Mapear com system prompt ~6k tokens + contrato JSON injetado.
+export const TIMEOUT_GEMINI_MS = 30_000;
 const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const FRIENDLY_GEMINI_ERROR =

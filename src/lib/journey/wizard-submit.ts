@@ -88,6 +88,7 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
   const state: StreamingState = initStreamingState();
   let headerRendered = false;
   let stopped = false;
+  let errored = false; // bloqueia setMarkdownStreaming depois de showError
 
   // Permite o user fechar o overlay no meio (cancela visualmente; a request
   // segue server-side, mas a UI não atualiza mais).
@@ -130,6 +131,7 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
   function processEvent(json: string): void {
     try {
       const ev = JSON.parse(json) as { type?: string; text?: string; message?: string; artifactId?: string | null };
+      if (errored) return; // overlay já terminal — ignora updates subsequentes
       if (ev.type === 'chunk' && typeof ev.text === 'string') {
         ingestChunk(state, ev.text);
         if (!headerRendered && state.header) {
@@ -144,7 +146,10 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
           handle.setMarkdownStreaming(visible);
         }
       } else if (ev.type === 'error' && typeof ev.message === 'string') {
-        handle.showError(ev.message);
+        errored = true;
+        handle.showError(ev.message.length > 0
+          ? ev.message
+          : 'A Jô engasgou agora. Tenta de novo daqui a pouco.');
       } else if (ev.type === 'done') {
         artifactId = typeof ev.artifactId === 'string' ? ev.artifactId : null;
       }
@@ -174,12 +179,19 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
   flushEvents();
 
   if (stopped) return;
+  if (errored) return; // showError já renderizou — não sobrescrever
 
   // No done: parser completo decide o destino visual.
   const structured: JoStructuredResponse | null = parseJoStructured(state.raw);
   if (!structured) {
-    // Fallback: mostra texto cru pq a Jô não devolveu JSON válido.
-    handle.setMarkdownStreaming(currentVisibleText(state) || state.raw);
+    // Fallback: mostra texto cru pq a Jô não devolveu JSON válido. Se o
+    // buffer estiver totalmente vazio, mostra mensagem de erro genérica.
+    const fallback = currentVisibleText(state) || state.raw;
+    if (fallback.trim().length === 0) {
+      handle.showError('A Jô não devolveu resposta. Tenta de novo daqui a pouco.');
+    } else {
+      handle.setMarkdownStreaming(fallback);
+    }
     return;
   }
 

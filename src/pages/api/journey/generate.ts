@@ -162,6 +162,9 @@ export const POST: APIRoute = async ({ cookies, request }) => {
           controller.enqueue(encoder.encode(sseDone(artifactRes.artifact.id, false)));
         }
       } catch (e) {
+        // Log com stack pra debug (logEvent só tem msg curta).
+        // eslint-disable-next-line no-console
+        console.error('[generate.stream]', verb, e instanceof Error ? e.stack : e);
         logEvent({
           request_id: requestId, route, user_id: user.id,
           provider: adapter.key, event: 'stream_failed',
@@ -195,6 +198,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
             const artifactId = artifactRes.ok ? artifactRes.artifact.id : null;
             controller.enqueue(encoder.encode(sseDone(artifactId, false)));
           } catch (fbErr) {
+            // eslint-disable-next-line no-console
+            console.error('[generate.fallback]', verb, fbErr instanceof Error ? fbErr.stack : fbErr);
             controller.enqueue(encoder.encode(sseError(adapter.friendly)));
             controller.enqueue(encoder.encode(sseDone(null, true)));
             logEvent({
