@@ -228,7 +228,13 @@ export const POST: APIRoute = async ({ cookies, request }) => {
           } catch (fbErr) {
             // eslint-disable-next-line no-console
             console.error('[generate.fallback]', verb, fbErr instanceof Error ? fbErr.stack : fbErr);
-            controller.enqueue(encoder.encode(sseError(adapter.friendly)));
+            // Manda erro real concatenado pra UI mostrar (MCP da Vercel
+            // trunca logs — sem isso a gente não vê o erro do Gemini).
+            const fbName = fbErr instanceof Error ? fbErr.name : typeof fbErr;
+            const fbMsg = fbErr instanceof Error ? fbErr.message : String(fbErr);
+            controller.enqueue(encoder.encode(sseError(
+              `${adapter.friendly} [debug ${fbName}: ${fbMsg.slice(0, 240)}]`
+            )));
             controller.enqueue(encoder.encode(sseDone(null, true)));
             logEvent({
               request_id: requestId, route, user_id: user.id,
