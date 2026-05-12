@@ -113,22 +113,46 @@ export const POST: APIRoute = async ({ cookies, request }) => {
   // 3) Stream + acumular + persist no done
   const wizardInputForPersist = body.wizardInput;
   const encoder = new TextEncoder();
+  const reqTag = requestId.slice(0, 8);
+  // eslint-disable-next-line no-console
+  console.log(`[generate ${reqTag}] start verb=${verb} promptLen=${systemPrompt.length} userLen=${userMessage.length}`);
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let acc = '';
+      let chunkCount = 0;
       try {
         const providerStream = await adapter.stream([], userMessage, systemPrompt, undefined, adapterOptions);
+        // eslint-disable-next-line no-console
+        console.log(`[generate ${reqTag}] provider stream obtained`);
         const reader = providerStream.getReader();
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           if (typeof value !== 'string') continue;
+          chunkCount++;
           acc += value;
           controller.enqueue(encoder.encode(sseChunk(value)));
         }
+        // eslint-disable-next-line no-console
+        console.log(`[generate ${reqTag}] reader ended chunks=${chunkCount} accLen=${acc.length}`);
+        // eslint-disable-next-line no-console
+        console.log(`[generate ${reqTag}] FINAL RAW head: ${JSON.stringify(acc.slice(0, 300))}`);
+        // eslint-disable-next-line no-console
+        console.log(`[generate ${reqTag}] FINAL RAW tail: ${JSON.stringify(acc.slice(-150))}`);
 
         // Persistência no done — tenta extrair JSON estruturado pra summary opt-in.
-        const structured = parseJoStructured(acc);
+        let structured = null as ReturnType<typeof parseJoStructured>;
+        try {
+          structured = parseJoStructured(acc);
+          // eslint-disable-next-line no-console
+          console.log(`[generate ${reqTag}] parsed=${structured ? structured.type : 'null'}`);
+        } catch (parseErr) {
+          // eslint-disable-next-line no-console
+          console.error(`[generate ${reqTag}] PARSE FAILED`, {
+            err: parseErr instanceof Error ? parseErr.message : parseErr,
+            sample: acc.slice(0, 500),
+          });
+        }
         const joOutput: Record<string, unknown> = {
           raw: acc,
           generatedAt: new Date().toISOString(),
@@ -164,7 +188,11 @@ export const POST: APIRoute = async ({ cookies, request }) => {
       } catch (e) {
         // Log com stack pra debug (logEvent só tem msg curta).
         // eslint-disable-next-line no-console
-        console.error('[generate.stream]', verb, e instanceof Error ? e.stack : e);
+        console.error(`[generate ${reqTag}] CAUGHT after chunks=${chunkCount} accLen=${acc.length}`, {
+          name: e instanceof Error ? e.name : typeof e,
+          message: e instanceof Error ? e.message : String(e),
+          stack: e instanceof Error ? e.stack : undefined,
+        });
         logEvent({
           request_id: requestId, route, user_id: user.id,
           provider: adapter.key, event: 'stream_failed',

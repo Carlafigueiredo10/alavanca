@@ -62,9 +62,14 @@ export function stripCodeFence(raw: string): string {
   return s;
 }
 
+// Cap defensivo pra evitar JSON.parse de payload explodido (resposta bugada
+// que cresce sem parar). 200kB cobre relatório SEI-Ready confortavelmente.
+const MAX_PARSE_BYTES = 200_000;
+
 // Extrai um JSON cru de uma string que pode ter texto antes/depois ou estar
 // embrulhado em ```json...```. Best-effort: devolve null se nada parseia.
 export function extractJsonObject(raw: string): unknown | null {
+  if (raw.length > MAX_PARSE_BYTES) return null;
   const trimmed = stripCodeFence(raw).trim();
   if (trimmed.length === 0) return null;
 

@@ -147,6 +147,19 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
         }
       } else if (ev.type === 'error' && typeof ev.message === 'string') {
         errored = true;
+        // Persiste último erro pra debug em sessão posterior.
+        try {
+          localStorage.setItem(
+            'alavanca:last-mapear-error',
+            JSON.stringify({
+              verb: args.verb,
+              message: ev.message,
+              accLength: state.raw.length,
+              accHead: state.raw.slice(0, 300),
+              ts: Date.now(),
+            }),
+          );
+        } catch { /* ignore */ }
         handle.showError(ev.message.length > 0
           ? ev.message
           : 'A Jô engasgou agora. Tenta de novo daqui a pouco.');

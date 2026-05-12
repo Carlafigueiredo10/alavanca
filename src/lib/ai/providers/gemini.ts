@@ -39,10 +39,24 @@ export interface GeminiOptions {
 // Wrapper defensivo: o SDK do Gemini joga TypeError em chunk.text() quando
 // o chunk vem sem candidates (safety filter, function call, finish_reason
 // inesperado). Em vez de quebrar o stream inteiro, ignora o chunk.
-function safeChunkText(chunk: unknown): string {
+// Loga o chunk completo (até 800 chars) pra investigar a causa real.
+function safeChunkText(chunk: unknown, ctx: string): string {
   try {
     return (chunk as { text: () => string }).text() ?? '';
-  } catch {
+  } catch (err) {
+    let chunkDump = 'nullish';
+    try {
+      chunkDump = chunk ? JSON.stringify(chunk).slice(0, 800) : 'nullish';
+    } catch {
+      chunkDump = '[unstringifiable]';
+    }
+    // eslint-disable-next-line no-console
+    console.error(`[${ctx}] chunk.text() FAILED`, {
+      err: err instanceof Error
+        ? { name: err.name, message: err.message, stack: err.stack }
+        : err,
+      chunk: chunkDump,
+    });
     return '';
   }
 }
@@ -73,25 +87,67 @@ export async function streamGemini(
         TIMEOUT_GEMINI_MS,
         'gemini_init'
       );
+      // Hard cap pro stream — Gemini às vezes não fecha (resposta pendurada
+      // por causa de safety review server-side). Carla 2026-05-12.
+      const streamAbort = new AbortController();
+      const streamTimer = setTimeout(
+        () => streamAbort.abort(new Error('gemini_stream_timeout_45s')),
+        45_000,
+      );
+      let badChunks = 0;
+      let chunkIdx = 0;
+      const reqTag = `gemini ${Math.random().toString(36).slice(2, 8)}`;
+      // eslint-disable-next-line no-console
+      console.log(`[${reqTag}] stream started attempt=${attempt}`);
       return new ReadableStream<string>({
         async start(controller) {
           const sources: GroundingSource[] = [];
           try {
             for await (const chunk of result.stream) {
-              const text = safeChunkText(chunk);
-              if (text) controller.enqueue(text);
+              if (streamAbort.signal.aborted) {
+                throw streamAbort.signal.reason ?? new Error('aborted');
+              }
+              chunkIdx++;
+              const text = safeChunkText(chunk, reqTag);
+              if (text) {
+                controller.enqueue(text);
+                // eslint-disable-next-line no-console
+                console.log(`[${reqTag}] chunk #${chunkIdx} len=${text.length} snippet=${JSON.stringify(text.slice(0, 80))}`);
+              } else {
+                badChunks++;
+                // eslint-disable-next-line no-console
+                console.warn(`[${reqTag}] chunk #${chunkIdx} EMPTY (badCount=${badChunks})`);
+              }
               const meta = (chunk as any)?.candidates?.[0]?.groundingMetadata;
               if (meta) collectSources(meta, sources);
             }
             const footer = formatSourcesFooter(sources);
             if (footer) controller.enqueue(footer);
+            // eslint-disable-next-line no-console
+            console.log(`[${reqTag}] stream ended chunks=${chunkIdx} bad=${badChunks}`);
             controller.close();
           } catch (e) {
+            // Log enriquecido pra pegar TypeError real (message/name/stack).
+            // eslint-disable-next-line no-console
+            console.error(`[${reqTag}] start caught after chunks=${chunkIdx} bad=${badChunks}`, {
+              name: e instanceof Error ? e.name : typeof e,
+              message: e instanceof Error ? e.message : String(e),
+              stack: e instanceof Error ? e.stack : undefined,
+            });
             controller.error(e);
+          } finally {
+            clearTimeout(streamTimer);
           }
         },
       });
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[gemini.streamGemini] init attempt failed:', {
+        attempt,
+        name: err instanceof Error ? err.name : typeof err,
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      });
       lastErr = err;
       if (!isRetriable(err) || attempt === 1) break;
     }
@@ -126,7 +182,7 @@ export async function completeGemini(
       const sources: GroundingSource[] = [];
       const meta = (result.response as any)?.candidates?.[0]?.groundingMetadata;
       if (meta) collectSources(meta, sources);
-      return safeChunkText(result.response) + formatSourcesFooter(sources);
+      return safeChunkText(result.response, 'gemini.complete') + formatSourcesFooter(sources);
     } catch (err) {
       lastErr = err;
       if (!isRetriable(err) || attempt === 1) break;
