@@ -30,11 +30,11 @@ export const eixos: Eixo[] = [
     note: 'Dois assistentes para medir o que importa: valor real, mudança de comportamento, aprendizado mesmo na falha. O que mostra valor sobrevive ao próximo corte.',
   },
   {
-    id: 'provar',
+    id: 'manter',
     num: '05',
-    verb: 'Provar.',
-    dek: 'Da entrega silenciosa à defesa do lab na transição.',
-    note: 'Três assistentes para defender o lab, traduzir entrega em narrativa que mobiliza, e atravessar a troca de gestão com argumento na mão.',
+    verb: 'Manter.',
+    dek: 'Da entrega silenciosa à continuidade institucional do lab.',
+    note: 'Três assistentes para sustentar o lab entre gestões — defesa orçamentária, mapa de stakeholders nominados e inserção em redes (Mapeamento LISP Brasil · InovaGov · RenovaJud).',
   },
   {
     id: 'aplicar',

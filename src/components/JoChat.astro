@@ -341,7 +341,7 @@ const { conversationId, variant = 'page' } = Astro.props;
     | 'formalizar'
     | 'construir'
     | 'avaliar'
-    | 'provar';
+    | 'manter';
 
   const VALID_MODES = new Set<Mode>([
     'decisao',
@@ -351,7 +351,7 @@ const { conversationId, variant = 'page' } = Astro.props;
     'formalizar',
     'construir',
     'avaliar',
-    'provar',
+    'manter',
   ]);
 
   // Modos com conhecimento curado: o toggle "ampliar com refs" não se aplica
@@ -362,7 +362,7 @@ const { conversationId, variant = 'page' } = Astro.props;
     'formalizar',
     'construir',
     'avaliar',
-    'provar',
+    'manter',
   ]);
 
   interface ServerMessage {

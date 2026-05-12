@@ -5,7 +5,15 @@ export interface LogEvent {
   route: string;
   user_id?: string;
   provider?: Provider;
-  mode?: 'decisao' | 'possibilidades';
+  mode?:
+    | 'decisao'
+    | 'possibilidades'
+    | 'mapear'
+    | 'estruturar'
+    | 'formalizar'
+    | 'construir'
+    | 'avaliar'
+    | 'manter';
   duration_ms?: number;
   error?: string;
   is_partial?: boolean;

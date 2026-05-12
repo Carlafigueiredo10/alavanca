@@ -4,7 +4,7 @@ import { estruturarPrompts } from './estruturar';
 import { formalizarPrompts } from './formalizar';
 import { construirPrompts } from './construir';
 import { avaliarPrompts } from './avaliar';
-import { provarPrompts } from './provar';
+import { manterPrompts } from './manter';
 import { aplicarPrompts } from './aplicar';
 
 export { eixos } from './eixos';
@@ -15,7 +15,7 @@ export const allPrompts: Prompt[] = [
   ...formalizarPrompts,
   ...construirPrompts,
   ...avaliarPrompts,
-  ...provarPrompts,
+  ...manterPrompts,
   ...aplicarPrompts,
 ];
 

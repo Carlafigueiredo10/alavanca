@@ -11,7 +11,7 @@ export type Dim = 'vocacao' | 'gargalo' | 'governanca' | 'equipe' | 'abertura' |
 
 export type PieceType = 'nt' | 'minuta' | 'plano' | 'matriz' | 'protocolo' | 'blueprint' | 'catalogo' | 'memorando';
 
-export type Verb = 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'provar';
+export type Verb = 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'manter';
 
 export type Answers = Record<Dim, string | null>;
 
@@ -23,7 +23,7 @@ export interface Hook {
   pieceType: PieceType;
   label: string;           // exibido no card
   prefillRequest: string;  // colado na textbox da Jô
-  verb: Verb;              // verbo dono da peça (cf. §5 do plano-5-verbos.md)
+  verb: Verb;              // verbo dono da peça (cf. §5 do plano-6-verbos.md)
 }
 
 export interface DedupedHook extends Hook {
@@ -47,7 +47,7 @@ export const VERB_LABEL: Record<Verb, string> = {
   formalizar: 'Formalizar',
   construir: 'Construir',
   avaliar: 'Avaliar',
-  provar: 'Provar',
+  manter: 'Manter',
 };
 
 // O detalhamento jurídico (Camada Tripartite, estrutura de Nota Técnica, caveat)
@@ -164,7 +164,7 @@ const HOOK_LIST: Hook[] = [
     response: 'programa',
     pieceKey: 'piece:plano-alinhamento-estrategico',
     pieceType: 'plano',
-    verb: 'provar',
+    verb: 'manter',
     label: 'Plano de Alinhamento Estratégico com PPA / planejamento institucional',
     prefillRequest:
       'Elabore um Plano de Alinhamento Estratégico que conecte as entregas do lab às metas do PPA e ao planejamento institucional da casa, com mapa de contribuição, indicadores e ritos de prestação de contas à alta gestão.',
@@ -232,7 +232,7 @@ const HOOK_LIST: Hook[] = [
     response: 'lab-pleno',
     pieceKey: 'piece:plano-sucessao',
     pieceType: 'plano',
-    verb: 'provar',
+    verb: 'manter',
     label: 'Plano de Sucessão e Continuidade Institucional (blindagem entre gestões)',
     prefillRequest:
       'Elabore um Plano de Sucessão e Continuidade Institucional para o lab, contemplando ritos de passagem entre gestões, gestão do conhecimento, mandato técnico estável e mecanismos de blindagem em transições políticas.',

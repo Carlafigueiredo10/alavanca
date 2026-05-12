@@ -5,6 +5,15 @@ import { truncateByChars, type ChatMessage } from '../../../lib/ai/history/trunc
 import { getProviderForMode } from '../../../lib/ai/orchestrator';
 import { logEvent, safeErrorMessage, type Provider } from '../../../lib/server/log';
 import { checkChatRateLimit, logChatRateUse } from '../../../lib/server/rate-limit';
+import {
+  getOrCreateActiveJourney,
+  getJourneyContext,
+} from '../../../lib/journey/server';
+import {
+  normalizeArtifacts,
+  buildContextBlock,
+  MAX_CONTEXT_ARTIFACTS,
+} from '../../../lib/journey/normalize';
 
 export const prerender = false;
 
@@ -78,7 +87,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     'formalizar',
     'construir',
     'avaliar',
-    'provar',
+    'manter',
   ]);
   const mode: JoMode =
     typeof body.mode === 'string' && VALID_MODES.has(body.mode as JoMode)
@@ -170,7 +179,36 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const priorHistory = lastUserIdx >= 0 ? allMessages.slice(0, lastUserIdx) : allMessages;
   const trimmed = truncateByChars(priorHistory);
 
-  const systemPrompt = buildSystemPrompt(mode, hookId);
+  // Lê contexto da jornada ativa pra prepender no system prompt como bloco
+  // [CONTEXTO_PRÉVIO]. Best-effort: falha aqui não bloqueia a Jô — segue
+  // sem contexto. Cap em MAX_CONTEXT_ARTIFACTS pra evitar prompt drift.
+  let contextBlock: string | null = null;
+  try {
+    const journeyRes = await getOrCreateActiveJourney(supabase, userId);
+    if (journeyRes.ok) {
+      const ctxRes = await getJourneyContext(
+        supabase,
+        journeyRes.journey.id,
+        MAX_CONTEXT_ARTIFACTS,
+      );
+      if (ctxRes.ok) {
+        contextBlock = buildContextBlock(
+          normalizeArtifacts(ctxRes.context.artifacts),
+          journeyRes.journey.lab_label,
+        );
+      }
+    }
+  } catch (e) {
+    logEvent({
+      request_id: requestId,
+      route,
+      user_id: userId,
+      event: 'journey_context_failed',
+      error: safeErrorMessage(e),
+    });
+  }
+
+  const systemPrompt = buildSystemPrompt(mode, hookId, contextBlock);
 
   let stream: ReadableStream<string>;
   try {

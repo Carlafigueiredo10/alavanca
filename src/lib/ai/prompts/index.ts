@@ -23,7 +23,7 @@ export const JO_ESTRUTURAR_PROMPT = read('jo-estruturar.md');
 export const JO_FORMALIZAR_PROMPT = read('jo-formalizar.md');
 export const JO_CONSTRUIR_PROMPT = read('jo-construir.md');
 export const JO_AVALIAR_PROMPT = read('jo-avaliar.md');
-export const JO_PROVAR_PROMPT = read('jo-provar.md');
+export const JO_MANTER_PROMPT = read('jo-manter.md');
 
 export type JoMode =
   | 'decisao'
@@ -33,7 +33,7 @@ export type JoMode =
   | 'formalizar'
   | 'construir'
   | 'avaliar'
-  | 'provar';
+  | 'manter';
 
 export function getPromptForMode(mode: JoMode): string {
   switch (mode) {
@@ -43,7 +43,7 @@ export function getPromptForMode(mode: JoMode): string {
     case 'formalizar':    return JO_FORMALIZAR_PROMPT;
     case 'construir':     return JO_CONSTRUIR_PROMPT;
     case 'avaliar':       return JO_AVALIAR_PROMPT;
-    case 'provar':        return JO_PROVAR_PROMPT;
+    case 'manter':        return JO_MANTER_PROMPT;
     default:              return JO_DECISAO_PROMPT;
   }
 }
@@ -71,9 +71,21 @@ export function getHookSuffix(hookId: string | null | undefined): string | null 
   return HOOK_PROMPTS[hookId] ?? null;
 }
 
-export function buildSystemPrompt(mode: JoMode, hookId?: string | null): string {
+export function buildSystemPrompt(
+  mode: JoMode,
+  hookId?: string | null,
+  contextBlock?: string | null,
+): string {
   const base = getPromptForMode(mode);
   const suffix = getHookSuffix(hookId);
-  if (!suffix) return base;
-  return base + '\n\n---\n\n' + suffix;
+  const parts: string[] = [];
+  if (contextBlock && contextBlock.trim().length > 0) {
+    parts.push(contextBlock);
+  }
+  parts.push(base);
+  if (suffix) {
+    parts.push('---');
+    parts.push(suffix);
+  }
+  return parts.join('\n\n');
 }

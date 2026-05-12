@@ -1,4 +1,4 @@
-export type EixoId = 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'provar' | 'aplicar';
+export type EixoId = 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'manter' | 'aplicar';
 
 export interface Eixo {
   id: EixoId;

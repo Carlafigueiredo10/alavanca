@@ -29,7 +29,7 @@ const CURATED_MODES = new Set<JoMode>([
   'formalizar',
   'construir',
   'avaliar',
-  'provar',
+  'manter',
 ]);
 
 export function getProviderForMode(mode: JoMode): ProviderAdapter {

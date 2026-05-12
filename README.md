@@ -39,7 +39,8 @@ src/
 | Rota              | Status      | Tipo          |
 |-------------------|-------------|---------------|
 | `/`               | em produção | estática      |
-| `/diagnostico`    | a fazer     | estática      |
+| `/mapear`         | em produção | estática + SSR wizard  |
+| `/diagnostico`    | redirect 301 → `/mapear/sprint` | SSR |
 | `/assistente`     | a fazer     | estática + API |
 | `/fundamentos`    | a fazer     | estática      |
 | `/formalizar`     | a fazer     | estática      |

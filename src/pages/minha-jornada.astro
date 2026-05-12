@@ -1,0 +1,448 @@
+---
+import Base from '../layouts/Base.astro';
+import { requireUser } from '../lib/server/auth';
+import {
+  getOrCreateActiveJourney,
+  getJourneyContext,
+  type JourneyArtifact,
+  type Verb,
+} from '../lib/journey/server';
+
+export const prerender = false;
+
+// Sem sessão: manda pro login com next= apontando aqui pra voltar limpo.
+const auth = await requireUser(Astro.cookies);
+if (!auth.ok) {
+  return Astro.redirect('/login?next=/minha-jornada');
+}
+const { supabase, user } = auth;
+
+const journeyRes = await getOrCreateActiveJourney(supabase, user.id);
+if (!journeyRes.ok) {
+  return new Response(`Falha ao abrir jornada: ${journeyRes.error}`, { status: 500 });
+}
+const journey = journeyRes.journey;
+
+const ctxRes = await getJourneyContext(supabase, journey.id, 100);
+if (!ctxRes.ok) {
+  return new Response(`Falha ao ler jornada: ${ctxRes.error}`, { status: 500 });
+}
+const artifacts: JourneyArtifact[] = ctxRes.context.artifacts;
+
+// Ordem canônica dos 6 verbos — usada pra agrupar a timeline e sugerir
+// próximo passo. Mantém alinhado ao plano-6-verbos.md (Mapear como Passo 0).
+const VERB_ORDER: Verb[] = ['mapear', 'estruturar', 'formalizar', 'construir', 'avaliar', 'manter'];
+const VERB_LABEL: Record<Verb, string> = {
+  mapear: 'Mapear',
+  estruturar: 'Estruturar',
+  formalizar: 'Formalizar',
+  construir: 'Construir',
+  avaliar: 'Avaliar',
+  manter: 'Manter',
+};
+const VERB_SLUG: Record<Verb, string> = {
+  mapear: '/mapear/sprint',
+  estruturar: '/estruturar/sprint',
+  formalizar: '/formalizar/sprint',
+  construir: '/construir/sprint',
+  avaliar: '/avaliar/sprint',
+  manter: '/manter/sprint',
+};
+
+// Agrupa artifacts por verbo (mais recente primeiro dentro de cada grupo).
+const byVerb: Record<Verb, JourneyArtifact[]> = {
+  mapear: [], estruturar: [], formalizar: [], construir: [], avaliar: [], manter: [],
+};
+for (const a of artifacts) byVerb[a.verb].push(a);
+
+// Próximo passo recomendado: 1º verbo da ordem canônica que ainda não tem
+// artifact. Se todos têm, volta o último (Manter) — sinal de "continue na Jô".
+const nextVerb: Verb =
+  VERB_ORDER.find((v) => byVerb[v].length === 0) ?? VERB_ORDER[VERB_ORDER.length - 1];
+
+const totalArtifacts = artifacts.length;
+const hasLab = typeof journey.lab_label === 'string' && journey.lab_label.trim().length > 0;
+const startedAt = new Date(journey.started_at).toLocaleDateString('pt-BR', {
+  day: '2-digit', month: 'long', year: 'numeric',
+});
+
+function formatDateTime(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) +
+    ' · ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function summaryOf(a: JourneyArtifact): string {
+  const out = a.jo_output as Record<string, unknown> | null;
+  const explicit = typeof out?.summary === 'string' ? out.summary.trim() : '';
+  if (explicit.length > 0) return explicit.length > 240 ? explicit.slice(0, 240).trimEnd() + '…' : explicit;
+  const text = typeof out?.text === 'string' ? out.text.trim() : '';
+  if (text.length > 0) return text.length > 240 ? text.slice(0, 240).trimEnd() + '…' : text;
+  return '(sem resumo — verbo ainda não devolve `summary` no jo_output)';
+}
+---
+<Base
+  title="Minha jornada · Alavanca"
+  description="Painel da sua jornada: lab, peças geradas e próximo passo recomendado."
+>
+  <main class="jornada">
+    <section class="jornada__hero">
+      <div class="jornada__id">↳ Minha jornada</div>
+
+      {hasLab ? (
+        <h1 class="jornada__title">{journey.lab_label}</h1>
+      ) : (
+        <h1 class="jornada__title jornada__title--unnamed">Lab sem nome ainda</h1>
+      )}
+
+      <p class="jornada__meta">
+        Aberta em {startedAt} ·
+        {totalArtifacts === 0
+          ? ' nenhuma peça gerada'
+          : totalArtifacts === 1
+            ? ' 1 peça gerada'
+            : ` ${totalArtifacts} peças geradas`}
+      </p>
+
+      {!hasLab && (
+        <div class="jornada__onboarding" data-onboarding>
+          <label class="jornada__onboarding-label" for="lab-label-input">
+            Dá um nome pro seu lab — aparece pra Jô como ancoragem do contexto.
+          </label>
+          <div class="jornada__onboarding-row">
+            <input
+              id="lab-label-input"
+              class="jornada__onboarding-input"
+              type="text"
+              maxlength="120"
+              placeholder="Ex: Lab de Inovação · SEGES/MGI"
+              autocomplete="off"
+            />
+            <button class="jornada__btn" id="lab-label-save" type="button">Salvar</button>
+            <button class="jornada__btn jornada__btn--ghost" id="lab-label-skip" type="button">Pular</button>
+          </div>
+          <p class="jornada__onboarding-status" id="lab-label-status" hidden></p>
+        </div>
+      )}
+    </section>
+
+    <section class="jornada__next">
+      <div class="jornada__next-id">↳ Próximo passo</div>
+      <h2 class="jornada__next-verb">{VERB_LABEL[nextVerb]}</h2>
+      <p class="jornada__next-hint">
+        {totalArtifacts === 0
+          ? 'Comece por aqui — Mapear desenha o terreno antes dos demais verbos.'
+          : byVerb[nextVerb].length === 0
+            ? 'Próximo verbo da sua sequência. Continua a partir do que você já tem.'
+            : 'Você cobriu os 6 verbos. Continua a refinar ou volta à Jô pra conversar sobre o que já produziu.'}
+      </p>
+      <div class="jornada__next-actions">
+        <a class="jornada__btn jornada__btn--primary" href={VERB_SLUG[nextVerb]}>
+          Ir para {VERB_LABEL[nextVerb]} →
+        </a>
+        <a class="jornada__btn jornada__btn--ghost" href="/jo">Conversar com a Jô</a>
+      </div>
+    </section>
+
+    <section class="jornada__timeline">
+      <div class="jornada__timeline-id">↳ Peças geradas</div>
+
+      {totalArtifacts === 0 ? (
+        <p class="jornada__empty">
+          Nada salvo ainda. Toda peça que sair de um wizard aparece aqui.
+        </p>
+      ) : (
+        VERB_ORDER.map((verb) => {
+          const list = byVerb[verb];
+          if (list.length === 0) return null;
+          return (
+            <div class="jornada__group">
+              <div class="jornada__group-head">
+                <span class="jornada__group-verb">{VERB_LABEL[verb]}</span>
+                <span class="jornada__group-count">
+                  {list.length === 1 ? '1 peça' : `${list.length} peças`}
+                </span>
+              </div>
+              <ul class="jornada__items">
+                {list.map((a) => (
+                  <li class="jornada__item">
+                    <div class="jornada__item-when">{formatDateTime(a.created_at)}</div>
+                    <p class="jornada__item-summary">{summaryOf(a)}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      )}
+    </section>
+  </main>
+
+  <style>
+    .jornada {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 120px 28px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* ── HERO ── */
+    .jornada__hero { display: flex; flex-direction: column; }
+    .jornada__id, .jornada__next-id, .jornada__timeline-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--fg-50);
+      margin-bottom: 20px;
+    }
+    .jornada__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.024em;
+      margin-bottom: 16px;
+    }
+    .jornada__title--unnamed {
+      color: var(--fg-65);
+      font-style: italic;
+    }
+    .jornada__meta {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--fg-50);
+    }
+
+    /* ── ONBOARDING (banner inline pra nomear lab) ── */
+    .jornada__onboarding {
+      margin-top: 24px;
+      padding: 20px;
+      border: 0.5px solid var(--fg-22);
+      border-radius: 10px;
+      background: rgba(245, 242, 235, 0.03);
+    }
+    .jornada__onboarding-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--fg-86);
+      margin-bottom: 12px;
+    }
+    .jornada__onboarding-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .jornada__onboarding-input {
+      flex: 1 1 240px;
+      min-width: 0;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--fg);
+      background: rgba(245, 242, 235, 0.04);
+      border: 0.5px solid var(--fg-22);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .jornada__onboarding-input:focus {
+      outline: none;
+      border-color: var(--amber);
+    }
+    .jornada__onboarding-status {
+      margin-top: 10px;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      color: var(--fg-65);
+    }
+    .jornada__onboarding-status.error { color: rgba(255, 130, 130, 0.9); }
+
+    /* ── BOTÕES ── */
+    .jornada__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 0.5px solid var(--fg-22);
+      background: transparent;
+      color: var(--fg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    }
+    .jornada__btn:hover { border-color: var(--amber); }
+    .jornada__btn--primary {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+    .jornada__btn--primary:hover {
+      filter: brightness(1.08);
+      border-color: var(--amber);
+    }
+    .jornada__btn--ghost {
+      color: var(--fg-65);
+      border-color: var(--fg-14);
+    }
+    .jornada__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── PRÓXIMO PASSO ── */
+    .jornada__next {
+      padding: 28px;
+      border: 0.5px solid var(--fg-22);
+      border-radius: 12px;
+      background: rgba(245, 242, 235, 0.02);
+    }
+    .jornada__next-verb {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(28px, 4vw, 36px);
+      line-height: 1.1;
+      letter-spacing: -0.018em;
+      margin-bottom: 10px;
+    }
+    .jornada__next-hint {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--fg-86);
+      margin-bottom: 22px;
+    }
+    .jornada__next-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ── TIMELINE ── */
+    .jornada__empty {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--fg-65);
+    }
+    .jornada__group { margin-bottom: 36px; }
+    .jornada__group-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 0.5px solid var(--fg-14);
+    }
+    .jornada__group-verb {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    .jornada__group-count {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.05em;
+      color: var(--fg-45);
+    }
+    .jornada__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .jornada__item {
+      padding: 14px 16px;
+      border: 0.5px solid var(--fg-14);
+      border-radius: 8px;
+      background: rgba(245, 242, 235, 0.02);
+    }
+    .jornada__item-when {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      color: var(--fg-45);
+      margin-bottom: 8px;
+    }
+    .jornada__item-summary {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--fg-86);
+      white-space: pre-wrap;
+    }
+  </style>
+
+  <script>
+    // Onboarding lab_label inline. Inocente: só chama POST /api/journey/lab-label
+    // e recarrega a página (que volta SSR sem o banner).
+    const saveBtn = document.getElementById('lab-label-save') as HTMLButtonElement | null;
+    const skipBtn = document.getElementById('lab-label-skip') as HTMLButtonElement | null;
+    const input = document.getElementById('lab-label-input') as HTMLInputElement | null;
+    const status = document.getElementById('lab-label-status') as HTMLParagraphElement | null;
+
+    function setStatus(text: string, isError: boolean) {
+      if (!status) return;
+      status.textContent = text;
+      status.classList.toggle('error', isError);
+      status.hidden = false;
+    }
+
+    async function postLabLabel(labLabel: string | null): Promise<void> {
+      if (!saveBtn || !skipBtn || !input) return;
+      saveBtn.disabled = true;
+      skipBtn.disabled = true;
+      input.disabled = true;
+      try {
+        const resp = await fetch('/api/journey/lab-label', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ labLabel }),
+        });
+        if (!resp.ok) {
+          const data = (await resp.json().catch(() => ({}))) as { error?: string };
+          setStatus(data.error ?? 'Não consegui salvar agora.', true);
+          saveBtn.disabled = false;
+          skipBtn.disabled = false;
+          input.disabled = false;
+          return;
+        }
+        window.location.reload();
+      } catch {
+        setStatus('Sem rede. Tenta de novo daqui a pouco.', true);
+        saveBtn.disabled = false;
+        skipBtn.disabled = false;
+        input.disabled = false;
+      }
+    }
+
+    saveBtn?.addEventListener('click', () => {
+      const value = input?.value.trim() ?? '';
+      if (value.length === 0) {
+        setStatus('Coloca um nome ou clica em Pular.', true);
+        return;
+      }
+      void postLabLabel(value);
+    });
+
+    skipBtn?.addEventListener('click', () => {
+      // "Pular" não persiste null explicitamente — só recarrega sem mudar o banner.
+      // Banner volta na próxima visita; serve de lembrete sem ser bloqueante.
+      window.location.href = '/jo';
+    });
+
+    input?.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveBtn?.click();
+      }
+    });
+  </script>
+</Base>

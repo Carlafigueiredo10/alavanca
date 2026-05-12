@@ -2,8 +2,8 @@
 import Base from '../../layouts/Base.astro';
 ---
 <Base
-  title="Mapa de Riscos · Mapear · Alavanca"
-  description="Três respostas. A Jô faz o Diagnóstico Institucional e devolve um Mapa de Riscos com Plano de Ação por verbo."
+  title="Diagnóstico Institucional · Mapear · Alavanca"
+  description="Quatro respostas. A Jô faz o Diagnóstico Institucional e devolve um Relatório SEI-Ready com Matriz de Riscos, Diretriz Go/No-Go e Roteamento Obrigatório pelos verbos seguintes."
 >
 
 <!-- ============================================================
@@ -11,14 +11,15 @@ import Base from '../../layouts/Base.astro';
      ============================================================ -->
 <section class="intro">
   <div class="container">
-    <div class="section-label animate-in">/ Mapear · Diagnóstico Institucional</div>
-    <h1 class="intro-headline animate-in delay-100">Do cenário ao mapa de riscos.</h1>
-    <p class="subhead-italic intro-subhead animate-in delay-180">Antes de escolher o verbo, ler o terreno.</p>
-    <p class="kicker intro-kicker animate-in delay-260">↓ Cenário · Gargalo · Risco de não agir</p>
+    <div class="section-label animate-in">/ Mapear · Diagnóstico Institucional · Passo 0</div>
+    <h1 class="intro-headline animate-in delay-100">Do cenário ao Relatório de Diagnóstico.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Antes de escolher o verbo, ler o terreno — e decidir Go/No-Go.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Cenário · Atores · Gargalo · Risco de não agir</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
-        Mapeador de Riscos · Roteador dos <strong>seis verbos do método</strong>:<br />
-        Mapear · Estruturar · Formalizar · Construir · Avaliar · Provar.<br />
+        Passo 0 obrigatório · Bússola e roteador dos <strong>seis verbos do método</strong>:<br />
+        Mapear · Estruturar · Formalizar · Construir · Avaliar · Manter.<br />
+        Trinca embarcada: <strong>IN 01/2016 CGU/MP · CF/88 art. 37 · LINDB</strong>.<br />
         <strong>Sem mapa, todo plano é palpite.</strong>
       </div>
     </div>
@@ -38,11 +39,16 @@ import Base from '../../layouts/Base.astro';
       <div class="step-divider"></div>
       <div class="step" data-step="2">
         <span class="step-num">02</span>
-        <span class="step-label">Gargalo</span>
+        <span class="step-label">Atores</span>
       </div>
       <div class="step-divider"></div>
       <div class="step" data-step="3">
         <span class="step-num">03</span>
+        <span class="step-label">Gargalo</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" data-step="4">
+        <span class="step-num">04</span>
         <span class="step-label">Risco de não agir</span>
       </div>
     </div>
@@ -62,7 +68,8 @@ import Base from '../../layouts/Base.astro';
         <h2 class="step-headline">Descreva o cenário institucional.</h2>
         <p class="step-hint">
           Diga o ator (órgão/setor), o tema/serviço em questão e o quadro geral.
-          Quanto mais concreto, mais útil o mapa. Genérico produz mapa genérico.
+          Quanto mais concreto, mais útil o mapa. Genérico produz mapa genérico —
+          a Jô interrompe e pede reformulação se o input estiver vago demais.
         </p>
       </div>
 
@@ -81,10 +88,38 @@ import Base from '../../layouts/Base.astro';
       </div>
     </div>
 
-    <!-- ── 02 · GARGALO ── -->
+    <!-- ── 02 · ATORES ── -->
     <div class="wizard-step" data-step="2">
       <div class="step-header">
-        <div class="step-tag">02 · <span class="verb">Gargalo</span></div>
+        <div class="step-tag">02 · <span class="verb">Atores envolvidos</span></div>
+        <h2 class="step-headline">Quem está em cena?</h2>
+        <p class="step-hint">
+          Patrocinador, equipe técnica, unidades parceiras, órgãos de controle,
+          cidadão impactado. <strong>Nomeie quando puder</strong> (cargo + nome) —
+          a Jô preserva os nomes na Matriz e no Relatório. Quando não nomear,
+          declara <em>"ator não nominado"</em> e nunca inventa.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="2"
+        rows="5"
+        maxlength="700"
+        placeholder="Ex: Secretário de Saúde (patrocinador, não nominado); 3 servidores cedidos das áreas de planejamento e regulação; Procuradoria do Estado (exige portaria antes de parcerias); área de TI (fila de 6 meses); cidadão usuário SUS (público-fim, não nominado em demanda específica)."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="2">0</span> / 700</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
+        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 03 · GARGALO ── -->
+    <div class="wizard-step" data-step="3">
+      <div class="step-header">
+        <div class="step-tag">03 · <span class="verb">Gargalo</span></div>
         <h2 class="step-headline">Qual o ponto de maior atrito hoje?</h2>
         <p class="step-hint">
           O que efetivamente <em>trava</em> o trabalho agora? Pode ser falta de método,
@@ -95,43 +130,43 @@ import Base from '../../layouts/Base.astro';
 
       <textarea
         class="step-input"
-        data-step-input="2"
-        rows="4"
-        maxlength="600"
-        placeholder="Ex: A equipe não tem metodologia clara pra priorizar entre 5 demandas e a procuradoria pede portaria de institucionalização antes de qualquer parceria externa."
-      ></textarea>
-      <div class="step-counter"><span data-step-counter="2">0</span> / 600</div>
-
-      <div class="step-actions">
-        <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
-        <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
-      </div>
-    </div>
-
-    <!-- ── 03 · RISCO DE NÃO AGIR ── -->
-    <div class="wizard-step" data-step="3">
-      <div class="step-header">
-        <div class="step-tag">03 · <span class="verb">Risco de não agir</span></div>
-        <h2 class="step-headline">O que acontece se nada mudar?</h2>
-        <p class="step-hint">
-          O pior cenário plausível. Pode ser sanção de controle, perda de patrocínio,
-          servidor desmotivado, descontinuidade na transição — o que se perde se o
-          lab continuar do jeito que está.
-        </p>
-      </div>
-
-      <textarea
-        class="step-input"
         data-step-input="3"
         rows="4"
         maxlength="600"
-        placeholder="Ex: A próxima transição de gestão fecha o lab por falta de instrumento jurídico e ausência de evidência de valor. Equipe se dispersa, conhecimento se perde, e a aposta política do secretário queima."
+        placeholder="Ex: A Procuradoria pede portaria de institucionalização antes de qualquer parceria externa, e a equipe ainda não tem metodologia clara pra priorizar entre 5 demandas que chegaram simultaneamente."
       ></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
-        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Mapa de Riscos →</button>
+        <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ── 04 · RISCO DE NÃO AGIR ── -->
+    <div class="wizard-step" data-step="4">
+      <div class="step-header">
+        <div class="step-tag">04 · <span class="verb">Risco de não agir</span></div>
+        <h2 class="step-headline">O que acontece se nada mudar?</h2>
+        <p class="step-hint">
+          O pior cenário plausível. Sanção de controle, perda de patrocínio,
+          descontinuidade na transição — o que se perde se o lab continuar do
+          jeito que está. A Jô usa esse vetor pra classificar Impacto na Matriz.
+        </p>
+      </div>
+
+      <textarea
+        class="step-input"
+        data-step-input="4"
+        rows="4"
+        maxlength="600"
+        placeholder="Ex: A próxima transição de gestão fecha o lab por falta de instrumento jurídico e ausência de evidência de valor. Equipe se dispersa, conhecimento se perde, e a aposta política do secretário queima."
+      ></textarea>
+      <div class="step-counter"><span data-step-counter="4">0</span> / 600</div>
+
+      <div class="step-actions">
+        <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Relatório de Diagnóstico →</button>
       </div>
     </div>
 
@@ -146,11 +181,11 @@ import Base from '../../layouts/Base.astro';
     <div class="footnote-grid">
       <div>
         <div class="footnote-label">↳ Saída</div>
-        <p>Mapa de Riscos com três famílias (Metodológico-Infraestrutura, Jurídico-Regulatório, Político-Descontinuidade) + Plano de Ação indicando por qual verbo entrar pra mitigar cada risco.</p>
+        <p>Relatório de Diagnóstico Institucional SEI-Ready com (1) Identificação · (2) Considerandos da trinca IN 01/2016 + CF/88 art. 37 + LINDB · (3) Análise de Risco por Família (Metodológica · Jurídica · Política) · (4) Matriz de Riscos · (5) Diretriz Go/No-Go · (6) Roteamento — Ordem de Ataque dos verbos · (7) Da Fundamentação · (8) Caveat.</p>
       </div>
       <div>
         <div class="footnote-label">↳ Princípio</div>
-        <p>A Jô não constrói o artefato final aqui — ela aponta por onde entrar primeiro. Blueprint, Minuta, Plano e Dossiê são gerados nos verbos específicos. Você decide. A Jô mapeia.</p>
+        <p>Mapear diagnostica — não instrumentaliza. Lei 14.129, Marco CT&amp;I, Nova Lei de Licitações e Marco das Startups ficam represados para os verbos de execução. Aqui a Jô identifica risco, classifica com lastro, decide Go/No-Go e roteia obrigatoriamente. Você decide. A Jô mapeia.</p>
       </div>
     </div>
   </div>
@@ -245,14 +280,14 @@ import Base from '../../layouts/Base.astro';
   }
   .step.is-active .step-label { color: var(--fg); }
   .step-divider {
-    width: 36px;
+    width: 28px;
     height: 0.5px;
     background: var(--fg-22);
   }
 
-  @media (max-width: 540px) {
-    .stepper { gap: 8px; }
-    .step-divider { width: 18px; }
+  @media (max-width: 720px) {
+    .stepper { gap: 8px; flex-wrap: wrap; }
+    .step-divider { width: 14px; }
     .step-label { font-size: 10px; letter-spacing: 0.1em; }
   }
 
@@ -307,6 +342,9 @@ import Base from '../../layouts/Base.astro';
   .step-hint em {
     font-family: var(--serif);
     font-style: italic;
+    color: var(--fg);
+  }
+  .step-hint strong {
     color: var(--fg);
   }
 
@@ -387,17 +425,19 @@ import Base from '../../layouts/Base.astro';
 
 <script>
   // ============================================================
-  // WIZARD MAPEAR · 3 telas → handoff pro modo Mapear da Jô
+  // WIZARD MAPEAR · 4 telas → handoff pro modo Mapear da Jô
+  // Demo aberto: sem auth gate.
   // ============================================================
-  type StepNum = 1 | 2 | 3;
+  import { submitWizard } from '../../lib/journey/wizard-submit';
 
-  const STATE_KEY = 'alavanca:wizard-mapear-state';
+  type StepNum = 1 | 2 | 3 | 4;
 
-  const stepNums: StepNum[] = [1, 2, 3];
-  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '' };
+  const STATE_KEY = 'alavanca:wizard-state-mapear';
+  const MODE = 'mapear';
+
+  const stepNums: StepNum[] = [1, 2, 3, 4];
+  const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '', 4: '' };
   let current: StepNum = 1;
-  // Modo demo aberto: pula o gate de login.
-  let isAuthed: boolean = true;
 
   const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
   const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
@@ -428,7 +468,7 @@ import Base from '../../layouts/Base.astro';
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
     const nextBtn =
       document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
-      (n === 3 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
+      (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
 
     function refresh() {
       const val = input.value.trim();
@@ -443,7 +483,7 @@ import Base from '../../layouts/Base.astro';
       if (n > 1) showStep((n - 1) as StepNum);
     });
 
-    if (n < 3) {
+    if (n < 4) {
       nextBtn?.addEventListener('click', () => {
         if (answers[n].length < 12) return;
         showStep((n + 1) as StepNum);
@@ -454,49 +494,56 @@ import Base from '../../layouts/Base.astro';
   const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
 
   function setGenerateLabel() {
-    generateBtn.textContent = 'Gerar Mapa de Riscos →';
+    generateBtn.textContent = 'Gerar Relatório de Diagnóstico →';
   }
 
-  generateBtn.addEventListener('click', () => {
-    if (answers[1].length < 12 || answers[2].length < 12 || answers[3].length < 12) return;
-
-    const prompt = buildPrompt(answers[1], answers[2], answers[3]);
-
-    try {
-      sessionStorage.setItem(
-        'alavanca:diag-prefill',
-        JSON.stringify({
-          text: prompt,
-          mode: 'mapear',
-          source: 'wizard-mapear',
-          ts: Date.now(),
-        })
-      );
-    } catch {
-      /* ignore */
-    }
+  generateBtn.addEventListener('click', async () => {
+    if (Object.values(answers).some((v) => v.length < 12)) return;
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
-    window.location.href = '/jo';
+
+    await submitWizard({
+      verb: 'mapear',
+      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3], 4: answers[4] },
+      fallbackText: buildPrompt(answers[1], answers[2], answers[3], answers[4]),
+      fallbackSource: 'wizard-mapear',
+    });
   });
 
-  function buildPrompt(cenario: string, gargalo: string, risco: string): string {
+  function buildPrompt(
+    cenario: string,
+    atores: string,
+    gargalo: string,
+    risco: string,
+  ): string {
     return [
-      '[ Contexto · Wizard Mapear ]',
+      '[ Contexto · Wizard Mapear / Diagnóstico Institucional ]',
       '',
-      'Cenário pré-estruturado pelo gestor público para Diagnóstico Institucional:',
+      'Cenário pré-estruturado pelo gestor público nas quatro variáveis canônicas:',
       '',
       `Cenário: ${cenario}`,
+      `Atores envolvidos: ${atores}`,
       `Gargalo principal: ${gargalo}`,
       `Risco de não agir: ${risco}`,
       '',
       '[ Pedido ]',
-      'Faça o Mapa de Riscos categorizando em até três famílias (Metodológico-Infraestrutura,',
-      'Jurídico-Regulatório, Político-Descontinuidade) e devolva um Plano de Ação por Verbo',
-      'indicando qual dos cinco verbos (Estruturar, Formalizar, Construir, Avaliar, Provar)',
-      'cobre cada risco e por onde começar primeiro. Honestidade > completude artificial:',
-      'se só uma família dispara, mapeie só essa.',
+      'Redija o Relatório de Diagnóstico Institucional SEI-Ready com a estrutura completa:',
+      '(1) Cabeçalho; (2) Identificação institucional; (3) Considerandos invocando EXCLUSIVAMENTE a trinca permitida — IN Conjunta 01/2016 CGU/MP + CF/88 art. 37 + Lei 13.655/2018 LINDB (com aplicáveis: LAI, normas internas);',
+      '(4) Análise de Risco por Família (Metodológico-Infraestrutura · Jurídico-Regulatório · Político-Descontinuidade) — apenas as famílias com evidência no input; cada risco com nome, evidência citada do input, Probabilidade e Impacto classificados com frase de lastro extraída literalmente do cenário, e verbo de mitigação;',
+      '(5) Matriz de Riscos consolidada (tabela);',
+      '(6) Diretriz Go/No-Go tripartite (GO · GO com mitigação · NO-GO) com justificativa de 2-4 linhas;',
+      '(7) Roteamento — Ordem de Ataque numerada dos verbos seguintes, cada item com pergunta inicial pronta para colar no wizard do verbo subsequente;',
+      '(8) Da Fundamentação (Base CF/88 art. 37 · Norma Operacional IN 01/2016 · Lastro consequencialista LINDB · Norma interna se declarada);',
+      '(9) Caveat institucional obrigatório.',
+      '',
+      'PROIBIÇÕES ESTRITAS:',
+      '- Não invocar Lei 14.129/2021, Marco CT&I (Lei 10.973/2004 com redação 13.243/2016), Lei 14.133/2021, LC 182/2021 ou Guia AGU de Sandbox nos Considerandos. Essas são represadas para os verbos de execução.',
+      '- Não classificar Probabilidade/Impacto sem frase de lastro extraída do input.',
+      '- Não forçar as 3 famílias — disparar somente as que têm evidência.',
+      '- Não inventar nome de ator não nominado pelo usuário.',
+      '- Cenário vago demais (sem ator, tema, gargalo) → interromper e devolver reformulação curta antes de redigir.',
+      '- Problema fora do escopo da plataforma (judicial, ministerial trancado, jurisdição alheia) → emitir NO-GO nomeando o foro correto.',
     ].join('\n');
   }
 
@@ -530,8 +577,8 @@ import Base from '../../layouts/Base.astro';
   }
 
   const restored = restoreState();
-  if (restored && answers[1].length >= 12 && answers[2].length >= 12 && answers[3].length >= 12) {
-    showStep(3);
+  if (restored && Object.values(answers).every((v) => v.length >= 12)) {
+    showStep(4);
   } else {
     showStep(1);
   }

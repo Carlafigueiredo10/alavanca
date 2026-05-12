@@ -158,19 +158,20 @@ import JoChat from './JoChat.astro';
 <script>
   const drawer = document.getElementById('jo-drawer');
   if (drawer) {
-    const closeBtn = drawer.querySelector<HTMLButtonElement>('[data-role="close"]');
-    const backdrop = drawer.querySelector<HTMLDivElement>('[data-role="backdrop"]');
+    const drawerEl = drawer;
+    const closeBtn = drawerEl.querySelector<HTMLButtonElement>('[data-role="close"]');
+    const backdrop = drawerEl.querySelector<HTMLDivElement>('[data-role="backdrop"]');
 
     function open() {
-      drawer.classList.add('is-open');
-      drawer.setAttribute('aria-hidden', 'false');
+      drawerEl.classList.add('is-open');
+      drawerEl.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      const input = drawer.querySelector<HTMLTextAreaElement>('.jo-chat__input');
+      const input = drawerEl.querySelector<HTMLTextAreaElement>('.jo-chat__input');
       setTimeout(() => input?.focus(), 280);
     }
     function close() {
-      drawer.classList.remove('is-open');
-      drawer.setAttribute('aria-hidden', 'true');
+      drawerEl.classList.remove('is-open');
+      drawerEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
 

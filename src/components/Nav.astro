@@ -13,16 +13,16 @@ interface Props {
 }
 
 const defaultLinks: NavLink[] = [
-  { id: '01', label: 'Diagnóstico', href: '/diagnostico', match: 'diagnostico' },
-  { id: '02', label: 'Trilhas',     href: '/trilhas',     match: 'trilhas' },
-  { id: '03', label: 'Assistente',  href: '/assistente',  match: 'assistente' },
-  { id: '04', label: 'Ecossistema', href: '/casos',       match: 'casos' },
+  { id: '01', label: 'Diagnóstico', href: '/mapear/sprint', match: 'mapear' },
+  { id: '02', label: 'Trilhas',     href: '/trilhas',       match: 'trilhas' },
+  { id: '03', label: 'Assistente',  href: '/assistente',    match: 'assistente' },
+  { id: '04', label: 'Ecossistema', href: '/casos',         match: 'casos' },
 ];
 
 const {
   current,
   links = defaultLinks,
-  cta = { label: 'Iniciar diagnóstico', href: '/diagnostico' },
+  cta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' },
 } = Astro.props;
 ---
 <header class="nav" id="alavanca-nav">
@@ -54,6 +54,10 @@ const {
       ))}
     </nav>
 
+    <a class="nav-auth" id="nav-auth" href="/login" data-state="anon">
+      <span class="nav-auth-label">Entrar</span>
+    </a>
+
     {cta && (
       <a class="nav-cta" href={cta.href}>
         <span class="nav-cta-dot"></span>
@@ -71,6 +75,30 @@ const {
     const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
+
+<script>
+  // Botão único de auth: "Entrar" → /login, ou "Minha jornada" → /minha-jornada
+  // se houver sessão. Default SSR aponta pra /login; este script reescreve
+  // client-side se Supabase devolver sessão. Flash possível mas curto.
+  import { getSupabaseBrowserClient } from '../lib/supabase/browser';
+
+  (async () => {
+    const el = document.getElementById('nav-auth') as HTMLAnchorElement | null;
+    if (!el) return;
+    const label = el.querySelector<HTMLSpanElement>('.nav-auth-label');
+    try {
+      const sb = getSupabaseBrowserClient();
+      const { data } = await sb.auth.getSession();
+      if (data?.session) {
+        el.href = '/minha-jornada';
+        el.dataset.state = 'authed';
+        if (label) label.textContent = 'Minha jornada';
+      }
+    } catch {
+      /* segue como Entrar — fallback seguro */
+    }
   })();
 </script>
 
@@ -184,6 +212,22 @@ const {
     color: var(--signal);
   }
 
+  /* ---------- AUTH (Entrar / Minha jornada) ---------- */
+  .nav-auth {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 10px 6px;
+    transition: color 220ms ease;
+  }
+  .nav-auth:hover { color: var(--signal); }
+  .nav-auth[data-state="authed"] { color: var(--signal); }
+
   /* ---------- CTA ---------- */
   .nav-cta {
     display: inline-flex;
@@ -230,5 +274,6 @@ const {
     .nav-brand-sub { display: none; }
     .nav-cta-label { display: none; }
     .nav-cta { padding: 10px 12px; }
+    .nav-auth { display: none; }
   }
 </style>

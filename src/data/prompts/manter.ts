@@ -1,8 +1,8 @@
 import type { Prompt } from './_types';
 
-export const provarPrompts: Prompt[] = [
+export const manterPrompts: Prompt[] = [
   {
-    id: 'p13', num: '13', eixoId: 'provar',
+    id: 'p13', num: '13', eixoId: 'manter',
     eyebrow: 'Sobrevivência · Transição de gestão',
     title: 'Defender o lab numa troca de governo.',
     purpose: 'Para construir o briefing que conquista o patrocínio político novo — antes que o orçamento seja cortado por desconhecimento.',
@@ -57,7 +57,7 @@ Tom: assertivo, sem bajulação, com lastro em dados. O dirigente precisa termin
     when: 'Pós-eleição · troca de ministro/secretário · primeira reunião de pauta com o novo dirigente · ameaça explícita de descontinuidade.',
   },
   {
-    id: 'p14', num: '14', eixoId: 'provar',
+    id: 'p14', num: '14', eixoId: 'manter',
     eyebrow: 'Comunicação · Storytelling de impacto',
     title: 'Transformar dado frio em narrativa que mobiliza.',
     purpose: 'Para sair do relatório burocrático e construir um pitch de 3 minutos com cenário, jornada, solução e valor público real.',
@@ -102,7 +102,7 @@ A dor entra em cena no parágrafo um. A solução entra em cena no parágrafo tr
     when: 'Apresentação para alta gestão · newsletter trimestral · pitch em encontro de labs · prestação de contas pública.',
   },
   {
-    id: 'p15', num: '15', eixoId: 'provar',
+    id: 'p15', num: '15', eixoId: 'manter',
     eyebrow: 'Governança · Alinhamento ao PPA',
     title: 'Sair do balcão de pedidos.',
     purpose: 'Para reposicionar o lab como ferramenta transversal que entrega metas institucionais — não como bombeiro que apaga incêndio alheio.',

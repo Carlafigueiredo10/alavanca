@@ -327,6 +327,7 @@ import Base from '../../layouts/Base.astro';
   // WIZARD · 3 telas → consolidação → handoff pro modo Avaliar
   // ============================================================
   import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
+  import { submitWizard } from '../../lib/journey/wizard-submit';
 
   type StepNum = 1 | 2 | 3;
 
@@ -402,37 +403,18 @@ import Base from '../../layouts/Base.astro';
     }
   }
 
-  generateBtn.addEventListener('click', () => {
+  generateBtn.addEventListener('click', async () => {
     if (Object.values(answers).some((v) => v.length < 12)) return;
-
-    if (isAuthed === false) {
-      try {
-        localStorage.setItem(
-          STATE_KEY,
-          JSON.stringify({ ...answers, ts: Date.now() })
-        );
-      } catch { /* ignore */ }
-      window.location.href = '/login?next=/avaliar/sprint';
-      return;
-    }
-
-    const prompt = buildPrompt(answers[1], answers[2], answers[3]);
-
-    try {
-      sessionStorage.setItem(
-        'alavanca:diag-prefill',
-        JSON.stringify({
-          text: prompt,
-          mode: MODE,
-          source: 'wizard-avaliar',
-          ts: Date.now(),
-        })
-      );
-    } catch { /* ignore */ }
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
-    window.location.href = '/jo';
+
+    await submitWizard({
+      verb: 'avaliar',
+      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3] },
+      fallbackText: buildPrompt(answers[1], answers[2], answers[3]),
+      fallbackSource: 'wizard-avaliar',
+    });
   });
 
   function buildPrompt(intervencao: string, outcome: string, dados: string): string {

@@ -97,7 +97,8 @@ export async function extractPdfText(buffer: ArrayBuffer): Promise<ExtractionRes
   try {
     const { text, totalPages } = await extractText(data, { mergePages: true });
     const pages = totalPages;
-    const fullText = typeof text === 'string' ? text : text.join('\n\n');
+    const fullText: string =
+      typeof text === 'string' ? text : (text as string[]).join('\n\n');
 
     // Critério de "PDF escaneado": menos de 50 chars por página em média
     const chars = fullText.replace(/\s/g, '').length;

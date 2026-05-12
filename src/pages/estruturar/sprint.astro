@@ -398,6 +398,7 @@ import Base from '../../layouts/Base.astro';
   // WIZARD · 3 telas → consolidação → handoff pro modo Estruturar
   // ============================================================
   import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
+  import { submitWizard } from '../../lib/journey/wizard-submit';
 
   type StepNum = 1 | 2 | 3;
 
@@ -476,45 +477,18 @@ import Base from '../../layouts/Base.astro';
     }
   }
 
-  generateBtn.addEventListener('click', () => {
+  generateBtn.addEventListener('click', async () => {
     if (answers[1].length < 12 || answers[2].length < 12 || answers[3].length < 12) return;
-
-    // Sem sessão: preserva os 3 campos e manda pro login. Volta pra cá com
-    // tudo restaurado pra o usuário só clicar de novo. Usamos localStorage
-    // (não sessionStorage) porque magic link pode abrir em outra aba —
-    // sessionStorage não cruza abas. TTL de 1h espelha vida do link.
-    if (isAuthed === false) {
-      try {
-        localStorage.setItem(
-          STATE_KEY,
-          JSON.stringify({ 1: answers[1], 2: answers[2], 3: answers[3], ts: Date.now() })
-        );
-      } catch {
-        /* ignore */
-      }
-      window.location.href = '/login?next=/estruturar/sprint';
-      return;
-    }
-
-    const prompt = buildPrompt(answers[1], answers[2], answers[3]);
-
-    try {
-      sessionStorage.setItem(
-        'alavanca:diag-prefill',
-        JSON.stringify({
-          text: prompt,
-          mode: 'estruturar',
-          source: 'wizard-sprint',
-          ts: Date.now(),
-        })
-      );
-    } catch {
-      /* ignore */
-    }
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
-    window.location.href = '/jo';
+
+    await submitWizard({
+      verb: 'estruturar',
+      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3] },
+      fallbackText: buildPrompt(answers[1], answers[2], answers[3]),
+      fallbackSource: 'wizard-sprint',
+    });
   });
 
   function buildPrompt(problema: string, hipotese: string, experimento: string): string {

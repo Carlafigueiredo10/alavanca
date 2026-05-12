@@ -17,7 +17,7 @@ const VALID_MODES = new Set<JoMode>([
   'formalizar',
   'construir',
   'avaliar',
-  'provar',
+  'manter',
 ]);
 
 interface OpenChatBody {
