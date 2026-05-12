@@ -13,8 +13,13 @@ const FRIENDLY_GEMINI_ERROR =
   'A Jô engasgou agora. Tenta de novo daqui a pouco — se persistir, me reformula a pergunta.';
 
 function getGemini() {
-  const key = import.meta.env.GOOGLE_API_KEY;
-  if (!key) throw new Error('GOOGLE_API_KEY ausente');
+  const raw = import.meta.env.GOOGLE_API_KEY;
+  if (!raw) throw new Error('GOOGLE_API_KEY ausente');
+  // Sanitiza: às vezes a env var é colada com whitespace ou (pior) com
+  // outra chave concatenada no mesmo campo. Pega só o primeiro token.
+  // Detectado em produção 2026-05-12 — header inválido quebrava o SDK.
+  const key = String(raw).trim().split(/[\s\n\r]/)[0];
+  if (!key) throw new Error('GOOGLE_API_KEY inválida após sanitize');
   return new GoogleGenerativeAI(key);
 }
 

@@ -137,20 +137,11 @@ const grupos: Grupo[] = [
   },
 ];
 
-const navLinks = [
-  { id: '02', label: 'Aplicação',   href: '/#aplicacao'   },
-  { id: '03', label: 'Fundamentos', href: '/#fundamentos' },
-  { id: '04', label: 'Sistema',     href: '/#sistema'     },
-  { id: '05', label: 'IA',          href: '/#ia'          },
-  { id: '06', label: 'Contribuir',  href: '/#contribuir'  },
-];
-const navCta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' };
+// Nav usa o default global (6 verbos).
 ---
 <Base
   title="Base institucional · Alavanca"
   description="Bibliografia da Alavanca: literatura acadêmica, guias da Enap e marcos legais da AGU que sustentam o motor da plataforma."
-  navLinks={navLinks}
-  navCta={navCta}
   bodyClass="film-grain"
 >
   <section class="bib-hero">

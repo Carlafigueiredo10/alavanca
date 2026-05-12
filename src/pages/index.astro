@@ -10,22 +10,13 @@ import Labs                from '../components/landing/Labs.astro';
 import Contribute          from '../components/landing/Contribute.astro';
 import LandingFooter       from '../components/landing/LandingFooter.astro';
 
-const navLinks = [
-  { id: '01', label: 'Diagnóstico', href: '/mapear/sprint'  },
-  { id: '02', label: 'Aplicação',   href: '#aplicacao'      },
-  { id: '03', label: 'IA',          href: '#ia'             },
-  { id: '04', label: 'Ecossistema', href: '#ecossistema'    },
-  { id: '05', label: 'Fundamentos', href: '#fundamentos'    },
-  { id: '06', label: 'Contribuir',  href: '#contribuir'     },
-];
-
-const navCta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' };
+// Nav usa o default global (6 verbos). As âncoras antigas (#aplicacao, #ia,
+// #ecossistema, #fundamentos, #contribuir) seguem renderizadas pelas próprias
+// seções da landing — pode reativar como sub-nav se quiser.
 ---
 <Base
   title="Alavanca · A força que multiplica laboratórios de inovação pública"
   description="Plataforma do CLIC para apoio a laboratórios de inovação pública: diagnóstico, trilhas, assistentes e casos. IA aplicada com método para mapear, estruturar, formalizar, construir, avaliar e manter."
-  navLinks={navLinks}
-  navCta={navCta}
   bodyClass="film-grain"
 >
   <AmbientField />

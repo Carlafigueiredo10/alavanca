@@ -8,13 +8,13 @@ interface NavLink {
   id: string;
   label: string;
   href: string;
-  match?: string;
+  match: string;
 }
 
 interface Props {
   title: string;
   description?: string;
-  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos' | 'jo';
+  current?: string; // ignorado — Nav detecta ativo via Astro.url.pathname
   navLinks?: NavLink[];
   navCta?: { label: string; href: string } | null;
   bodyClass?: string;
@@ -54,5 +54,45 @@ const showJo = !path.startsWith('/jo') && !path.startsWith('/login');
   </main>
   {showJo && <JoFab />}
   {showJo && <JoDrawer />}
+
+  <script is:inline>
+    // ============================================================
+    // Wizard UX global: foco automático + Enter avança
+    // Ativado em qualquer página que tenha .step-input (todos os
+    // 6 sprints). Listeners no document — zero por-wizard.
+    // ============================================================
+    (() => {
+      // Quando um textarea de wizard ganha foco, rola pro topo do step
+      // inteiro (mostra pergunta + caixa + ações sem corte).
+      document.addEventListener('focusin', (e) => {
+        const t = e.target;
+        if (!(t instanceof HTMLTextAreaElement)) return;
+        if (!t.classList.contains('step-input')) return;
+        const step = t.closest('.wizard-step');
+        if (!step) return;
+        // Pequeno delay pra deixar a transição de visibilidade do step
+        // terminar antes do scroll (evita "salta-volta").
+        setTimeout(() => {
+          step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      });
+
+      // Enter no textarea: avança pro próximo step (ou dispara gerar
+      // no último). Shift+Enter mantém quebra de linha normal.
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' || e.shiftKey) return;
+        const t = e.target;
+        if (!(t instanceof HTMLTextAreaElement)) return;
+        if (!t.classList.contains('step-input')) return;
+        const step = t.closest('.wizard-step');
+        if (!step) return;
+        const next = step.querySelector('[data-step-next], [data-generate]');
+        if (!(next instanceof HTMLButtonElement)) return;
+        if (next.disabled) return;
+        e.preventDefault();
+        next.click();
+      });
+    })();
+  </script>
 </body>
 </html>

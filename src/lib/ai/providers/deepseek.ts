@@ -9,8 +9,12 @@ const FRIENDLY_DEEPSEEK_ERROR =
   'A ampliação com referências externas falhou agora. Posso seguir pela base institucional — me diz se topa.';
 
 function getDeepSeek() {
-  const key = import.meta.env.DEEPSEEK_API_KEY;
-  if (!key) throw new Error('DEEPSEEK_API_KEY ausente');
+  const raw = import.meta.env.DEEPSEEK_API_KEY;
+  if (!raw) throw new Error('DEEPSEEK_API_KEY ausente');
+  // Mesmo sanitize do Gemini — defesa contra env var colada com whitespace
+  // ou concatenada com outra var. Detectado 2026-05-12.
+  const key = String(raw).trim().split(/[\s\n\r]/)[0];
+  if (!key) throw new Error('DEEPSEEK_API_KEY inválida após sanitize');
   return new OpenAI({
     apiKey: key,
     baseURL: 'https://api.deepseek.com/v1',

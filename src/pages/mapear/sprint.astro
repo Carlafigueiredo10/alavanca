@@ -81,6 +81,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: Laboratório de inovação recém-criado em secretaria estadual de saúde, sem portaria, com equipe de 3 servidores cedidos e pressão pra entregar um piloto em 90 dias."
       ></textarea>
       <div class="step-counter"><span data-step-counter="1">0</span> / 600</div>
+      <div data-chip-palette="1"></div>
 
       <div class="step-actions">
         <span class="step-back-placeholder"></span>
@@ -109,6 +110,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: Secretário de Saúde (patrocinador, não nominado); 3 servidores cedidos das áreas de planejamento e regulação; Procuradoria do Estado (exige portaria antes de parcerias); área de TI (fila de 6 meses); cidadão usuário SUS (público-fim, não nominado em demanda específica)."
       ></textarea>
       <div class="step-counter"><span data-step-counter="2">0</span> / 700</div>
+      <div data-chip-palette="2"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
@@ -136,6 +138,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: A Procuradoria pede portaria de institucionalização antes de qualquer parceria externa, e a equipe ainda não tem metodologia clara pra priorizar entre 5 demandas que chegaram simultaneamente."
       ></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
+      <div data-chip-palette="3"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
@@ -163,6 +166,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: A próxima transição de gestão fecha o lab por falta de instrumento jurídico e ausência de evidência de valor. Equipe se dispersa, conhecimento se perde, e a aposta política do secretário queima."
       ></textarea>
       <div class="step-counter"><span data-step-counter="4">0</span> / 600</div>
+      <div data-chip-palette="4"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
@@ -429,6 +433,9 @@ import Base from '../../layouts/Base.astro';
   // Demo aberto: sem auth gate.
   // ============================================================
   import { submitWizard } from '../../lib/journey/wizard-submit';
+  import { attachChipPalette } from '../../lib/wizard/chips';
+  import { MAPEAR_PALETTES } from '../../lib/wizard/chip-palettes';
+  import type { ChipPalette } from '../../lib/wizard/chip-palettes';
 
   type StepNum = 1 | 2 | 3 | 4;
 
@@ -466,6 +473,11 @@ import Base from '../../layouts/Base.astro';
   stepNums.forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const chipContainer = document.querySelector<HTMLDivElement>(`[data-chip-palette="${n}"]`);
+    const palette = MAPEAR_PALETTES[n - 1];
+    if (chipContainer && palette) {
+      attachChipPalette({ container: chipContainer, textarea: input, palette });
+    }
     const nextBtn =
       document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
       (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
@@ -497,18 +509,49 @@ import Base from '../../layouts/Base.astro';
     generateBtn.textContent = 'Gerar Relatório de Diagnóstico →';
   }
 
+  // Rótulos exibidos no overlay de refinamento (alinhados ao checklist da Jô,
+  // que segue a ordem das 4 telas do wizard).
+  const FIELD_LABELS = ['Cenário', 'Atores envolvidos', 'Gargalo', 'Risco de não agir'];
+
+  // Constrói args do submitWizard a partir dos 4 valores. Inclui `refine` pra
+  // habilitar Reprocessar inline no overlay (sem voltar pro form). O rebuild
+  // sincroniza os textareas locais antes de re-rodar — assim, se o user fechar
+  // o overlay no meio, o form mantém os valores editados.
+  function buildArgs(vals: [string, string, string, string]) {
+    return {
+      verb: 'mapear' as const,
+      wizardInput: { 1: vals[0], 2: vals[1], 3: vals[2], 4: vals[3] },
+      fallbackText: buildPrompt(vals[0], vals[1], vals[2], vals[3]),
+      fallbackSource: 'wizard-mapear',
+      refine: {
+        fieldLabels: FIELD_LABELS,
+        fieldPalettes: MAPEAR_PALETTES as (ChipPalette | null)[],
+        currentValues: vals as unknown as string[],
+        rebuild: (updated: string[]) => {
+          // Sincroniza state local + DOM com os valores editados no overlay
+          stepNums.forEach((n, idx) => {
+            const v = updated[idx] ?? '';
+            answers[n] = v;
+            const ta = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+            const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+            if (ta) ta.value = v;
+            if (counter) counter.textContent = String(v.length);
+          });
+          return buildArgs([
+            updated[0] ?? '', updated[1] ?? '', updated[2] ?? '', updated[3] ?? '',
+          ]);
+        },
+      },
+    };
+  }
+
   generateBtn.addEventListener('click', async () => {
     if (Object.values(answers).some((v) => v.length < 12)) return;
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
 
-    await submitWizard({
-      verb: 'mapear',
-      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3], 4: answers[4] },
-      fallbackText: buildPrompt(answers[1], answers[2], answers[3], answers[4]),
-      fallbackSource: 'wizard-mapear',
-    });
+    await submitWizard(buildArgs([answers[1], answers[2], answers[3], answers[4]]));
   });
 
   function buildPrompt(

@@ -3,27 +3,32 @@ interface NavLink {
   id: string;
   label: string;
   href: string;
-  match?: string;
+  match: string; // 1º segmento do path (ex: 'mapear' casa /mapear, /mapear/sprint, etc.)
 }
 
 interface Props {
-  current?: 'diagnostico' | 'trilhas' | 'assistente' | 'casos' | 'jo';
+  // Aceito mas ignorado: o ativo é derivado do path (Astro.url.pathname).
+  // Mantido pra não quebrar páginas que ainda passam current="casos" etc.
+  current?: string;
   links?: NavLink[];
   cta?: { label: string; href: string } | null;
 }
 
 const defaultLinks: NavLink[] = [
-  { id: '01', label: 'Diagnóstico', href: '/mapear/sprint', match: 'mapear' },
-  { id: '02', label: 'Trilhas',     href: '/trilhas',       match: 'trilhas' },
-  { id: '03', label: 'Assistente',  href: '/assistente',    match: 'assistente' },
-  { id: '04', label: 'Ecossistema', href: '/casos',         match: 'casos' },
+  { id: '01', label: 'Mapear',     href: '/mapear',     match: 'mapear' },
+  { id: '02', label: 'Estruturar', href: '/estruturar', match: 'estruturar' },
+  { id: '03', label: 'Formalizar', href: '/formalizar', match: 'formalizar' },
+  { id: '04', label: 'Construir',  href: '/construir',  match: 'construir' },
+  { id: '05', label: 'Avaliar',    href: '/avaliar',    match: 'avaliar' },
+  { id: '06', label: 'Manter',     href: '/manter',     match: 'manter' },
 ];
 
 const {
-  current,
   links = defaultLinks,
   cta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' },
 } = Astro.props;
+
+const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
 ---
 <header class="nav" id="alavanca-nav">
   <div class="nav-inner shell">
@@ -46,7 +51,7 @@ const {
       {links.map((l) => (
         <a
           href={l.href}
-          class:list={['nav-link', { current: current && l.match === current }]}
+          class:list={['nav-link', { current: l.match === activeSegment }]}
         >
           <span class="nav-link-id">/{l.id}</span>
           <span class="nav-link-label">{l.label}</span>

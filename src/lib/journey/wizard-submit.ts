@@ -12,6 +12,7 @@ import {
   type StreamingState,
 } from '../jo/streaming-parser';
 import * as overlay from '../jo/structured-overlay';
+import type { ChipPalette } from '../wizard/chip-palettes';
 
 export type WizardVerb =
   | 'mapear'
@@ -26,6 +27,15 @@ export interface SubmitWizardArgs {
   wizardInput: unknown;
   fallbackText: string;
   fallbackSource: string;
+  // refine (opcional): habilita "Reprocessar" inline na devolução. O wizard
+  // entrega os valores atuais alinhados ao checklist + uma função pra
+  // reconstruir args com valores editados (e sincronizar o form local).
+  refine?: {
+    fieldLabels: string[];                       // rótulos exibidos sobre cada textarea
+    fieldPalettes?: (ChipPalette | null)[];      // chips por campo (alinhado por índice)
+    currentValues: string[];                     // alinhado por índice ao checklist da Jô
+    rebuild: (updated: string[]) => SubmitWizardArgs;
+  };
 }
 
 const DIAGNOSTIC_CONTEXT_KEY = 'alavanca:diagnostic-context';
@@ -209,10 +219,21 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
   }
 
   if (structured.type === 'devolucao') {
-    handle.showDevolucao(structured, () => {
-      // Refinar: volta pro wizard. Não recarrega — o user já está nele.
-      // (overlay fechou; foco vai pro 1º textarea com ✗)
-    });
+    if (args.refine) {
+      handle.showDevolucao(structured, {
+        currentValues: args.refine.currentValues,
+        fieldLabels: args.refine.fieldLabels,
+        fieldPalettes: args.refine.fieldPalettes,
+        onResubmit: async (updated) => {
+          // Reconstrói args com os valores editados (wizard sincroniza form
+          // localmente dentro de rebuild) e re-roda o pipeline no mesmo overlay.
+          const nextArgs = args.refine!.rebuild(updated);
+          await streamStructured(nextArgs);
+        },
+      });
+    } else {
+      handle.showDevolucao(structured, null);
+    }
   } else {
     persistDiagnosticContext(args.verb, structured);
     handle.showRelatorioComplete(structured, artifactId);

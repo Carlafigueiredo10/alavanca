@@ -15,6 +15,8 @@ import type {
   JoRelatorio,
   JoRelatorioHeader,
 } from './response-types';
+import { attachChipPalette } from '../wizard/chips';
+import type { ChipPalette } from '../wizard/chip-palettes';
 
 const OVERLAY_ID = 'alavanca-structured-overlay';
 const STYLE_ID = 'alavanca-structured-overlay-style';
@@ -74,6 +76,21 @@ const CSS = `
 .aso__btn--primary:hover { filter: brightness(1.08); }
 .aso__error { padding: 14px 16px; border: 0.5px solid rgba(255,100,100,0.4); border-radius: 8px;
               background: rgba(255,100,100,0.05); color: var(--fg-86); font-family: var(--sans); font-size: 13.5px; }
+.aso__refine-field { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px;
+                     border: 0.5px solid var(--fg-14); border-radius: 8px; background: rgba(245,242,235,0.02); }
+.aso__refine-field--fail { border-left: 1.5px solid oklch(0.72 0.18 25); }
+.aso__refine-field--ok   { border-left: 1.5px solid oklch(0.78 0.16 145); }
+.aso__refine-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.aso__refine-symbol { font-family: var(--mono); font-size: 13px; flex: 0 0 auto; }
+.aso__refine-symbol--ok { color: oklch(0.78 0.16 145); }
+.aso__refine-symbol--fail { color: oklch(0.72 0.18 25); }
+.aso__refine-label { font-family: var(--sans); font-size: 14px; color: var(--fg); font-weight: 500; }
+.aso__refine-hint { font-family: var(--sans); font-size: 13px; color: var(--fg-65); font-style: italic; line-height: 1.5; }
+.aso__refine-textarea { width: 100%; min-height: 92px; padding: 10px 12px; border: 0.5px solid var(--fg-22);
+                        border-radius: 6px; background: rgba(0,0,0,0.25); color: var(--fg); font-family: var(--sans);
+                        font-size: 14px; line-height: 1.5; resize: vertical; box-sizing: border-box; }
+.aso__refine-textarea:focus { outline: 2px solid var(--amber); outline-offset: 1px; border-color: var(--amber); }
+.aso__btn:disabled { opacity: 0.5; cursor: not-allowed; }
 `;
 
 function ensureStyle(): void {
@@ -93,7 +110,22 @@ export interface OverlayHandle {
   setSpinner: (text: string) => void;
   setMarkdownStreaming: (text: string) => void;
   setHeader: (header: JoRelatorioHeader) => void;
-  showDevolucao: (d: JoDevolucao, onRefine: () => void) => void;
+  // refineCtx (opcional): habilita edição inline + Reprocessar dentro do overlay.
+  //  - currentValues: alinhado por índice ao d.checklist (i-ésimo valor = i-ésimo item)
+  //  - onResubmit: chamado com os valores editados; o caller deve re-rodar o pipeline
+  //  - fieldLabels: rótulos a usar no lugar dos labels do checklist (caso queira nomes
+  //    do wizard em vez de critérios da Jô); cai pra checklist.label se omitido
+  //  - fieldPalettes: palettes de chips por campo (alinhado por índice); null/undefined = sem chips
+  // Sem refineCtx: comportamento legado (botão "Fechar").
+  showDevolucao: (
+    d: JoDevolucao,
+    refineCtx?: {
+      currentValues: string[];
+      onResubmit: (updated: string[]) => void | Promise<void>;
+      fieldLabels?: string[];
+      fieldPalettes?: (ChipPalette | null)[];
+    } | null,
+  ) => void;
   showRelatorioComplete: (r: JoRelatorio, artifactId: string | null) => void;
   showError: (message: string) => void;
 }
@@ -186,42 +218,152 @@ export function open(verb: string): OverlayHandle {
     }
   }
 
-  function showDevolucao(d: JoDevolucao, onRefine: () => void): void {
+  function showDevolucao(
+    d: JoDevolucao,
+    refineCtx?: {
+      currentValues: string[];
+      onResubmit: (updated: string[]) => void | Promise<void>;
+      fieldLabels?: string[];
+      fieldPalettes?: (ChipPalette | null)[];
+    } | null,
+  ): void {
     const title = root.querySelector('.aso__title') as HTMLElement;
     title.textContent = 'Vamos refinar.';
 
-    const parts: string[] = [];
+    const canRefine = !!refineCtx && refineCtx.currentValues.length > 0;
+
+    // Sem refineCtx: comportamento legado (só checklist + botão Refinar/Fechar)
+    if (!canRefine) {
+      const parts: string[] = [];
+      if (d.message) {
+        parts.push(`<p class="aso__msg">${renderInlineMarkdown(d.message)}</p>`);
+      }
+      parts.push('<ul class="aso__checklist">');
+      for (const item of d.checklist) {
+        const symbol = item.ok
+          ? '<span class="aso__check-ok">✓</span>'
+          : '<span class="aso__check-fail">✗</span>';
+        const hint = item.hint && !item.ok
+          ? `<span class="aso__check-hint">${renderInlineMarkdown(item.hint)}</span>`
+          : '';
+        parts.push(
+          `<li class="aso__check-item">${symbol}<span class="aso__check-text">${renderInlineMarkdown(item.label)}${hint}</span></li>`,
+        );
+      }
+      parts.push('</ul>');
+      if (d.next) {
+        parts.push(`<p class="aso__next">${renderInlineMarkdown(d.next)}</p>`);
+      }
+      bubble.innerHTML = parts.join('\n');
+
+      actions.innerHTML = '';
+      const closeBtnAction = document.createElement('button');
+      closeBtnAction.className = 'aso__btn';
+      closeBtnAction.type = 'button';
+      closeBtnAction.textContent = 'Fechar';
+      closeBtnAction.addEventListener('click', close);
+      actions.appendChild(closeBtnAction);
+      return;
+    }
+
+    // Modo refine: render textareas inline, alinhadas por índice ao checklist.
+    // Se o checklist tem N itens e currentValues tem M, percorre min(N, M).
+    const ctx = refineCtx!;
+    const labels = ctx.fieldLabels ?? [];
+    const n = Math.min(d.checklist.length, ctx.currentValues.length);
+
+    bubble.innerHTML = '';
     if (d.message) {
-      parts.push(`<p class="aso__msg">${renderInlineMarkdown(d.message)}</p>`);
+      const msg = document.createElement('p');
+      msg.className = 'aso__msg';
+      msg.innerHTML = renderInlineMarkdown(d.message);
+      bubble.appendChild(msg);
     }
-    parts.push('<ul class="aso__checklist">');
-    for (const item of d.checklist) {
-      const symbol = item.ok
-        ? '<span class="aso__check-ok">✓</span>'
-        : '<span class="aso__check-fail">✗</span>';
-      const hint = item.hint && !item.ok
-        ? `<span class="aso__check-hint">${renderInlineMarkdown(item.hint)}</span>`
-        : '';
-      parts.push(
-        `<li class="aso__check-item">${symbol}<span class="aso__check-text">${renderInlineMarkdown(item.label)}${hint}</span></li>`,
-      );
+
+    const fieldsWrap = document.createElement('div');
+    fieldsWrap.style.display = 'flex';
+    fieldsWrap.style.flexDirection = 'column';
+    fieldsWrap.style.gap = '12px';
+
+    const textareas: HTMLTextAreaElement[] = [];
+    for (let i = 0; i < n; i++) {
+      const item = d.checklist[i];
+      const fieldEl = document.createElement('div');
+      fieldEl.className = 'aso__refine-field ' + (item.ok ? 'aso__refine-field--ok' : 'aso__refine-field--fail');
+
+      const head = document.createElement('div');
+      head.className = 'aso__refine-head';
+
+      const sym = document.createElement('span');
+      sym.className = 'aso__refine-symbol ' + (item.ok ? 'aso__refine-symbol--ok' : 'aso__refine-symbol--fail');
+      sym.textContent = item.ok ? '✓' : '✗';
+      head.appendChild(sym);
+
+      const lbl = document.createElement('span');
+      lbl.className = 'aso__refine-label';
+      lbl.textContent = labels[i] ?? item.label;
+      head.appendChild(lbl);
+
+      fieldEl.appendChild(head);
+
+      if (!item.ok && item.hint) {
+        const hintEl = document.createElement('div');
+        hintEl.className = 'aso__refine-hint';
+        hintEl.innerHTML = renderInlineMarkdown(item.hint);
+        fieldEl.appendChild(hintEl);
+      }
+
+      const ta = document.createElement('textarea');
+      ta.className = 'aso__refine-textarea';
+      ta.value = ctx.currentValues[i] ?? '';
+      ta.rows = 4;
+      fieldEl.appendChild(ta);
+      textareas.push(ta);
+
+      const palette = ctx.fieldPalettes?.[i];
+      if (palette) {
+        const chipBox = document.createElement('div');
+        fieldEl.appendChild(chipBox);
+        attachChipPalette({ container: chipBox, textarea: ta, palette });
+      }
+
+      fieldsWrap.appendChild(fieldEl);
     }
-    parts.push('</ul>');
+    bubble.appendChild(fieldsWrap);
+
     if (d.next) {
-      parts.push(`<p class="aso__next">${renderInlineMarkdown(d.next)}</p>`);
+      const next = document.createElement('p');
+      next.className = 'aso__next';
+      next.innerHTML = renderInlineMarkdown(d.next);
+      bubble.appendChild(next);
     }
-    bubble.innerHTML = parts.join('\n');
 
     actions.innerHTML = '';
-    const refineBtn = document.createElement('button');
-    refineBtn.className = 'aso__btn aso__btn--primary';
-    refineBtn.type = 'button';
-    refineBtn.textContent = 'Refinar respostas';
-    refineBtn.addEventListener('click', () => {
-      close();
-      onRefine();
+    const resubmitBtn = document.createElement('button');
+    resubmitBtn.className = 'aso__btn aso__btn--primary';
+    resubmitBtn.type = 'button';
+    resubmitBtn.textContent = 'Reprocessar';
+    resubmitBtn.addEventListener('click', async () => {
+      const updated = textareas.map((t) => t.value.trim());
+      // Validação mínima: pelo menos os ✗ precisam ter texto não-trivial
+      const failedEmpty = d.checklist
+        .slice(0, n)
+        .map((it, i) => (!it.ok && updated[i].length < 12 ? i : -1))
+        .filter((i) => i >= 0);
+      if (failedEmpty.length > 0) {
+        textareas[failedEmpty[0]].focus();
+        return;
+      }
+      resubmitBtn.disabled = true;
+      resubmitBtn.textContent = 'Reprocessando…';
+      try {
+        await ctx.onResubmit(updated);
+      } catch {
+        resubmitBtn.disabled = false;
+        resubmitBtn.textContent = 'Reprocessar';
+      }
     });
-    actions.appendChild(refineBtn);
+    actions.appendChild(resubmitBtn);
   }
 
   function showRelatorioComplete(r: JoRelatorio, artifactId: string | null): void {

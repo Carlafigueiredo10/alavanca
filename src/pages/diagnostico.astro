@@ -1,14 +1,1431 @@
+﻿---
+import Base from '../layouts/Base.astro';
 ---
-// Passo 0 unificado a partir de 2026-05-11: o antigo Diagnóstico de 5 perguntas
-// foi substituído pelo módulo Mapear (Wizard de 4 telas + Relatório SEI-Ready).
-// Mantemos a URL /diagnostico viva como redirect 301 permanente para preservar
-// links externos, bookmarks e referências em peças anteriores.
-//
-// O sistema de 20 hooks (src/lib/diagnostico/hooks.ts + src/prompts/hooks/*.md)
-// permanece funcional internamente — só perde a porta de entrada visual. Pode
-// ser ressuscitado depois como caminho secundário se necessário.
+<Base
+  title="Diagnóstico · Alavanca"
+  description="Diagnóstico de maturidade do laboratório de inovação pública. Seis dimensões, próximo passo claro."
+  current="diagnostico"
+>
 
-export const prerender = false;
+<!-- ============================================================
+     INTRO
+     ============================================================ -->
+<section class="intro">
+  <div class="container">
+    <div class="section-label animate-in">/ Diagnóstico</div>
+    <h1 class="intro-headline animate-in delay-100">Onde seu lab está hoje?</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Seis respostas. Próximo passo claro.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ 6 perguntas · ~4 minutos</p>
+    <div class="intro-meta animate-in delay-340">
+      <div class="intro-meta-text">
+        Ancorado na tipologia Nesta de labs<br />e no diagnóstico Sano (2020).<br />
+        <strong>O resultado fica nessa página.</strong> Nada é gravado.
+      </div>
+    </div>
+  </div>
+</section>
 
-return Astro.redirect('/mapear/sprint', 301);
----
+<!-- ============================================================
+     01 · VOCAÇÃO
+     ============================================================ -->
+<section class="question" id="q1" data-question="vocacao">
+  <div class="container">
+    <div class="question-label">01 · <span class="verb">Vocação</span></div>
+    <h2 class="question-headline">Qual é o papel principal do seu lab?</h2>
+    <div class="options" role="radiogroup" aria-label="Vocação">
+      <button class="option" data-key="desenvolvedor" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Desenvolvedor.</strong> Resolvemos problemas e desafios concretos com soluções que o lab mesmo entrega.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="facilitador" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Facilitador.</strong> Engajamos cidadãos, ONGs e setor privado em busca de ideias (inovação aberta).</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="educador" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Educador.</strong> Formamos servidores e mudamos a cultura organizacional da casa.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="arquiteto" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Arquiteto.</strong> Atuamos no nível de política pública, buscando mudanças sistêmicas.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 · GARGALO
+     ============================================================ -->
+<section class="question" id="q2" data-question="gargalo">
+  <div class="container">
+    <div class="question-label">02 · <span class="verb">Gargalo</span></div>
+    <h2 class="question-headline">Onde os projetos do lab costumam travar?</h2>
+    <div class="options" role="radiogroup" aria-label="Gargalo">
+      <button class="option" data-key="ideacao" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Na ideação.</strong> Geramos propostas, mas elas não saem do papel.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="prototipo" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>No protótipo.</strong> Chegamos ao MVP, mas não conseguimos avançar.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="implementacao" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Na implementação.</strong> O protótipo funciona, mas não vira serviço público.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="escala" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Na escala.</strong> Implementamos um caso, mas não conseguimos replicar nem sistematizar.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 · GOVERNANÇA
+     ============================================================ -->
+<section class="question" id="q3" data-question="governanca">
+  <div class="container">
+    <div class="question-label">03 · <span class="verb">Governança</span></div>
+    <h2 class="question-headline">Como a instituição enxerga o lab?</h2>
+    <div class="options" role="radiogroup" aria-label="Governança">
+      <button class="option" data-key="balcao" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Balcão de pedidos.</strong> Acionado para situações pontuais, sem orçamento estável nem agenda própria.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="programa" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Programa estabelecido.</strong> Temos espaço, mas a inovação não está no planejamento estratégico.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="estrategico" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Estratégico.</strong> A inovação está no plano da casa, com orçamento e metas próprias.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="patrocinado" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Estratégico com patrocínio.</strong> Temos respaldo da alta gestão e blindagem entre transições.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 · EQUIPE
+     ============================================================ -->
+<section class="question" id="q4" data-question="equipe">
+  <div class="container">
+    <div class="question-label">04 · <span class="verb">Equipe</span></div>
+    <h2 class="question-headline">Como está estruturada a equipe?</h2>
+    <div class="options" role="radiogroup" aria-label="Equipe">
+      <button class="option" data-key="conselheiro" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Conselheiro.</strong> Pequeno grupo prestando assistência técnica a outras áreas, sem dedicação exclusiva.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="facilitador-equipe" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Facilitador.</strong> Equipe pequena conectando unidades do governo, com dedicação parcial.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="lab-autonomo" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Lab autônomo.</strong> Grupo dedicado com identidade própria, mas sem dedicação exclusiva integral.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="lab-pleno" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Lab autônomo, dedicação plena.</strong> Equipe full-time com mandato claro e identidade pública.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 · ABERTURA
+     ============================================================ -->
+<section class="question" id="q5" data-question="abertura">
+  <div class="container">
+    <div class="question-label">05 · <span class="verb">Abertura</span></div>
+    <h2 class="question-headline">Com quem o lab cria as soluções?</h2>
+    <div class="options" role="radiogroup" aria-label="Abertura">
+      <button class="option" data-key="interna" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Internamente.</strong> Desenhamos as soluções com a própria equipe, sem cocriação.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="rede" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Em rede.</strong> Trocamos com outros labs públicos e órgãos parceiros.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="cocriacao" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Cocriação aberta.</strong> Convidamos sociedade civil, especialistas e setor privado para desenhar junto.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="misto" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Varia por projeto.</strong> Não temos um padrão definido de abertura.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 · IDENTIDADE
+     ============================================================ -->
+<section class="question" id="q6" data-question="identidade">
+  <div class="container">
+    <div class="question-label">06 · <span class="verb">Identidade</span></div>
+    <h2 class="question-headline">Como o lab se apresenta à casa?</h2>
+    <div class="options" role="radiogroup" aria-label="Identidade">
+      <button class="option" data-key="invisivel" role="radio" aria-checked="false">
+        <span class="option-letter">A</span>
+        <span class="option-text"><strong>Invisível.</strong> A maioria dos servidores não sabe o que o lab faz nem como acioná-lo.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="vitrine" role="radio" aria-checked="false">
+        <span class="option-letter">B</span>
+        <span class="option-text"><strong>Vitrine de cases.</strong> Mostramos resultados pontuais quando há reunião, mas não temos catálogo.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="catalogo-informal" role="radio" aria-checked="false">
+        <span class="option-letter">C</span>
+        <span class="option-text"><strong>Catálogo informal.</strong> Sabemos verbalmente o que oferecemos; falta consolidar por escrito.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+      <button class="option" data-key="catalogo-formal" role="radio" aria-checked="false">
+        <span class="option-letter">D</span>
+        <span class="option-text"><strong>Catálogo formal.</strong> Temos catálogo de serviços publicado, com manutenção periódica.</span>
+        <span class="option-mark" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESULTADO
+     ============================================================ -->
+<section class="result" id="result" aria-live="polite" aria-hidden="true">
+  <div class="container">
+    <div class="section-label">↳ Resultado</div>
+
+    <h2 class="result-headline">Comece por <span class="verb" id="result-verb">—</span>.</h2>
+    <p class="result-diag" id="result-diag"></p>
+
+    <div class="profile-block">
+      <div class="profile-label">Perfil do lab · seis dimensões</div>
+      <div class="profile-grid">
+        <div class="profile-row"><div class="profile-key">Vocação</div><div class="profile-value" id="prof-vocacao">—</div></div>
+        <div class="profile-row"><div class="profile-key">Gargalo</div><div class="profile-value" id="prof-gargalo">—</div></div>
+        <div class="profile-row"><div class="profile-key">Governança</div><div class="profile-value" id="prof-governanca">—</div></div>
+        <div class="profile-row"><div class="profile-key">Equipe</div><div class="profile-value" id="prof-equipe">—</div></div>
+        <div class="profile-row"><div class="profile-key">Abertura</div><div class="profile-value" id="prof-abertura">—</div></div>
+        <div class="profile-row"><div class="profile-key">Identidade</div><div class="profile-value" id="prof-identidade">—</div></div>
+      </div>
+    </div>
+
+    <div class="result-bars">
+      <div class="result-bars-label">Maturidade · três frentes</div>
+      <div class="bar-row" data-verb="formalizar">
+        <div class="bar-name">Formalização</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+      <div class="bar-row" data-verb="estruturar">
+        <div class="bar-name">Método</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+      <div class="bar-row" data-verb="construir">
+        <div class="bar-name">Construção</div>
+        <div class="bar-track"><div class="bar-fill"></div></div>
+        <div class="bar-value">—</div>
+      </div>
+    </div>
+
+    <!-- DERIVAÇÃO DO SCORING -->
+    <div class="derivation">
+      <div class="derivation-label">↳ Por que <span class="verb" id="derivation-verb">—</span>? · peso de cada resposta</div>
+      <div class="derivation-table" id="derivation-table"></div>
+      <div class="derivation-total">
+        Total: <strong id="derivation-total-pts">—</strong> de <span id="derivation-total-max">—</span> pts possíveis
+      </div>
+    </div>
+
+    <p class="result-action" id="result-action"></p>
+    <p class="result-secondary" id="result-secondary"></p>
+
+    <!-- CTA BLUEPRINT — só aparece quando o verbo recomendado for Estruturar -->
+    <div class="blueprint-cta" id="blueprint-cta" hidden>
+      <div class="blueprint-cta-label">↳ Peça-síntese do <span class="verb">Estruturar</span></div>
+      <a href="/estruturar/sprint" class="blueprint-cta-card">
+        <div class="blueprint-cta-chip">Blueprint</div>
+        <div class="blueprint-cta-body">
+          <div class="blueprint-cta-title">Comece pelo Blueprint do Sprint →</div>
+          <p class="blueprint-cta-text">
+            Três respostas — Problema · Hipótese · Experimento — e a Jô devolve o cronograma
+            tático SEI-Ready com as três fases do InovaGov (Entender · Explorar · Entregar),
+            ancorado no MINDS. <em>O método permanece. O tempo encolhe.</em>
+          </p>
+        </div>
+        <div class="blueprint-cta-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- CINCO GANCHOS -->
+    <div class="hooks-section">
+      <div class="hooks-label">↳ Peças que sua equipe pode pedir agora</div>
+      <p class="hooks-intro">
+        Cada peça vem como rascunho SEI-Ready: estrutura de Nota Técnica, fundamentação
+        normativa explícita, caveat de revisão jurídica. <em>Você decide. A Jô redige.</em>
+      </p>
+      <div class="hooks-list" id="hooks-list"></div>
+    </div>
+
+    <div class="result-ctas">
+      <a href="/formalizar" class="cta cta-primary cta-large" id="result-cta-primary">Ver caminho →</a>
+      <a href="/jo" class="cta cta-secondary cta-large">Conversa aberta com a Jô</a>
+    </div>
+
+    <div class="result-meta">
+      <div>
+        <span class="result-meta-id" id="result-id">—</span><br />
+        Diagnóstico realizado nesta sessão.
+      </div>
+      <a href="#" class="result-restart" id="result-restart">Refazer diagnóstico ↻</a>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     OVERRIDE DE LARGURA — diagnóstico é leitura em coluna única,
+     760px lê melhor que os 920px padrão do design system.
+     ============================================================ */
+  .container { max-width: 760px; }
+
+  /* ============================================================
+     INTRO
+     ============================================================ */
+  .intro { padding-top: 80px; padding-bottom: 80px; }
+
+  .intro-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 26px;
+    max-width: 640px;
+  }
+
+  .intro-subhead { margin-bottom: 18px; }
+  .intro-kicker { margin-bottom: 56px; }
+
+  .intro-meta {
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .intro-meta-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+    line-height: 1.6;
+  }
+
+  .intro-meta-text strong {
+    font-weight: 500;
+    color: var(--fg-86);
+  }
+
+  /* ============================================================
+     PERGUNTAS
+     ============================================================ */
+  .question { padding: 56px 0; }
+
+  .question-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 28px;
+  }
+
+  .question-label .verb { color: var(--amber); }
+
+  .question-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: transparent;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 28px 1fr 24px;
+    gap: 18px;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--sans);
+    color: var(--fg-86);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .option:hover {
+    border-color: var(--fg-50);
+    background: rgba(245, 242, 235, 0.02);
+    color: var(--fg);
+  }
+
+  .option:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-color: var(--amber);
+  }
+
+  .option.selected {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.08);
+    color: var(--fg);
+  }
+
+  .option-letter {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-50);
+    letter-spacing: 0.1em;
+    transition: color 200ms ease;
+  }
+
+  .option:hover .option-letter,
+  .option.selected .option-letter { color: var(--amber); }
+
+  .option-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .option-text strong {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .option-mark {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--amber);
+    text-align: right;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .option.selected .option-mark { opacity: 1; }
+
+  @media (max-width: 540px) {
+    .option { grid-template-columns: 22px 1fr; gap: 14px; padding: 16px 18px; }
+    .option-mark { display: none; }
+  }
+
+  /* ============================================================
+     RESULTADO
+     ============================================================ */
+  .result {
+    padding: 80px 0 96px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .result.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .result-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    color: var(--fg);
+    margin-bottom: 24px;
+    max-width: 640px;
+  }
+
+  .result-headline .verb {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .result-diag {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.4;
+    color: var(--fg);
+    margin-bottom: 56px;
+    max-width: 580px;
+  }
+
+  /* perfil */
+  .profile-block { margin-bottom: 56px; }
+
+  .profile-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+
+  .profile-grid {
+    display: grid;
+    gap: 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+
+  .profile-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 0.5px solid var(--fg-10);
+  }
+
+  .profile-row:last-child { border-bottom: 0; }
+
+  .profile-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--fg-50);
+    text-transform: uppercase;
+  }
+
+  .profile-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  @media (max-width: 540px) {
+    .profile-row { grid-template-columns: 100px 1fr; gap: 14px; }
+    .profile-key { font-size: 10px; letter-spacing: 0.1em; }
+  }
+
+  /* barras */
+  .result-bars { margin-bottom: 56px; }
+
+  .result-bars-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 24px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 56px;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .bar-name {
+    color: var(--fg-86);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 200ms ease;
+  }
+
+  .bar-name.is-recommended { color: var(--amber); }
+
+  .bar-track {
+    height: 4px;
+    background: var(--fg-10);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--fg-50);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 800ms cubic-bezier(0.25, 0.1, 0.25, 1) 200ms,
+                background 200ms ease;
+  }
+
+  .bar-fill.is-recommended { background: var(--amber); }
+
+  .bar-value {
+    color: var(--fg-50);
+    font-size: 11px;
+    text-align: right;
+    letter-spacing: 0.1em;
+    transition: color 200ms ease;
+  }
+
+  .bar-value.is-recommended { color: var(--amber); }
+
+  @media (max-width: 540px) {
+    .bar-row { grid-template-columns: 100px 1fr 40px; gap: 14px; }
+    .bar-name { font-size: 11px; letter-spacing: 0.06em; }
+  }
+
+  /* ação */
+  .result-action {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.45;
+    color: var(--fg-86);
+    margin-bottom: 20px;
+    max-width: 580px;
+  }
+
+  .result-secondary {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--fg-50);
+    margin-bottom: 56px;
+  }
+
+  .result-secondary .verb { color: var(--amber); }
+
+  .result-ctas {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+  }
+
+  /* derivação do scoring */
+  .derivation { margin-bottom: 56px; }
+
+  .derivation-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 22px;
+  }
+
+  .derivation-label .verb {
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .derivation-table {
+    display: grid;
+    grid-template-columns: 130px 1fr 80px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+
+  .derivation-row {
+    display: contents;
+  }
+
+  .derivation-row > * {
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--fg-10);
+    align-self: center;
+  }
+
+  .derivation-dim {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+
+  .derivation-resp {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--fg-86);
+  }
+
+  .derivation-pts {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: right;
+    color: var(--fg-86);
+    letter-spacing: 0.04em;
+  }
+
+  .derivation-pts.is-zero { color: var(--fg-45); }
+  .derivation-pts.is-strong { color: var(--amber); }
+
+  .derivation-total {
+    padding-top: 14px;
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--fg-50);
+  }
+
+  .derivation-total strong {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  @media (max-width: 540px) {
+    .derivation-table { grid-template-columns: 90px 1fr 60px; }
+    .derivation-dim { font-size: 9.5px; letter-spacing: 0.1em; }
+    .derivation-resp { font-size: 12.5px; }
+  }
+
+  /* CTA do Blueprint — peça-síntese quando verbo = Estruturar */
+  .blueprint-cta { margin-bottom: 48px; }
+
+  .blueprint-cta-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .blueprint-cta-label .verb { color: var(--amber); }
+
+  .blueprint-cta-card {
+    display: grid;
+    grid-template-columns: auto 1fr 28px;
+    gap: 22px;
+    align-items: center;
+    padding: 24px 26px;
+    border: 0.5px solid var(--amber);
+    border-radius: 14px;
+    background: rgba(217, 119, 6, 0.08);
+    text-decoration: none;
+    color: var(--fg);
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .blueprint-cta-card:hover {
+    background: rgba(217, 119, 6, 0.14);
+    transform: translateY(-1px);
+  }
+  .blueprint-cta-card:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .blueprint-cta-chip {
+    align-self: flex-start;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--amber);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .blueprint-cta-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--fg);
+    margin-bottom: 8px;
+  }
+  .blueprint-cta-text {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+  .blueprint-cta-text em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg);
+  }
+
+  .blueprint-cta-arrow {
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--amber);
+    align-self: center;
+    transition: transform 200ms ease;
+  }
+  .blueprint-cta-card:hover .blueprint-cta-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 540px) {
+    .blueprint-cta-card {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 20px;
+    }
+    .blueprint-cta-arrow { display: none; }
+    .blueprint-cta-title { font-size: 19px; }
+  }
+
+  /* cards de ganchos */
+  .hooks-section { margin-bottom: 60px; }
+
+  .hooks-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+
+  .hooks-intro {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+    margin-bottom: 24px;
+    max-width: 580px;
+  }
+
+  .hooks-intro em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg);
+  }
+
+  .hooks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hook-card {
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    gap: 18px;
+    padding: 18px 22px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--sans);
+    color: var(--fg-86);
+    transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    width: 100%;
+  }
+
+  .hook-card:hover {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.06);
+    color: var(--fg);
+  }
+
+  .hook-card:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-color: var(--amber);
+  }
+
+  .hook-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    flex-wrap: wrap;
+  }
+
+  .hook-card-num {
+    color: var(--fg-86);
+    letter-spacing: 0.16em;
+  }
+
+  .hook-card-chip {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(217, 119, 6, 0.12);
+    color: var(--amber);
+    letter-spacing: 0.14em;
+    font-size: 9.5px;
+    font-weight: 500;
+  }
+
+  .hook-card-verb {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 0.5px solid var(--fg-22);
+    background: transparent;
+    color: var(--fg-86);
+    letter-spacing: 0.14em;
+    font-size: 9.5px;
+    font-weight: 500;
+  }
+
+  .hook-card-resp {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-45);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .hook-card-resp strong {
+    color: var(--fg-86);
+    font-weight: 500;
+  }
+
+  .hook-card-label {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--fg);
+    line-height: 1.45;
+  }
+
+  .hook-card-cross {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-50);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .hook-card-arrow {
+    align-self: center;
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--fg-45);
+    transition: color 200ms ease, transform 200ms ease;
+  }
+
+  .hook-card:hover .hook-card-arrow {
+    color: var(--amber);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 540px) {
+    .hook-card { padding: 16px 18px; }
+    .hook-card-label { font-size: 13.5px; }
+  }
+
+  /* meta */
+  .result-meta {
+    padding-top: 28px;
+    border-top: 0.5px solid var(--fg-22);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-45);
+  }
+
+  .result-meta-id { color: var(--fg-86); }
+
+  .result-restart {
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
+  .result-restart:hover { color: var(--fg); }
+</style>
+
+<script>
+  // ============================================================
+  // DIAGNÓSTICO · 6 dimensões → 1 verbo + cards de peças (deduped)
+  // ============================================================
+  import {
+    buildHooksFromAnswers,
+    dedupeHooks,
+    buildPrefillText,
+    PIECE_TYPE_LABEL,
+    VERB_LABEL,
+    type Dim,
+    type Answers,
+  } from '../lib/diagnostico/hooks';
+
+  type Verb = 'formalizar' | 'estruturar' | 'construir';
+
+  const answers: Answers = {
+    vocacao: null,
+    gargalo: null,
+    governanca: null,
+    equipe: null,
+    abertura: null,
+    identidade: null,
+  };
+
+  // matriz de scoring — cada resposta atribui pontos a verbo(s)
+  const SCORING: Record<Dim, Record<string, Partial<Record<Verb, number>>>> = {
+    vocacao: {
+      desenvolvedor: { construir: 1 },
+      facilitador:   { estruturar: 1 },
+      educador:      { estruturar: 1, construir: 1 },
+      arquiteto:     { formalizar: 1 },
+    },
+    gargalo: {
+      ideacao:       { estruturar: 3 },
+      prototipo:     { construir: 3 },
+      implementacao: { formalizar: 2, construir: 1 },
+      escala:        { formalizar: 3 },
+    },
+    governanca: {
+      balcao:      { formalizar: 3 },
+      programa:    { formalizar: 1 },
+      estrategico: {},
+      patrocinado: {},
+    },
+    equipe: {
+      conselheiro:          { formalizar: 2 },
+      'facilitador-equipe': { formalizar: 1, estruturar: 1 },
+      'lab-autonomo':       { formalizar: 1 },
+      'lab-pleno':          {},
+    },
+    abertura: {
+      interna:   { estruturar: 2 },
+      rede:      { estruturar: 1 },
+      cocriacao: {},
+      misto:     { estruturar: 1 },
+    },
+    identidade: {
+      invisivel:           { formalizar: 3 },
+      vitrine:             { formalizar: 2 },
+      'catalogo-informal': { formalizar: 1 },
+      'catalogo-formal':   {},
+    },
+  };
+
+  // máximos teóricos por verbo (worst case do usuário)
+  const MAX: Record<Verb, number> = { formalizar: 12, estruturar: 7, construir: 4 };
+
+  const DIM_LABEL: Record<Dim, string> = {
+    vocacao: 'Vocação',
+    gargalo: 'Gargalo',
+    governanca: 'Governança',
+    equipe: 'Equipe',
+    abertura: 'Abertura',
+    identidade: 'Identidade',
+  };
+
+  const LABELS: Record<Dim, Record<string, string>> = {
+    vocacao: {
+      desenvolvedor: 'Desenvolvedor',
+      facilitador:   'Facilitador',
+      educador:      'Educador',
+      arquiteto:     'Arquiteto',
+    },
+    gargalo: {
+      ideacao:       'Ideação',
+      prototipo:     'Protótipo',
+      implementacao: 'Implementação',
+      escala:        'Escala / replicação',
+    },
+    governanca: {
+      balcao:      'Balcão de pedidos',
+      programa:    'Programa estabelecido',
+      estrategico: 'Estratégico',
+      patrocinado: 'Estratégico com patrocínio',
+    },
+    equipe: {
+      conselheiro:          'Conselheiro',
+      'facilitador-equipe': 'Facilitador',
+      'lab-autonomo':       'Lab autônomo',
+      'lab-pleno':          'Lab pleno (dedicação exclusiva)',
+    },
+    abertura: {
+      interna:   'Interna',
+      rede:      'Em rede',
+      cocriacao: 'Cocriação aberta',
+      misto:     'Varia por projeto',
+    },
+    identidade: {
+      invisivel:           'Invisível na casa',
+      vitrine:             'Vitrine de cases',
+      'catalogo-informal': 'Catálogo informal',
+      'catalogo-formal':   'Catálogo formal publicado',
+    },
+  };
+
+  const VERB_COPY: Record<Verb, { name: string; diag: string; action: string; cta: string; href: string }> = {
+    formalizar: {
+      name: 'Formalizar',
+      diag: 'Sua equipe tem capacidade técnica e de método, mas o arranjo institucional ainda não sustenta o trabalho — limita captação, contratação e durabilidade entre ciclos de gestão.',
+      action: 'O caminho é virar ICT (ou equivalente jurídico), abrir captação via FNDCT, formalizar parcerias e construir governança que sobreviva a mudança de gestão.',
+      cta: 'Ver caminho de Formalizar →',
+      href: '/formalizar',
+    },
+    estruturar: {
+      name: 'Estruturar',
+      diag: 'Sua instituição reconhece o lab e há capacidade técnica disponível, mas o método não está consolidado — cada projeto reinventa seu fluxo, e ideias não viram ciclos contínuos de melhoria.',
+      action: 'O caminho é desenhar como o lab decide: critérios de priorização, ritmo de sprints, indicadores de impacto, ciclos de revisão. Sem isso, a entrega depende de heroísmo individual.',
+      cta: 'Ver caminho de Estruturar →',
+      href: '/estruturar',
+    },
+    construir: {
+      name: 'Construir',
+      diag: 'Seu lab tem instituição sólida e método claro, mas depende de fila de TI ou contratação externa para construir o que usa — segura o ciclo no ritmo dos atravessadores.',
+      action: 'O caminho é capacitar a equipe em IA e no-code para que o próprio lab construa assistentes, dashboards e automações. A autoria das ferramentas é o que garante autonomia operacional.',
+      cta: 'Ver caminho de Construir →',
+      href: '/construir',
+    },
+  };
+
+  const questionSections = document.querySelectorAll<HTMLElement>('.question');
+  const resultEl = document.getElementById('result') as HTMLElement;
+
+  function scrollToNextUnanswered(currentSection: HTMLElement) {
+    const all = Array.from(questionSections);
+    const idx = all.indexOf(currentSection);
+    for (let i = idx + 1; i < all.length; i++) {
+      const dim = all[i].getAttribute('data-question') as Dim;
+      if (answers[dim] === null) {
+        all[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+  }
+
+  questionSections.forEach((section) => {
+    const dim = section.getAttribute('data-question') as Dim;
+    const buttons = section.querySelectorAll<HTMLButtonElement>('.option');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wasUnanswered = answers[dim] === null;
+
+        buttons.forEach((b) => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-checked', 'true');
+        answers[dim] = btn.getAttribute('data-key');
+
+        const allFilled = (Object.keys(answers) as Dim[]).every((k) => answers[k] !== null);
+
+        if (allFilled) {
+          renderResult();
+        } else if (wasUnanswered) {
+          // momentum gentil para baixo, mas só na primeira vez —
+          // re-edição não força scroll para evitar incomodar.
+          setTimeout(() => scrollToNextUnanswered(section), 280);
+        }
+      });
+    });
+  });
+
+  function buildProfileLine(answers: Answers): string {
+    const parts: string[] = [];
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const r = answers[dim];
+      if (!r) return;
+      parts.push(`${DIM_LABEL[dim]}: ${LABELS[dim][r]}`);
+    });
+    return parts.join(' · ') + '.';
+  }
+
+  function renderDerivation(answers: Answers, primary: Verb) {
+    (document.getElementById('derivation-verb') as HTMLElement).textContent = VERB_COPY[primary].name;
+
+    const tableEl = document.getElementById('derivation-table') as HTMLElement;
+    tableEl.innerHTML = '';
+
+    let total = 0;
+
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const key = answers[dim];
+      if (!key) return;
+      const pts = (SCORING[dim][key] || {})[primary] || 0;
+      total += pts;
+
+      const row = document.createElement('div');
+      row.className = 'derivation-row';
+
+      const dimEl = document.createElement('div');
+      dimEl.className = 'derivation-dim';
+      dimEl.textContent = DIM_LABEL[dim];
+
+      const respEl = document.createElement('div');
+      respEl.className = 'derivation-resp';
+      respEl.textContent = LABELS[dim][key];
+
+      const ptsEl = document.createElement('div');
+      ptsEl.className = 'derivation-pts';
+      if (pts === 0) ptsEl.classList.add('is-zero');
+      else if (pts >= 3) ptsEl.classList.add('is-strong');
+      ptsEl.textContent = pts === 0 ? '0 pts' : '+' + pts + ' pts';
+
+      row.appendChild(dimEl);
+      row.appendChild(respEl);
+      row.appendChild(ptsEl);
+      tableEl.appendChild(row);
+    });
+
+    (document.getElementById('derivation-total-pts') as HTMLElement).textContent = String(total);
+    (document.getElementById('derivation-total-max') as HTMLElement).textContent = String(MAX[primary]);
+  }
+
+  const DIM_ORDER: Dim[] = ['vocacao', 'gargalo', 'governanca', 'equipe', 'abertura', 'identidade'];
+
+  function renderHooks(answers: Answers) {
+    const listEl = document.getElementById('hooks-list') as HTMLElement;
+    listEl.innerHTML = '';
+
+    const all = buildHooksFromAnswers(answers);
+    const deduped = dedupeHooks(all);
+    deduped.sort((a, b) => DIM_ORDER.indexOf(a.fromDims[0]) - DIM_ORDER.indexOf(b.fromDims[0]));
+
+    const profileLine = buildProfileLine(answers);
+
+    deduped.forEach((hook, idx) => {
+      const card = document.createElement('button');
+      card.className = 'hook-card';
+      card.type = 'button';
+
+      const main = document.createElement('div');
+
+      const header = document.createElement('div');
+      header.className = 'hook-card-header';
+
+      const num = document.createElement('span');
+      num.className = 'hook-card-num';
+      const dimsLabel = hook.fromDims.map((d) => DIM_LABEL[d]).join(' + ');
+      num.textContent = String(idx + 1).padStart(2, '0') + ' · ' + dimsLabel;
+
+      const chip = document.createElement('span');
+      chip.className = 'hook-card-chip';
+      chip.textContent = PIECE_TYPE_LABEL[hook.pieceType];
+
+      const verbChip = document.createElement('span');
+      verbChip.className = 'hook-card-verb';
+      verbChip.textContent = VERB_LABEL[hook.verb];
+
+      header.appendChild(num);
+      header.appendChild(chip);
+      header.appendChild(verbChip);
+      main.appendChild(header);
+
+      const resp = document.createElement('div');
+      resp.className = 'hook-card-resp';
+      if (hook.fromDims.length === 1) {
+        const d = hook.fromDims[0];
+        resp.innerHTML = 'Você marcou: <strong>' + LABELS[d][hook.responsesByDim[d]!] + '</strong>';
+      } else {
+        resp.innerHTML = hook.fromDims
+          .map((d) => DIM_LABEL[d] + ': <strong>' + LABELS[d][hook.responsesByDim[d]!] + '</strong>')
+          .join(' · ');
+      }
+      main.appendChild(resp);
+
+      const label = document.createElement('div');
+      label.className = 'hook-card-label';
+      label.textContent = hook.label;
+      main.appendChild(label);
+
+      if (hook.fromDims.length > 1) {
+        const cross = document.createElement('div');
+        cross.className = 'hook-card-cross';
+        cross.textContent = '↳ Esta peça apoia ' + hook.fromDims.length + ' frentes do seu diagnóstico.';
+        main.appendChild(cross);
+      }
+
+      const arrow = document.createElement('div');
+      arrow.className = 'hook-card-arrow';
+      arrow.textContent = '→';
+
+      card.appendChild(main);
+      card.appendChild(arrow);
+
+      card.addEventListener('click', () => {
+        const prefillText = buildPrefillText({ hook, profileLine });
+        try {
+          sessionStorage.setItem('alavanca:diag-prefill', JSON.stringify({
+            text: prefillText,
+            hookId: hook.hookId,
+            pieceKey: hook.pieceKey,
+            ts: Date.now(),
+          }));
+        } catch {
+          /* ignore */
+        }
+        window.location.href = '/jo';
+      });
+
+      listEl.appendChild(card);
+    });
+  }
+
+  function renderResult() {
+    const scores: Record<Verb, number> = { formalizar: 0, estruturar: 0, construir: 0 };
+
+    (Object.keys(answers) as Dim[]).forEach((dim) => {
+      const key = answers[dim];
+      if (!key) return;
+      const addition = SCORING[dim][key] || {};
+      (Object.keys(addition) as Verb[]).forEach((v) => {
+        scores[v] += addition[v] || 0;
+      });
+    });
+
+    const urgency: Record<Verb, number> = {
+      formalizar: scores.formalizar / MAX.formalizar,
+      estruturar: scores.estruturar / MAX.estruturar,
+      construir:  scores.construir  / MAX.construir,
+    };
+
+    const maturity: Record<Verb, number> = {
+      formalizar: Math.round((1 - urgency.formalizar) * 100),
+      estruturar: Math.round((1 - urgency.estruturar) * 100),
+      construir:  Math.round((1 - urgency.construir)  * 100),
+    };
+
+    const verbs: Verb[] = ['formalizar', 'estruturar', 'construir'];
+    const primary = verbs.reduce((best, v) => (urgency[v] > urgency[best] ? v : best), verbs[0]);
+    const pool = verbs.filter((v) => v !== primary);
+    const secondary = pool.reduce((best, v) => (urgency[v] > urgency[best] ? v : best), pool[0]);
+
+    const copy = VERB_COPY[primary];
+
+    (document.getElementById('result-verb') as HTMLElement).textContent = copy.name;
+    (document.getElementById('result-diag') as HTMLElement).textContent = copy.diag;
+    (document.getElementById('result-action') as HTMLElement).textContent = copy.action;
+    (document.getElementById('result-secondary') as HTMLElement).innerHTML =
+      'Depois disso, fortaleça <span class="verb">' + VERB_COPY[secondary].name + '</span>.';
+
+    const ctaPrimary = document.getElementById('result-cta-primary') as HTMLAnchorElement;
+    ctaPrimary.textContent = copy.cta;
+    ctaPrimary.setAttribute('href', copy.href);
+
+    (document.getElementById('prof-vocacao') as HTMLElement).textContent    = LABELS.vocacao[answers.vocacao!];
+    (document.getElementById('prof-gargalo') as HTMLElement).textContent    = LABELS.gargalo[answers.gargalo!];
+    (document.getElementById('prof-governanca') as HTMLElement).textContent = LABELS.governanca[answers.governanca!];
+    (document.getElementById('prof-equipe') as HTMLElement).textContent     = LABELS.equipe[answers.equipe!];
+    (document.getElementById('prof-abertura') as HTMLElement).textContent   = LABELS.abertura[answers.abertura!];
+    (document.getElementById('prof-identidade') as HTMLElement).textContent = LABELS.identidade[answers.identidade!];
+
+    document.querySelectorAll<HTMLElement>('.bar-row').forEach((row) => {
+      const v = row.getAttribute('data-verb') as Verb;
+      const pct = maturity[v];
+      const fill = row.querySelector<HTMLElement>('.bar-fill')!;
+      const name = row.querySelector<HTMLElement>('.bar-name')!;
+      const value = row.querySelector<HTMLElement>('.bar-value')!;
+
+      value.textContent = pct + '%';
+      name.classList.toggle('is-recommended', v === primary);
+      fill.classList.toggle('is-recommended', v === primary);
+      value.classList.toggle('is-recommended', v === primary);
+
+      // reset → animar
+      fill.style.width = '0%';
+      requestAnimationFrame(() => {
+        fill.style.width = pct + '%';
+      });
+    });
+
+    renderDerivation(answers, primary);
+    renderHooks(answers);
+
+    // Mostra CTA do Blueprint só quando o verbo recomendado for Estruturar.
+    const blueprintCta = document.getElementById('blueprint-cta');
+    if (blueprintCta) {
+      blueprintCta.hidden = primary !== 'estruturar';
+    }
+
+    const d = new Date();
+    const pad = (n: number) => (n < 10 ? '0' + n : '' + n);
+    const id =
+      'DIAG · ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() +
+      ' · ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    (document.getElementById('result-id') as HTMLElement).textContent = id;
+
+    resultEl.classList.add('visible');
+    resultEl.setAttribute('aria-hidden', 'false');
+
+    setTimeout(() => {
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 350);
+  }
+
+  document.getElementById('result-restart')!.addEventListener('click', (e) => {
+    e.preventDefault();
+    (Object.keys(answers) as Dim[]).forEach((k) => { answers[k] = null; });
+    document.querySelectorAll<HTMLButtonElement>('.option.selected').forEach((o) => {
+      o.classList.remove('selected');
+      o.setAttribute('aria-checked', 'false');
+    });
+    resultEl.classList.remove('visible');
+    resultEl.setAttribute('aria-hidden', 'true');
+
+    const firstQ = document.getElementById('q1');
+    if (firstQ) {
+      firstQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const firstOption = firstQ.querySelector<HTMLButtonElement>('.option');
+      // dá tempo do scroll começar antes de mover o foco, evita salto
+      setTimeout(() => firstOption?.focus(), 600);
+    }
+  });
+</script>
