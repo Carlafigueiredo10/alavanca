@@ -12,6 +12,7 @@ const MAX_HISTORY_MESSAGES = 40;
 const VALID_MODES = new Set<JoMode>([
   'decisao',
   'possibilidades',
+  'mapear',
   'estruturar',
   'formalizar',
   'construir',

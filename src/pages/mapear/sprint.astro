@@ -2,8 +2,8 @@
 import Base from '../../layouts/Base.astro';
 ---
 <Base
-  title="Blueprint do Sprint · Estruturar · Alavanca"
-  description="Três respostas. A Jô devolve um Blueprint de Sprint SEI-Ready, ancorado no MINDS e nas três fases do InovaGov."
+  title="Mapa de Riscos · Mapear · Alavanca"
+  description="Três respostas. A Jô faz o Diagnóstico Institucional e devolve um Mapa de Riscos com Plano de Ação por verbo."
 >
 
 <!-- ============================================================
@@ -11,15 +11,15 @@ import Base from '../../layouts/Base.astro';
      ============================================================ -->
 <section class="intro">
   <div class="container">
-    <div class="section-label animate-in">/ Estruturar · Blueprint</div>
-    <h1 class="intro-headline animate-in delay-100">Do problema ao plano de fases.</h1>
-    <p class="subhead-italic intro-subhead animate-in delay-180">Em três respostas — não em três meses.</p>
-    <p class="kicker intro-kicker animate-in delay-260">↓ Problema · Hipótese · Experimento</p>
+    <div class="section-label animate-in">/ Mapear · Diagnóstico Institucional</div>
+    <h1 class="intro-headline animate-in delay-100">Do cenário ao mapa de riscos.</h1>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Antes de escolher o verbo, ler o terreno.</p>
+    <p class="kicker intro-kicker animate-in delay-260">↓ Cenário · Gargalo · Risco de não agir</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
-        Motor metodológico: <strong>Projeto MINDS</strong> (GNova/OCDE) e<br />
-        <strong>Guia de Facilitadores InovaGov/ENAP</strong> · Design Sprint setor público.<br />
-        <strong>O método permanece — o tempo encolhe.</strong>
+        Mapeador de Riscos · Roteador dos <strong>seis verbos do método</strong>:<br />
+        Mapear · Estruturar · Formalizar · Construir · Avaliar · Provar.<br />
+        <strong>Sem mapa, todo plano é palpite.</strong>
       </div>
     </div>
   </div>
@@ -33,17 +33,17 @@ import Base from '../../layouts/Base.astro';
     <div class="stepper" id="stepper">
       <div class="step is-active" data-step="1">
         <span class="step-num">01</span>
-        <span class="step-label">Problema</span>
+        <span class="step-label">Cenário</span>
       </div>
       <div class="step-divider"></div>
       <div class="step" data-step="2">
         <span class="step-num">02</span>
-        <span class="step-label">Hipótese</span>
+        <span class="step-label">Gargalo</span>
       </div>
       <div class="step-divider"></div>
       <div class="step" data-step="3">
         <span class="step-num">03</span>
-        <span class="step-label">Experimento</span>
+        <span class="step-label">Risco de não agir</span>
       </div>
     </div>
   </div>
@@ -55,15 +55,14 @@ import Base from '../../layouts/Base.astro';
 <section class="wizard">
   <div class="container">
 
-    <!-- ── 01 · PROBLEMA ── -->
+    <!-- ── 01 · CENÁRIO ── -->
     <div class="wizard-step is-active" data-step="1">
       <div class="step-header">
-        <div class="step-tag">01 · <span class="verb">Problema</span></div>
-        <h2 class="step-headline">Qual a dor pública concreta?</h2>
+        <div class="step-tag">01 · <span class="verb">Cenário</span></div>
+        <h2 class="step-headline">Descreva o cenário institucional.</h2>
         <p class="step-hint">
-          Especifique o serviço, o órgão e o impacto observável. Genérico não vira plano —
-          se o seu problema é "melhorar o atendimento", você ainda não tem um problema, tem
-          uma intenção.
+          Diga o ator (órgão/setor), o tema/serviço em questão e o quadro geral.
+          Quanto mais concreto, mais útil o mapa. Genérico produz mapa genérico.
         </p>
       </div>
 
@@ -72,7 +71,7 @@ import Base from '../../layouts/Base.astro';
         data-step-input="1"
         rows="4"
         maxlength="600"
-        placeholder="Ex: evasão de 40% no agendamento de perícias médicas oficiais, gerando ociosidade de servidores médicos da junta pericial."
+        placeholder="Ex: Laboratório de inovação recém-criado em secretaria estadual de saúde, sem portaria, com equipe de 3 servidores cedidos e pressão pra entregar um piloto em 90 dias."
       ></textarea>
       <div class="step-counter"><span data-step-counter="1">0</span> / 600</div>
 
@@ -82,16 +81,15 @@ import Base from '../../layouts/Base.astro';
       </div>
     </div>
 
-    <!-- ── 02 · HIPÓTESE ── -->
+    <!-- ── 02 · GARGALO ── -->
     <div class="wizard-step" data-step="2">
       <div class="step-header">
-        <div class="step-tag">02 · <span class="verb">Hipótese</span></div>
-        <h2 class="step-headline">Qual a sua hipótese de causa-raiz?</h2>
+        <div class="step-tag">02 · <span class="verb">Gargalo</span></div>
+        <h2 class="step-headline">Qual o ponto de maior atrito hoje?</h2>
         <p class="step-hint">
-          O que você acredita que está por trás do problema? Formato útil:
-          <em>"Se [intervenção], então [resultado], porque [mecanismo]"</em>.
-          A Jô vai checar se a sua hipótese é, de verdade, uma hipótese — ou uma solução
-          já comprada disfarçada de experimento (viés de confirmação invalida o método).
+          O que efetivamente <em>trava</em> o trabalho agora? Pode ser falta de método,
+          ausência de instrumento jurídico, incerteza política, demora de TI, qualquer
+          coisa que esteja prendendo a próxima entrega.
         </p>
       </div>
 
@@ -100,7 +98,7 @@ import Base from '../../layouts/Base.astro';
         data-step-input="2"
         rows="4"
         maxlength="600"
-        placeholder="Ex: o servidor não lê o e-mail institucional a tempo. Notificá-lo pelo WhatsApp corporativo reduzirá o absenteísmo, porque é o canal que ele já usa diariamente."
+        placeholder="Ex: A equipe não tem metodologia clara pra priorizar entre 5 demandas e a procuradoria pede portaria de institucionalização antes de qualquer parceria externa."
       ></textarea>
       <div class="step-counter"><span data-step-counter="2">0</span> / 600</div>
 
@@ -110,15 +108,15 @@ import Base from '../../layouts/Base.astro';
       </div>
     </div>
 
-    <!-- ── 03 · EXPERIMENTO ── -->
+    <!-- ── 03 · RISCO DE NÃO AGIR ── -->
     <div class="wizard-step" data-step="3">
       <div class="step-header">
-        <div class="step-tag">03 · <span class="verb">Experimento</span></div>
-        <h2 class="step-headline">Como testar essa hipótese?</h2>
+        <div class="step-tag">03 · <span class="verb">Risco de não agir</span></div>
+        <h2 class="step-headline">O que acontece se nada mudar?</h2>
         <p class="step-hint">
-          Diga a amostra, a duração e o sinal de sucesso. Se não cabe num piloto controlado,
-          a Jô vai reduzir o escopo antes de cravar fases. Métrica observável > métrica
-          ambiciosa.
+          O pior cenário plausível. Pode ser sanção de controle, perda de patrocínio,
+          servidor desmotivado, descontinuidade na transição — o que se perde se o
+          lab continuar do jeito que está.
         </p>
       </div>
 
@@ -127,13 +125,13 @@ import Base from '../../layouts/Base.astro';
         data-step-input="3"
         rows="4"
         maxlength="600"
-        placeholder="Ex: enviar aviso via WhatsApp para amostra de 100 servidores e comparar a taxa de evasão com grupo de controle do e-mail, durante 30 dias. Sucesso: redução de pelo menos 15 pontos percentuais na evasão."
+        placeholder="Ex: A próxima transição de gestão fecha o lab por falta de instrumento jurídico e ausência de evidência de valor. Equipe se dispersa, conhecimento se perde, e a aposta política do secretário queima."
       ></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
-        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Blueprint →</button>
+        <button class="cta cta-primary cta-large" data-generate disabled>Gerar Mapa de Riscos →</button>
       </div>
     </div>
 
@@ -148,11 +146,11 @@ import Base from '../../layouts/Base.astro';
     <div class="footnote-grid">
       <div>
         <div class="footnote-label">↳ Saída</div>
-        <p>Minuta de Blueprint SEI-Ready com Fase 1 (Entender) · Fase 2 (Explorar) · Fase 3 (Entregar), papéis necessários, fundamentação normativa tripartite e caveat de validação jurídica.</p>
+        <p>Mapa de Riscos com três famílias (Metodológico-Infraestrutura, Jurídico-Regulatório, Político-Descontinuidade) + Plano de Ação indicando por qual verbo entrar pra mitigar cada risco.</p>
       </div>
       <div>
         <div class="footnote-label">↳ Princípio</div>
-        <p>O método do GNova/OCDE permanece. A IA atua como o braço operacional que comprime o tempo de planejamento de meses para horas. Você decide. A Jô redige.</p>
+        <p>A Jô não constrói o artefato final aqui — ela aponta por onde entrar primeiro. Blueprint, Minuta, Plano e Dossiê são gerados nos verbos específicos. Você decide. A Jô mapeia.</p>
       </div>
     </div>
   </div>
@@ -270,9 +268,7 @@ import Base from '../../layouts/Base.astro';
     transition: opacity 360ms cubic-bezier(0.25, 0.1, 0.25, 1),
                 transform 360ms cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  .wizard-step.is-active {
-    display: block;
-  }
+  .wizard-step.is-active { display: block; }
   .wizard-step.is-active.is-visible {
     opacity: 1;
     transform: translateY(0);
@@ -354,11 +350,7 @@ import Base from '../../layouts/Base.astro';
     gap: 16px;
     margin-top: 32px;
   }
-  .step-back-placeholder {
-    /* Reservado pra equilibrar layout no Step 1 (sem botão Voltar) */
-    display: inline-block;
-    width: 1px;
-  }
+  .step-back-placeholder { display: inline-block; width: 1px; }
 
   /* ============================================================
      RODAPÉ TÉCNICO
@@ -395,19 +387,16 @@ import Base from '../../layouts/Base.astro';
 
 <script>
   // ============================================================
-  // WIZARD · 3 telas → consolidação → handoff pro modo Estruturar
+  // WIZARD MAPEAR · 3 telas → handoff pro modo Mapear da Jô
   // ============================================================
-  import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
-
   type StepNum = 1 | 2 | 3;
 
-  const STATE_KEY = 'alavanca:wizard-state';
+  const STATE_KEY = 'alavanca:wizard-mapear-state';
 
   const stepNums: StepNum[] = [1, 2, 3];
   const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '' };
   let current: StepNum = 1;
-  // Modo demo aberto: pula o gate de login. Original era `boolean | null`
-  // com checkAuth() abaixo — desativado até a demo.
+  // Modo demo aberto: pula o gate de login.
   let isAuthed: boolean = true;
 
   const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
@@ -421,7 +410,6 @@ import Base from '../../layouts/Base.astro';
       el.classList.toggle('is-active', isActive);
       el.classList.remove('is-visible');
       if (isActive) {
-        // pequeno atraso pra disparar transição
         requestAnimationFrame(() => el.classList.add('is-visible'));
         const input = el.querySelector<HTMLTextAreaElement>('.step-input');
         setTimeout(() => input?.focus(), 80);
@@ -435,7 +423,6 @@ import Base from '../../layouts/Base.astro';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // bind inputs
   stepNums.forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
@@ -447,9 +434,8 @@ import Base from '../../layouts/Base.astro';
       const val = input.value.trim();
       answers[n] = val;
       counter.textContent = String(input.value.length);
-      if (nextBtn) nextBtn.disabled = val.length < 12; // exige resposta minimamente substantiva
+      if (nextBtn) nextBtn.disabled = val.length < 12;
     }
-
     input.addEventListener('input', refresh);
 
     const backBtn = document.querySelector<HTMLButtonElement>(`[data-step-back="${n}"]`);
@@ -465,36 +451,14 @@ import Base from '../../layouts/Base.astro';
     }
   });
 
-  // ── Geração final ──
   const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
 
   function setGenerateLabel() {
-    if (isAuthed === false) {
-      generateBtn.textContent = 'Gerar Blueprint (faz login) →';
-    } else {
-      generateBtn.textContent = 'Gerar Blueprint →';
-    }
+    generateBtn.textContent = 'Gerar Mapa de Riscos →';
   }
 
   generateBtn.addEventListener('click', () => {
     if (answers[1].length < 12 || answers[2].length < 12 || answers[3].length < 12) return;
-
-    // Sem sessão: preserva os 3 campos e manda pro login. Volta pra cá com
-    // tudo restaurado pra o usuário só clicar de novo. Usamos localStorage
-    // (não sessionStorage) porque magic link pode abrir em outra aba —
-    // sessionStorage não cruza abas. TTL de 1h espelha vida do link.
-    if (isAuthed === false) {
-      try {
-        localStorage.setItem(
-          STATE_KEY,
-          JSON.stringify({ 1: answers[1], 2: answers[2], 3: answers[3], ts: Date.now() })
-        );
-      } catch {
-        /* ignore */
-      }
-      window.location.href = '/login?next=/estruturar/sprint';
-      return;
-    }
 
     const prompt = buildPrompt(answers[1], answers[2], answers[3]);
 
@@ -503,8 +467,8 @@ import Base from '../../layouts/Base.astro';
         'alavanca:diag-prefill',
         JSON.stringify({
           text: prompt,
-          mode: 'estruturar',
-          source: 'wizard-sprint',
+          mode: 'mapear',
+          source: 'wizard-mapear',
           ts: Date.now(),
         })
       );
@@ -517,40 +481,34 @@ import Base from '../../layouts/Base.astro';
     window.location.href = '/jo';
   });
 
-  function buildPrompt(problema: string, hipotese: string, experimento: string): string {
+  function buildPrompt(cenario: string, gargalo: string, risco: string): string {
     return [
-      '[ Contexto · Wizard Estruturar / Sprint ]',
+      '[ Contexto · Wizard Mapear ]',
       '',
-      'Cenário pré-estruturado pelo gestor público nas três variáveis canônicas:',
+      'Cenário pré-estruturado pelo gestor público para Diagnóstico Institucional:',
       '',
-      `Problema: ${problema}`,
-      `Hipótese: ${hipotese}`,
-      `Experimento: ${experimento}`,
+      `Cenário: ${cenario}`,
+      `Gargalo principal: ${gargalo}`,
+      `Risco de não agir: ${risco}`,
       '',
       '[ Pedido ]',
-      'Redija um Blueprint de Sprint SEI-Ready, aplicando o Paradigma MINDS (foco no cidadão real)',
-      'e a tríade do InovaGov (Fase 1: Entender · Fase 2: Explorar · Fase 3: Entregar).',
-      'Inclua a Camada Normativa Tripartite (Base Estruturante / Norma Operacional / Lacuna)',
-      'e o caveat obrigatório de validação jurídica. Linguagem formal de administração pública.',
-      'Se a hipótese parecer "solução já comprada", aponte o viés de confirmação antes do plano.',
+      'Faça o Mapa de Riscos categorizando em até três famílias (Metodológico-Infraestrutura,',
+      'Jurídico-Regulatório, Político-Descontinuidade) e devolva um Plano de Ação por Verbo',
+      'indicando qual dos cinco verbos (Estruturar, Formalizar, Construir, Avaliar, Provar)',
+      'cobre cada risco e por onde começar primeiro. Honestidade > completude artificial:',
+      'se só uma família dispara, mapeie só essa.',
     ].join('\n');
   }
 
-  // ── Restauração após login ──
-  // Se voltamos do /login com state preservado, repõe os 3 campos e abre
-  // direto no Step 3 — usuário só precisa clicar "Gerar Blueprint" de novo.
+  // ── Restauração de estado (volta do login com state preservado) ──
   function restoreState(): boolean {
     try {
       const raw = localStorage.getItem(STATE_KEY);
       if (!raw) return false;
-      // limpa imediatamente — uso único, mesmo que parsing falhe a chave some
       localStorage.removeItem(STATE_KEY);
-
       const saved = JSON.parse(raw) as Record<string, string | number>;
-      // TTL de 1h — espelha vida do magic link. Após isso, descarta.
       const ts = typeof saved.ts === 'number' ? saved.ts : 0;
       if (Date.now() - ts > 3_600_000) return false;
-
       let restored = false;
       stepNums.forEach((n) => {
         const val = typeof saved[String(n)] === 'string' ? (saved[String(n)] as string) : '';
@@ -571,29 +529,12 @@ import Base from '../../layouts/Base.astro';
     }
   }
 
-  // ── Auth check (não-bloqueante) ──
-  // Deixa o wizard renderizar primeiro; só ajusta o label do botão final
-  // quando souber o estado de sessão. Se rede falhar, assume não-autenticado
-  // (fail-safe pro usuário: no clique, vai pro login → restaura tudo).
-  async function checkAuth() {
-    try {
-      const sb = getSupabaseBrowserClient();
-      const { data } = await sb.auth.getSession();
-      isAuthed = !!data?.session;
-    } catch {
-      isAuthed = false;
-    }
-    setGenerateLabel();
-  }
-
-  // estado inicial
   const restored = restoreState();
   if (restored && answers[1].length >= 12 && answers[2].length >= 12 && answers[3].length >= 12) {
-    // tudo preenchido → abre direto no passo final
     showStep(3);
   } else {
     showStep(1);
   }
   setGenerateLabel();
-  // checkAuth(); // desativado em modo demo aberto
 </script>
+</Base>

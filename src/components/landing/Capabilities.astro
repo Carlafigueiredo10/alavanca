@@ -12,47 +12,56 @@ type Verb = {
 const items: Verb[] = [
   {
     id: '01',
+    verb: 'Mapear',
+    headline: 'Do cenário ao mapa de riscos — antes de escolher o verbo.',
+    body: 'A Jô lê o cenário, identifica as famílias de risco (metodológico, jurídico, político) e devolve um Plano de Ação indicando por qual verbo entrar.',
+    pull: 'Sem mapa, todo plano é palpite.',
+    span: 4,
+    href: '/mapear',
+  },
+  {
+    id: '02',
     verb: 'Estruturar',
     headline: 'Do mapeamento ao plano de fases — em horas, não em meses.',
     body: 'IA mapeia capacidades, identifica gargalos e propõe fases.',
     pull: 'O método permanece — o tempo encolhe.',
-    span: 7,
+    span: 4,
     href: '/estruturar',
   },
   {
-    id: '02',
+    id: '03',
     verb: 'Formalizar',
     headline: 'Do projeto interno à instituição reconhecida.',
     body: 'IA lê portarias, compara arranjos e produz minutas.',
     pull: 'O técnico decide — o volume deixa de travar.',
-    span: 5,
+    span: 4,
     href: '/formalizar',
   },
   {
-    id: '03',
+    id: '04',
     verb: 'Construir',
     headline: 'Da ideia ao protótipo — e do protótipo à operação.',
     body: 'Assistentes, dashboards e automações sem fila de TI. Handoff documentado sem o lab virar suporte permanente.',
     pull: 'O lab entrega e atravessa.',
-    span: 5,
+    span: 4,
     href: '/construir',
   },
   {
-    id: '04',
+    id: '05',
     verb: 'Avaliar',
     headline: 'Do achismo à prova de valor público.',
     body: 'IA desenha teorias de mudança, sugere indicadores de outcome e organiza relatórios de impacto a partir do que o lab já gera.',
     pull: 'O que mostra valor sobrevive ao próximo corte.',
-    span: 7,
+    span: 4,
     href: '/avaliar',
   },
   {
-    id: '05',
+    id: '06',
     verb: 'Provar',
     headline: 'Da entrega silenciosa à defesa do lab na transição.',
     body: 'Dossiês de transição, dashboards de impacto, pitches adaptáveis para cada audiência.',
     pull: 'O lab passa a contar a própria história — com lastro.',
-    span: 12,
+    span: 4,
     href: '/provar',
   },
 ];
@@ -66,19 +75,19 @@ const items: Verb[] = [
         <span class="section-head-tag">II · Aplicação</span>
       </div>
       <h2 class="section-head-title reveal">
-        Estruturar. Formalizar. Construir. Avaliar. Provar.
+        Mapear. Estruturar. Formalizar. Construir. Avaliar. Provar.
       </h2>
     </header>
 
     <p class="cap-sub reveal delay-1">
-      IA aplicada com método faz os cinco.
+      IA aplicada com método faz os seis.
     </p>
 
     <div class="cap-grid">
       {items.map((it, i) => (
         <a
           href={it.href}
-          class:list={['cap-block', 'surface', 'reveal', `delay-${(i % 5) + 1}`]}
+          class:list={['cap-block', 'surface', 'reveal', `delay-${(i % 6) + 1}`]}
           data-span={it.span}
         >
           <div class="cap-spot" aria-hidden="true"></div>
@@ -210,7 +219,9 @@ const items: Verb[] = [
   }
 
   @media (min-width: 880px) {
+    .cap-block[data-span='4']  { grid-column: span 4; }
     .cap-block[data-span='5']  { grid-column: span 5; }
+    .cap-block[data-span='6']  { grid-column: span 6; }
     .cap-block[data-span='7']  { grid-column: span 7; }
     .cap-block[data-span='12'] { grid-column: span 12; }
   }

@@ -1,22 +1,172 @@
 ---
 ---
-<button class="jo-fab" id="jo-fab" type="button" aria-label="Falar com a Jô">
-  <span class="jo-fab__pulse" aria-hidden="true"></span>
-  <img
-    class="jo-fab__avatar"
-    src="/jo/jo-avatar-fab.png"
-    srcset="/jo/jo-avatar-fab.png 1x, /jo/jo-avatar-fab@2x.png 2x"
-    alt=""
-  />
-  <span class="jo-fab__label">Jô</span>
-</button>
+<div class="jo-fab-anchor">
+  <!-- Bolha de apresentação (aparece no primeiro scroll, fecha sozinha) -->
+  <div class="jo-bubble" id="jo-bubble" aria-hidden="true">
+    <button class="jo-bubble__close" id="jo-bubble-close" type="button" aria-label="Fechar apresentação">×</button>
+    <div class="jo-bubble__row">
+      <img
+        class="jo-bubble__avatar"
+        src="/jo/jo-avatar-micro.png"
+        srcset="/jo/jo-avatar-micro.png 1x, /jo/jo-avatar-micro@2x.png 2x"
+        alt=""
+      />
+      <div class="jo-bubble__body">
+        <p class="jo-bubble__text" id="jo-bubble-text"></p>
+        <p class="jo-bubble__cta" id="jo-bubble-cta" hidden>
+          Se quiser falar comigo, é só clicar aqui no ícone
+          <span class="jo-bubble__arrow" aria-hidden="true">↓</span>
+        </p>
+      </div>
+    </div>
+    <span class="jo-bubble__tail" aria-hidden="true"></span>
+  </div>
+
+  <button class="jo-fab" id="jo-fab" type="button" aria-label="Falar com a Jô">
+    <span class="jo-fab__pulse" aria-hidden="true"></span>
+    <img
+      class="jo-fab__avatar"
+      src="/jo/jo-avatar-fab.png"
+      srcset="/jo/jo-avatar-fab.png 1x, /jo/jo-avatar-fab@2x.png 2x"
+      alt=""
+    />
+    <span class="jo-fab__label">Jô</span>
+  </button>
+</div>
 
 <style>
-  .jo-fab {
+  .jo-fab-anchor {
     position: fixed;
     right: 24px;
     bottom: 24px;
     z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+    pointer-events: none;
+  }
+  .jo-fab-anchor > * { pointer-events: auto; }
+
+  /* ---------- BOLHA ---------- */
+  .jo-bubble {
+    position: relative;
+    max-width: 340px;
+    background: var(--bg);
+    border: 0.5px solid var(--amber);
+    border-radius: 14px;
+    padding: 16px 18px 18px;
+    box-shadow:
+      0 18px 40px -10px rgba(0, 0, 0, 0.65),
+      0 0 0 0.5px rgba(217, 119, 6, 0.22);
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 360ms ease, transform 360ms ease;
+  }
+  .jo-bubble.is-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .jo-bubble.is-closing {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    pointer-events: none;
+  }
+
+  .jo-bubble__close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: transparent;
+    border: 0;
+    color: var(--fg-50);
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: color 200ms ease;
+  }
+  .jo-bubble__close:hover { color: var(--fg); }
+
+  .jo-bubble__row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .jo-bubble__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 0.5px solid var(--fg-22);
+    flex: 0 0 36px;
+  }
+  .jo-bubble__body { flex: 1 1 auto; min-width: 0; }
+
+  .jo-bubble__text {
+    font-family: var(--serif);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--fg);
+    margin: 0;
+    min-height: 1.5em; /* evita salto antes do typing começar */
+  }
+  .jo-bubble__text::after {
+    content: '▍';
+    color: var(--amber);
+    animation: jo-blink 0.85s steps(1) infinite;
+    margin-left: 1px;
+  }
+  .jo-bubble__text.is-done::after { display: none; }
+
+  .jo-bubble__cta {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 0.5px dashed var(--fg-22);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    color: var(--fg-86);
+  }
+  .jo-bubble__arrow {
+    display: inline-block;
+    color: var(--amber);
+    font-weight: 700;
+    margin-left: 4px;
+    animation: jo-bounce 1.4s ease-in-out infinite;
+  }
+
+  /* Caudinha (apontando pro FAB) */
+  .jo-bubble__tail {
+    position: absolute;
+    right: 26px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: var(--bg);
+    border-right: 0.5px solid var(--amber);
+    border-bottom: 0.5px solid var(--amber);
+    transform: rotate(45deg);
+  }
+
+  @keyframes jo-blink {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @keyframes jo-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jo-bubble__text::after,
+    .jo-bubble__arrow { animation: none; }
+  }
+
+  /* ---------- FAB (inalterado) ---------- */
+  .jo-fab {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -67,8 +217,10 @@
     100% { opacity: 0; transform: scale(1.18); }
   }
   @media (max-width: 480px) {
-    .jo-fab { right: 16px; bottom: 16px; padding: 6px 14px 6px 6px; font-size: 15px; }
+    .jo-fab-anchor { right: 16px; bottom: 16px; }
+    .jo-fab { padding: 6px 14px 6px 6px; font-size: 15px; }
     .jo-fab__avatar { width: 34px; height: 34px; }
+    .jo-bubble { max-width: 280px; padding: 14px 16px 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .jo-fab__pulse { animation: none; }
@@ -80,5 +232,63 @@
   const fab = document.getElementById('jo-fab');
   fab?.addEventListener('click', () => {
     document.dispatchEvent(new CustomEvent('jo:open'));
+    // Se a bolha de intro estiver aberta, fecha junto.
+    closeBubble();
   });
+
+  // ---------- BOLHA DE APRESENTAÇÃO ----------
+  const bubble = document.getElementById('jo-bubble');
+  const bubbleText = document.getElementById('jo-bubble-text');
+  const bubbleCta = document.getElementById('jo-bubble-cta');
+  const bubbleClose = document.getElementById('jo-bubble-close');
+
+  const INTRO =
+    'Oi! Sou a Jô — motor metodológico da Alavanca. Apoio você a mapear riscos e escolher por qual dos seis verbos entrar pra mitigar cada um.';
+
+  let typingTimer: number | null = null;
+  let closeTimer: number | null = null;
+
+  function typeText(el: HTMLElement, text: string, speed = 35): Promise<void> {
+    return new Promise((resolve) => {
+      el.textContent = '';
+      let i = 0;
+      function step() {
+        if (i >= text.length) {
+          el.classList.add('is-done');
+          resolve();
+          return;
+        }
+        el.textContent += text.charAt(i);
+        i++;
+        typingTimer = window.setTimeout(step, speed);
+      }
+      step();
+    });
+  }
+
+  function closeBubble() {
+    if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+    if (closeTimer)  { clearTimeout(closeTimer); closeTimer = null; }
+    if (!bubble) return;
+    bubble.classList.remove('is-open');
+    bubble.classList.add('is-closing');
+    bubble.setAttribute('aria-hidden', 'true');
+  }
+
+  async function openBubble() {
+    if (!bubble || !bubbleText || !bubbleCta) return;
+    bubble.classList.remove('is-closing');
+    bubble.classList.add('is-open');
+    bubble.setAttribute('aria-hidden', 'false');
+
+    await typeText(bubbleText, INTRO, 35); // ~5s pra ler enquanto digita
+    // pausa antes da CTA aparecer
+    await new Promise((r) => setTimeout(r, 700));
+    bubbleCta.hidden = false;
+    // fecha sozinha depois de ~6s pra ler a CTA
+    closeTimer = window.setTimeout(closeBubble, 6000);
+  }
+
+  document.addEventListener('jo:intro-bubble', openBubble);
+  bubbleClose?.addEventListener('click', closeBubble);
 </script>

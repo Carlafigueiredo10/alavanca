@@ -73,6 +73,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const VALID_MODES = new Set<JoMode>([
     'decisao',
     'possibilidades',
+    'mapear',
     'estruturar',
     'formalizar',
     'construir',

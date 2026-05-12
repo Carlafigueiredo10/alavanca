@@ -375,7 +375,8 @@ import Base from '../../layouts/Base.astro';
   const stepNums: StepNum[] = [1, 2, 3, 4];
   const answers: Record<StepNum, string> = { 1: '', 2: '', 3: '', 4: '' };
   let current: StepNum = 1;
-  let isAuthed: boolean | null = null;
+  // Modo demo aberto: pula o gate de login.
+  let isAuthed: boolean = true;
 
   const steps = document.querySelectorAll<HTMLDivElement>('.wizard-step');
   const stepperItems = document.querySelectorAll<HTMLDivElement>('.stepper .step');
@@ -541,5 +542,5 @@ import Base from '../../layouts/Base.astro';
     showStep(1);
   }
   setGenerateLabel();
-  checkAuth();
+  // checkAuth(); // desativado em modo demo aberto
 </script>

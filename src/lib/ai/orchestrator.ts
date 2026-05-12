@@ -24,6 +24,7 @@ export interface ProviderAdapter {
 // Modos com conhecimento curado no system prompt — Google Search só introduziria
 // ruído numa peça metodológica/normativa fechada.
 const CURATED_MODES = new Set<JoMode>([
+  'mapear',
   'estruturar',
   'formalizar',
   'construir',

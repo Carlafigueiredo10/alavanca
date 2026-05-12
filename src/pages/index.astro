@@ -64,3 +64,23 @@ const navCta = { label: 'Iniciar diagnóstico', href: '/diagnostico' };
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   })();
 </script>
+
+<script is:inline>
+  // Auto-intro da Jô — primeiro scroll do visitante mostra uma bolha de fala
+  // ancorada no FAB. Dispara uma vez por sessão (sessionStorage). Não abre o
+  // chat; só apresenta a Jô e aponta pro ícone.
+  (() => {
+    const KEY = 'jo-auto-intro-shown';
+    if (sessionStorage.getItem(KEY)) return;
+
+    function trigger() {
+      try { sessionStorage.setItem(KEY, '1'); } catch {}
+      // Pequeno atraso pra rolagem firmar antes da bolha aparecer.
+      setTimeout(() => {
+        document.dispatchEvent(new CustomEvent('jo:intro-bubble'));
+      }, 500);
+    }
+
+    window.addEventListener('scroll', trigger, { once: true, passive: true });
+  })();
+</script>

@@ -18,6 +18,7 @@ function read(filename: string): string {
 
 export const JO_DECISAO_PROMPT = read('jo-decisao.md');
 export const JO_POSSIBILIDADES_PROMPT = read('jo-possibilidades.md');
+export const JO_MAPEAR_PROMPT = read('jo-mapear.md');
 export const JO_ESTRUTURAR_PROMPT = read('jo-estruturar.md');
 export const JO_FORMALIZAR_PROMPT = read('jo-formalizar.md');
 export const JO_CONSTRUIR_PROMPT = read('jo-construir.md');
@@ -27,6 +28,7 @@ export const JO_PROVAR_PROMPT = read('jo-provar.md');
 export type JoMode =
   | 'decisao'
   | 'possibilidades'
+  | 'mapear'
   | 'estruturar'
   | 'formalizar'
   | 'construir'
@@ -36,6 +38,7 @@ export type JoMode =
 export function getPromptForMode(mode: JoMode): string {
   switch (mode) {
     case 'possibilidades': return JO_POSSIBILIDADES_PROMPT;
+    case 'mapear':        return JO_MAPEAR_PROMPT;
     case 'estruturar':    return JO_ESTRUTURAR_PROMPT;
     case 'formalizar':    return JO_FORMALIZAR_PROMPT;
     case 'construir':     return JO_CONSTRUIR_PROMPT;
