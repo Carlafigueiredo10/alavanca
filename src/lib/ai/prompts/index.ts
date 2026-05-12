@@ -1,3 +1,5 @@
+import { buildStructuredContractSuffix } from './structured-contract';
+
 const promptModules = import.meta.glob('../../../prompts/*.md', {
   query: '?raw',
   import: 'default',
@@ -117,6 +119,7 @@ export function buildSystemPrompt(
   hookId?: string | null,
   contextBlock?: string | null,
   frente?: FormalizarFrente | null,
+  structured?: boolean,
 ): string {
   const base = getPromptForMode(mode, frente);
   const suffix = getHookSuffix(hookId);
@@ -128,6 +131,15 @@ export function buildSystemPrompt(
   if (suffix) {
     parts.push('---');
     parts.push(suffix);
+  }
+  // Contrato JSON estruturado: injetado server-side só quando o cliente é
+  // autenticado e o verbo aceita output estruturado. Mantém o jo-<verbo>.md
+  // livre de condicionais "se logado/anônimo" — o LLM não conhece sessão.
+  if (structured) {
+    // Lazy import pra evitar dependência circular com diagnostico/hooks.
+    // (structured-contract → hooks → não importa de prompts/index)
+    const contract = buildStructuredContractSuffix(mode);
+    if (contract) parts.push(contract);
   }
   return parts.join('\n\n');
 }

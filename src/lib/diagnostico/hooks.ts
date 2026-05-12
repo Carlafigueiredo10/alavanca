@@ -336,6 +336,13 @@ const HOOK_INDEX: Record<string, Hook> = HOOK_LIST.reduce<Record<string, Hook>>(
   return acc;
 }, {});
 
+// Fonte da verdade pra prompts estruturados: a Jô só pode escolher chaves
+// desta lista (eliminação de alucinação no diagnostic_tags do Mapear).
+// Derivado em runtime de HOOK_LIST — nunca hardcode em outro lugar.
+export const ALL_HOOK_IDS: readonly string[] = HOOK_LIST
+  .map((h) => h.hookId)
+  .sort();
+
 export function getHook(dim: Dim, response: string): Hook | null {
   return HOOK_INDEX[`${dim}:${response}`] ?? null;
 }

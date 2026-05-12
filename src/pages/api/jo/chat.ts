@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireUser, type SupabaseServerClient } from '../../../lib/server/auth';
+import { STRUCTURED_MODES } from '../../../lib/jo/response-types';
 import {
   buildSystemPrompt,
   isFormalizarFrente,
@@ -216,11 +217,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  const systemPrompt = buildSystemPrompt(mode, hookId, contextBlock, frente);
+  // Logado + verbo com contrato estruturado: ativa JSON output + injeta o
+  // suffix do contrato no system prompt. Outros modos seguem texto livre.
+  const useStructured = STRUCTURED_MODES.has(mode);
+  const systemPrompt = buildSystemPrompt(mode, hookId, contextBlock, frente, useStructured);
+  const adapterOptions = useStructured ? { structuredJson: true } : undefined;
 
   let stream: ReadableStream<string>;
   try {
-    stream = await adapter.stream(trimmed, messageRaw, systemPrompt);
+    stream = await adapter.stream(trimmed, messageRaw, systemPrompt, undefined, adapterOptions);
   } catch (initErr) {
     logEvent({
       request_id: requestId,
@@ -235,7 +240,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     let fullText = '';
     try {
-      fullText = await adapter.complete(trimmed, messageRaw, systemPrompt);
+      fullText = await adapter.complete(trimmed, messageRaw, systemPrompt, undefined, adapterOptions);
     } catch (completeErr) {
       const friendly = adapter.friendly;
       return await respondWithFallback({

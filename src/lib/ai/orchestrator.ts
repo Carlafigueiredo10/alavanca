@@ -4,19 +4,28 @@ import type { JoMode } from './prompts';
 import { streamGemini, completeGemini, friendlyGeminiError } from './providers/gemini';
 import { streamDeepSeek, completeDeepSeek, friendlyDeepSeekError } from './providers/deepseek';
 
+// Options propagadas pelo orchestrator pros providers concretos. Hoje só
+// `structuredJson` (Gemini Structured Outputs / response_mime_type). Quando
+// outros providers ganharem flags equivalentes, adicionar aqui.
+export interface AdapterCallOptions {
+  structuredJson?: boolean;
+}
+
 export interface ProviderAdapter {
   key: Provider;
   stream: (
     history: ChatMessage[],
     userMessage: string,
     systemPrompt: string,
-    parentSignal?: AbortSignal
+    parentSignal?: AbortSignal,
+    options?: AdapterCallOptions
   ) => Promise<ReadableStream<string>>;
   complete: (
     history: ChatMessage[],
     userMessage: string,
     systemPrompt: string,
-    parentSignal?: AbortSignal
+    parentSignal?: AbortSignal,
+    options?: AdapterCallOptions
   ) => Promise<string>;
   friendly: string;
 }
@@ -44,15 +53,25 @@ export function getProviderForMode(mode: JoMode): ProviderAdapter {
   if (CURATED_MODES.has(mode)) {
     return {
       key: 'gemini',
-      stream: (h, u, s, p) => streamGemini(h, u, s, p, { enableGrounding: false }),
-      complete: (h, u, s, p) => completeGemini(h, u, s, p, { enableGrounding: false }),
+      stream: (h, u, s, p, opts) => streamGemini(h, u, s, p, {
+        enableGrounding: false,
+        structuredJson: opts?.structuredJson ?? false,
+      }),
+      complete: (h, u, s, p, opts) => completeGemini(h, u, s, p, {
+        enableGrounding: false,
+        structuredJson: opts?.structuredJson ?? false,
+      }),
       friendly: friendlyGeminiError,
     };
   }
   return {
     key: 'gemini',
-    stream: streamGemini,
-    complete: completeGemini,
+    stream: (h, u, s, p, opts) => streamGemini(h, u, s, p, {
+      structuredJson: opts?.structuredJson ?? false,
+    }),
+    complete: (h, u, s, p, opts) => completeGemini(h, u, s, p, {
+      structuredJson: opts?.structuredJson ?? false,
+    }),
     friendly: friendlyGeminiError,
   };
 }

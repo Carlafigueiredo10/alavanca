@@ -26,6 +26,9 @@ const GEMINI_TOOLS = [{ googleSearch: {} }] as any;
 
 export interface GeminiOptions {
   enableGrounding?: boolean;
+  // Structured Outputs do Gemini: força JSON válido na resposta. Conflita
+  // com tools (Google Search) — quando true, grounding é forçado off.
+  structuredJson?: boolean;
 }
 
 export async function streamGemini(
@@ -35,10 +38,15 @@ export async function streamGemini(
   _parentSignal?: AbortSignal,
   options: GeminiOptions = {}
 ): Promise<ReadableStream<string>> {
-  const enableGrounding = options.enableGrounding ?? true;
+  const structuredJson = options.structuredJson ?? false;
+  // Grounding default true; structuredJson força off (incompatível).
+  const enableGrounding = !structuredJson && (options.enableGrounding ?? true);
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
+    ...(structuredJson
+      ? { generationConfig: { responseMimeType: 'application/json' } }
+      : {}),
     ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
@@ -84,10 +92,14 @@ export async function completeGemini(
   _parentSignal?: AbortSignal,
   options: GeminiOptions = {}
 ): Promise<string> {
-  const enableGrounding = options.enableGrounding ?? true;
+  const structuredJson = options.structuredJson ?? false;
+  const enableGrounding = !structuredJson && (options.enableGrounding ?? true);
   const model = getGemini().getGenerativeModel({
     model: GEMINI_MODEL,
     systemInstruction: systemPrompt,
+    ...(structuredJson
+      ? { generationConfig: { responseMimeType: 'application/json' } }
+      : {}),
     ...(enableGrounding ? { tools: GEMINI_TOOLS } : {}),
   });
 
