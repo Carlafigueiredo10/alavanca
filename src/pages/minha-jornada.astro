@@ -166,8 +166,11 @@ function summaryOf(a: JourneyArtifact): string {
               <ul class="jornada__items">
                 {list.map((a) => (
                   <li class="jornada__item">
-                    <div class="jornada__item-when">{formatDateTime(a.created_at)}</div>
-                    <p class="jornada__item-summary">{summaryOf(a)}</p>
+                    <a class="jornada__item-link" href={`/jornada/${a.id}`}>
+                      <div class="jornada__item-when">{formatDateTime(a.created_at)}</div>
+                      <p class="jornada__item-summary">{summaryOf(a)}</p>
+                      <span class="jornada__item-arrow">→</span>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -359,10 +362,22 @@ function summaryOf(a: JourneyArtifact): string {
       gap: 14px;
     }
     .jornada__item {
-      padding: 14px 16px;
       border: 0.5px solid var(--fg-14);
       border-radius: 8px;
       background: rgba(245, 242, 235, 0.02);
+      overflow: hidden;
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+    .jornada__item:hover {
+      border-color: var(--amber);
+      background: rgba(217, 119, 6, 0.06);
+    }
+    .jornada__item-link {
+      display: block;
+      padding: 14px 18px 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
     }
     .jornada__item-when {
       font-family: var(--mono);
@@ -377,6 +392,21 @@ function summaryOf(a: JourneyArtifact): string {
       line-height: 1.55;
       color: var(--fg-86);
       white-space: pre-wrap;
+      margin: 0;
+      padding-right: 24px;
+    }
+    .jornada__item-arrow {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--mono);
+      color: var(--fg-45);
+      transition: color 200ms ease, transform 200ms ease;
+    }
+    .jornada__item:hover .jornada__item-arrow {
+      color: var(--amber);
+      transform: translateY(-50%) translateX(3px);
     }
   </style>
 

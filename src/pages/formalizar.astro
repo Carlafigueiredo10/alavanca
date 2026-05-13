@@ -1,25 +1,836 @@
 ---
-import VerbLanding from '../components/VerbLanding.astro';
+import Base from '../layouts/Base.astro';
+import FormalizarCinematic from '../components/landing/FormalizarCinematic.astro';
+
+interface Frente {
+  id: string;
+  title: string;
+  href: string;
+  line: string;
+  body: string;
+  dep?: { kind: 'required' | 'recommended'; label: string };
+}
+
+const FRENTES: Frente[] = [
+  {
+    id: '01',
+    title: 'Portaria de Criação',
+    href: '/formalizar/portaria',
+    line: 'Formaliza institucionalmente a existência do laboratório.',
+    body: 'Vinculação, mandato, competências e fundamentação tripartite — peça de existência jurídica.',
+  },
+  {
+    id: '02',
+    title: 'Catálogo de Serviços',
+    href: '/formalizar/catalogo',
+    line: 'Define o que o laboratório faz — e obrigatoriamente o que NÃO faz.',
+    body: 'Sem a declaração explícita de restrições, a Jô recusa a emissão. Antídoto da síndrome do balcão de pedidos.',
+  },
+  {
+    id: '03',
+    title: 'Nota Técnica de Dedicação Exclusiva',
+    href: '/formalizar/dedicacao',
+    line: 'Lastro técnico-jurídico para dedicação, bolsas e afastamento PD&I.',
+    body: 'Ancorada PRIMEIRO no Marco CT&I (art. 9º-A bolsa · art. 14-A afastamento), DEPOIS em OCDE/ENAP. Justifica dedicação exclusiva, bolsas de inovação, bônus tecnológico e afastamento de servidores.',
+  },
+  {
+    id: '04',
+    title: 'Ato de Enquadramento como ICT',
+    href: '/formalizar/enquadramento-ict',
+    line: 'Enquadramento institucional no Marco Legal de CT&I.',
+    body: 'Anti-fachada: só enquadra com PD&I declarada. Habilita parcerias, instrumentos e a Política de Inovação subsequente.',
+  },
+  {
+    id: '05',
+    title: 'Criação do NIT',
+    href: '/formalizar/nit',
+    line: 'Núcleo de Inovação Tecnológica vinculado ao laboratório.',
+    body: 'Portaria do NIT com cláusula condicional embutida. A Jô permite avançar mas emite alerta recomendando Enquadramento ICT prévio.',
+    dep: { kind: 'recommended', label: 'Recomenda ICT prévio' },
+  },
+  {
+    id: '06',
+    title: 'Política de Inovação',
+    href: '/formalizar/politica-inovacao',
+    line: 'Diretrizes institucionais permanentes para inovação.',
+    body: 'Modelo Integrado (Diretrizes) ou Fragmentado (núcleo + 4 resoluções). Gatekeeper rígido: a Jô exige confirmação do Enquadramento ICT antes de liberar a redação.',
+    dep: { kind: 'required', label: 'Exige ICT formalizado' },
+  },
+];
 ---
-<VerbLanding
-  verb="Formalizar"
-  id="03"
-  headline="Seis frentes autônomas. Da Portaria à Política de Inovação."
-  body="Cada frente é uma chamada isolada da Jô, com base de conhecimento cirúrgica e sem alucinação cruzada. Você escolhe a peça: Portaria de Criação · Catálogo de Serviços · NT de Dedicação Exclusiva · Enquadramento como ICT · NIT · Política de Inovação. A Política tem gatekeeper rígido — exige Enquadramento prévio."
-  pull="O técnico decide. A Jô redige. O Marco CT&I responde."
-  ctaHref="/formalizar/sprint"
-  ctaLabel="Escolher frente →"
-  doesList={[
-    'Portaria de Criação SEI-Ready com vinculação, mandato, competências, fundamentação tripartite.',
-    'Catálogo de Serviços com Anti-balcão obrigatório (o que o lab NÃO faz) — antídoto da síndrome do balcão de pedidos.',
-    'NT de Dedicação Exclusiva ancorada PRIMEIRO no Marco CT&I (art. 9º-A bolsa · art. 14-A afastamento) e DEPOIS em OCDE/ENAP.',
-    'Ato de Enquadramento como ICT (anti-fachada: só enquadra com PD&I declarada) + Portaria do NIT (com cláusula condicional embutida) + Política de Inovação em Modelo Integrado (Diretrizes) ou Fragmentado (núcleo + 4 resoluções).',
-  ]}
-  doesNotList={[
-    'Não desenha blueprint metodológico ou plano de fases (isso é Estruturar).',
-    'Não redige plano técnico de implementação operacional (isso é Construir).',
-    'Não propõe indicador de impacto ou matriz de KPIs (isso é Avaliar).',
-    'Não monta Dossiê de Transição ou Briefing Executivo (isso é Manter).',
-  ]}
-  meta="Marco Legal CT&I (Lei 10.973/2004 c/ redação 13.243/2016) · Lei 14.129/2021 · Decreto 9.283/2018 · Sano (2020) · IN 01/2016 CGU/MP · padrão SEI/ABNT"
-/>
+<Base
+  title="Formalizar · Onde a inovação ganha existência jurídica · Alavanca"
+  description="Transforme iniciativas dispersas em estruturas reconhecidas institucionalmente. Seis frentes autônomas — Portaria, Catálogo, NT Dedicação, ICT, NIT, Política de Inovação — para institucionalização, segurança jurídica e continuidade operacional."
+  bodyClass="film-grain"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="m-hero">
+    <FormalizarCinematic />
+    <div class="container">
+      <div class="m-eyebrow animate-in">
+        <span class="m-eyebrow-id">/ 03</span>
+        <span class="m-eyebrow-line"></span>
+        <span class="m-eyebrow-tag">II · Aplicação · Arranjo institucional</span>
+      </div>
+
+      <h1 class="m-verb animate-in delay-100">Formalizar.</h1>
+
+      <p class="m-hero-headline animate-in delay-180">
+        Onde a inovação ganha existência jurídica.
+      </p>
+
+      <p class="m-hero-body animate-in delay-260">
+        Transforme iniciativas dispersas em estruturas reconhecidas
+        institucionalmente. O módulo Formalizar converte experimentação em
+        arquitetura administrativa sustentável — institucionalização, segurança
+        jurídica e continuidade operacional.
+      </p>
+
+      <p class="m-hero-body m-hero-body--soft animate-in delay-340">
+        Formalizar não é preencher modelos.
+        <strong>É construir legitimidade institucional para inovar dentro do Estado.</strong>
+      </p>
+
+      <div class="m-hero-cta animate-in delay-420">
+        <a href="#frentes" class="m-cta m-cta-primary">
+          Iniciar Formalização com a Jô →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POR QUE FORMALIZAR
+       ============================================================ -->
+  <section class="m-section m-section--why">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Por que Formalizar</div>
+        <h2 class="m-section-headline">
+          Muitos laboratórios conseguem experimentar. Poucos conseguem
+          sobreviver.
+        </h2>
+        <p class="m-lead">
+          Projetos de inovação pública frequentemente desaparecem porque não
+          têm ato formal de existência, dependem exclusivamente de gestão
+          transitória ou permanecem como iniciativas informais. O módulo
+          Formalizar organiza os instrumentos jurídicos e administrativos que
+          tornam o laboratório <strong>institucionalmente sustentável</strong>.
+        </p>
+      </div>
+
+      <div class="m-why-grid">
+        <div class="m-why-block">
+          <div class="m-why-label m-why-label--neg">↳ Projetos desaparecem porque</div>
+          <ul class="m-list m-list--neg">
+            <li>não possuem ato formal de existência;</li>
+            <li>dependem exclusivamente de gestão transitória;</li>
+            <li>não possuem enquadramento jurídico adequado;</li>
+            <li>operam sem política institucional;</li>
+            <li>não conseguem justificar dedicação de equipe;</li>
+            <li>permanecem como iniciativas informais.</li>
+          </ul>
+        </div>
+
+        <div class="m-why-block">
+          <div class="m-why-label">↳ A formalização sustenta</div>
+          <ul class="m-list">
+            <li>existência jurídica do laboratório (Portaria de Criação);</li>
+            <li>escopo declarado e restrições explícitas (Catálogo);</li>
+            <li>dedicação de equipe e bolsas (NT + Marco CT&I);</li>
+            <li>enquadramento institucional (ICT);</li>
+            <li>estrutura de transferência (NIT);</li>
+            <li>diretrizes permanentes (Política de Inovação).</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="m-pull">
+        A proposta não é burocratizar a inovação.<br />
+        <span class="m-pull--strong">É impedir que ela morra na primeira troca de gestão.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMO A JÔ TRABALHA · HUB + DEPENDÊNCIAS
+       ============================================================ -->
+  <section class="m-section m-section--jo">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Como a Jô trabalha</div>
+        <h2 class="m-section-headline">
+          Hub jurídico-institucional dividido em frentes autônomas.
+        </h2>
+        <p class="m-lead">
+          O módulo Formalizar não opera como fluxo único. Cada frente produz um
+          artefato específico, com base de conhecimento cirúrgica e sem
+          alucinação cruzada. A Jô ajuda a identificar qual instrumento precisa
+          ser construído primeiro.
+        </p>
+      </div>
+
+      <div class="m-method-stack">
+        <span class="m-method-label">↳ Seis frentes</span>
+        <ul class="m-method-list m-method-list--six">
+          <li><strong>01 Portaria</strong></li>
+          <li><strong>02 Catálogo</strong></li>
+          <li><strong>03 Dedicação</strong></li>
+          <li><strong>04 ICT</strong></li>
+          <li><strong>05 NIT</strong></li>
+          <li><strong>06 Política</strong></li>
+        </ul>
+      </div>
+
+      <div class="m-deps">
+        <div class="m-deps-header">
+          <span class="m-deps-label">↳ Regras de dependência</span>
+          <span class="m-deps-caption">A Jô prioriza segurança jurídica e coerência institucional.</span>
+        </div>
+
+        <div class="m-deps-grid">
+          <article class="m-dep m-dep--required">
+            <div class="m-dep-head">
+              <span class="m-dep-kind">Dependência obrigatória</span>
+              <span class="m-dep-flow">06 Política &nbsp;→&nbsp; 04 ICT</span>
+            </div>
+            <p class="m-dep-body">
+              A <strong>Política de Inovação</strong> depende do enquadramento
+              prévio como <strong>ICT</strong>, conforme exigência do Marco
+              Legal de CT&I. Sem ICT formalizado, a Jô bloqueia o fluxo e
+              redireciona o usuário para a etapa correta.
+            </p>
+          </article>
+
+          <article class="m-dep m-dep--recommended">
+            <div class="m-dep-head">
+              <span class="m-dep-kind">Recomendação</span>
+              <span class="m-dep-flow">05 NIT &nbsp;⇢&nbsp; 04 ICT</span>
+            </div>
+            <p class="m-dep-body">
+              A criação do <strong>NIT</strong> não bloqueia o usuário, mas o
+              sistema emite alerta recomendando que o <strong>Ato de
+              Enquadramento como ICT</strong> já esteja formalizado.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       O QUE VOCÊ RECEBE
+       ============================================================ -->
+  <section class="m-section m-section--deliverables">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ O que você recebe</div>
+        <h2 class="m-section-headline">
+          Um artefato jurídico-administrativo estruturado para tramitação.
+        </h2>
+        <p class="m-lead">
+          Ao concluir uma frente, a Jô devolve o artefato correspondente —
+          estruturado para adaptação institucional e continuidade de tramitação
+          administrativa.
+        </p>
+      </div>
+
+      <div class="m-deliv-grid">
+        <div>
+          <div class="m-deliv-label">↳ Entregas por frente</div>
+          <ul class="m-deliv-list">
+            <li><h3>Minuta de Portaria de Criação</h3><p>Vinculação, mandato, competências, fundamentação tripartite.</p></li>
+            <li><h3>Catálogo de Serviços</h3><p>Com Anti-balcão obrigatório (o que o lab NÃO faz).</p></li>
+            <li><h3>Nota Técnica de Dedicação Exclusiva</h3><p>Lastro Marco CT&I (arts. 9º-A e 14-A).</p></li>
+            <li><h3>Ato de Enquadramento como ICT</h3><p>Anti-fachada — só enquadra com PD&I declarada.</p></li>
+            <li><h3>Estruturação inicial do NIT</h3><p>Portaria com cláusula condicional embutida.</p></li>
+            <li><h3>Política de Inovação</h3><p>Modelo Integrado (Diretrizes) ou Fragmentado (núcleo + 4 resoluções).</p></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="m-deliv-label m-deliv-label--neg">↳ Conforme o cenário, a Jô também pode indicar</div>
+          <ul class="m-list m-list--neg">
+            <li>ausência de competência institucional;</li>
+            <li>inconsistência normativa;</li>
+            <li>dependências jurídicas não cumpridas;</li>
+            <li>risco de sobreposição institucional;</li>
+            <li>necessidade de articulação prévia com áreas jurídicas.</li>
+          </ul>
+          <p class="m-deliv-quote">
+            <em>Nem toda inovação nasce pronta para institucionalização.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ESCOLHA A FRENTE — 6 CARDS SELECIONÁVEIS
+       ============================================================ -->
+  <section class="m-section m-section--start" id="frentes">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Escolha a frente que deseja formalizar</div>
+        <h2 class="m-section-headline">
+          A formalização ocorre por trilhas.
+        </h2>
+        <p class="m-lead">
+          Selecione qual instrumento jurídico-administrativo deseja construir.
+          Cada frente abre o assistente correspondente e inicia a estruturação
+          jurídica e administrativa.
+        </p>
+      </div>
+
+      <div class="m-fronts-grid">
+        {FRENTES.map((f) => (
+          <a href={f.href} class="m-front-card">
+            <div class="m-front-head">
+              <span class="m-front-num">{f.id}</span>
+              {f.dep && (
+                <span class:list={['m-front-dep', `m-front-dep--${f.dep.kind}`]}>{f.dep.label}</span>
+              )}
+            </div>
+            <h3 class="m-front-title">{f.title}</h3>
+            <p class="m-front-line">{f.line}</p>
+            <p class="m-front-body">{f.body}</p>
+            <span class="m-front-cta">Selecionar frente →</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="m-submit-note m-submit-note--center">
+        Selecione um dos seis instrumentos acima para abrir o assistente
+        correspondente.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RODAPÉ
+       ============================================================ -->
+  <section class="m-bottom">
+    <div class="container">
+      <a href="/aplicacao" class="m-back">↩ voltar pra Aplicação</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .container { max-width: 960px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .m-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 88px;
+  }
+  .m-hero > .container { position: relative; z-index: 1; }
+
+  .m-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .m-eyebrow-id { color: var(--amber); }
+  .m-eyebrow-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+
+  .m-verb {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .m-hero-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    max-width: 640px;
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .m-hero-body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 580px;
+    margin-bottom: 16px;
+  }
+  .m-hero-body--soft { color: var(--fg-65); }
+  .m-hero-body strong { color: var(--fg); font-weight: 500; }
+
+  .m-hero-cta { margin-top: 36px; }
+
+  /* ============================================================
+     SECTIONS · BASE
+     ============================================================ */
+  .m-section {
+    position: relative;
+    padding: 88px 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-section--why          { background: rgba(0, 0, 0, 0.18); }
+  .m-section--deliverables { background: rgba(0, 0, 0, 0.18); }
+
+  .m-section-head { max-width: 720px; margin-bottom: 52px; }
+
+  .m-section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+  }
+
+  .m-section-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .m-lead {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--fg-86);
+    max-width: 640px;
+  }
+  .m-lead strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     LISTS
+     ============================================================ */
+  .m-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .m-list li {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    padding-left: 18px;
+    position: relative;
+  }
+  .m-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .m-list--neg li { color: var(--fg-50); }
+  .m-list--neg li::before { color: var(--fg-22); }
+
+  /* ============================================================
+     POR QUE · GRID
+     ============================================================ */
+  .m-why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+  .m-why-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-why-label--neg { color: var(--fg-50); }
+
+  .m-pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-86);
+    max-width: 640px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-pull--strong { color: var(--amber); }
+
+  /* ============================================================
+     MÉTODO STACK (6 frentes resumidas)
+     ============================================================ */
+  .m-method-stack {
+    margin-bottom: 36px;
+    padding: 20px 0;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+  }
+  .m-method-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+  .m-method-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+  .m-method-list li {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--fg-65);
+  }
+  .m-method-list strong {
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ============================================================
+     DEPENDÊNCIAS
+     ============================================================ */
+  .m-deps { margin-top: 12px; }
+  .m-deps-header {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .m-deps-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .m-deps-caption {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--fg-65);
+  }
+
+  .m-deps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .m-dep {
+    padding: 22px 22px 24px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 10px;
+    background: rgba(245, 242, 235, 0.03);
+  }
+  .m-dep--required { border-color: var(--amber-faint); }
+  .m-dep--recommended { border-style: dashed; }
+
+  .m-dep-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .m-dep-kind { color: var(--amber); }
+  .m-dep--recommended .m-dep-kind { color: var(--fg-65); }
+  .m-dep-flow {
+    color: var(--fg-86);
+    font-weight: 500;
+  }
+  .m-dep-body {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+  .m-dep-body strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     DELIVERABLES
+     ============================================================ */
+  .m-deliv-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .m-deliv-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-deliv-label--neg { color: var(--fg-50); }
+  .m-deliv-quote {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--amber);
+  }
+  .m-deliv-quote em { font-style: italic; }
+
+  .m-deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .m-deliv-list li {
+    position: relative;
+    padding-left: 24px;
+  }
+  .m-deliv-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 14px;
+    height: 0.5px;
+    background: var(--amber);
+  }
+  .m-deliv-list h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .m-deliv-list p {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+
+  /* ============================================================
+     FRENTES · 6 CARDS SELECIONÁVEIS
+     ============================================================ */
+  .m-fronts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  .m-front-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px 24px 60px;
+    border: 0.5px solid var(--fg-22);
+    background: rgba(245, 242, 235, 0.025);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  }
+  .m-front-card:hover {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.06);
+    transform: translateY(-2px);
+  }
+  .m-front-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .m-front-num {
+    color: var(--amber);
+    letter-spacing: 0.22em;
+  }
+  .m-front-dep {
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    border: 0.5px solid;
+  }
+  .m-front-dep--required {
+    color: var(--amber);
+    border-color: var(--amber-faint);
+    background: rgba(217, 119, 6, 0.08);
+  }
+  .m-front-dep--recommended {
+    color: var(--fg-65);
+    border-color: var(--fg-30);
+    border-style: dashed;
+  }
+  .m-front-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.014em;
+    color: var(--fg);
+  }
+  .m-front-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--fg-86);
+  }
+  .m-front-body {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-front-cta {
+    position: absolute;
+    left: 24px;
+    bottom: 22px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    transition: color 220ms ease, transform 220ms ease;
+  }
+  .m-front-card:hover .m-front-cta {
+    color: var(--amber);
+    transform: translateX(2px);
+  }
+
+  .m-submit-note {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    max-width: 580px;
+  }
+  .m-submit-note--center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+
+  /* ============================================================
+     CTAs
+     ============================================================ */
+  .m-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .m-cta-primary {
+    color: var(--bg);
+    background: var(--amber);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+  .m-cta-primary:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 28px -10px oklch(0.82 0.155 78 / 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+
+  /* ============================================================
+     RODAPÉ
+     ============================================================ */
+  .m-bottom { padding: 48px 0 80px; }
+  .m-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .m-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 880px) {
+    .m-fronts-grid { grid-template-columns: 1fr 1fr; }
+    .m-deps-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .m-hero { padding: 72px 0 64px; }
+    .m-section { padding: 64px 0; }
+    .m-section-head { margin-bottom: 36px; }
+    .m-why-grid,
+    .m-deliv-grid,
+    .m-fronts-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+</style>

@@ -1,0 +1,259 @@
+---
+/**
+ * EstruturarCinematic — cinemático de Blueprint/Sprint para a hero do verbo
+ * Estruturar. Três colunas canônicas (Entender · Explorar · Entregar), cells
+ * de atividades pulsando em onda staggered, fase ativa varrendo as colunas,
+ * marcador correndo a track de hipóteses H1/H2/H3. Estética técnica do método.
+ */
+---
+<div class="ec-wrap" aria-hidden="true">
+  <svg
+    viewBox="0 0 600 600"
+    preserveAspectRatio="xMidYMid meet"
+    role="presentation"
+  >
+    <defs>
+      <radialGradient id="ec-fade" cx="50%" cy="50%" r="58%">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="1"/>
+        <stop offset="55%"  stop-color="#fff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="ec-mask" maskUnits="userSpaceOnUse">
+        <rect width="600" height="600" fill="url(#ec-fade)"/>
+      </mask>
+    </defs>
+
+    <g mask="url(#ec-mask)">
+      <!-- ── Grade lat/long (hairlines) ── -->
+      <g class="ec-grid">
+        <line x1="100" y1="0" x2="100" y2="600"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="300" y1="0" x2="300" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="500" y1="0" x2="500" y2="600"/>
+        <line x1="0" y1="100" x2="600" y2="100"/>
+        <line x1="0" y1="200" x2="600" y2="200"/>
+        <line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="0" y1="400" x2="600" y2="400"/>
+        <line x1="0" y1="500" x2="600" y2="500"/>
+      </g>
+
+      <!-- ── Header band ── -->
+      <text class="ec-mono ec-label" x="40" y="50">BLUEPRINT · SPRINT-001</text>
+      <text class="ec-mono ec-label--dim" x="560" y="50" text-anchor="end">CICLO MÉTODO 1/3</text>
+      <line class="ec-rule" x1="40" y1="66" x2="560" y2="66"/>
+
+      <!-- ── Coluna 1 · ENTENDER ── -->
+      <g class="ec-col" data-col="1">
+        <rect class="ec-col-wash" x="42" y="86" width="166" height="350" rx="6"/>
+        <text class="ec-col-label" x="50" y="106">01 · ENTENDER</text>
+        <rect class="ec-cell" x="50" y="124" width="150" height="88" rx="3" style="animation-delay:0s"/>
+        <rect class="ec-cell" x="50" y="226" width="150" height="88" rx="3" style="animation-delay:-1s"/>
+        <rect class="ec-cell" x="50" y="328" width="150" height="88" rx="3" style="animation-delay:-2s"/>
+      </g>
+
+      <!-- ── Coluna 2 · EXPLORAR ── -->
+      <g class="ec-col" data-col="2">
+        <rect class="ec-col-wash" x="222" y="86" width="166" height="350" rx="6" style="animation-delay:-3s"/>
+        <text class="ec-col-label" x="230" y="106">02 · EXPLORAR</text>
+        <rect class="ec-cell" x="230" y="124" width="150" height="88" rx="3" style="animation-delay:-3s"/>
+        <rect class="ec-cell" x="230" y="226" width="150" height="88" rx="3" style="animation-delay:-4s"/>
+        <rect class="ec-cell" x="230" y="328" width="150" height="88" rx="3" style="animation-delay:-5s"/>
+      </g>
+
+      <!-- ── Coluna 3 · ENTREGAR ── -->
+      <g class="ec-col" data-col="3">
+        <rect class="ec-col-wash" x="402" y="86" width="166" height="350" rx="6" style="animation-delay:-6s"/>
+        <text class="ec-col-label" x="410" y="106">03 · ENTREGAR</text>
+        <rect class="ec-cell" x="410" y="124" width="150" height="88" rx="3" style="animation-delay:-6s"/>
+        <rect class="ec-cell" x="410" y="226" width="150" height="88" rx="3" style="animation-delay:-7s"/>
+        <rect class="ec-cell" x="410" y="328" width="150" height="88" rx="3" style="animation-delay:-8s"/>
+      </g>
+
+      <!-- ── Track de progresso ── -->
+      <line class="ec-track" x1="40" y1="490" x2="560" y2="490"/>
+      <path id="ec-track-path" d="M40,490 L560,490" fill="none" stroke="none"/>
+
+      <!-- ── Marcadores de hipótese ── -->
+      <g class="ec-h" data-h="1">
+        <circle cx="125" cy="490" r="4" class="ec-h-dot" style="animation-delay:-1s"/>
+        <text class="ec-mono" x="125" y="514" text-anchor="middle">H1</text>
+      </g>
+      <g class="ec-h" data-h="2">
+        <circle cx="305" cy="490" r="4" class="ec-h-dot" style="animation-delay:-4s"/>
+        <text class="ec-mono" x="305" y="514" text-anchor="middle">H2</text>
+      </g>
+      <g class="ec-h" data-h="3">
+        <circle cx="485" cy="490" r="4" class="ec-h-dot" style="animation-delay:-7s"/>
+        <text class="ec-mono" x="485" y="514" text-anchor="middle">H3</text>
+      </g>
+
+      <!-- ── Marcador percorrendo a track ── -->
+      <g class="ec-runner">
+        <circle r="9"   class="ec-runner-ring"/>
+        <circle r="2.4" class="ec-runner-dot"/>
+        <animateMotion
+          dur="9s"
+          repeatCount="indefinite"
+          calcMode="linear"
+        >
+          <mpath href="#ec-track-path"/>
+        </animateMotion>
+      </g>
+
+      <!-- ── Footer técnico ── -->
+      <text class="ec-coords" x="40" y="572">PROTÓTIPO · TESTE · APRENDIZADO</text>
+      <text class="ec-coords ec-coords--dim" x="560" y="572" text-anchor="end">MÉTODO IN/CGU</text>
+    </g>
+
+    <rect class="ec-frame" x="0.5" y="0.5" width="599" height="599" fill="none"/>
+  </svg>
+</div>
+
+<style>
+  .ec-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .ec-wrap svg {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-48%);
+    width: clamp(420px, 52vw, 640px);
+    height: clamp(420px, 52vw, 640px);
+    opacity: 0.85;
+    color: var(--signal);
+  }
+
+  /* ── Grade ── */
+  .ec-grid line {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Tipografia técnica ── */
+  .ec-mono {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .ec-label     { fill: var(--signal); }
+  .ec-label--dim { fill: var(--fg-30); }
+  .ec-rule {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Coluna · wash (fase ativa) ── */
+  .ec-col-wash {
+    fill: var(--signal);
+    fill-opacity: 0.04;
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    animation: ec-col-pulse 9s ease-in-out infinite;
+  }
+  @keyframes ec-col-pulse {
+    0%, 100% { fill-opacity: 0.04; stroke: var(--fg-14); }
+    10%, 22% { fill-opacity: 0.12; stroke: var(--signal); stroke-opacity: 0.45; }
+    45%      { fill-opacity: 0.06; }
+  }
+
+  /* ── Coluna · label ── */
+  .ec-col-label {
+    fill: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ── Cells (atividades) ── */
+  .ec-cell {
+    fill: var(--fg-10);
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    animation: ec-cell-pulse 9s ease-in-out infinite;
+  }
+  @keyframes ec-cell-pulse {
+    0%, 100% { fill: var(--fg-10);     stroke: var(--fg-14); }
+    8%       { fill: var(--signal);    stroke: var(--signal); stroke-opacity: 0.5; fill-opacity: 0.7; }
+    20%      { fill: var(--signal);    fill-opacity: 0.32; }
+    45%      { fill: var(--fg-14);     fill-opacity: 1; }
+  }
+
+  /* ── Track de progresso ── */
+  .ec-track {
+    stroke: var(--fg-22);
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Hipóteses H1/H2/H3 ── */
+  .ec-h-dot {
+    fill: var(--fg-22);
+    animation: ec-h-pulse 9s ease-in-out infinite;
+  }
+  @keyframes ec-h-pulse {
+    0%, 35%, 100% { fill: var(--fg-22); }
+    8%, 14%       { fill: var(--signal); }
+    20%           { fill: var(--signal); fill-opacity: 0.55; }
+  }
+
+  /* ── Runner (marcador) ── */
+  .ec-runner-dot { fill: var(--signal); }
+  .ec-runner-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-opacity: 0.55;
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+    animation: ec-runner-ring 1.9s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes ec-runner-ring {
+    0%   { transform: scale(0.4); stroke-opacity: 0.7; }
+    100% { transform: scale(1.8); stroke-opacity: 0; }
+  }
+
+  /* ── Footer text ── */
+  .ec-coords {
+    fill: var(--fg-30);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+  }
+  .ec-coords--dim { fill: var(--fg-22); }
+
+  /* ── Frame externo ── */
+  .ec-frame {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 720px) {
+    .ec-wrap { display: none; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .ec-col-wash,
+    .ec-cell,
+    .ec-h-dot,
+    .ec-runner-ring {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,735 @@
+---
+// Página dedicada de impressão / export PDF. Não usa Base.astro — render
+// mínimo, sem Nav/JoFab, fundo branco por padrão. Otimizada pra A4.
+//
+// Estética: editorial assinado — serif Fraunces nos títulos, sans Space
+// Grotesk no corpo, mono JetBrains nos labels técnicos, acento âmbar em
+// pontos focais (regra de cabeçalho, badge GO/NO-GO, bordas de citação,
+// caveat institucional). Sem chrome do app — vira documento.
+//
+// ?auto=1 dispara window.print() automaticamente quando os fonts carregam.
+
+import { marked } from 'marked';
+import { requireUser } from '../../../lib/server/auth';
+import { getArtifactById, type Verb } from '../../../lib/journey/server';
+
+export const prerender = false;
+
+const auth = await requireUser(Astro.cookies);
+if (!auth.ok) {
+  return Astro.redirect(`/login?next=${encodeURIComponent(Astro.url.pathname)}`);
+}
+const { supabase } = auth;
+
+const id = typeof Astro.params.id === 'string' ? Astro.params.id : '';
+if (id.length === 0) return new Response('id ausente', { status: 400 });
+
+const res = await getArtifactById(supabase, id);
+if (!res.ok) return new Response(`Falha: ${res.error}`, { status: 500 });
+if (!res.artifact) return new Response('não encontrado', { status: 404 });
+
+const artifact = res.artifact;
+const verb = artifact.verb as Verb;
+const auto = Astro.url.searchParams.get('auto') === '1';
+
+const VERB_LABEL: Record<Verb, string> = {
+  mapear: 'Mapear', estruturar: 'Estruturar', formalizar: 'Formalizar',
+  construir: 'Construir', avaliar: 'Avaliar', manter: 'Manter',
+};
+const VERB_TAG: Record<Verb, string> = {
+  mapear: 'Passo 0 · Diagnóstico Institucional',
+  estruturar: 'Arquitetura Operacional',
+  formalizar: 'Governança Normativa',
+  construir: 'Entrega Assistida',
+  avaliar: 'Medição Pública',
+  manter: 'Sustentação',
+};
+const VERB_DOCNAME: Record<Verb, string> = {
+  mapear: 'Relatório de Diagnóstico Institucional',
+  estruturar: 'Blueprint de Sprint',
+  formalizar: 'Peça de Governança',
+  construir: 'Plano de Entrega',
+  avaliar: 'Matriz de Indicadores',
+  manter: 'Plano de Sustentação',
+};
+
+const out = artifact.jo_output as Record<string, unknown> | null;
+const structured = (out && typeof out.structured === 'object')
+  ? out.structured as Record<string, unknown>
+  : null;
+const isPartial = !!(out && out.partial === true);
+
+// Sections-first (JoPlan): concatena sections[].markdown como h1 + corpo.
+// Legacy (relatorio): usa structured.markdown direto.
+const isPlan = !!(structured && structured.type === 'plan' && Array.isArray(structured.sections));
+const sections = isPlan ? (structured!.sections as unknown[]).filter(
+  (s): s is Record<string, unknown> => typeof s === 'object' && s !== null,
+).map((s) => ({
+  id: typeof s.id === 'string' ? s.id : '',
+  title: typeof s.title === 'string' ? s.title : '',
+  status: typeof s.status === 'string' ? s.status : 'pending',
+  markdown: typeof s.markdown === 'string' ? s.markdown : '',
+})) : [];
+
+const markdown: string = isPlan
+  ? sections
+      .filter((s) => s.markdown.length > 0)
+      .map((s) => `# ${s.title}\n\n${s.markdown}`)
+      .join('\n\n')
+  : (structured && typeof structured.markdown === 'string') ? structured.markdown :
+    (typeof out?.text === 'string') ? out.text :
+    (typeof out?.raw === 'string') ? out.raw :
+    '(sem conteúdo)';
+
+const title: string = (isPlan && structured && typeof structured.title === 'string')
+  ? structured.title : VERB_DOCNAME[verb];
+
+const summary: string =
+  (structured && typeof structured.summary === 'string') ? structured.summary :
+  (typeof out?.summary === 'string') ? out.summary : '';
+
+const goNoGo: string | null =
+  (structured && typeof structured.goNoGo === 'string') ? structured.goNoGo : null;
+
+const goNoGoLabel: string =
+  goNoGo === 'GO' ? 'GO' :
+  goNoGo === 'GO_MITIGATION' ? 'GO com mitigação' :
+  goNoGo === 'NO_GO' ? 'NO-GO' : '';
+
+const diagnosticTags: string[] =
+  (structured && Array.isArray(structured.diagnostic_tags))
+    ? (structured.diagnostic_tags as unknown[]).filter((t) => typeof t === 'string') as string[]
+    : [];
+
+const routeOrder: string[] =
+  (structured && Array.isArray(structured.route_order))
+    ? (structured.route_order as unknown[]).filter((t) => typeof t === 'string') as string[]
+    : [];
+
+// Renderiza o markdown com marked. Sobrescreve heading pra adicionar
+// classe de hierarquia editorial (numeração romana se for h1/h2 começando
+// com dígito, sem prefixo se já tem texto).
+const renderer = new marked.Renderer();
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+let h1Counter = 0;
+let h2Counter = 0;
+renderer.heading = ({ tokens, depth }) => {
+  const text = tokens.map((t) => 'text' in t ? t.text : ('raw' in t ? t.raw : '')).join('');
+  if (depth === 1) {
+    h1Counter++;
+    h2Counter = 0;
+    // Remove prefixo numérico ("1. " ou "1.") que o Jô às vezes coloca
+    const clean = text.replace(/^\d+\.\s*/, '');
+    return `<h1 class="pr-h1"><span class="pr-h1-num">${ROMAN[h1Counter] ?? h1Counter}</span><span class="pr-h1-text">${clean}</span></h1>`;
+  }
+  if (depth === 2) {
+    h2Counter++;
+    const clean = text.replace(/^\d+\.\d+\s*/, '');
+    return `<h2 class="pr-h2">${clean}</h2>`;
+  }
+  return `<h${depth} class="pr-h${depth}">${text}</h${depth}>`;
+};
+
+const renderedHtml = marked.parse(markdown, { breaks: true, gfm: true, renderer }) as string;
+
+const createdAt = new Date(artifact.created_at);
+const createdAtFmt =
+  createdAt.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) +
+  ' · ' +
+  createdAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{VERB_DOCNAME[verb]} · Alavanca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+
+  <!-- Barra superior (visível só em tela, com instrução + botões) -->
+  <aside class="pr-screenbar">
+    <div class="pr-screenbar-inner">
+      <div class="pr-screenbar-tip">
+        <strong>Pra um PDF limpo:</strong> no diálogo, desative
+        <em>"Cabeçalhos e rodapés"</em> e habilite <em>"Gráficos de fundo"</em>.
+      </div>
+      <div class="pr-screenbar-actions">
+        <button id="pr-print" type="button" class="pr-btn pr-btn--primary">Imprimir / Salvar PDF</button>
+        <a href={`/jornada/${artifact.id}`} class="pr-btn pr-btn--ghost">↩ voltar pra peça</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="pr">
+
+    <!-- ───── CAPA / CABEÇALHO ───── -->
+    <header class="pr-cover">
+      <div class="pr-cover-top">
+        <span class="pr-brand">Alavanca · <span class="pr-brand-sub">CLIC</span></span>
+        <span class="pr-cover-meta">{VERB_LABEL[verb]} · {VERB_TAG[verb]}</span>
+      </div>
+
+      <h1 class="pr-doctitle">{title}</h1>
+
+      {summary && <p class="pr-summary">{summary}</p>}
+
+      <div class="pr-cover-stats">
+        <div class="pr-stat">
+          <span class="pr-stat-label">Gerado</span>
+          <span class="pr-stat-value">{createdAtFmt}</span>
+        </div>
+        {goNoGoLabel && (
+          <div class="pr-stat">
+            <span class="pr-stat-label">Diretriz</span>
+            <span class:list={['pr-badge', `pr-badge--${(goNoGo ?? '').toLowerCase().replace('_', '-')}`]}>
+              {goNoGoLabel}
+            </span>
+          </div>
+        )}
+        {isPartial && (
+          <div class="pr-stat">
+            <span class="pr-stat-label">Status</span>
+            <span class="pr-badge pr-badge--partial">parcial</span>
+          </div>
+        )}
+      </div>
+
+      {(diagnosticTags.length > 0 || routeOrder.length > 0) && (
+        <div class="pr-cover-meta-rows">
+          {diagnosticTags.length > 0 && (
+            <div class="pr-meta-row">
+              <span class="pr-meta-label">Tags diagnósticas</span>
+              <span class="pr-meta-value">
+                {diagnosticTags.map((t, i) => (
+                  <>{i > 0 && ' · '}<span class="pr-tag">{t}</span></>
+                ))}
+              </span>
+            </div>
+          )}
+          {routeOrder.length > 0 && (
+            <div class="pr-meta-row">
+              <span class="pr-meta-label">Roteamento</span>
+              <span class="pr-meta-value">
+                {routeOrder.map((v, i) => (
+                  <>{i > 0 && ' → '}<span class="pr-route">{VERB_LABEL[v as Verb] ?? v}</span></>
+                ))}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </header>
+
+    <!-- ───── CORPO (markdown renderizado) ───── -->
+    <article class="pr-body" set:html={renderedHtml} />
+
+    <!-- ───── RODAPÉ ───── -->
+    <footer class="pr-foot">
+      <div class="pr-foot-rule"></div>
+      <div class="pr-foot-text">
+        Documento gerado pela plataforma <strong>Alavanca · CLIC</strong> —
+        Inovação pública. Rascunho de apoio · revisão jurídica e institucional
+        obrigatória antes de protocolar.
+      </div>
+    </footer>
+  </main>
+
+  <script define:vars={{ auto }}>
+    document.getElementById('pr-print')?.addEventListener('click', () => window.print());
+    if (auto) {
+      // Aguarda fonts antes de printar pra não pegar fallback monoespaçado.
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => setTimeout(() => window.print(), 200));
+      } else {
+        setTimeout(() => window.print(), 600);
+      }
+    }
+  </script>
+
+  <style>
+    /* ============================================================
+       TOKENS LOCAIS DA IMPRESSÃO
+       ============================================================ */
+    :root {
+      --pr-amber:        #B6660A;
+      --pr-amber-soft:   rgba(182, 102, 10, 0.10);
+      --pr-amber-line:   rgba(182, 102, 10, 0.35);
+      --pr-ink:          #1A1A1A;
+      --pr-ink-soft:     #3a3a3a;
+      --pr-muted:        #6a6a6a;
+      --pr-line:         #d4d4d4;
+      --pr-line-soft:    #e6e6e6;
+      --pr-paper:        #ffffff;
+      --pr-paper-tint:   #f7f5ef;
+      --pr-go:           #2c7a3d;
+      --pr-go-soft:      #e7f4ea;
+      --pr-mitig:        #b6660a;
+      --pr-mitig-soft:   #fbf0dd;
+      --pr-nogo:         #a8322a;
+      --pr-nogo-soft:    #f8e6e4;
+
+      --pr-serif:  'Fraunces', Georgia, 'Times New Roman', serif;
+      --pr-sans:   'Space Grotesk', -apple-system, 'Segoe UI', system-ui, sans-serif;
+      --pr-mono:   'JetBrains Mono', Menlo, Consolas, monospace;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--pr-paper);
+      color: var(--pr-ink);
+      font-family: var(--pr-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================================
+       BARRA SUPERIOR (só em tela)
+       ============================================================ */
+    .pr-screenbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #faf8f3;
+      border-bottom: 1px solid var(--pr-line);
+    }
+    .pr-screenbar-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .pr-screenbar-tip {
+      font-family: var(--pr-sans);
+      font-size: 13px;
+      color: var(--pr-ink-soft);
+      max-width: 540px;
+    }
+    .pr-screenbar-tip strong { color: var(--pr-ink); font-weight: 600; }
+    .pr-screenbar-tip em {
+      font-family: var(--pr-serif);
+      font-style: italic;
+      color: var(--pr-amber);
+      font-weight: 500;
+    }
+    .pr-screenbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .pr-btn {
+      display: inline-flex; align-items: center;
+      font-family: var(--pr-sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--pr-line);
+      background: white;
+      color: var(--pr-ink);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 200ms, background 200ms;
+    }
+    .pr-btn:hover { border-color: var(--pr-amber); }
+    .pr-btn--primary {
+      background: var(--pr-amber);
+      border-color: var(--pr-amber);
+      color: white;
+    }
+    .pr-btn--primary:hover { filter: brightness(1.06); }
+    .pr-btn--ghost { color: var(--pr-muted); }
+
+    /* ============================================================
+       LAYOUT DO DOCUMENTO
+       ============================================================ */
+    .pr {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 56px 64px;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: var(--pr-ink);
+    }
+
+    /* ───── CAPA ───── */
+    .pr-cover { margin-bottom: 36px; }
+
+    .pr-cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      padding-bottom: 14px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--pr-amber);
+      flex-wrap: wrap;
+    }
+    .pr-brand {
+      font-family: var(--pr-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pr-ink);
+    }
+    .pr-brand-sub {
+      color: var(--pr-amber);
+      font-weight: 600;
+    }
+    .pr-cover-meta {
+      font-family: var(--pr-mono);
+      font-size: 10pt;
+      letter-spacing: 0.04em;
+      color: var(--pr-muted);
+    }
+
+    .pr-doctitle {
+      font-family: var(--pr-serif);
+      font-weight: 500;
+      font-size: 34pt;
+      line-height: 1.02;
+      letter-spacing: -0.022em;
+      color: var(--pr-ink);
+      margin: 0 0 18px;
+    }
+
+    .pr-summary {
+      font-family: var(--pr-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 14pt;
+      line-height: 1.4;
+      color: var(--pr-ink-soft);
+      margin: 0 0 32px;
+      max-width: 580px;
+    }
+
+    .pr-cover-stats {
+      display: flex;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .pr-stat { display: flex; flex-direction: column; gap: 6px; }
+    .pr-stat-label {
+      font-family: var(--pr-mono);
+      font-size: 9pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--pr-muted);
+    }
+    .pr-stat-value {
+      font-family: var(--pr-mono);
+      font-size: 10.5pt;
+      color: var(--pr-ink);
+      letter-spacing: 0.02em;
+    }
+
+    .pr-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--pr-sans);
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--pr-line);
+    }
+    .pr-badge--go {
+      background: var(--pr-go-soft);
+      color: var(--pr-go);
+      border-color: var(--pr-go);
+    }
+    .pr-badge--go-mitigation {
+      background: var(--pr-mitig-soft);
+      color: var(--pr-mitig);
+      border-color: var(--pr-mitig);
+    }
+    .pr-badge--no-go {
+      background: var(--pr-nogo-soft);
+      color: var(--pr-nogo);
+      border-color: var(--pr-nogo);
+    }
+    .pr-badge--partial {
+      background: var(--pr-paper-tint);
+      color: var(--pr-muted);
+      border-color: var(--pr-line);
+    }
+
+    .pr-cover-meta-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 16px;
+      background: var(--pr-paper-tint);
+      border-left: 3px solid var(--pr-amber);
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+    .pr-meta-row {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      flex-wrap: wrap;
+    }
+    .pr-meta-label {
+      font-family: var(--pr-mono);
+      font-size: 9pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pr-muted);
+      flex: 0 0 auto;
+      min-width: 130px;
+    }
+    .pr-meta-value {
+      font-family: var(--pr-sans);
+      color: var(--pr-ink);
+      flex: 1;
+    }
+    .pr-tag {
+      font-family: var(--pr-mono);
+      font-size: 9.5pt;
+      color: var(--pr-amber);
+      font-weight: 500;
+    }
+    .pr-route {
+      font-family: var(--pr-sans);
+      font-weight: 500;
+      color: var(--pr-ink);
+    }
+
+    /* ============================================================
+       CORPO DO DOCUMENTO
+       ============================================================ */
+    .pr-body {
+      font-family: var(--pr-sans);
+      font-size: 11pt;
+      line-height: 1.65;
+      color: var(--pr-ink-soft);
+    }
+
+    /* H1 — seção principal com numeração romana */
+    .pr-body :global(.pr-h1) {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 18px;
+      align-items: baseline;
+      margin: 48px 0 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--pr-line);
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .pr-body :global(.pr-h1-num) {
+      font-family: var(--pr-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22pt;
+      color: var(--pr-amber);
+      line-height: 1;
+      text-align: right;
+    }
+    .pr-body :global(.pr-h1-text) {
+      font-family: var(--pr-serif);
+      font-weight: 500;
+      font-size: 19pt;
+      line-height: 1.15;
+      letter-spacing: -0.012em;
+      color: var(--pr-ink);
+    }
+
+    /* H2 — sub-seção */
+    .pr-body :global(.pr-h2) {
+      font-family: var(--pr-serif);
+      font-weight: 500;
+      font-size: 14pt;
+      line-height: 1.25;
+      color: var(--pr-ink);
+      margin: 32px 0 10px;
+      padding-left: 78px;
+      position: relative;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .pr-body :global(.pr-h2)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.65em;
+      width: 60px;
+      height: 1px;
+      background: var(--pr-amber);
+    }
+
+    /* H3 — labels técnicos */
+    .pr-body :global(.pr-h3) {
+      font-family: var(--pr-mono);
+      font-size: 9.5pt;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--pr-amber);
+      margin: 24px 0 8px;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    .pr-body :global(p) { margin: 0 0 12px; }
+    .pr-body :global(strong) { color: var(--pr-ink); font-weight: 600; }
+    .pr-body :global(em) {
+      font-family: var(--pr-serif);
+      font-style: italic;
+      color: var(--pr-ink);
+    }
+
+    /* Listas */
+    .pr-body :global(ul),
+    .pr-body :global(ol) {
+      margin: 0 0 14px;
+      padding-left: 24px;
+    }
+    .pr-body :global(li) {
+      margin: 4px 0;
+      padding-left: 4px;
+    }
+    .pr-body :global(li)::marker { color: var(--pr-amber); }
+
+    /* Citações: blocos de "CONSIDERANDO" e similares */
+    .pr-body :global(blockquote) {
+      margin: 18px 0;
+      padding: 14px 18px;
+      background: var(--pr-paper-tint);
+      border-left: 3px solid var(--pr-amber);
+      border-radius: 2px;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--pr-ink);
+    }
+    .pr-body :global(blockquote) :global(p):last-child { margin-bottom: 0; }
+
+    /* Código inline */
+    .pr-body :global(code) {
+      font-family: var(--pr-mono);
+      font-size: 9.5pt;
+      background: var(--pr-paper-tint);
+      padding: 1px 6px;
+      border-radius: 3px;
+      color: var(--pr-amber);
+    }
+
+    /* Divisor horizontal */
+    .pr-body :global(hr) {
+      border: 0;
+      border-top: 1px solid var(--pr-line-soft);
+      margin: 28px 0;
+    }
+
+    /* Tabelas — matriz de riscos e afins */
+    .pr-body :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pr-body :global(thead) {
+      background: var(--pr-paper-tint);
+    }
+    .pr-body :global(th) {
+      font-family: var(--pr-mono);
+      font-size: 8.5pt;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pr-amber);
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--pr-amber);
+    }
+    .pr-body :global(td) {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--pr-line-soft);
+      vertical-align: top;
+      color: var(--pr-ink-soft);
+    }
+    .pr-body :global(tbody) :global(tr):nth-child(even) {
+      background: rgba(247, 245, 239, 0.5);
+    }
+    .pr-body :global(tbody) :global(tr):last-child :global(td) {
+      border-bottom: 1px solid var(--pr-line);
+    }
+
+    /* ============================================================
+       RODAPÉ
+       ============================================================ */
+    .pr-foot {
+      margin-top: 48px;
+    }
+    .pr-foot-rule {
+      height: 2px;
+      background: var(--pr-amber);
+      width: 60px;
+      margin-bottom: 16px;
+    }
+    .pr-foot-text {
+      font-family: var(--pr-mono);
+      font-size: 8.5pt;
+      line-height: 1.55;
+      color: var(--pr-muted);
+      max-width: 580px;
+    }
+    .pr-foot-text strong {
+      color: var(--pr-ink);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       PRINT (A4 + ocultar barra de tela + paginação)
+       ============================================================ */
+    @page {
+      size: A4;
+      margin: 2cm 2cm 2.2cm;
+    }
+
+    @media print {
+      .pr-screenbar { display: none !important; }
+      html, body {
+        background: white;
+      }
+      .pr {
+        max-width: 100%;
+        padding: 0;
+        font-size: 10.5pt;
+      }
+      .pr-doctitle { font-size: 28pt; }
+      .pr-summary  { font-size: 12.5pt; }
+      .pr-body :global(.pr-h1) { margin-top: 38px; }
+      .pr-body :global(.pr-h1-num) { font-size: 19pt; }
+      .pr-body :global(.pr-h1-text) { font-size: 16.5pt; }
+      .pr-body :global(.pr-h2) { font-size: 12.5pt; }
+      .pr-body :global(table) { font-size: 9pt; }
+
+      /* Evita quebra dentro de listas e tabelas */
+      .pr-body :global(table),
+      .pr-body :global(blockquote),
+      .pr-body :global(li) {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</body>
+</html>

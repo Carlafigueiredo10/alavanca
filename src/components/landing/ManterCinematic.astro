@@ -1,0 +1,302 @@
+---
+/**
+ * ManterCinematic — sustentação institucional como camadas sedimentares
+ * acumuladas que atravessam a transição de gestão. Cinco camadas (evidências
+ * acumuladas) com larguras decrescentes, timeline na base com 3 marcos
+ * (Gestão A · Transição · Gestão B) e marcador percorrendo a janela política.
+ */
+---
+<div class="mn-wrap" aria-hidden="true">
+  <svg
+    viewBox="0 0 600 600"
+    preserveAspectRatio="xMidYMid meet"
+    role="presentation"
+  >
+    <defs>
+      <radialGradient id="mn-fade" cx="50%" cy="50%" r="58%">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="1"/>
+        <stop offset="55%"  stop-color="#fff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="mn-mask" maskUnits="userSpaceOnUse">
+        <rect width="600" height="600" fill="url(#mn-fade)"/>
+      </mask>
+    </defs>
+
+    <g mask="url(#mn-mask)">
+      <!-- ── Grade ── -->
+      <g class="mn-grid">
+        <line x1="100" y1="0" x2="100" y2="600"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="300" y1="0" x2="300" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="500" y1="0" x2="500" y2="600"/>
+        <line x1="0" y1="100" x2="600" y2="100"/>
+        <line x1="0" y1="200" x2="600" y2="200"/>
+        <line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="0" y1="400" x2="600" y2="400"/>
+        <line x1="0" y1="500" x2="600" y2="500"/>
+      </g>
+
+      <!-- ── Header band ── -->
+      <text class="mn-mono mn-label" x="40" y="50">DOSSIÊ DE TRANSIÇÃO · DEFESA INSTITUCIONAL</text>
+      <text class="mn-mono mn-label--dim" x="560" y="50" text-anchor="end">JANELA POLÍTICA</text>
+      <line class="mn-rule" x1="40" y1="66" x2="560" y2="66"/>
+
+      <!-- ── Fontes laterais (sub-tributários: Construir + Avaliar) ── -->
+      <g class="mn-feed">
+        <text class="mn-feed-label" x="62" y="184">CONSTRUIR</text>
+        <line class="mn-feed-arrow" x1="62" y1="192" x2="178" y2="192" pathLength="100" style="animation-delay:0s"/>
+        <text class="mn-feed-label mn-feed-label--alt" x="62" y="232">AVALIAR</text>
+        <line class="mn-feed-arrow" x1="62" y1="240" x2="178" y2="240" pathLength="100" style="animation-delay:-2.5s"/>
+      </g>
+
+      <!-- ── 5 camadas sedimentares ── -->
+      <!-- Largura decrescente do topo pra base ilustra sedimentação. -->
+      <g class="mn-layers">
+        <rect class="mn-layer" x="190" y="110" width="220" height="22" rx="2" style="animation-delay:-7.2s"/>
+        <rect class="mn-layer" x="180" y="146" width="240" height="22" rx="2" style="animation-delay:-5.4s"/>
+        <rect class="mn-layer" x="170" y="182" width="260" height="22" rx="2" style="animation-delay:-3.6s"/>
+        <rect class="mn-layer" x="160" y="218" width="280" height="22" rx="2" style="animation-delay:-1.8s"/>
+        <rect class="mn-layer" x="150" y="254" width="300" height="22" rx="2" style="animation-delay:0s"/>
+      </g>
+
+      <!-- ── Labels das camadas ── -->
+      <text class="mn-layer-label" x="430" y="125">CONTINUIDADE</text>
+      <text class="mn-layer-label" x="440" y="161">CAPACIDADE</text>
+      <text class="mn-layer-label" x="450" y="197">RISCOS MITIGADOS</text>
+      <text class="mn-layer-label" x="460" y="233">INDICADORES</text>
+      <text class="mn-layer-label" x="470" y="269">ENTREGAS</text>
+
+      <!-- ── Espessante (eixo de acumulação) ── -->
+      <line class="mn-axis" x1="120" y1="110" x2="120" y2="276"/>
+      <text class="mn-axis-cap" x="116" y="106" text-anchor="end">↑ TEMPO</text>
+
+      <!-- ── Timeline · janela política ── -->
+      <g class="mn-timeline">
+        <line class="mn-timeline-track" x1="100" y1="430" x2="500" y2="430"/>
+        <path id="mn-timeline-path" d="M100,430 L500,430" fill="none" stroke="none"/>
+
+        <!-- Marcos -->
+        <g class="mn-mark">
+          <circle cx="140" cy="430" r="6" class="mn-mark-dot" style="animation-delay:0s"/>
+          <text class="mn-mark-label" x="140" y="414" text-anchor="middle">GESTÃO A</text>
+        </g>
+        <g class="mn-mark mn-mark--transition">
+          <circle cx="300" cy="430" r="7" class="mn-mark-dot" style="animation-delay:-3.5s"/>
+          <text class="mn-mark-label mn-mark-label--accent" x="300" y="414" text-anchor="middle">TRANSIÇÃO</text>
+          <line class="mn-mark-tick" x1="300" y1="416" x2="300" y2="444"/>
+        </g>
+        <g class="mn-mark">
+          <circle cx="460" cy="430" r="6" class="mn-mark-dot" style="animation-delay:-7s"/>
+          <text class="mn-mark-label" x="460" y="414" text-anchor="middle">GESTÃO B</text>
+        </g>
+      </g>
+
+      <!-- Marcador percorrendo a timeline -->
+      <g class="mn-runner">
+        <circle r="10" class="mn-runner-ring"/>
+        <circle r="3"  class="mn-runner-dot"/>
+        <animateMotion
+          dur="11s"
+          repeatCount="indefinite"
+          calcMode="linear"
+        >
+          <mpath href="#mn-timeline-path"/>
+        </animateMotion>
+      </g>
+
+      <!-- ── Footer técnico ── -->
+      <text class="mn-coords" x="40" y="572">EVIDÊNCIAS · 5 CAMADAS</text>
+      <text class="mn-coords mn-coords--dim" x="560" y="572" text-anchor="end">CONTINUIDADE INSTITUCIONAL</text>
+    </g>
+
+    <rect class="mn-frame" x="0.5" y="0.5" width="599" height="599" fill="none"/>
+  </svg>
+</div>
+
+<style>
+  .mn-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .mn-wrap svg {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-48%);
+    width: clamp(420px, 52vw, 640px);
+    height: clamp(420px, 52vw, 640px);
+    opacity: 0.85;
+    color: var(--signal);
+  }
+
+  /* ── Grade ── */
+  .mn-grid line {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Tipografia técnica ── */
+  .mn-mono {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .mn-label     { fill: var(--signal); }
+  .mn-label--dim { fill: var(--fg-30); }
+  .mn-rule {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Fontes laterais ── */
+  .mn-feed-label {
+    fill: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    fill-opacity: 0.75;
+  }
+  .mn-feed-label--alt { fill: var(--signal); fill-opacity: 0.55; }
+  .mn-feed-arrow {
+    stroke: var(--signal);
+    stroke-width: 0.7;
+    stroke-opacity: 0.5;
+    stroke-dasharray: 25 100;
+    vector-effect: non-scaling-stroke;
+    animation: mn-feed-trace 5s linear infinite;
+  }
+  @keyframes mn-feed-trace {
+    from { stroke-dashoffset: 100; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  /* ── Camadas ── */
+  .mn-layer {
+    fill: var(--fg-10);
+    stroke: var(--fg-22);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    animation: mn-layer-settle 9s ease-in-out infinite;
+  }
+  @keyframes mn-layer-settle {
+    0%, 100% { fill: var(--fg-10);    stroke: var(--fg-22); }
+    8%, 22%  { fill: var(--signal);   fill-opacity: 0.5; stroke: var(--signal); stroke-opacity: 0.5; }
+    45%      { fill: var(--fg-14);    fill-opacity: 1; }
+  }
+  .mn-layer-label {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* ── Eixo de tempo ── */
+  .mn-axis {
+    stroke: var(--fg-22);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mn-axis-cap {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+  }
+
+  /* ── Timeline ── */
+  .mn-timeline-track {
+    stroke: var(--fg-22);
+    stroke-width: 0.6;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+  }
+  .mn-mark-dot {
+    fill: var(--fg-22);
+    stroke: var(--signal);
+    stroke-width: 0.6;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+    animation: mn-mark-pulse 11s ease-in-out infinite;
+  }
+  @keyframes mn-mark-pulse {
+    0%, 100% { fill: var(--fg-22);  stroke-opacity: 0.3; }
+    8%, 18%  { fill: var(--signal); fill-opacity: 0.85; stroke-opacity: 0.7; }
+    32%      { fill: var(--signal); fill-opacity: 0.4; }
+  }
+  .mn-mark--transition .mn-mark-dot {
+    fill: var(--signal);
+    fill-opacity: 0.55;
+    stroke-opacity: 0.8;
+  }
+  .mn-mark-label {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+  .mn-mark-label--accent { fill: var(--signal); }
+  .mn-mark-tick {
+    stroke: var(--signal);
+    stroke-width: 0.7;
+    stroke-opacity: 0.6;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Runner ── */
+  .mn-runner-dot { fill: var(--signal); }
+  .mn-runner-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-opacity: 0.55;
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+    animation: mn-runner-ring 1.8s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes mn-runner-ring {
+    0%   { transform: scale(0.4); stroke-opacity: 0.75; }
+    100% { transform: scale(2);   stroke-opacity: 0; }
+  }
+
+  /* ── Coords ── */
+  .mn-coords {
+    fill: var(--fg-30);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+  }
+  .mn-coords--dim { fill: var(--fg-22); }
+
+  /* ── Frame externo ── */
+  .mn-frame {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 720px) {
+    .mn-wrap { display: none; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .mn-layer,
+    .mn-mark-dot,
+    .mn-runner-ring,
+    .mn-feed-arrow {
+      animation: none;
+    }
+  }
+</style>

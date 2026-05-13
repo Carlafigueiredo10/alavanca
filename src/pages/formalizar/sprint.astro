@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackBar from '../../components/BackBar.astro';
 
 interface Frente {
   num: string;
@@ -131,6 +132,8 @@ const frentes: Frente[] = [
   </div>
 </section>
 
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>
 
 <style>
@@ -295,4 +298,6 @@ const frentes: Frente[] = [
     .footnote-grid { grid-template-columns: 1fr; gap: 28px; }
   }
 </style>
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>

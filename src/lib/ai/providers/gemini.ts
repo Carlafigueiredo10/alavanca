@@ -93,11 +93,15 @@ export async function streamGemini(
         'gemini_init'
       );
       // Hard cap pro stream — Gemini às vezes não fecha (resposta pendurada
-      // por causa de safety review server-side). Carla 2026-05-12.
+      // por causa de safety review server-side). 57s deixa ~3s pra parse +
+      // persist antes do limite de 60s da Vercel Hobby (astro.config:10).
+      // Parse + Supabase insert costuma ser <1s — folga apertada mas viável.
+      // Subir aqui requer subir o maxDuration na config. Carla 2026-05-12.
+      const STREAM_TIMEOUT_MS = 57_000;
       const streamAbort = new AbortController();
       const streamTimer = setTimeout(
-        () => streamAbort.abort(new Error('gemini_stream_timeout_45s')),
-        45_000,
+        () => streamAbort.abort(new Error('gemini_stream_timeout_55s')),
+        STREAM_TIMEOUT_MS,
       );
       let badChunks = 0;
       let chunkIdx = 0;

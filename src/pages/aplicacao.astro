@@ -1,0 +1,411 @@
+---
+import Base from '../layouts/Base.astro';
+
+interface VerbCard {
+  id: string;
+  title: string;     // título funcional (Diagnóstico Institucional...)
+  verb: string;      // verbo original (Mapear...)
+  href: string;
+  tag: string;
+  headline: string;
+  body: string;
+  pull: string;
+}
+
+interface Phase {
+  key: string;
+  name: string;
+  caption: string;
+  items: VerbCard[];
+}
+
+const PHASES: Phase[] = [
+  {
+    key: 'A',
+    name: 'Estratégia',
+    caption: 'Leitura do terreno, arquitetura e instrumento jurídico',
+    items: [
+      {
+        id: '01',
+        title: 'Diagnóstico Institucional',
+        verb: 'Mapear',
+        href: '/mapear',
+        tag: 'Passo 0 · obrigatório',
+        headline: 'Do cenário difuso ao Relatório de Diagnóstico SEI-Ready.',
+        body: 'A Jô lê Cenário · Atores · Gargalo · Risco, classifica em três famílias com lastro, emite Go/No-Go tripartite e roteia obrigatoriamente os verbos seguintes em ordem de ataque.',
+        pull: 'Sem mapa, todo plano é palpite.',
+      },
+      {
+        id: '02',
+        title: 'Arquitetura Operacional',
+        verb: 'Estruturar',
+        href: '/estruturar',
+        tag: 'Método · I.LAB embarcado',
+        headline: 'Fluxos, papéis, ritos e backlog — em horas, não em meses.',
+        body: 'IA mapeia capacidades, identifica gargalos e propõe fases. Critérios de priorização, ritmo de sprints e indicadores embarcados.',
+        pull: 'O método permanece — o tempo encolhe.',
+      },
+      {
+        id: '03',
+        title: 'Governança Normativa',
+        verb: 'Formalizar',
+        href: '/formalizar',
+        tag: 'Arranjo institucional',
+        headline: 'Portaria, Catálogo, NT Dedicação, ICT, NIT, Política de Inovação.',
+        body: 'Seis frentes autônomas — cada uma chamada isolada da Jô, com base cirúrgica e sem alucinação cruzada. Marco CT&I operacionalizado de ponta a ponta.',
+        pull: 'O técnico decide. A Jô redige. O Marco CT&I responde.',
+      },
+    ],
+  },
+  {
+    key: 'B',
+    name: 'Execução',
+    caption: 'Entrega, medição e continuidade institucional',
+    items: [
+      {
+        id: '04',
+        title: 'Entrega Assistida',
+        verb: 'Construir',
+        href: '/construir',
+        tag: 'Autoria operacional',
+        headline: 'Protótipos validados, fluxos implantados, operação assistida.',
+        body: 'Assistentes, dashboards e automações sem fila de TI. Handoff documentado sem o lab virar suporte permanente.',
+        pull: 'O lab entrega e atravessa.',
+      },
+      {
+        id: '05',
+        title: 'Medição Pública',
+        verb: 'Avaliar',
+        href: '/avaliar',
+        tag: 'Evidência de impacto',
+        headline: 'KPIs, aderência e impacto operacional auditável — em quatro dimensões.',
+        body: 'Teoria de Mudança + Matriz SMART classificada nas 4 dimensões (Administrativa · Cidadã · Societal · Econômica), com Justificativa de Enquadramento por indicador. Letramento institucional anti-caixa-preta.',
+        pull: 'O que mostra valor sobrevive ao próximo corte.',
+      },
+      {
+        id: '06',
+        title: 'Sustentação',
+        verb: 'Manter',
+        href: '/manter',
+        tag: 'Continuidade institucional',
+        headline: 'PPA, sucessão e continuidade institucional documentada.',
+        body: 'Dossiê de Transição, Briefing Executivo com custo de não manter quantificado, Plano de Sustentabilidade SEI-Ready e Minutas de Adesão à Rede (Mapeamento LISP · InovaGov · RenovaJud).',
+        pull: 'O lab vira política pública documentada.',
+      },
+    ],
+  },
+];
+---
+<Base
+  title="Aplicação · seis capacidades, um método · Alavanca"
+  description="As seis capacidades institucionais do método Alavanca: Diagnóstico, Arquitetura, Governança, Entrega, Medição, Sustentação. Da leitura do terreno à continuidade do laboratório."
+>
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <section class="ap-intro">
+    <div class="container">
+      <div class="ap-meta animate-in">
+        <span class="ap-id">/02</span>
+        <span class="ap-line"></span>
+        <span class="ap-tag">II · Aplicação</span>
+      </div>
+      <h1 class="ap-headline animate-in delay-100">Seis capacidades. Duas fases. Um método.</h1>
+      <p class="ap-subhead animate-in delay-180">
+        Mapear · Estruturar · Formalizar · Construir · Avaliar · Manter.
+      </p>
+      <p class="ap-body animate-in delay-260">
+        A Alavanca não é uma metodologia nova: é a operacionalização, com IA aplicada,
+        de boas práticas já consagradas no Brasil — Sano (2020), GNova, RNP Labs, I.LAB.
+        O que mudou é o tempo. <em>O método permanece. O esforço encolhe.</em>
+      </p>
+      <p class="ap-kicker animate-in delay-340">↓ Estratégia (01-03) · Execução (04-06) · cada capacidade abre uma porta</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FASES + CARDS
+       ============================================================ -->
+  {PHASES.map((phase) => (
+    <section class="ap-phase" data-phase={phase.key}>
+      <div class="container">
+        <div class="ap-phase-head">
+          <span class="ap-phase-text">
+            <strong>{phase.name}</strong>
+            <span class="ap-phase-sep">·</span>
+            <span class="ap-phase-caption">{phase.caption}</span>
+          </span>
+          <span class="ap-phase-rule"></span>
+        </div>
+
+        <div class="ap-grid">
+          {phase.items.map((v) => (
+            <a href={v.href} class="ap-card">
+              <div class="ap-card-head">
+                <span class="ap-card-id">/{v.id}</span>
+                <span class="ap-card-verb-tag">{v.verb}</span>
+                <span class="ap-card-tag">{v.tag}</span>
+              </div>
+              <h2 class="ap-card-title">{v.title}</h2>
+              <p class="ap-card-headline">{v.headline}</p>
+              <p class="ap-card-body">{v.body}</p>
+              <p class="ap-card-pull">{v.pull}</p>
+              <span class="ap-card-arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- ============================================================
+       VOLTAR
+       ============================================================ -->
+  <section class="ap-bottom">
+    <div class="container">
+      <a href="/" class="ap-back">↩ voltar pra Home</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .container { max-width: 960px; }
+
+  /* ── INTRO ── */
+  .ap-intro { padding: 96px 0 40px; }
+
+  .ap-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .ap-id { color: var(--amber); }
+  .ap-line { flex: 0 0 auto; width: 56px; height: 0.5px; background: var(--fg-22); }
+
+  .ap-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7.6vw, 80px);
+    line-height: 0.98;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .ap-subhead {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(18px, 2.3vw, 22px);
+    line-height: 1.4;
+    color: var(--fg-86);
+    margin-bottom: 22px;
+    max-width: 680px;
+  }
+
+  .ap-body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 680px;
+    margin-bottom: 28px;
+  }
+  .ap-body em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg);
+  }
+
+  .ap-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-50);
+  }
+
+  /* ── FASES ── */
+  .ap-phase { padding: 48px 0 24px; }
+  .ap-phase + .ap-phase { padding-top: 12px; }
+
+  .ap-phase-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+    flex-wrap: nowrap;
+  }
+  .ap-phase-rule {
+    flex: 1;
+    min-width: 24px;
+    height: 0.5px;
+    background: linear-gradient(to right, transparent, var(--fg-22) 30%, var(--fg-22) 70%, transparent);
+  }
+  .ap-phase-text {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+    white-space: nowrap;
+  }
+  .ap-phase-text strong {
+    color: var(--amber);
+    font-weight: 500;
+  }
+  .ap-phase-sep { color: var(--fg-30); }
+  .ap-phase-caption {
+    color: var(--fg-50);
+    letter-spacing: 0.14em;
+  }
+  @media (max-width: 720px) {
+    .ap-phase-head { flex-wrap: wrap; gap: 12px; }
+    .ap-phase-text { white-space: normal; font-size: 10px; }
+  }
+
+  /* ── GRID ── */
+  .ap-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 880px) {
+    .ap-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ── CARDS ── */
+  .ap-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 26px 24px 56px;
+    border: 0.5px solid var(--fg-22);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  }
+  .ap-phase[data-phase='A'] .ap-card {
+    background: rgba(245, 242, 235, 0.02);
+  }
+  .ap-phase[data-phase='B'] .ap-card {
+    background: rgba(217, 119, 6, 0.025);
+  }
+  .ap-card:hover {
+    border-color: var(--amber);
+    background: rgba(217, 119, 6, 0.07);
+    transform: translateY(-2px);
+  }
+  .ap-card:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-color: var(--amber);
+  }
+
+  .ap-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    flex-wrap: wrap;
+  }
+  .ap-card-id { color: var(--amber); letter-spacing: 0.2em; }
+  .ap-card-verb-tag {
+    color: var(--fg-86);
+    letter-spacing: 0.2em;
+  }
+  .ap-card-tag {
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 0.5px solid var(--fg-22);
+    color: var(--fg-65);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+  }
+
+  .ap-card-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin: 6px 0 4px;
+    text-wrap: balance;
+  }
+
+  .ap-card-headline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--fg);
+    margin-bottom: 2px;
+  }
+
+  .ap-card-body {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+
+  .ap-card-pull {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--amber);
+  }
+
+  .ap-card-arrow {
+    position: absolute;
+    right: 22px;
+    bottom: 18px;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--fg-50);
+    transition: color 220ms ease, transform 220ms ease;
+  }
+  .ap-card:hover .ap-card-arrow {
+    color: var(--amber);
+    transform: translateX(4px);
+  }
+
+  /* ── VOLTAR ── */
+  .ap-bottom {
+    padding: 56px 0 80px;
+    border-top: 0.5px solid var(--fg-14);
+    margin-top: 32px;
+  }
+  .ap-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease, transform 200ms ease;
+  }
+  .ap-back:hover { color: var(--amber); transform: translateX(-2px); }
+</style>

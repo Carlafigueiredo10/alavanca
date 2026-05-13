@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackBar from '../../components/BackBar.astro';
 ---
 <Base
   title="Plano de Implementação · Construir · Alavanca"
@@ -80,6 +81,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: chatbot para tirar dúvidas frequentes sobre benefício previdenciário, testado em piloto de 200 atendimentos com 78% de resolução em primeira interação."
       ></textarea>
       <div class="step-counter"><span data-step-counter="1">0</span> / 600</div>
+      <div data-chip-palette="1"></div>
 
       <div class="step-actions">
         <span class="step-back-placeholder"></span>
@@ -107,6 +109,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: integração via API ao canal Gov.br já operante; módulo NLP customizado para a base de conhecimento previdenciária."
       ></textarea>
       <div class="step-counter"><span data-step-counter="2">0</span> / 500</div>
+      <div data-chip-palette="2"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
@@ -134,6 +137,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: fila do CTI tem prazo de 9 meses para novos sistemas; LGPD exige análise de dados sensíveis."
       ></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 500</div>
+      <div data-chip-palette="3"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
@@ -161,6 +165,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: Coordenação-Geral de Atendimento ao Cidadão (CGAC) do INSS, com previsão de Termo de Cooperação Técnica."
       ></textarea>
       <div class="step-counter"><span data-step-counter="4">0</span> / 500</div>
+      <div data-chip-palette="4"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
@@ -189,6 +194,8 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
+
+<BackBar href="/construir" label="voltar pra Construir" />
 </Base>
 
 <style>
@@ -367,6 +374,9 @@ import Base from '../../layouts/Base.astro';
   // ============================================================
   import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
   import { submitWizard } from '../../lib/journey/wizard-submit';
+  import { attachChipPalette } from '../../lib/wizard/chips';
+  import { CONSTRUIR_PALETTES } from '../../lib/wizard/chip-palettes';
+  import type { ChipPalette } from '../../lib/wizard/chip-palettes';
 
   type StepNum = 1 | 2 | 3 | 4;
 
@@ -406,6 +416,11 @@ import Base from '../../layouts/Base.astro';
   stepNums.forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const chipContainer = document.querySelector<HTMLDivElement>(`[data-chip-palette="${n}"]`);
+    const palette = CONSTRUIR_PALETTES[n - 1];
+    if (chipContainer && palette) {
+      attachChipPalette({ container: chipContainer, textarea: input, palette });
+    }
     const nextBtn =
       document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
       (n === 4 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
@@ -442,18 +457,42 @@ import Base from '../../layouts/Base.astro';
     }
   }
 
+  let editingArtifactId: string | null = null;
+  const FIELD_LABELS = ['Solução validada', 'Stack', 'Restrição TI', 'Unidade executora'];
+
+  function buildArgs(vals: [string, string, string, string]) {
+    return {
+      verb: 'construir' as const,
+      wizardInput: { 1: vals[0], 2: vals[1], 3: vals[2], 4: vals[3] },
+      fallbackText: buildPrompt(vals[0], vals[1], vals[2], vals[3]),
+      fallbackSource: 'wizard-construir',
+      replacesArtifactId: editingArtifactId,
+      refine: {
+        fieldLabels: FIELD_LABELS,
+        fieldPalettes: CONSTRUIR_PALETTES as (ChipPalette | null)[],
+        currentValues: vals as unknown as string[],
+        rebuild: (updated: string[]) => {
+          stepNums.forEach((n, idx) => {
+            const v = updated[idx] ?? '';
+            answers[n] = v;
+            const ta = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+            const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+            if (ta) ta.value = v;
+            if (counter) counter.textContent = String(v.length);
+          });
+          return buildArgs([updated[0] ?? '', updated[1] ?? '', updated[2] ?? '', updated[3] ?? '']);
+        },
+      },
+    };
+  }
+
   generateBtn.addEventListener('click', async () => {
     if (Object.values(answers).some((v) => v.length < 8)) return;
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
 
-    await submitWizard({
-      verb: 'construir',
-      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3], 4: answers[4] },
-      fallbackText: buildPrompt(answers[1], answers[2], answers[3], answers[4]),
-      fallbackSource: 'wizard-construir',
-    });
+    await submitWizard(buildArgs([answers[1], answers[2], answers[3], answers[4]]));
   });
 
   function buildPrompt(solucao: string, stack: string, restricao: string, destinatario: string): string {

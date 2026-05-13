@@ -1,0 +1,314 @@
+---
+/**
+ * ConstruirCinematic — travessia do Vale da Morte da inovação pública.
+ * Zona LAB (experimento) à esquerda, OPERAÇÃO (estado real) à direita;
+ * ponte de nós sendo construída no centro, marcador atravessando. Indicadores
+ * de Handoff / Descontinuidade / Rota de Fuga marcam o pacote operacional.
+ */
+---
+<div class="cn-wrap" aria-hidden="true">
+  <svg
+    viewBox="0 0 600 600"
+    preserveAspectRatio="xMidYMid meet"
+    role="presentation"
+  >
+    <defs>
+      <radialGradient id="cn-fade" cx="50%" cy="50%" r="58%">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="1"/>
+        <stop offset="55%"  stop-color="#fff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="cn-mask" maskUnits="userSpaceOnUse">
+        <rect width="600" height="600" fill="url(#cn-fade)"/>
+      </mask>
+    </defs>
+
+    <g mask="url(#cn-mask)">
+      <!-- ── Grade lat/long ── -->
+      <g class="cn-grid">
+        <line x1="100" y1="0" x2="100" y2="600"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="300" y1="0" x2="300" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="500" y1="0" x2="500" y2="600"/>
+        <line x1="0" y1="100" x2="600" y2="100"/>
+        <line x1="0" y1="200" x2="600" y2="200"/>
+        <line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="0" y1="400" x2="600" y2="400"/>
+        <line x1="0" y1="500" x2="600" y2="500"/>
+      </g>
+
+      <!-- ── Header band ── -->
+      <text class="cn-mono cn-label" x="40" y="50">TRANSIÇÃO · VALE DA MORTE</text>
+      <text class="cn-mono cn-label--dim" x="560" y="50" text-anchor="end">MARCO STARTUPS · LC 182/21</text>
+      <line class="cn-rule" x1="40" y1="66" x2="560" y2="66"/>
+
+      <!-- ── Zona LAB ── -->
+      <g class="cn-zone cn-zone--lab">
+        <rect class="cn-zone-wash" x="40" y="106" width="170" height="346" rx="6"/>
+        <text class="cn-zone-label" x="48" y="126">LAB · EXPERIMENTO</text>
+        <text class="cn-zone-meta"  x="202" y="126" text-anchor="end">VALIDADO</text>
+
+        <rect class="cn-cell cn-cell--lab" x="50" y="142" width="150" height="68" rx="3" style="animation-delay:0s"/>
+        <rect class="cn-cell cn-cell--lab" x="50" y="222" width="150" height="68" rx="3" style="animation-delay:-2s"/>
+        <rect class="cn-cell cn-cell--lab" x="50" y="302" width="150" height="68" rx="3" style="animation-delay:-4s"/>
+        <rect class="cn-cell cn-cell--lab" x="50" y="382" width="150" height="68" rx="3" style="animation-delay:-6s"/>
+      </g>
+
+      <!-- ── Zona OPERAÇÃO ── -->
+      <g class="cn-zone cn-zone--ops">
+        <rect class="cn-zone-wash" x="390" y="106" width="170" height="346" rx="6"/>
+        <text class="cn-zone-label" x="398" y="126">OPERAÇÃO · ESTADO REAL</text>
+        <text class="cn-zone-meta"  x="552" y="126" text-anchor="end">PRONTO</text>
+
+        <rect class="cn-cell cn-cell--ops" x="400" y="142" width="150" height="68" rx="3" style="animation-delay:-1s"/>
+        <rect class="cn-cell cn-cell--ops" x="400" y="222" width="150" height="68" rx="3" style="animation-delay:-3s"/>
+        <rect class="cn-cell cn-cell--ops" x="400" y="302" width="150" height="68" rx="3" style="animation-delay:-5s"/>
+        <rect class="cn-cell cn-cell--ops" x="400" y="382" width="150" height="68" rx="3" style="animation-delay:-7s"/>
+      </g>
+
+      <!-- ── Ponte · vale ── -->
+      <g class="cn-bridge">
+        <!-- Track de base (hairline tracejada) -->
+        <line class="cn-bridge-track" x1="210" y1="280" x2="390" y2="280"/>
+        <!-- Path para o marcador -->
+        <path id="cn-bridge-path" d="M210,280 L390,280" fill="none" stroke="none"/>
+        <!-- Nós sendo construídos -->
+        <circle class="cn-bridge-node" cx="232" cy="280" r="3" style="animation-delay:0s"/>
+        <circle class="cn-bridge-node" cx="258" cy="280" r="3" style="animation-delay:-1.1s"/>
+        <circle class="cn-bridge-node" cx="284" cy="280" r="3" style="animation-delay:-2.2s"/>
+        <circle class="cn-bridge-node" cx="310" cy="280" r="3" style="animation-delay:-3.3s"/>
+        <circle class="cn-bridge-node" cx="336" cy="280" r="3" style="animation-delay:-4.4s"/>
+        <circle class="cn-bridge-node" cx="362" cy="280" r="3" style="animation-delay:-5.5s"/>
+      </g>
+
+      <!-- Label do vale -->
+      <text class="cn-vale-label" x="300" y="310" text-anchor="middle">VALE DA MORTE</text>
+      <text class="cn-vale-flow"  x="300" y="328" text-anchor="middle">LAB &nbsp;→&nbsp; OPS</text>
+
+      <!-- ── Marcador atravessando a ponte ── -->
+      <g class="cn-runner">
+        <circle r="11"  class="cn-runner-ring"/>
+        <circle r="3"   class="cn-runner-dot"/>
+        <animateMotion
+          dur="11s"
+          repeatCount="indefinite"
+          calcMode="linear"
+        >
+          <mpath href="#cn-bridge-path"/>
+        </animateMotion>
+      </g>
+
+      <!-- ── Indicadores de pacote operacional ── -->
+      <g class="cn-pack">
+        <line class="cn-pack-rule" x1="40" y1="494" x2="560" y2="494"/>
+
+        <g class="cn-tick" style="animation-delay:-0s">
+          <rect x="60"  y="510" width="120" height="22" rx="3"/>
+          <text class="cn-tick-label" x="120" y="525" text-anchor="middle">HANDOFF</text>
+        </g>
+        <g class="cn-tick" style="animation-delay:-1.4s">
+          <rect x="240" y="510" width="120" height="22" rx="3"/>
+          <text class="cn-tick-label" x="300" y="525" text-anchor="middle">DESCONTINUIDADE</text>
+        </g>
+        <g class="cn-tick" style="animation-delay:-2.8s">
+          <rect x="420" y="510" width="120" height="22" rx="3"/>
+          <text class="cn-tick-label" x="480" y="525" text-anchor="middle">ROTA DE FUGA</text>
+        </g>
+      </g>
+
+      <!-- ── Footer técnico ── -->
+      <text class="cn-coords" x="40" y="572">CPSI · ETEC · SANDBOX</text>
+      <text class="cn-coords cn-coords--dim" x="560" y="572" text-anchor="end">PACOTE OPERACIONAL · 3</text>
+    </g>
+
+    <rect class="cn-frame" x="0.5" y="0.5" width="599" height="599" fill="none"/>
+  </svg>
+</div>
+
+<style>
+  .cn-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .cn-wrap svg {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-48%);
+    width: clamp(420px, 52vw, 640px);
+    height: clamp(420px, 52vw, 640px);
+    opacity: 0.85;
+    color: var(--signal);
+  }
+
+  /* ── Grade ── */
+  .cn-grid line {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Tipografia técnica ── */
+  .cn-mono {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .cn-label     { fill: var(--signal); }
+  .cn-label--dim { fill: var(--fg-30); }
+  .cn-rule {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Zonas (washes) ── */
+  .cn-zone-wash {
+    fill: var(--signal);
+    fill-opacity: 0.03;
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .cn-zone-label {
+    fill: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .cn-zone-meta {
+    fill: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    fill-opacity: 0.7;
+  }
+  .cn-zone--ops .cn-zone-meta { fill: var(--fg-65); fill-opacity: 0.9; }
+
+  /* ── Cells ── */
+  .cn-cell {
+    fill: var(--fg-10);
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    animation: cn-cell-pulse 8s ease-in-out infinite;
+  }
+  @keyframes cn-cell-pulse {
+    0%, 100% { fill: var(--fg-10);     stroke: var(--fg-14); }
+    8%       { fill: var(--signal);    fill-opacity: 0.65; stroke: var(--signal); stroke-opacity: 0.4; }
+    22%      { fill: var(--signal);    fill-opacity: 0.32; }
+    50%      { fill: var(--fg-14);     fill-opacity: 1; }
+  }
+
+  /* ── Ponte ── */
+  .cn-bridge-track {
+    stroke: var(--fg-22);
+    stroke-width: 0.7;
+    stroke-dasharray: 3 5;
+    vector-effect: non-scaling-stroke;
+  }
+  .cn-bridge-node {
+    fill: var(--fg-22);
+    animation: cn-node-pulse 7s ease-in-out infinite;
+  }
+  @keyframes cn-node-pulse {
+    0%, 100% { fill: var(--fg-22); }
+    8%, 18%  { fill: var(--signal); fill-opacity: 0.85; }
+    32%      { fill: var(--signal); fill-opacity: 0.4; }
+  }
+
+  /* ── Labels do vale ── */
+  .cn-vale-label {
+    fill: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    fill-opacity: 0.7;
+  }
+  .cn-vale-flow {
+    fill: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+  }
+
+  /* ── Runner ── */
+  .cn-runner-dot { fill: var(--signal); }
+  .cn-runner-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-opacity: 0.55;
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+    animation: cn-runner-ring 1.6s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes cn-runner-ring {
+    0%   { transform: scale(0.4); stroke-opacity: 0.75; }
+    100% { transform: scale(1.9); stroke-opacity: 0; }
+  }
+
+  /* ── Pacote operacional (3 ticks) ── */
+  .cn-pack-rule {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .cn-tick rect {
+    fill: var(--fg-10);
+    stroke: var(--fg-22);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    animation: cn-tick-pulse 7s ease-in-out infinite;
+  }
+  @keyframes cn-tick-pulse {
+    0%, 100% { fill: var(--fg-10);   stroke: var(--fg-22); }
+    10%, 22% { fill: var(--signal);  fill-opacity: 0.22; stroke: var(--signal); stroke-opacity: 0.5; }
+    45%      { fill: var(--fg-14); }
+  }
+  .cn-tick-label {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* ── Coords ── */
+  .cn-coords {
+    fill: var(--fg-30);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+  }
+  .cn-coords--dim { fill: var(--fg-22); }
+
+  /* ── Frame externo ── */
+  .cn-frame {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 720px) {
+    .cn-wrap { display: none; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .cn-cell, .cn-bridge-node, .cn-runner-ring, .cn-tick rect {
+      animation: none;
+    }
+  }
+</style>

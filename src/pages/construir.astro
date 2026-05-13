@@ -1,25 +1,821 @@
 ---
-import VerbLanding from '../components/VerbLanding.astro';
+import Base from '../layouts/Base.astro';
+import ConstruirCinematic from '../components/landing/ConstruirCinematic.astro';
+
+const SPRINT_HREF = '/construir/sprint';
 ---
-<VerbLanding
-  verb="Construir"
-  id="04"
-  headline="Da ideia ao protótipo — e do protótipo à operação."
-  body="Assistentes, dashboards e automações sem fila de TI. Você descreve Solução · Stack · Restrição TI · Destinatário; a Jô devolve Plano de Implementação + Termo de Cooperação Técnica + Plano de Handoff e Descontinuidade — fechando a porta de saída segundo o Guia AGU."
-  pull="O lab entrega e atravessa."
-  ctaHref="/construir/sprint"
-  ctaLabel="Iniciar Plano →"
-  doesList={[
-    'Posiciona o caso na cadeia Vale da Morte: Sandbox Regulatório · CPSI · Encomenda Tecnológica.',
-    'Redige Plano de Implementação Técnica + minuta de Termo de Cooperação Técnica para a unidade executora.',
-    'Inclui Plano de Descontinuidade Planejada (falha) e Transição para Regulação Plena (sucesso) — Guia AGU.',
-    'Recusa redigir se a unidade executora destinatária não estiver claramente declarada.',
-  ]}
-  doesNotList={[
-    'Não desenha blueprint metodológico ou plano de fases (isso é Estruturar).',
-    'Não redige minuta jurídica isolada (isso é Formalizar).',
-    'Não propõe indicador de outcome ou Teoria de Mudança.',
-    'Não monta narrativa de defesa institucional.',
-  ]}
-  meta="Guia Referencial de Sandbox Regulatório (AGU) · CPSI (Lei 14.133/2021) · Encomenda Tecnológica (art. 27 da Lei 10.973/2004)"
-/>
+<Base
+  title="Construir · Onde o experimento encontra o Estado real · Alavanca"
+  description="Transforme protótipos em operações implementáveis. O módulo Construir atravessa o Vale da Morte da inovação pública — Plano de Implementação Técnica, Termo de Cooperação e Plano de Handoff/Descontinuidade."
+  bodyClass="film-grain"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="m-hero">
+    <ConstruirCinematic />
+    <div class="container">
+      <div class="m-eyebrow animate-in">
+        <span class="m-eyebrow-id">/ 04</span>
+        <span class="m-eyebrow-line"></span>
+        <span class="m-eyebrow-tag">II · Aplicação · Autoria operacional</span>
+      </div>
+
+      <h1 class="m-verb animate-in delay-100">Construir.</h1>
+
+      <p class="m-hero-headline animate-in delay-180">
+        Onde o experimento deixa o laboratório e encontra o Estado real.
+      </p>
+
+      <p class="m-hero-body animate-in delay-260">
+        Transforme protótipos em operações implementáveis. O módulo Construir
+        atravessa o momento mais crítico da inovação governamental: a
+        transição entre validação experimental e execução institucional.
+      </p>
+
+      <p class="m-hero-body m-hero-body--soft animate-in delay-340">
+        Construir não é apenas desenvolver tecnologia.
+        <strong>É preparar uma solução para sobreviver fora do laboratório.</strong>
+      </p>
+
+      <div class="m-hero-cta animate-in delay-420">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary">
+          Iniciar Construção com a Jô →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POR QUE CONSTRUIR
+       ============================================================ -->
+  <section class="m-section m-section--why">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Por que Construir</div>
+        <h2 class="m-section-headline">
+          A maior parte das iniciativas não morre na ideação. Morre na
+          implementação.
+        </h2>
+        <p class="m-lead">
+          É o momento em que o protótipo encontra o orçamento, a ideia encontra
+          a licitação, o experimento encontra a área finalística e a inovação
+          encontra <strong>a máquina pública real</strong>. O módulo Construir
+          existe para enfrentar o <strong>Vale da Morte</strong> da inovação
+          pública.
+        </p>
+      </div>
+
+      <div class="m-why-grid">
+        <div class="m-why-block">
+          <div class="m-why-label m-why-label--neg">↳ O Vale da Morte é onde</div>
+          <ul class="m-list m-list--neg">
+            <li>o protótipo encontra o orçamento;</li>
+            <li>a ideia encontra a licitação;</li>
+            <li>o experimento encontra a área finalística;</li>
+            <li>a inovação encontra a máquina pública real.</li>
+          </ul>
+        </div>
+
+        <div class="m-why-block">
+          <div class="m-why-label">↳ Em troca, o módulo garante</div>
+          <ul class="m-list">
+            <li>transição com responsabilidade técnica, jurídica e operacional;</li>
+            <li>posicionamento na cadeia Sandbox · CPSI · Encomenda Tecnológica;</li>
+            <li>plano de implementação com unidade executora declarada;</li>
+            <li>plano de descontinuidade pronto antes do contrato começar.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="m-pull">
+        A proposta não é acelerar qualquer implementação.<br />
+        <span class="m-pull--strong">É garantir que a transição para operação ocorra com responsabilidade técnica, jurídica e operacional.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMO A JÔ TRABALHA
+       ============================================================ -->
+  <section class="m-section m-section--jo">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Como a Jô trabalha</div>
+        <h2 class="m-section-headline">
+          Não é uma fábrica de software. É uma estruturadora de implementação
+          pública.
+        </h2>
+        <p class="m-lead">
+          A lógica parte de uma premissa simples: <strong>nenhuma inovação
+          pública está pronta enquanto não existir um plano claro de
+          implantação, transferência e desligamento.</strong>
+        </p>
+      </div>
+
+      <div class="m-method-stack">
+        <span class="m-method-label">↳ Camadas integradas</span>
+        <ul class="m-method-list">
+          <li><strong>Engenharia</strong> de implementação</li>
+          <li><strong>Governança</strong> pública</li>
+          <li><strong>Segurança</strong> jurídica</li>
+          <li><strong>Contratação</strong> de inovação</li>
+          <li><strong>Transição</strong> operacional</li>
+          <li><strong>Gestão</strong> de descontinuidade</li>
+        </ul>
+      </div>
+
+      <div class="m-pillars-grid m-pillars-grid--two">
+        <div class="m-pillar">
+          <div class="m-pillar-num">A</div>
+          <h3 class="m-pillar-title">Teses de Segurança</h3>
+          <p class="m-pillar-q">
+            Se a solução envolver tecnologia inédita, risco regulatório ou
+            contratação experimental, a Jô poderá obrigar redirecionamento
+            para instrumentos específicos: <strong>Sandbox Regulatório</strong>,
+            <strong>Encomenda Tecnológica (ETEC)</strong> ou
+            <strong>Contrato Público para Solução Inovadora (CPSI)</strong>.
+            Decisão baseada nas teses da AGU e no Marco Legal das Startups e
+            da Inovação.
+          </p>
+        </div>
+        <div class="m-pillar">
+          <div class="m-pillar-num">B</div>
+          <h3 class="m-pillar-title">Plano de Descontinuidade</h3>
+          <p class="m-pillar-q">
+            Toda inovação implementada precisa prever transferência operacional,
+            absorção institucional, encerramento seguro, reversibilidade e
+            desligamento do experimento. <strong>Se o cenário não possuir
+            estratégia mínima de handoff ou descontinuidade, a Jô bloqueia o
+            avanço da estruturação.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       O QUE VOCÊ RECEBE
+       ============================================================ -->
+  <section class="m-section m-section--deliverables">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ O que você recebe</div>
+        <h2 class="m-section-headline">
+          Um pacote operacional pronto para transição entre laboratório e
+          execução pública.
+        </h2>
+        <p class="m-lead">
+          Os documentos estruturam responsabilidades de implantação,
+          transferência entre laboratório e área finalística, estratégia de
+          sustentação, governança de operação e critérios de encerramento do
+          experimento.
+        </p>
+      </div>
+
+      <div class="m-deliv-grid">
+        <div>
+          <div class="m-deliv-label">↳ Pacote operacional</div>
+          <ul class="m-deliv-list">
+            <li>
+              <h3>Plano de Implementação Técnica</h3>
+              <p>Stack, restrições TI, integrações com sistemas legados e responsabilidades de implantação.</p>
+            </li>
+            <li>
+              <h3>Termo de Cooperação Técnica</h3>
+              <p>Minuta institucional entre laboratório e unidade executora finalística.</p>
+            </li>
+            <li>
+              <h3>Plano de Handoff e Descontinuidade</h3>
+              <p>
+                Transferência operacional, governança de sustentação e
+                <strong>rota de fuga</strong> — como desligar sem paralisar o
+                Estado.
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="m-deliv-label m-deliv-label--neg">↳ Conforme o cenário, a Jô também pode indicar</div>
+          <ul class="m-list m-list--neg">
+            <li>necessidade de contratação especial;</li>
+            <li>inadequação do modelo de aquisição;</li>
+            <li>ausência de maturidade operacional;</li>
+            <li>risco de aprisionamento tecnológico;</li>
+            <li>inviabilidade de escalabilidade;</li>
+            <li>ausência de estratégia de desligamento.</li>
+          </ul>
+          <p class="m-deliv-quote">
+            <em>Nem todo protótipo deve virar operação pública.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INICIE SUA CONSTRUÇÃO — VITRINE DAS 4 PERGUNTAS
+       ============================================================ -->
+  <section class="m-section m-section--start" id="iniciar">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Inicie sua construção</div>
+        <h2 class="m-section-headline">
+          A implementação exige clareza técnica, operacional e institucional.
+        </h2>
+        <p class="m-lead">
+          Respostas vagas impedirão a geração dos instrumentos de transição.
+          Quando clicar em <strong>Submeter</strong>, você é levado à conversa
+          guiada — uma pergunta por vez, com chips de apoio e validação.
+        </p>
+      </div>
+
+      <div class="m-preview-grid">
+        <article class="m-preview-card">
+          <div class="m-preview-num">01</div>
+          <h3 class="m-preview-title">A Solução Validada</h3>
+          <p class="m-preview-q">
+            O que foi testado no laboratório e agora precisa virar uma operação
+            real?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Assistente de IA para apoiar a triagem inicial de pedidos
+              de aposentadoria, validado com 20 servidores no último sprint."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">02</div>
+          <h3 class="m-preview-title">A Engenharia e as Restrições (TI)</h3>
+          <p class="m-preview-q">
+            Qual tecnologia está envolvida e quais são os gargalos de
+            integração com os sistemas legados do órgão?
+            <span class="m-preview-q-aside">É com base nessa resposta que a Jô recomenda Sandbox · CPSI · ETEC ou implementação convencional.</span>
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"IA generativa em nuvem precisará consumir dados de um
+              sistema legado on-premise sem API documentada e com restrições
+              rígidas de segurança."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">03</div>
+          <h3 class="m-preview-title">A Operação de Destino (Handoff)</h3>
+          <p class="m-preview-q">
+            Qual área, unidade finalística ou equipe assumirá a rotina e a
+            manutenção da solução após o laboratório sair de cena?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"A Coordenação de Atendimento assumirá o uso diário, com o
+              suporte técnico repassado para a equipe de TI institucional."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">04</div>
+          <h3 class="m-preview-title">A Rota de Fuga (Descontinuidade)</h3>
+          <p class="m-preview-q">
+            Se a tecnologia falhar ou o contrato acabar, como o projeto será
+            desligado sem paralisar o Estado?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"O fluxo de triagem manual no SEI continuará como
+              contingência. A IA será consultiva e poderá ser desligada sem
+              interromper a operação."</em>
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="m-submit-block">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary m-cta-large">
+          Submeter Construção à Jô →
+        </a>
+        <p class="m-submit-note">
+          A partir daqui, a Jô inicia a conversa guiada para estruturar
+          tecnicamente a transição entre experimento e operação pública.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RODAPÉ
+       ============================================================ -->
+  <section class="m-bottom">
+    <div class="container">
+      <a href="/aplicacao" class="m-back">↩ voltar pra Aplicação</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .container { max-width: 920px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .m-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 88px;
+  }
+  .m-hero > .container { position: relative; z-index: 1; }
+
+  .m-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .m-eyebrow-id { color: var(--amber); }
+  .m-eyebrow-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+
+  .m-verb {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .m-hero-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    max-width: 640px;
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .m-hero-body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 580px;
+    margin-bottom: 16px;
+  }
+  .m-hero-body--soft { color: var(--fg-65); }
+  .m-hero-body strong { color: var(--fg); font-weight: 500; }
+
+  .m-hero-cta { margin-top: 36px; }
+
+  /* ============================================================
+     SECTIONS · BASE
+     ============================================================ */
+  .m-section {
+    position: relative;
+    padding: 88px 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-section--why          { background: rgba(0, 0, 0, 0.18); }
+  .m-section--deliverables { background: rgba(0, 0, 0, 0.18); }
+
+  .m-section-head { max-width: 720px; margin-bottom: 52px; }
+
+  .m-section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+  }
+
+  .m-section-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .m-lead {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--fg-86);
+    max-width: 640px;
+  }
+  .m-lead strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     LISTS
+     ============================================================ */
+  .m-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .m-list li {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    padding-left: 18px;
+    position: relative;
+  }
+  .m-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .m-list--neg li { color: var(--fg-50); }
+  .m-list--neg li::before { color: var(--fg-22); }
+
+  /* ============================================================
+     POR QUE · GRID
+     ============================================================ */
+  .m-why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+  .m-why-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-why-label--neg { color: var(--fg-50); }
+
+  .m-pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-86);
+    max-width: 640px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-pull--strong { color: var(--amber); }
+
+  /* ============================================================
+     MÉTODO STACK
+     ============================================================ */
+  .m-method-stack {
+    margin-bottom: 44px;
+    padding: 20px 0;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+  }
+  .m-method-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+  .m-method-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+  .m-method-list li {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--fg-65);
+  }
+  .m-method-list strong {
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ============================================================
+     PILARES
+     ============================================================ */
+  .m-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .m-pillars-grid--two {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .m-pillar {
+    position: relative;
+    padding: 26px 24px 28px;
+    border: 0.5px solid var(--fg-14);
+    background: rgba(245, 242, 235, 0.025);
+    border-radius: 10px;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .m-pillar:hover {
+    border-color: var(--fg-30);
+    background: rgba(245, 242, 235, 0.04);
+  }
+  .m-pillar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-pillar-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-pillar-q {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+  .m-pillar-q strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     DELIVERABLES
+     ============================================================ */
+  .m-deliv-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .m-deliv-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-deliv-label--neg { color: var(--fg-50); }
+  .m-deliv-quote {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--amber);
+  }
+  .m-deliv-quote em { font-style: italic; }
+
+  .m-deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .m-deliv-list li {
+    position: relative;
+    padding-left: 24px;
+  }
+  .m-deliv-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 14px;
+    height: 0.5px;
+    background: var(--amber);
+  }
+  .m-deliv-list h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+  .m-deliv-list p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-deliv-list strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     INICIAR · VITRINE
+     ============================================================ */
+  .m-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 56px;
+  }
+  .m-preview-card {
+    position: relative;
+    padding: 28px 26px 26px;
+    border: 0.5px solid var(--fg-22);
+    background: rgba(245, 242, 235, 0.03);
+    border-radius: 12px;
+    transition: border-color 200ms ease, background 200ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-preview-card:hover {
+    border-color: var(--amber-faint);
+    background: rgba(245, 242, 235, 0.05);
+  }
+  .m-preview-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-preview-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.014em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-preview-q {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    margin-bottom: 20px;
+  }
+  .m-preview-q-aside {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--fg-65);
+  }
+  .m-preview-eg {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-left: 2px solid var(--amber-faint);
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 0 6px 6px 0;
+  }
+  .m-preview-eg-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 8px;
+  }
+  .m-preview-eg p {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-preview-eg em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg-86);
+  }
+
+  .m-submit-block {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-submit-note {
+    margin-top: 22px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ============================================================
+     CTAs
+     ============================================================ */
+  .m-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .m-cta-primary {
+    color: var(--bg);
+    background: var(--amber);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+  .m-cta-primary:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 28px -10px oklch(0.82 0.155 78 / 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+  .m-cta-large {
+    padding: 16px 34px;
+    font-size: 15px;
+  }
+
+  /* ============================================================
+     RODAPÉ
+     ============================================================ */
+  .m-bottom { padding: 48px 0 80px; }
+  .m-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .m-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 880px) {
+    .m-pillars-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .m-hero { padding: 72px 0 64px; }
+    .m-section { padding: 64px 0; }
+    .m-section-head { margin-bottom: 36px; }
+    .m-why-grid,
+    .m-deliv-grid,
+    .m-preview-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .m-pillars-grid,
+    .m-pillars-grid--two { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackBar from '../../components/BackBar.astro';
 ---
 <Base
   title="Política de Inovação · Formalizar · Alavanca"
@@ -108,6 +109,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="3" rows="6" maxlength="800" placeholder="Ex: missão de pesquisa e desenvolvimento de soluções tecnológicas aplicadas à prestação de serviços previdenciários ao cidadão; linhas prioritárias: automação conversacional, analítica preditiva, redesenho de fluxos. Princípios: centralidade no cidadão, transparência, abertura à cooperação com universidades, empresas e demais ICTs."></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 800</div>
+      <div data-chip-palette="3"></div>
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
         <button class="cta cta-primary" data-step-next="3" disabled>Continuar →</button>
@@ -123,6 +125,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="4" rows="6" maxlength="900" placeholder="Ex: titularidade preferencial da ICT, admitida cotitularidade em parcerias formalizadas com universidades; licenciamento não-exclusivo como modalidade padrão, exclusivo apenas mediante deliberação fundamentada do NIT; atendimento a inventor independente conforme art. 22 da Lei 10.973; compartilhamento de infraestrutura mediante acordo prévio com previsão de contrapartidas."></textarea>
       <div class="step-counter"><span data-step-counter="4">0</span> / 900</div>
+      <div data-chip-palette="4"></div>
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
         <button class="cta cta-primary" data-step-next="4" disabled>Continuar →</button>
@@ -140,6 +143,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="5" rows="6" maxlength="900" placeholder="Ex: percentual de participação dos inventores entre 10% (piso institucional) e 1/3 (teto legal do art. 13), com ajuste por mérito decidido pela direção. FORMICT preenchido anualmente pelo NIT (status de pedidos de PI, contratos de transferência, ganhos econômicos, partilha aos inventores). Governança de conflito: declaração obrigatória de interesses econômicos pelos pesquisadores envolvidos em contratos comerciais."></textarea>
       <div class="step-counter"><span data-step-counter="5">0</span> / 900</div>
+      <div data-chip-palette="5"></div>
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="5">← Voltar</button>
         <button class="cta cta-primary cta-large" data-generate disabled>Gerar Política de Inovação →</button>
@@ -167,6 +171,8 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>
 
 <style>
@@ -236,6 +242,8 @@ import Base from '../../layouts/Base.astro';
 </style>
 
 <script>
+  import { attachChipPalette } from '../../lib/wizard/chips';
+  import { FORMALIZAR_POLITICA_INOVACAO_PALETTES } from '../../lib/wizard/chip-palettes';
   type StepNum = 1 | 2 | 3 | 4 | 5;
   const STATE_KEY = 'alavanca:wizard-state-formalizar-politica-inovacao';
   const MODE = 'formalizar';
@@ -287,6 +295,11 @@ import Base from '../../layouts/Base.astro';
   // T3-T5 · Textareas
   ([3, 4, 5] as const).forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const chipContainer = document.querySelector<HTMLDivElement>(`[data-chip-palette="${n}"]`);
+    const palette = FORMALIZAR_POLITICA_INOVACAO_PALETTES[n - 1];
+    if (chipContainer && palette) {
+      attachChipPalette({ container: chipContainer, textarea: input, palette });
+    }
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
     const nextBtn = document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) || (n === 5 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
     function refresh() { const val = input.value.trim(); answers[n] = val; counter.textContent = String(input.value.length); if (nextBtn) nextBtn.disabled = val.length < 20; }
@@ -358,4 +371,6 @@ import Base from '../../layouts/Base.astro';
   restoreState();
   showStep(1);
 </script>
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>

@@ -34,13 +34,41 @@ export interface JoRelatorio {
 // pra renderizar badges enquanto o conteúdo principal ainda chega.
 export type JoRelatorioHeader = Omit<JoRelatorio, 'markdown'>;
 
-export type JoStructuredResponse = JoDevolucao | JoRelatorio;
+// ============================================================
+// JoPlan · arquitetura sections-first (substitui JoRelatorio pra docs longos)
+// ----------------------------------------------------------------
+// Em vez do `markdown` longo dentro de UMA string JSON (frágil ao timeout),
+// o documento é descrito por: metadata curta + lista de seções vazias. Cada
+// seção é depois preenchida via /api/journey/section em call separada.
+// Timeout afeta UMA seção, não o documento inteiro.
+// ============================================================
+export type JoSectionStatus = 'pending' | 'streaming' | 'done' | 'partial' | 'error';
+
+export interface JoSection {
+  id: string;             // slug estável (ex: 'fase-1-entender')
+  title: string;          // título exibido (ex: 'Fase 1 — Entender')
+  status: JoSectionStatus;
+  markdown: string;       // vazio enquanto pending; preenchido após /section
+  updatedAt?: string;
+}
+
+export interface JoPlan {
+  type: 'plan';
+  title: string;          // título do documento (ex: 'Blueprint do Sprint — <problema>')
+  summary: string;        // ≤200 chars, alimenta [CONTEXTO_PRÉVIO]
+  goNoGo?: GoNoGo;        // opcional — Mapear usa, Estruturar não
+  route_order?: Verb[];   // opcional — verbos seguintes recomendados
+  diagnostic_tags?: string[]; // opcional — só Mapear preenche
+  sections: JoSection[];
+}
+
+export type JoStructuredResponse = JoDevolucao | JoRelatorio | JoPlan;
 
 // Modos cujo system prompt deve devolver JSON estruturado. Frontend ativa
 // detector / parser incremental só pra estes; demais seguem markdown comum.
 // Quando Carla atualizar o prompt de outro verbo pra devolver JSON, adicionar
 // aqui — sem mais código.
-export const STRUCTURED_MODES: ReadonlySet<string> = new Set<string>(['mapear']);
+export const STRUCTURED_MODES: ReadonlySet<string> = new Set<string>(['mapear', 'estruturar', 'avaliar', 'construir', 'manter']);
 
 const GONOGO_VALUES: ReadonlySet<GoNoGo> = new Set<GoNoGo>(['GO', 'GO_MITIGATION', 'NO_GO']);
 const VERB_VALUES: ReadonlySet<Verb> = new Set<Verb>([
@@ -149,6 +177,39 @@ export function validateJoStructured(raw: unknown): JoStructuredResponse | null 
       diagnostic_tags: asStringList(obj.diagnostic_tags),
       summary: asString(obj.summary),
       markdown,
+    };
+  }
+
+  if (obj.type === 'plan') {
+    const title = asString(obj.title);
+    const sectionsRaw = Array.isArray(obj.sections) ? obj.sections : [];
+    const sections: JoSection[] = sectionsRaw
+      .filter((s): s is Record<string, unknown> => typeof s === 'object' && s !== null)
+      .map((s) => ({
+        id: asString(s.id),
+        title: asString(s.title),
+        status: (typeof s.status === 'string' && ['pending', 'streaming', 'done', 'partial', 'error'].includes(s.status))
+          ? (s.status as JoSectionStatus)
+          : 'pending',
+        markdown: asString(s.markdown),
+        updatedAt: typeof s.updatedAt === 'string' ? s.updatedAt : undefined,
+      }))
+      .filter((s) => s.id.length > 0 && s.title.length > 0);
+
+    if (title.length === 0 || sections.length === 0) return null;
+
+    const goNoGoCand = typeof obj.goNoGo === 'string' && GONOGO_VALUES.has(obj.goNoGo as GoNoGo)
+      ? (obj.goNoGo as GoNoGo)
+      : undefined;
+
+    return {
+      type: 'plan',
+      title,
+      summary: asString(obj.summary),
+      goNoGo: goNoGoCand,
+      route_order: obj.route_order !== undefined ? asVerbList(obj.route_order) : undefined,
+      diagnostic_tags: obj.diagnostic_tags !== undefined ? asStringList(obj.diagnostic_tags) : undefined,
+      sections,
     };
   }
 

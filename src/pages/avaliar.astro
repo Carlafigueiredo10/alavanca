@@ -1,25 +1,864 @@
 ---
-import VerbLanding from '../components/VerbLanding.astro';
+import Base from '../layouts/Base.astro';
+import AvaliarCinematic from '../components/landing/AvaliarCinematic.astro';
+
+const SPRINT_HREF = '/avaliar/sprint';
 ---
-<VerbLanding
-  verb="Avaliar"
-  id="05"
-  headline="Do achismo à prova de valor público — em quatro dimensões."
-  body="IA desenha Teoria de Mudança e organiza Matriz de Indicadores classificando cada linha entre Administrativa · Cidadã · Societal · Econômica (Fuglsang et al., 2021), com Justificativa de Enquadramento explicando o porquê de cada classificação. Letramento institucional, anti-caixa-preta. Você descreve Intervenção · Outcome · Dados; a Jô devolve Plano de Avaliação SEI-Ready com salvaguarda anti-viés."
-  pull="O que mostra valor sobrevive ao próximo corte."
-  ctaHref="/avaliar/sprint"
-  ctaLabel="Iniciar Teoria de Mudança →"
-  doesList={[
-    'Explicita a Teoria de Mudança em cadeia (insumos → atividades → outputs → outcomes → impacto).',
-    'Classifica cada indicador em uma das 4 dimensões de Valor Público (Administrativa · Cidadã · Societal · Econômica) e escreve a Justificativa de Enquadramento — a Jô explica por que aquele resultado impacta aquela dimensão.',
-    'Aplica Critérios DAC da OCDE pertinentes e propõe Matriz SMART com fontes e instrumentos nominados.',
-    'Calibra anti-alucinação: em backoffice, foca Administrativa + Econômica (não força cidadã); em serviço-fim, exige pelo menos uma Cidadã ou Societal.',
-  ]}
-  doesNotList={[
-    'Não propõe KPIs de gestão do laboratório (vaidade) sem indicador de outcome ao lado.',
-    'Não redige Briefing Executivo nem Dossiê de Transição (isso é Manter).',
-    'Não monta dashboard de impacto histórico acumulado (isso é Manter).',
-    'Não desenha intervenção nova (isso é Estruturar / Construir).',
-  ]}
-  meta="Theory of Change (Kellogg/ActKnowledge) · Critérios DAC da OCDE · Indicadores SMART · 4 Dimensões de Valor Público (Fuglsang et al., 2021)"
-/>
+<Base
+  title="Avaliar · Onde inovação deixa de ser narrativa · Alavanca"
+  description="Transforme iniciativas experimentais em evidência mensurável de impacto. O módulo Avaliar estrutura Teoria de Mudança e Matriz de Indicadores nas 3 dimensões obrigatórias — Administrativa, Cidadã, Econômica."
+  bodyClass="film-grain"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="m-hero">
+    <AvaliarCinematic />
+    <div class="container">
+      <div class="m-eyebrow animate-in">
+        <span class="m-eyebrow-id">/ 05</span>
+        <span class="m-eyebrow-line"></span>
+        <span class="m-eyebrow-tag">II · Aplicação · Evidência de impacto</span>
+      </div>
+
+      <h1 class="m-verb animate-in delay-100">Avaliar.</h1>
+
+      <p class="m-hero-headline animate-in delay-180">
+        Onde inovação deixa de ser narrativa e passa a demonstrar valor público.
+      </p>
+
+      <p class="m-hero-body animate-in delay-260">
+        Transforme iniciativas experimentais em evidência mensurável de
+        impacto. O módulo Avaliar ajuda laboratórios públicos a diferenciar
+        atividade operacional de transformação real.
+      </p>
+
+      <p class="m-hero-body m-hero-body--soft animate-in delay-340">
+        Avaliar não é medir volume de entregas.
+        <strong>É demonstrar mudança concreta produzida pelo projeto.</strong>
+      </p>
+
+      <div class="m-hero-cta animate-in delay-420">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary">
+          Iniciar Avaliação com a Jô →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POR QUE AVALIAR
+       ============================================================ -->
+  <section class="m-section m-section--why">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Por que Avaliar</div>
+        <h2 class="m-section-headline">
+          Esforço não é impacto.
+        </h2>
+        <p class="m-lead">
+          Grande parte das iniciativas mede apenas esforço — quantidade de
+          oficinas, número de reuniões, volume de capacitações. O módulo
+          Avaliar existe para impedir que <strong>métricas de vaidade</strong>
+          sejam confundidas com geração real de valor público.
+        </p>
+        <p class="m-lead m-lead--quote">
+          A pergunta da Jô é simples: <em>o que efetivamente mudou para o
+          cidadão, para o Estado ou para a sustentabilidade econômica da
+          política pública?</em>
+        </p>
+      </div>
+
+      <div class="m-why-grid">
+        <div class="m-why-block">
+          <div class="m-why-label m-why-label--neg">↳ Métricas de vaidade</div>
+          <ul class="m-list m-list--neg">
+            <li>quantidade de oficinas realizadas;</li>
+            <li>número de reuniões e workshops;</li>
+            <li>volume de pessoas capacitadas;</li>
+            <li>quantidade de entregas operacionais.</li>
+          </ul>
+        </div>
+
+        <div class="m-why-block">
+          <div class="m-why-label">↳ Evidência utilizável</div>
+          <ul class="m-list">
+            <li>redução de tempo, retrabalho ou custo operacional;</li>
+            <li>melhora perceptível na experiência do usuário final;</li>
+            <li>economia ou eficiência sustentável de recursos públicos;</li>
+            <li>diferença concreta entre antes e depois da intervenção.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="m-pull">
+        A proposta não é produzir relatórios decorativos.<br />
+        <span class="m-pull--strong">É construir evidência utilizável para decisão pública.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMO A JÔ TRABALHA
+       ============================================================ -->
+  <section class="m-section m-section--jo">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Como a Jô trabalha</div>
+        <h2 class="m-section-headline">
+          A Jô não avalia produtividade interna. Estrutura Teorias de Mudança.
+        </h2>
+        <p class="m-lead">
+          A lógica exige que toda iniciativa consiga explicar
+          <strong>o que foi feito</strong>, <strong>qual mudança concreta era
+          esperada</strong> e <strong>como essa mudança será observada nos
+          dados</strong>.
+        </p>
+      </div>
+
+      <div class="m-method-stack">
+        <span class="m-method-label">↳ Cadeia avaliativa</span>
+        <ul class="m-method-list">
+          <li><strong>Intervenção</strong> pública</li>
+          <li><strong>Resultados</strong> esperados</li>
+          <li><strong>Indicadores</strong> verificáveis</li>
+          <li><strong>Evidências</strong> mensuráveis</li>
+          <li><strong>Valor público</strong> gerado</li>
+        </ul>
+      </div>
+
+      <div class="m-pillars-grid m-pillars-grid--three">
+        <div class="m-pillar">
+          <div class="m-pillar-num">ADM</div>
+          <h3 class="m-pillar-title">Administrativa</h3>
+          <p class="m-pillar-q">
+            A iniciativa reduziu retrabalho, tempo, custo operacional ou
+            fricção institucional?
+          </p>
+        </div>
+        <div class="m-pillar">
+          <div class="m-pillar-num">CID</div>
+          <h3 class="m-pillar-title">Cidadã</h3>
+          <p class="m-pillar-q">
+            A experiência do usuário final melhorou de forma perceptível?
+          </p>
+        </div>
+        <div class="m-pillar">
+          <div class="m-pillar-num">ECO</div>
+          <h3 class="m-pillar-title">Econômica</h3>
+          <p class="m-pillar-q">
+            A solução gerou economia, eficiência sustentável ou melhor uso dos
+            recursos públicos?
+          </p>
+        </div>
+      </div>
+
+      <article class="m-gatekeeper">
+        <div class="m-gatekeeper-head">
+          <span class="m-gatekeeper-kind">Gatekeeper · triangulação obrigatória</span>
+        </div>
+        <p class="m-gatekeeper-body">
+          A Jô exige a <strong>triangulação do valor</strong>. Se a intervenção
+          afetar diretamente o usuário final, será obrigatório prever ao menos
+          um indicador na dimensão <strong>Cidadã</strong>. Planos focados
+          exclusivamente em eficiência interna serão sinalizados como
+          vulneráveis para defesa institucional retroativa.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       O QUE VOCÊ RECEBE
+       ============================================================ -->
+  <section class="m-section m-section--deliverables">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ O que você recebe</div>
+        <h2 class="m-section-headline">
+          Um pacote estruturado de mensuração de valor público.
+        </h2>
+        <p class="m-lead">
+          Os documentos organizam relação entre intervenção e resultado,
+          diferenciação entre atividade e outcome, evidências esperadas,
+          fontes de dados, frequência de coleta e responsáveis pela aferição.
+        </p>
+      </div>
+
+      <div class="m-deliv-grid">
+        <div>
+          <div class="m-deliv-label">↳ Pacote de mensuração</div>
+          <ul class="m-deliv-list">
+            <li>
+              <h3>Teoria de Mudança</h3>
+              <p>
+                Relação explícita entre intervenção e resultado, diferenciando
+                <strong>atividade</strong> de <strong>outcome</strong>.
+              </p>
+            </li>
+            <li>
+              <h3>Matriz de Indicadores de Valor Público</h3>
+              <p>
+                Indicadores classificados nas 3 dimensões obrigatórias
+                (Administrativa · Cidadã · Econômica), com critérios de
+                acompanhamento e evidências esperadas.
+              </p>
+            </li>
+            <li>
+              <h3>Plano de Coleta de Dados</h3>
+              <p>
+                Fontes, frequência e responsáveis pela aferição — como os
+                indicadores serão efetivamente acompanhados ao longo da
+                operação.
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="m-deliv-label m-deliv-label--neg">↳ Conforme o cenário, a Jô também pode indicar</div>
+          <ul class="m-list m-list--neg">
+            <li>ausência de evidência mensurável;</li>
+            <li>indicadores irrelevantes;</li>
+            <li>métricas de vaidade;</li>
+            <li>desconexão entre ação e impacto;</li>
+            <li>impossibilidade de avaliação consistente.</li>
+          </ul>
+          <p class="m-deliv-quote">
+            <em>Nem toda atividade produz valor público demonstrável.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INICIE SUA AVALIAÇÃO — VITRINE DAS 3 PERGUNTAS
+       ============================================================ -->
+  <section class="m-section m-section--start" id="iniciar">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Inicie sua avaliação</div>
+        <h2 class="m-section-headline">
+          Avaliar exige clareza sobre mudança real.
+        </h2>
+        <p class="m-lead">
+          Respostas vagas impedirão a estruturação da Teoria de Mudança.
+          Quando clicar em <strong>Submeter</strong>, você é levado à conversa
+          guiada — uma pergunta por vez, com chips de apoio e validação.
+        </p>
+      </div>
+
+      <div class="m-preview-grid m-preview-grid--three">
+        <article class="m-preview-card">
+          <div class="m-preview-num">01</div>
+          <h3 class="m-preview-title">A Intervenção</h3>
+          <p class="m-preview-q">
+            Qual ação, solução ou iniciativa foi implementada?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Foi implementado um assistente de linguagem simples para
+              apoiar cidadãos no preenchimento digital de pedidos
+              previdenciários."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">02</div>
+          <h3 class="m-preview-title">O Outcome Esperado</h3>
+          <p class="m-preview-q">
+            Qual mudança concreta deve acontecer se a iniciativa funcionar?
+            <span class="m-preview-q-aside">
+              "Número de oficinas realizadas" não é resultado. "Redução do
+              tempo médio de espera do cidadão" é resultado.
+            </span>
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Esperamos reduzir em 35% o abandono do formulário e
+              diminuir o tempo médio de atendimento presencial."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">03</div>
+          <h3 class="m-preview-title">Os Dados e Evidências</h3>
+          <p class="m-preview-q">
+            Quais dados permitirão comprovar que a mudança realmente aconteceu?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Taxa de abandono do formulário, tempo médio de atendimento
+              e número de retornos presenciais antes e depois da
+              intervenção."</em>
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="m-submit-block">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary m-cta-large">
+          Submeter Avaliação à Jô →
+        </a>
+        <p class="m-submit-note">
+          A partir daqui, a Jô inicia a conversa guiada para estruturar
+          tecnicamente a avaliação de valor público da iniciativa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RODAPÉ
+       ============================================================ -->
+  <section class="m-bottom">
+    <div class="container">
+      <a href="/aplicacao" class="m-back">↩ voltar pra Aplicação</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .container { max-width: 920px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .m-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 88px;
+  }
+  .m-hero > .container { position: relative; z-index: 1; }
+
+  .m-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .m-eyebrow-id { color: var(--amber); }
+  .m-eyebrow-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+
+  .m-verb {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .m-hero-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    max-width: 640px;
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .m-hero-body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 580px;
+    margin-bottom: 16px;
+  }
+  .m-hero-body--soft { color: var(--fg-65); }
+  .m-hero-body strong { color: var(--fg); font-weight: 500; }
+
+  .m-hero-cta { margin-top: 36px; }
+
+  /* ============================================================
+     SECTIONS · BASE
+     ============================================================ */
+  .m-section {
+    position: relative;
+    padding: 88px 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-section--why          { background: rgba(0, 0, 0, 0.18); }
+  .m-section--deliverables { background: rgba(0, 0, 0, 0.18); }
+
+  .m-section-head { max-width: 720px; margin-bottom: 52px; }
+
+  .m-section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+  }
+
+  .m-section-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .m-lead {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--fg-86);
+    max-width: 640px;
+  }
+  .m-lead + .m-lead { margin-top: 16px; }
+  .m-lead strong { color: var(--fg); font-weight: 500; }
+  .m-lead--quote {
+    padding-left: 18px;
+    border-left: 2px solid var(--amber-faint);
+    color: var(--fg-86);
+  }
+  .m-lead--quote em { font-style: italic; color: var(--fg); }
+
+  /* ============================================================
+     LISTS
+     ============================================================ */
+  .m-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .m-list li {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    padding-left: 18px;
+    position: relative;
+  }
+  .m-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .m-list--neg li { color: var(--fg-50); }
+  .m-list--neg li::before { color: var(--fg-22); }
+
+  /* ============================================================
+     POR QUE · GRID
+     ============================================================ */
+  .m-why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+  .m-why-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-why-label--neg { color: var(--fg-50); }
+
+  .m-pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-86);
+    max-width: 640px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-pull--strong { color: var(--amber); }
+
+  /* ============================================================
+     MÉTODO STACK
+     ============================================================ */
+  .m-method-stack {
+    margin-bottom: 44px;
+    padding: 20px 0;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+  }
+  .m-method-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+  .m-method-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+  .m-method-list li {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--fg-65);
+  }
+  .m-method-list strong {
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ============================================================
+     PILARES
+     ============================================================ */
+  .m-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .m-pillars-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  .m-pillar {
+    position: relative;
+    padding: 26px 24px 28px;
+    border: 0.5px solid var(--fg-14);
+    background: rgba(245, 242, 235, 0.025);
+    border-radius: 10px;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .m-pillar:hover {
+    border-color: var(--fg-30);
+    background: rgba(245, 242, 235, 0.04);
+  }
+  .m-pillar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-pillar-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-pillar-q {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+
+  /* ============================================================
+     GATEKEEPER
+     ============================================================ */
+  .m-gatekeeper {
+    margin-top: 16px;
+    padding: 22px 24px 24px;
+    border: 0.5px solid var(--amber-faint);
+    border-radius: 10px;
+    background: rgba(217, 119, 6, 0.05);
+  }
+  .m-gatekeeper-head {
+    margin-bottom: 12px;
+  }
+  .m-gatekeeper-kind {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .m-gatekeeper-body {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+  .m-gatekeeper-body strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     DELIVERABLES
+     ============================================================ */
+  .m-deliv-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .m-deliv-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-deliv-label--neg { color: var(--fg-50); }
+  .m-deliv-quote {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--amber);
+  }
+  .m-deliv-quote em { font-style: italic; }
+
+  .m-deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .m-deliv-list li {
+    position: relative;
+    padding-left: 24px;
+  }
+  .m-deliv-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 14px;
+    height: 0.5px;
+    background: var(--amber);
+  }
+  .m-deliv-list h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+  .m-deliv-list p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-deliv-list strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     INICIAR · VITRINE
+     ============================================================ */
+  .m-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 56px;
+  }
+  .m-preview-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .m-preview-card {
+    position: relative;
+    padding: 28px 26px 26px;
+    border: 0.5px solid var(--fg-22);
+    background: rgba(245, 242, 235, 0.03);
+    border-radius: 12px;
+    transition: border-color 200ms ease, background 200ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-preview-card:hover {
+    border-color: var(--amber-faint);
+    background: rgba(245, 242, 235, 0.05);
+  }
+  .m-preview-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-preview-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.014em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-preview-q {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    margin-bottom: 20px;
+  }
+  .m-preview-q-aside {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--fg-65);
+  }
+  .m-preview-eg {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-left: 2px solid var(--amber-faint);
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 0 6px 6px 0;
+  }
+  .m-preview-eg-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 8px;
+  }
+  .m-preview-eg p {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-preview-eg em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg-86);
+  }
+
+  .m-submit-block {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-submit-note {
+    margin-top: 22px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ============================================================
+     CTAs
+     ============================================================ */
+  .m-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .m-cta-primary {
+    color: var(--bg);
+    background: var(--amber);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+  .m-cta-primary:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 28px -10px oklch(0.82 0.155 78 / 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+  .m-cta-large {
+    padding: 16px 34px;
+    font-size: 15px;
+  }
+
+  /* ============================================================
+     RODAPÉ
+     ============================================================ */
+  .m-bottom { padding: 48px 0 80px; }
+  .m-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .m-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 880px) {
+    .m-pillars-grid { grid-template-columns: 1fr 1fr; }
+    .m-pillars-grid--three { grid-template-columns: 1fr 1fr; }
+    .m-preview-grid--three { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .m-hero { padding: 72px 0 64px; }
+    .m-section { padding: 64px 0; }
+    .m-section-head { margin-bottom: 36px; }
+    .m-why-grid,
+    .m-deliv-grid,
+    .m-preview-grid,
+    .m-preview-grid--three {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .m-pillars-grid,
+    .m-pillars-grid--three { grid-template-columns: 1fr; }
+  }
+</style>

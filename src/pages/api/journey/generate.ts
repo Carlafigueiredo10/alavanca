@@ -45,7 +45,29 @@ interface GenerateBody {
   verb?: unknown;
   wizardInput?: unknown;
   replacesArtifactId?: unknown;
+  forceGenerate?: unknown;
 }
+
+// Suffix injetado quando o user clica "Gerar mesmo assim" no overlay de
+// devolução. Instrui a Jô a NUNCA emitir devolucao e gerar o melhor doc
+// possível com o input atual, marcando lacunas explicitamente.
+const FORCE_GENERATE_SUFFIX = [
+  '',
+  '---',
+  '',
+  '# MODO FORÇADO — INPUT PARCIAL ACEITO PELO USUÁRIO',
+  '',
+  'O usuário avaliou o input atual e decidiu gerar o documento mesmo que esteja',
+  'incompleto. SOBRESCREVE qualquer instrução anterior sobre devolução.',
+  '',
+  'REGRAS NESTE MODO:',
+  '- NUNCA emita `type: "devolucao"`. SEMPRE gere `type: "plan"` (ou `type: "relatorio"`).',
+  '- Para campos com baixa confiança ou informação faltante: marque com *itálico*',
+  '  + nota `[a refinar]` no markdown da seção/campo afetado.',
+  '- NÃO invente fatos não declarados. Quando faltar dado, declare-o como pendência.',
+  '- No `summary`, mencione brevemente "input parcial — alguns elementos pendentes".',
+  '- Mantenha o resto da estrutura idêntico ao formato normal.',
+].join('\n');
 
 export const POST: APIRoute = async ({ cookies, request }) => {
   const requestId = crypto.randomUUID();
@@ -72,6 +94,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 
   const replacesArtifactId =
     typeof body.replacesArtifactId === 'string' ? body.replacesArtifactId : null;
+  const forceGenerate = body.forceGenerate === true;
 
   // 1) Jornada ativa
   const journeyRes = await getOrCreateActiveJourney(supabase, user.id);
@@ -101,7 +124,11 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 
   // Endpoint só serve modos estruturados (a UI overlay precisa do JSON).
   // structured=true ⇒ injeta contrato + ativa responseMimeType no Gemini.
-  const systemPrompt = buildSystemPrompt(verb as JoMode, undefined, contextBlock, undefined, true);
+  // forceGenerate=true ⇒ append suffix instruindo Jô a pular devolução.
+  const baseSystemPrompt = buildSystemPrompt(verb as JoMode, undefined, contextBlock, undefined, true);
+  const systemPrompt = forceGenerate
+    ? baseSystemPrompt + FORCE_GENERATE_SUFFIX
+    : baseSystemPrompt;
   const userMessage = typeof body.wizardInput === 'string'
     ? body.wizardInput
     : JSON.stringify(body.wizardInput, null, 2);
@@ -157,9 +184,10 @@ export const POST: APIRoute = async ({ cookies, request }) => {
           raw: acc,
           generatedAt: new Date().toISOString(),
         };
+        if (forceGenerate) joOutput.forceGenerate = true;
         if (structured) {
           joOutput.structured = structured;
-          if (structured.type === 'relatorio') {
+          if (structured.type === 'relatorio' || structured.type === 'plan') {
             joOutput.summary = structured.summary;
           }
         }

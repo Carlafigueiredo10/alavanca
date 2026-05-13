@@ -1,0 +1,314 @@
+---
+/**
+ * AvaliarCinematic — matriz de valor público em três dimensões.
+ * Triangulação obrigatória (Administrativa · Cidadã · Econômica) acima;
+ * cadeia causal Intervenção → Outcome → Evidência abaixo, com marcador
+ * atravessando. Estética técnica do método.
+ */
+---
+<div class="av-wrap" aria-hidden="true">
+  <svg
+    viewBox="0 0 600 600"
+    preserveAspectRatio="xMidYMid meet"
+    role="presentation"
+  >
+    <defs>
+      <radialGradient id="av-fade" cx="50%" cy="50%" r="58%">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="1"/>
+        <stop offset="55%"  stop-color="#fff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="av-mask" maskUnits="userSpaceOnUse">
+        <rect width="600" height="600" fill="url(#av-fade)"/>
+      </mask>
+    </defs>
+
+    <g mask="url(#av-mask)">
+      <!-- ── Grade lat/long ── -->
+      <g class="av-grid">
+        <line x1="100" y1="0" x2="100" y2="600"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="300" y1="0" x2="300" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="500" y1="0" x2="500" y2="600"/>
+        <line x1="0" y1="100" x2="600" y2="100"/>
+        <line x1="0" y1="200" x2="600" y2="200"/>
+        <line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="0" y1="400" x2="600" y2="400"/>
+        <line x1="0" y1="500" x2="600" y2="500"/>
+      </g>
+
+      <!-- ── Header band ── -->
+      <text class="av-mono av-label" x="40" y="50">MATRIZ VALOR PÚBLICO · 3D</text>
+      <text class="av-mono av-label--dim" x="560" y="50" text-anchor="end">TEORIA DE MUDANÇA</text>
+      <line class="av-rule" x1="40" y1="66" x2="560" y2="66"/>
+
+      <!-- ── Triângulo de dimensões ── -->
+      <!-- Vértices:
+           Cidadã    (300, 150)
+           Administ. (130, 320)
+           Econômica (470, 320) -->
+
+      <!-- Arestas (atrás dos nós) — desenho em loop -->
+      <line class="av-edge" x1="143" y1="307" x2="287" y2="163" pathLength="100" style="animation-delay:0s"/>
+      <line class="av-edge" x1="313" y1="163" x2="457" y2="307" pathLength="100" style="animation-delay:-1.6s"/>
+      <line class="av-edge" x1="148" y1="320" x2="452" y2="320" pathLength="100" style="animation-delay:-3.2s"/>
+
+      <!-- Micropoints (indicadores) dentro do triângulo -->
+      <g class="av-points">
+        <circle cx="240" cy="240" r="2" style="animation-delay:-0.4s"/>
+        <circle cx="300" cy="220" r="2" style="animation-delay:-1.0s"/>
+        <circle cx="360" cy="245" r="2" style="animation-delay:-1.6s"/>
+        <circle cx="270" cy="280" r="2" style="animation-delay:-2.2s"/>
+        <circle cx="330" cy="280" r="2" style="animation-delay:-2.8s"/>
+        <circle cx="300" cy="255" r="2" style="animation-delay:-3.4s"/>
+      </g>
+
+      <!-- Vértices: 3 dimensões -->
+      <g class="av-dim" style="animation-delay:0s">
+        <circle cx="300" cy="150" r="22" class="av-dim-ring"/>
+        <circle cx="300" cy="150" r="12" class="av-dim-core"/>
+        <text class="av-dim-label" x="300" y="118" text-anchor="middle">CIDADÃ</text>
+        <text class="av-dim-num"   x="300" y="155" text-anchor="middle">CID</text>
+      </g>
+      <g class="av-dim av-dim--alt" style="animation-delay:-2s">
+        <circle cx="130" cy="320" r="22" class="av-dim-ring"/>
+        <circle cx="130" cy="320" r="12" class="av-dim-core"/>
+        <text class="av-dim-label" x="130" y="358" text-anchor="middle">ADMINISTRATIVA</text>
+        <text class="av-dim-num"   x="130" y="325" text-anchor="middle">ADM</text>
+      </g>
+      <g class="av-dim av-dim--alt" style="animation-delay:-4s">
+        <circle cx="470" cy="320" r="22" class="av-dim-ring"/>
+        <circle cx="470" cy="320" r="12" class="av-dim-core"/>
+        <text class="av-dim-label" x="470" y="358" text-anchor="middle">ECONÔMICA</text>
+        <text class="av-dim-num"   x="470" y="325" text-anchor="middle">ECO</text>
+      </g>
+
+      <!-- ── Cadeia causal ── -->
+      <g class="av-chain">
+        <line class="av-chain-track" x1="115" y1="445" x2="485" y2="445"/>
+        <path id="av-chain-path" d="M115,445 L485,445" fill="none" stroke="none"/>
+
+        <!-- 3 nós -->
+        <circle class="av-chain-node" cx="125" cy="445" r="5" style="animation-delay:-0s"/>
+        <circle class="av-chain-node" cx="300" cy="445" r="5" style="animation-delay:-2s"/>
+        <circle class="av-chain-node" cx="475" cy="445" r="5" style="animation-delay:-4s"/>
+
+        <!-- Labels -->
+        <text class="av-chain-label" x="125" y="430" text-anchor="middle">INTERVENÇÃO</text>
+        <text class="av-chain-label" x="300" y="430" text-anchor="middle">OUTCOME</text>
+        <text class="av-chain-label" x="475" y="430" text-anchor="middle">EVIDÊNCIA</text>
+
+        <text class="av-chain-num" x="125" y="470" text-anchor="middle">01</text>
+        <text class="av-chain-num" x="300" y="470" text-anchor="middle">02</text>
+        <text class="av-chain-num" x="475" y="470" text-anchor="middle">03</text>
+      </g>
+
+      <!-- Marcador correndo a cadeia -->
+      <g class="av-runner">
+        <circle r="10" class="av-runner-ring"/>
+        <circle r="3"  class="av-runner-dot"/>
+        <animateMotion
+          dur="9s"
+          repeatCount="indefinite"
+          calcMode="linear"
+        >
+          <mpath href="#av-chain-path"/>
+        </animateMotion>
+      </g>
+
+      <!-- ── Footer técnico ── -->
+      <text class="av-coords" x="40" y="572">TRIANGULAÇÃO OBRIGATÓRIA</text>
+      <text class="av-coords av-coords--dim" x="560" y="572" text-anchor="end">DIMENSÕES · 3</text>
+    </g>
+
+    <rect class="av-frame" x="0.5" y="0.5" width="599" height="599" fill="none"/>
+  </svg>
+</div>
+
+<style>
+  .av-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .av-wrap svg {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-48%);
+    width: clamp(420px, 52vw, 640px);
+    height: clamp(420px, 52vw, 640px);
+    opacity: 0.85;
+    color: var(--signal);
+  }
+
+  /* ── Grade ── */
+  .av-grid line {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Tipografia técnica ── */
+  .av-mono {
+    fill: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .av-label     { fill: var(--signal); }
+  .av-label--dim { fill: var(--fg-30); }
+  .av-rule {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Triângulo · arestas ── */
+  .av-edge {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 0.9;
+    stroke-opacity: 0.4;
+    stroke-dasharray: 30 100;
+    vector-effect: non-scaling-stroke;
+    animation: av-edge-trace 5s linear infinite;
+  }
+  @keyframes av-edge-trace {
+    from { stroke-dashoffset: 100; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  /* ── Indicadores (dots dentro do triângulo) ── */
+  .av-points circle {
+    fill: var(--signal);
+    fill-opacity: 0.4;
+    animation: av-point-pulse 4s ease-in-out infinite;
+  }
+  @keyframes av-point-pulse {
+    0%, 100% { fill-opacity: 0.18; r: 1.5; }
+    50%      { fill-opacity: 0.75; r: 2.4; }
+  }
+  .av-points circle { transform-box: fill-box; transform-origin: center; }
+
+  /* ── Dimensões ── */
+  .av-dim-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 0.8;
+    stroke-opacity: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .av-dim-core {
+    fill: var(--signal);
+    fill-opacity: 0.25;
+    animation: av-dim-breathe 6s ease-in-out infinite;
+  }
+  .av-dim--alt .av-dim-ring { stroke-opacity: 0.4; }
+  .av-dim--alt .av-dim-core { fill-opacity: 0.18; }
+
+  @keyframes av-dim-breathe {
+    0%, 100% { fill-opacity: 0.18; }
+    14%, 26% { fill-opacity: 0.7; }
+    50%      { fill-opacity: 0.3; }
+  }
+  .av-dim-label {
+    fill: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+  }
+  .av-dim-num {
+    fill: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    fill-opacity: 0.85;
+  }
+
+  /* ── Cadeia causal ── */
+  .av-chain-track {
+    stroke: var(--fg-22);
+    stroke-width: 0.6;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+  }
+  .av-chain-node {
+    fill: var(--fg-22);
+    stroke: var(--signal);
+    stroke-width: 0.5;
+    stroke-opacity: 0.4;
+    vector-effect: non-scaling-stroke;
+    animation: av-chain-pulse 9s ease-in-out infinite;
+  }
+  @keyframes av-chain-pulse {
+    0%, 100% { fill: var(--fg-22);    stroke-opacity: 0.3; }
+    8%, 18%  { fill: var(--signal);   fill-opacity: 0.85; stroke-opacity: 0.7; }
+    32%      { fill: var(--signal);   fill-opacity: 0.4; }
+  }
+  .av-chain-label {
+    fill: var(--fg-65);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+  .av-chain-num {
+    fill: var(--fg-30);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+  }
+
+  /* ── Runner ── */
+  .av-runner-dot { fill: var(--signal); }
+  .av-runner-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-opacity: 0.55;
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+    animation: av-runner-ring 1.6s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes av-runner-ring {
+    0%   { transform: scale(0.4); stroke-opacity: 0.75; }
+    100% { transform: scale(1.9); stroke-opacity: 0; }
+  }
+
+  /* ── Coords ── */
+  .av-coords {
+    fill: var(--fg-30);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+  }
+  .av-coords--dim { fill: var(--fg-22); }
+
+  /* ── Frame externo ── */
+  .av-frame {
+    stroke: var(--fg-14);
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 720px) {
+    .av-wrap { display: none; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .av-edge,
+    .av-points circle,
+    .av-dim-core,
+    .av-chain-node,
+    .av-runner-ring {
+      animation: none;
+    }
+  }
+</style>

@@ -27,6 +27,12 @@ export interface SubmitWizardArgs {
   wizardInput: unknown;
   fallbackText: string;
   fallbackSource: string;
+  // Cadeia de versão: se este submit edita uma peça anterior, passa o id aqui.
+  // O backend persiste o novo artifact com replaces_artifact_id apontando pra ele.
+  replacesArtifactId?: string | null;
+  // Modo "gerar mesmo assim": user aceita input parcial; backend instrui a Jô
+  // a NUNCA emitir devolucao e gerar plan/relatorio mesmo com lacunas.
+  forceGenerate?: boolean;
   // refine (opcional): habilita "Reprocessar" inline na devolução. O wizard
   // entrega os valores atuais alinhados ao checklist + uma função pra
   // reconstruir args com valores editados (e sincronizar o form local).
@@ -114,7 +120,12 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
     res = await fetch('/api/journey/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ verb: args.verb, wizardInput: args.wizardInput }),
+      body: JSON.stringify({
+        verb: args.verb,
+        wizardInput: args.wizardInput,
+        replacesArtifactId: args.replacesArtifactId ?? null,
+        forceGenerate: args.forceGenerate === true,
+      }),
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'sem rede';
@@ -224,20 +235,108 @@ async function streamStructured(args: SubmitWizardArgs): Promise<void> {
         currentValues: args.refine.currentValues,
         fieldLabels: args.refine.fieldLabels,
         fieldPalettes: args.refine.fieldPalettes,
-        onResubmit: async (updated) => {
-          // Reconstrói args com os valores editados (wizard sincroniza form
-          // localmente dentro de rebuild) e re-roda o pipeline no mesmo overlay.
+        onResubmit: async (updated, opts) => {
           const nextArgs = args.refine!.rebuild(updated);
+          // Modo "Gerar mesmo assim": força backend a pular devolução
+          if (opts?.force) nextArgs.forceGenerate = true;
           await streamStructured(nextArgs);
         },
       });
     } else {
       handle.showDevolucao(structured, null);
     }
+  } else if (structured.type === 'plan') {
+    // Arquitetura sections-first: orquestra N calls serializadas pra
+    // /api/journey/section. Timeout afeta UMA seção, não o doc inteiro.
+    if (!artifactId) {
+      handle.showError('Falha ao salvar plan inicial — sem id de peça.');
+      return;
+    }
+    handle.showPlan(structured);
+    for (const section of structured.sections) {
+      handle.setSectionStatus(section.id, 'streaming');
+      const result = await streamSection(
+        artifactId,
+        section.id,
+        (md) => handle.setSectionMarkdown(section.id, md),
+      );
+      handle.setSectionStatus(section.id, result.status);
+    }
+    handle.showPlanComplete(artifactId);
   } else {
     persistDiagnosticContext(args.verb, structured);
     handle.showRelatorioComplete(structured, artifactId);
   }
+}
+
+// Stream de UMA seção do plan. SSE parsing minimal — apenas chunk/done/error.
+// Retorna o markdown final + status (done/partial/error).
+async function streamSection(
+  artifactId: string,
+  sectionId: string,
+  onChunk: (markdown: string) => void,
+): Promise<{ status: 'done' | 'partial' | 'error'; markdown: string }> {
+  let res: Response;
+  try {
+    res = await fetch('/api/journey/section', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ artifactId, sectionId }),
+    });
+  } catch {
+    return { status: 'error', markdown: '' };
+  }
+  if (!res.ok || !res.body) {
+    return { status: 'error', markdown: '' };
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+  let acc = '';
+  let finalStatus: 'done' | 'partial' | 'error' = 'partial';
+  let errored = false;
+
+  function processEvent(json: string): void {
+    try {
+      const ev = JSON.parse(json) as {
+        type?: string; text?: string; message?: string; status?: string;
+      };
+      if (ev.type === 'chunk' && typeof ev.text === 'string') {
+        acc += ev.text;
+        onChunk(acc);
+      } else if (ev.type === 'error') {
+        errored = true;
+        finalStatus = 'error';
+      } else if (ev.type === 'done') {
+        if (ev.status === 'done' || ev.status === 'partial' || ev.status === 'error') {
+          finalStatus = ev.status;
+        }
+      }
+    } catch { /* ignore */ }
+  }
+  function flushEvents(): void {
+    let idx;
+    while ((idx = buf.indexOf('\n\n')) !== -1) {
+      const evt = buf.slice(0, idx).trim();
+      buf = buf.slice(idx + 2);
+      if (!evt.startsWith('data:')) continue;
+      const j = evt.slice(5).trim();
+      if (j) processEvent(j);
+    }
+  }
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    flushEvents();
+  }
+  buf += decoder.decode();
+  flushEvents();
+
+  if (errored) return { status: 'error', markdown: acc };
+  return { status: finalStatus, markdown: acc };
 }
 
 export async function submitWizard(args: SubmitWizardArgs): Promise<void> {

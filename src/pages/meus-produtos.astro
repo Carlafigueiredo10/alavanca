@@ -1,0 +1,328 @@
+---
+import Base from '../layouts/Base.astro';
+import { requireUser } from '../lib/server/auth';
+
+export const prerender = false;
+
+// Cantinho privado da Carla pro lançamento do ENAP. Acesso restrito por email:
+// qualquer outro user logado recebe 404 (não revela que a rota existe).
+const OWNER_EMAIL = 'carlacristinesoares@gmail.com';
+
+const auth = await requireUser(Astro.cookies);
+if (!auth.ok) {
+  return Astro.redirect('/login?next=/meus-produtos');
+}
+const { user } = auth;
+
+if ((user.email ?? '').toLowerCase() !== OWNER_EMAIL) {
+  return new Response('Not found', { status: 404 });
+}
+
+interface Produto {
+  n: string;       // numeração visual (01–10)
+  titulo: string;
+  tag: string;     // categoria curta
+  descricao: string;
+  url: string;
+}
+
+const PRODUTOS: Produto[] = [
+  { n: '01', titulo: 'Abrigo de gatinhos', tag: 'Causa',
+    descricao: 'Plataforma de apoio a abrigo de gatos.',
+    url: 'https://abrigo-thais.carlacristinesoares.workers.dev/' },
+  { n: '02', titulo: 'Ayni', tag: 'Produtividade',
+    descricao: 'Ferramenta de produtividade pessoal.',
+    url: 'https://ayni-cgris.vercel.app/' },
+  { n: '03', titulo: 'MapaGov', tag: 'Processos',
+    descricao: 'Mapeamento de processos no setor público.',
+    url: 'https://mapagov.onrender.com' },
+  { n: '04', titulo: 'NAMMU', tag: 'Judicial',
+    descricao: 'Núcleo de Análise e Modelagem para Minutas Uniformizadas — demandas judiciais.',
+    url: 'https://nammu-frontend.onrender.com/' },
+  { n: '05', titulo: 'SIGADECIPEX', tag: 'Controle',
+    descricao: 'Tratamento de demandas de órgãos de controle.',
+    url: 'https://sigadecipex.netlify.app/' },
+  { n: '06', titulo: 'ONG Vida Plena', tag: 'Causa',
+    descricao: 'Site institucional da ONG Vida Plena.',
+    url: 'https://fabulous-haupia-70bb94.netlify.app/' },
+  { n: '07', titulo: 'Servidoras no Comando', tag: 'Letramento',
+    descricao: 'Letramento digital para mulheres.',
+    url: 'https://servidorasnocomando.netlify.app/' },
+  { n: '08', titulo: 'CLIC Diversidade', tag: 'D&I',
+    descricao: 'Oficinas de IA e diversidade & inclusão.',
+    url: 'https://clicdiversidade.netlify.app/' },
+  { n: '09', titulo: 'IRIS', tag: 'Dados',
+    descricao: 'Gestão e governança de dados.',
+    url: 'https://iris-tau-two.vercel.app/' },
+  { n: '10', titulo: 'Mulheres que Transformam', tag: 'Liderança',
+    descricao: 'Paridade de mulheres em cargos de liderança.',
+    url: 'https://mulheres-que-transformam.vercel.app/' },
+];
+
+// Apresentação ENAP — HTML standalone servido de /public/apresentacao.html.
+// Pra adicionar PDF backup: colocar /public/apresentacao.pdf e setar backupHref.
+const apresentacao: { href: string | null; backupHref: string | null } = {
+  href: '/apresentacao.html',
+  backupHref: null,
+};
+---
+<Base
+  title="Meus produtos · Alavanca"
+  description="Cantinho privado: produtos e apresentação para o lançamento ENAP."
+>
+  <main class="cantinho">
+    <section class="cantinho__hero">
+      <div class="cantinho__id">↳ Cantinho da Carla</div>
+      <h1 class="cantinho__title">Meus produtos</h1>
+      <p class="cantinho__sub">
+        Vitrine privada pro lançamento na ENAP — só visível com o seu login.
+      </p>
+    </section>
+
+    <section class="cantinho__apresentacao" aria-labelledby="apresentacao-title">
+      <div class="cantinho__sec-id">↳ Apresentação ENAP</div>
+      <h2 id="apresentacao-title" class="cantinho__sec-title">Apresentação</h2>
+
+      {apresentacao.href ? (
+        <div class="apresentacao__actions">
+          <a class="apresentacao__btn apresentacao__btn--primary" href={apresentacao.href}>
+            Abrir apresentação →
+          </a>
+          {apresentacao.backupHref && (
+            <a class="apresentacao__btn apresentacao__btn--ghost" href={apresentacao.backupHref} download>
+              Baixar PDF (backup)
+            </a>
+          )}
+        </div>
+      ) : (
+        <div class="apresentacao__placeholder">
+          <p class="apresentacao__placeholder-text">
+            Slot reservado pra apresentação. Decide o formato (HTML nativo,
+            PDF, ou os dois) e o link aparece aqui.
+          </p>
+        </div>
+      )}
+    </section>
+
+    <section class="cantinho__produtos" aria-labelledby="produtos-title">
+      <div class="cantinho__sec-id">↳ {PRODUTOS.length} produtos</div>
+      <h2 id="produtos-title" class="cantinho__sec-title">Vitrine</h2>
+
+      <ul class="produtos">
+        {PRODUTOS.map((p) => (
+          <li class="produto">
+            <a class="produto__link" href={p.url} target="_blank" rel="noopener noreferrer">
+              <div class="produto__head">
+                <span class="produto__n">{p.n}</span>
+                <span class="produto__tag">{p.tag}</span>
+              </div>
+              <h3 class="produto__titulo">{p.titulo}</h3>
+              <p class="produto__desc">{p.descricao}</p>
+              <div class="produto__url">
+                <span class="produto__url-text">{p.url.replace(/^https?:\/\//, '')}</span>
+                <span class="produto__url-arrow">↗</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+
+  <style>
+    .cantinho {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 120px 28px 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+    }
+
+    /* ── HERO ── */
+    .cantinho__id, .cantinho__sec-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--fg-50);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .cantinho__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.024em;
+      margin: 0 0 16px;
+    }
+    .cantinho__sub {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--fg-65);
+      max-width: 640px;
+    }
+
+    /* ── SEÇÃO genérica ── */
+    .cantinho__sec-title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(26px, 3.4vw, 32px);
+      line-height: 1.1;
+      letter-spacing: -0.018em;
+      margin: 0 0 24px;
+    }
+
+    /* ── APRESENTAÇÃO ── */
+    .cantinho__apresentacao {
+      padding: 28px;
+      border: 0.5px solid var(--fg-22);
+      border-radius: 12px;
+      background: rgba(245, 242, 235, 0.02);
+    }
+    .apresentacao__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .apresentacao__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 0.5px solid var(--fg-22);
+      background: transparent;
+      color: var(--fg);
+      text-decoration: none;
+      transition: border-color 200ms ease, background 200ms ease, color 200ms ease, filter 200ms ease;
+    }
+    .apresentacao__btn:hover { border-color: var(--amber); }
+    .apresentacao__btn--primary {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+    .apresentacao__btn--primary:hover { filter: brightness(1.08); }
+    .apresentacao__btn--ghost { color: var(--fg-65); border-color: var(--fg-14); }
+    .apresentacao__placeholder {
+      padding: 18px 20px;
+      border: 0.5px dashed var(--fg-22);
+      border-radius: 10px;
+      background: rgba(245, 242, 235, 0.015);
+    }
+    .apresentacao__placeholder-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--fg-50);
+      margin: 0;
+    }
+
+    /* ── VITRINE ── */
+    .produtos {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 720px) {
+      .produtos { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    .produto {
+      border: 0.5px solid var(--fg-14);
+      border-radius: 10px;
+      background: rgba(245, 242, 235, 0.02);
+      overflow: hidden;
+      transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
+    }
+    .produto:hover {
+      border-color: var(--amber);
+      background: rgba(217, 119, 6, 0.05);
+      transform: translateY(-1px);
+    }
+    .produto__link {
+      display: block;
+      padding: 18px 20px 16px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .produto__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .produto__n {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      color: var(--amber);
+    }
+    .produto__tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-45);
+      border: 0.5px solid var(--fg-14);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .produto__titulo {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.012em;
+      color: var(--fg);
+      margin: 0 0 8px;
+    }
+    .produto__desc {
+      font-family: var(--sans);
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--fg-86);
+      margin: 0 0 14px;
+    }
+    .produto__url {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding-top: 12px;
+      border-top: 0.5px solid var(--fg-14);
+    }
+    .produto__url-text {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      color: var(--fg-45);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 90%;
+    }
+    .produto__url-arrow {
+      font-family: var(--mono);
+      color: var(--fg-45);
+      transition: color 200ms ease, transform 200ms ease;
+    }
+    .produto:hover .produto__url-text,
+    .produto:hover .produto__url-arrow {
+      color: var(--amber);
+    }
+    .produto:hover .produto__url-arrow {
+      transform: translate(2px, -2px);
+    }
+  </style>
+</Base>

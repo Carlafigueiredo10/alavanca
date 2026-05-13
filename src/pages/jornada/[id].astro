@@ -1,0 +1,677 @@
+---
+import Base from '../../layouts/Base.astro';
+import { marked } from 'marked';
+import { requireUser } from '../../lib/server/auth';
+import { getArtifactById, type Verb } from '../../lib/journey/server';
+
+export const prerender = false;
+
+const auth = await requireUser(Astro.cookies);
+if (!auth.ok) {
+  return Astro.redirect(`/login?next=${encodeURIComponent(Astro.url.pathname)}`);
+}
+const { supabase } = auth;
+
+const id = typeof Astro.params.id === 'string' ? Astro.params.id : '';
+if (id.length === 0) {
+  return new Response('id ausente', { status: 400 });
+}
+
+const res = await getArtifactById(supabase, id);
+if (!res.ok) {
+  return new Response(`Falha ao ler artifact: ${res.error}`, { status: 500 });
+}
+if (!res.artifact) {
+  return new Response('Peça não encontrada.', { status: 404 });
+}
+
+const artifact = res.artifact;
+const verb = artifact.verb as Verb;
+
+const VERB_LABEL: Record<Verb, string> = {
+  mapear: 'Mapear', estruturar: 'Estruturar', formalizar: 'Formalizar',
+  construir: 'Construir', avaliar: 'Avaliar', manter: 'Manter',
+};
+const VERB_SPRINT: Record<Verb, string> = {
+  mapear: '/mapear/sprint',
+  estruturar: '/estruturar/sprint',
+  formalizar: '/formalizar/sprint',
+  construir: '/construir/sprint',
+  avaliar: '/avaliar/sprint',
+  manter: '/manter/sprint',
+};
+
+const out = artifact.jo_output as Record<string, unknown> | null;
+const structured = (out && typeof out.structured === 'object') ? out.structured as Record<string, unknown> : null;
+const isPartial = !!(out && out.partial === true);
+
+// Detecta shape: sections-first (plan) vs legacy (relatorio)
+const isPlan = !!(structured && structured.type === 'plan' && Array.isArray(structured.sections));
+const sections: Array<{ id: string; title: string; status: string; markdown: string }> =
+  isPlan ? (structured!.sections as unknown[]).filter(
+    (s): s is Record<string, unknown> => typeof s === 'object' && s !== null,
+  ).map((s) => ({
+    id: typeof s.id === 'string' ? s.id : '',
+    title: typeof s.title === 'string' ? s.title : '',
+    status: typeof s.status === 'string' ? s.status : 'pending',
+    markdown: typeof s.markdown === 'string' ? s.markdown : '',
+  })) : [];
+
+// Documento renderizado: para plan, concatena sections; para legacy, usa markdown direto.
+const documentMarkdown: string = isPlan
+  ? sections
+      .filter((s) => s.markdown.length > 0)
+      .map((s) => `## ${s.title}\n\n${s.markdown}`)
+      .join('\n\n')
+  : (structured && typeof structured.markdown === 'string') ? structured.markdown :
+    (typeof out?.text === 'string') ? out.text :
+    (typeof out?.raw === 'string') ? out.raw :
+    '(sem conteúdo)';
+
+const summary: string =
+  (structured && typeof structured.summary === 'string') ? structured.summary :
+  (typeof out?.summary === 'string') ? out.summary :
+  '';
+
+const title: string =
+  (isPlan && structured && typeof structured.title === 'string') ? structured.title : '';
+
+const goNoGo: string | null =
+  (structured && typeof structured.goNoGo === 'string') ? structured.goNoGo : null;
+
+const diagnosticTags: string[] =
+  (structured && Array.isArray(structured.diagnostic_tags))
+    ? (structured.diagnostic_tags as unknown[]).filter((t) => typeof t === 'string') as string[]
+    : [];
+
+const routeOrder: string[] =
+  (structured && Array.isArray(structured.route_order))
+    ? (structured.route_order as unknown[]).filter((t) => typeof t === 'string') as string[]
+    : [];
+
+// Renderiza só pra modo legacy. Plan renderiza section-por-section no template.
+const renderedHtml = isPlan ? '' : (marked.parse(documentMarkdown, { breaks: true, gfm: true }) as string);
+// Helper pra renderizar markdown de uma seção (usado no template)
+function renderSectionHtml(md: string): string {
+  return marked.parse(md, { breaks: true, gfm: true }) as string;
+}
+
+const createdAt = new Date(artifact.created_at);
+const createdAtFmt =
+  createdAt.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) +
+  ' · ' +
+  createdAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+const editHref = `${VERB_SPRINT[verb]}?from=${encodeURIComponent(artifact.id)}`;
+---
+<Base
+  title={`Peça ${VERB_LABEL[verb]} · Alavanca`}
+  description={summary || `Peça gerada no verbo ${VERB_LABEL[verb]}.`}
+>
+  <main class="art" id="art-main" data-artifact-id={artifact.id}>
+
+    <!-- Header da peça (some no print) -->
+    <header class="art__head no-print">
+      <div class="art__meta-line">
+        <span class="art__verb">{VERB_LABEL[verb]}</span>
+        <span class="art__sep">·</span>
+        <span class="art__when">{createdAtFmt}</span>
+        {isPartial && <span class="art__partial">parcial</span>}
+      </div>
+      {title && <h1 class="art__title">{title}</h1>}
+      {summary && <p class="art__summary">{summary}</p>}
+
+      {(goNoGo || diagnosticTags.length > 0 || routeOrder.length > 0) && (
+        <div class="art__badges">
+          {goNoGo && (
+            <span class:list={['art__badge', `art__badge--${goNoGo.toLowerCase().replace('_', '-')}`]}>
+              {goNoGo === 'GO' ? 'GO' : goNoGo === 'GO_MITIGATION' ? 'GO com mitigação' : 'NO-GO'}
+            </span>
+          )}
+          {diagnosticTags.map((t) => <span class="art__badge art__badge--tag">{t}</span>)}
+          {routeOrder.length > 0 && (
+            <span class="art__badge art__badge--route">→ {routeOrder.map((v) => VERB_LABEL[v as Verb] ?? v).join(' · ')}</span>
+          )}
+        </div>
+      )}
+
+      <div class="art__actions">
+        <a class="art__btn art__btn--primary" href={editHref}>Editar (nova versão) →</a>
+        <a class="art__btn" href={`/jornada/${artifact.id}/imprimir?auto=1`} target="_blank" rel="noopener">
+          Baixar PDF ↗
+        </a>
+        <a class="art__btn art__btn--ghost" href="/minha-jornada">↩ voltar pra Jornada</a>
+      </div>
+    </header>
+
+    <!-- Identidade Alavanca pro PDF (só aparece no print) -->
+    <header class="art__print-head print-only">
+      <div class="art__print-brand">ALAVANCA · CLIC</div>
+      <div class="art__print-verb">{VERB_LABEL[verb]} · Peça gerada {createdAtFmt}</div>
+    </header>
+
+    <!-- Conteúdo principal: legacy markdown único OU sections (plan) -->
+    {isPlan ? (
+      <article class="art__plan">
+        {sections.map((s) => (
+          <section class:list={['art__section', `art__section--${s.status}`]} data-section-id={s.id}>
+            <header class="art__section-head no-print">
+              <span class:list={['art__section-status', `art__section-status--${s.status}`]}>
+                {s.status === 'done' ? '✓' :
+                 s.status === 'streaming' ? '◐' :
+                 s.status === 'partial' ? '⚠' :
+                 s.status === 'error' ? '✕' : '○'}
+              </span>
+              <h2 class="art__section-title">{s.title}</h2>
+              {(s.status === 'partial' || s.status === 'error' || s.status === 'pending') && (
+                <button class="art__section-regen" type="button" data-regen={s.id}>
+                  {s.status === 'pending' ? 'gerar' : 'regerar'} ↻
+                </button>
+              )}
+            </header>
+            {/* Print: título limpo, sem botão */}
+            <h2 class="art__section-title print-only">{s.title}</h2>
+            {s.markdown.length > 0 ? (
+              <div class="art__section-body markdown" set:html={renderSectionHtml(s.markdown)} />
+            ) : (
+              <p class="art__section-empty no-print">— ainda não gerado —</p>
+            )}
+          </section>
+        ))}
+      </article>
+    ) : (
+      <article class="art__body markdown" set:html={renderedHtml} />
+    )}
+
+    <!-- Caveat no rodapé do PDF -->
+    <footer class="art__print-foot print-only">
+      Documento gerado pela plataforma Alavanca · CLIC · Inovação pública.<br />
+      Rascunho de apoio · revisão jurídica e institucional obrigatória antes de protocolar.
+    </footer>
+  </main>
+
+  <style>
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .art {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 120px 28px 80px;
+    }
+
+    /* ── HEADER ── */
+    .art__head { margin-bottom: 48px; }
+
+    .art__meta-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-50);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .art__verb { color: var(--amber); letter-spacing: 0.2em; }
+    .art__sep { color: var(--fg-22); }
+    .art__partial {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 0.5px solid rgba(255,180,100,0.4);
+      color: rgba(255,180,100,0.9);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .art__summary {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.35;
+      color: var(--fg);
+      margin-bottom: 24px;
+      max-width: 680px;
+    }
+
+    .art__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .art__badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 0.5px solid var(--fg-22);
+      color: var(--fg-86);
+      background: rgba(245,242,235,0.04);
+    }
+    .art__badge--go      { color: var(--bg); background: oklch(0.78 0.16 145); border-color: oklch(0.78 0.16 145); }
+    .art__badge--go-mitigation { color: var(--bg); background: var(--amber); border-color: var(--amber); }
+    .art__badge--no-go   { color: var(--bg); background: oklch(0.62 0.20 25); border-color: oklch(0.62 0.20 25); }
+    .art__badge--tag     { color: var(--amber); border-color: var(--amber); background: rgba(217,119,6,0.08); }
+    .art__badge--route   { color: var(--fg-86); border-color: var(--fg-22); }
+
+    .art__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .art__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 0.5px solid var(--fg-22);
+      background: transparent;
+      color: var(--fg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+    }
+    .art__btn:hover { border-color: var(--amber); }
+    .art__btn--primary {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+    .art__btn--primary:hover { filter: brightness(1.08); }
+    .art__btn--ghost {
+      color: var(--fg-65);
+      border-color: var(--fg-14);
+    }
+
+    /* ── MARKDOWN CONTENT ── */
+    .art__body.markdown {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: var(--fg-86);
+    }
+    .art__body.markdown :global(h1) {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(28px, 3.8vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -0.018em;
+      color: var(--fg);
+      margin: 48px 0 18px;
+    }
+    .art__body.markdown :global(h2) {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.012em;
+      color: var(--fg);
+      margin: 36px 0 14px;
+    }
+    .art__body.markdown :global(h3) {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin: 28px 0 10px;
+    }
+    .art__body.markdown :global(p) { margin: 0 0 16px; }
+    .art__body.markdown :global(strong) { color: var(--fg); font-weight: 600; }
+    .art__body.markdown :global(em) { font-family: var(--serif); font-style: italic; color: var(--fg); }
+    .art__body.markdown :global(ul),
+    .art__body.markdown :global(ol) {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+    .art__body.markdown :global(li) { margin: 4px 0; }
+    .art__body.markdown :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 18px 0;
+    }
+    .art__body.markdown :global(th),
+    .art__body.markdown :global(td) {
+      border: 0.5px solid var(--fg-22);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .art__body.markdown :global(th) {
+      background: rgba(245,242,235,0.05);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .art__body.markdown :global(blockquote) {
+      border-left: 2px solid var(--amber);
+      padding-left: 16px;
+      margin: 18px 0;
+      font-style: italic;
+      color: var(--fg);
+    }
+    .art__body.markdown :global(hr) {
+      border: 0;
+      border-top: 0.5px solid var(--fg-22);
+      margin: 32px 0;
+    }
+    .art__body.markdown :global(code) {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: rgba(245,242,235,0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* ── TÍTULO (plan) ── */
+    .art__title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(36px, 5.4vw, 56px);
+      line-height: 1.04;
+      letter-spacing: -0.022em;
+      color: var(--fg);
+      margin: 0 0 16px;
+      max-width: 720px;
+    }
+
+    /* ── Plan: sections ── */
+    .art__plan { display: flex; flex-direction: column; gap: 28px; }
+
+    .art__section {
+      border-left: 2px solid var(--fg-14);
+      padding-left: 22px;
+      transition: border-color 220ms ease;
+    }
+    .art__section--done      { border-color: oklch(0.78 0.16 145 / 0.45); }
+    .art__section--streaming { border-color: var(--amber); }
+    .art__section--partial   { border-color: var(--amber); }
+    .art__section--error     { border-color: oklch(0.62 0.20 25 / 0.6); }
+
+    .art__section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .art__section-status {
+      font-family: var(--mono);
+      font-size: 14px;
+      flex: 0 0 auto;
+      width: 18px;
+    }
+    .art__section-status--done      { color: oklch(0.78 0.16 145); }
+    .art__section-status--streaming { color: var(--amber); }
+    .art__section-status--partial   { color: var(--amber); }
+    .art__section-status--error     { color: oklch(0.72 0.18 25); }
+    .art__section-status--pending   { color: var(--fg-45); }
+
+    .art__section-title {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(22px, 2.8vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.012em;
+      color: var(--fg);
+      margin: 0;
+      flex: 1;
+    }
+
+    .art__section-regen {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      color: var(--fg-50);
+      background: transparent;
+      border: 0.5px solid var(--fg-22);
+      border-radius: 999px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .art__section-regen:hover { color: var(--amber); border-color: var(--amber); }
+    .art__section-regen:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .art__section-body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--fg-86);
+    }
+    .art__section-body :global(p) { margin: 0 0 12px; }
+    .art__section-body :global(strong) { color: var(--fg); font-weight: 600; }
+    .art__section-body :global(em) { font-family: var(--serif); font-style: italic; color: var(--fg); }
+    .art__section-body :global(ul),
+    .art__section-body :global(ol) { margin: 0 0 14px; padding-left: 22px; }
+    .art__section-body :global(li) { margin: 4px 0; }
+    .art__section-body :global(table) { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 14px 0; }
+    .art__section-body :global(th),
+    .art__section-body :global(td) { border: 0.5px solid var(--fg-22); padding: 6px 10px; text-align: left; vertical-align: top; }
+    .art__section-body :global(th) {
+      background: rgba(245,242,235,0.05);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      font-weight: 500;
+    }
+
+    .art__section-empty {
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--fg-45);
+    }
+
+    /* ── Print-only stuff (escondido no screen) ── */
+    .print-only { display: none; }
+
+    /* ============================================================
+       PRINT MODE — fundo branco, tipografia preta, Alavanca branding
+       ============================================================ */
+    @media print {
+      @page { margin: 1.8cm 1.6cm; size: A4; }
+
+      :global(html), :global(body) {
+        background: white !important;
+        color: #1a1a1a !important;
+      }
+      :global(.nav), :global(#alavanca-nav),
+      :global(.jo-fab), :global(.jo-drawer),
+      .no-print { display: none !important; }
+
+      .print-only { display: block; }
+
+      .art {
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .art__print-head {
+        border-bottom: 1px solid #d0d0d0;
+        padding-bottom: 14px;
+        margin-bottom: 28px;
+      }
+      .art__print-brand {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: #888;
+        margin-bottom: 6px;
+      }
+      .art__print-verb {
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        color: #1a1a1a;
+        font-weight: 500;
+      }
+
+      .art__body.markdown {
+        color: #1a1a1a;
+        font-size: 11.5pt;
+        line-height: 1.55;
+      }
+      .art__body.markdown :global(h1),
+      .art__body.markdown :global(h2) {
+        color: #000;
+        page-break-after: avoid;
+      }
+      .art__body.markdown :global(h3) {
+        color: #555;
+      }
+      .art__body.markdown :global(strong) { color: #000; }
+      .art__body.markdown :global(em) { color: #000; }
+      .art__body.markdown :global(th) {
+        background: #f0f0f0;
+        color: #1a1a1a;
+      }
+      .art__body.markdown :global(table),
+      .art__body.markdown :global(th),
+      .art__body.markdown :global(td) {
+        border-color: #c0c0c0;
+      }
+      .art__body.markdown :global(blockquote) {
+        border-left-color: #b0b0b0;
+        color: #333;
+      }
+      .art__body.markdown :global(hr) {
+        border-top-color: #d0d0d0;
+      }
+      .art__body.markdown :global(code) {
+        background: #f0f0f0;
+        color: #1a1a1a;
+      }
+
+      .art__print-foot {
+        margin-top: 36px;
+        padding-top: 12px;
+        border-top: 1px solid #d0d0d0;
+        font-family: var(--mono);
+        font-size: 9pt;
+        color: #666;
+        line-height: 1.5;
+      }
+      .art__section-head { display: none; }
+      .art__section { border-left: 0; padding-left: 0; }
+      .art__section-title.print-only { display: block; font-family: var(--serif); font-weight: 500;
+                                       font-size: 14pt; color: #000; margin: 18pt 0 6pt; }
+    }
+  </style>
+
+  <script>
+    // Regerar seção on-demand. Reusa o endpoint /api/journey/section (stream SSE).
+    // Atualiza o card no lugar — sem reload. Apropriado pra retry de seções
+    // partial/error/pending.
+    const artifactId = document.querySelector<HTMLElement>('main.art')?.dataset.artifactId;
+    document.querySelectorAll<HTMLButtonElement>('[data-regen]').forEach((btn) => {
+      const sectionId = btn.dataset.regen!;
+      btn.addEventListener('click', async () => {
+        if (!artifactId) return;
+        const card = btn.closest('.art__section') as HTMLElement | null;
+        if (!card) return;
+        const statusEl = card.querySelector<HTMLElement>('.art__section-status');
+        const bodyEl = card.querySelector<HTMLElement>('.art__section-body');
+        const emptyEl = card.querySelector<HTMLElement>('.art__section-empty');
+
+        btn.disabled = true;
+        btn.textContent = 'gerando…';
+        card.className = 'art__section art__section--streaming';
+        if (statusEl) {
+          statusEl.textContent = '◐';
+          statusEl.className = 'art__section-status art__section-status--streaming';
+        }
+        if (emptyEl) emptyEl.remove();
+
+        // Cria/limpa body
+        let body = bodyEl;
+        if (!body) {
+          body = document.createElement('div');
+          body.className = 'art__section-body markdown';
+          card.appendChild(body);
+        }
+        body.textContent = '';
+
+        try {
+          const res = await fetch('/api/journey/section', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ artifactId, sectionId }),
+          });
+          if (!res.ok || !res.body) {
+            throw new Error('Falha de rede');
+          }
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buf = '';
+          let acc = '';
+          let finalStatus: 'done' | 'partial' | 'error' = 'done';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buf += decoder.decode(value, { stream: true });
+            let idx;
+            while ((idx = buf.indexOf('\n\n')) !== -1) {
+              const evt = buf.slice(0, idx).trim();
+              buf = buf.slice(idx + 2);
+              if (!evt.startsWith('data:')) continue;
+              try {
+                const ev = JSON.parse(evt.slice(5).trim()) as {
+                  type?: string; text?: string; status?: string;
+                };
+                if (ev.type === 'chunk' && typeof ev.text === 'string') {
+                  acc += ev.text;
+                  body.textContent = acc;
+                } else if (ev.type === 'done' && typeof ev.status === 'string') {
+                  if (ev.status === 'done' || ev.status === 'partial' || ev.status === 'error') {
+                    finalStatus = ev.status;
+                  }
+                }
+              } catch { /* ignore */ }
+            }
+          }
+
+          card.className = 'art__section art__section--' + finalStatus;
+          if (statusEl) {
+            statusEl.textContent = finalStatus === 'done' ? '✓' :
+                                   finalStatus === 'partial' ? '⚠' : '✕';
+            statusEl.className = 'art__section-status art__section-status--' + finalStatus;
+          }
+          // Re-renderiza markdown (server-side seria ideal, mas pra UX rápida
+          // após streaming basta forçar reload se quiser ver markdown completo).
+          if (finalStatus !== 'done') {
+            btn.disabled = false;
+            btn.textContent = 'regerar ↻';
+          } else {
+            // Após sucesso, recarrega pra renderizar markdown com marked.
+            window.location.reload();
+          }
+        } catch {
+          btn.disabled = false;
+          btn.textContent = 'regerar ↻';
+          card.className = 'art__section art__section--error';
+          if (statusEl) {
+            statusEl.textContent = '✕';
+            statusEl.className = 'art__section-status art__section-status--error';
+          }
+        }
+      });
+    });
+  </script>
+</Base>

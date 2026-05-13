@@ -1,70 +1,73 @@
 ---
-type Verb = {
+/**
+ * Capabilities · Seção II — Aplicação.
+ * Hero permanece em linguagem manifesto (os seis verbos). Os cards usam
+ * linguagem operacional (capacidades institucionais). Agrupados em duas
+ * fases: Estratégia (01-03) e Execução (04-06). Todos os cards levam pra
+ * /aplicacao — onde fica o detalhamento e o handoff pra cada verbo.
+ */
+
+type Block = {
   id: string;
-  verb: string;
-  headline: string;
-  body: string;
-  pull: string;
-  span: number; // grid columns on >=md
-  href: string;
+  title: string;
+  line: string;
 };
 
-const items: Verb[] = [
+type Phase = {
+  key: string;       // 'A' | 'B'
+  name: string;      // 'Estratégia' | 'Execução'
+  caption: string;   // legenda da fase (mono small)
+  items: Block[];
+};
+
+const phases: Phase[] = [
   {
-    id: '01',
-    verb: 'Mapear',
-    headline: 'Passo 0 · do cenário ao Relatório de Diagnóstico SEI-Ready.',
-    body: 'A Jô lê Cenário · Atores · Gargalo · Risco, classifica em três famílias com lastro, emite Go/No-Go tripartite e roteia obrigatoriamente os verbos seguintes em ordem de ataque.',
-    pull: 'Sem mapa, todo plano é palpite.',
-    span: 4,
-    href: '/mapear',
+    key: 'A',
+    name: 'Estratégia',
+    caption: 'Leitura do terreno, arquitetura e instrumento jurídico',
+    items: [
+      {
+        id: '01',
+        title: 'Diagnóstico Institucional',
+        line: 'Do cenário difuso ao relatório acionável.',
+      },
+      {
+        id: '02',
+        title: 'Arquitetura Operacional',
+        line: 'Fluxos, papéis, ritos e backlog estruturados.',
+      },
+      {
+        id: '03',
+        title: 'Governança Normativa',
+        line: 'Portaria, catálogo, dedicação e critérios formais.',
+      },
+    ],
   },
   {
-    id: '02',
-    verb: 'Estruturar',
-    headline: 'Do mapeamento ao plano de fases — em horas, não em meses.',
-    body: 'IA mapeia capacidades, identifica gargalos e propõe fases.',
-    pull: 'O método permanece — o tempo encolhe.',
-    span: 4,
-    href: '/estruturar',
-  },
-  {
-    id: '03',
-    verb: 'Formalizar',
-    headline: 'Seis frentes autônomas — Portaria, Catálogo, NT Dedicação, ICT, NIT, Política de Inovação.',
-    body: 'Cada frente é chamada isolada da Jô, com base cirúrgica e sem alucinação cruzada. Marco CT&I operacionalizado de ponta a ponta.',
-    pull: 'O técnico decide. A Jô redige. O Marco CT&I responde.',
-    span: 4,
-    href: '/formalizar',
-  },
-  {
-    id: '04',
-    verb: 'Construir',
-    headline: 'Da ideia ao protótipo — e do protótipo à operação.',
-    body: 'Assistentes, dashboards e automações sem fila de TI. Handoff documentado sem o lab virar suporte permanente.',
-    pull: 'O lab entrega e atravessa.',
-    span: 4,
-    href: '/construir',
-  },
-  {
-    id: '05',
-    verb: 'Avaliar',
-    headline: 'Do achismo à prova de valor público — em quatro dimensões.',
-    body: 'Teoria de Mudança + Matriz SMART classificada nas 4 dimensões (Administrativa · Cidadã · Societal · Econômica), com Justificativa de Enquadramento por indicador. Letramento institucional anti-caixa-preta.',
-    pull: 'O que mostra valor sobrevive ao próximo corte.',
-    span: 4,
-    href: '/avaliar',
-  },
-  {
-    id: '06',
-    verb: 'Manter',
-    headline: 'Da entrega silenciosa à continuidade institucional do lab.',
-    body: 'Dossiê de Transição, Briefing Executivo com custo de não manter quantificado, Plano de Sustentabilidade SEI-Ready e Minutas de Adesão à Rede (Mapeamento LISP · InovaGov · RenovaJud).',
-    pull: 'O lab vira política pública documentada.',
-    span: 4,
-    href: '/manter',
+    key: 'B',
+    name: 'Execução',
+    caption: 'Entrega, medição e continuidade institucional',
+    items: [
+      {
+        id: '04',
+        title: 'Entrega Assistida',
+        line: 'Protótipos validados, fluxos implantados, operação assistida.',
+      },
+      {
+        id: '05',
+        title: 'Medição Pública',
+        line: 'KPIs, aderência e impacto operacional auditável.',
+      },
+      {
+        id: '06',
+        title: 'Sustentação',
+        line: 'PPA, sucessão e continuidade institucional documentada.',
+      },
+    ],
   },
 ];
+
+const APLICACAO_HREF = '/aplicacao';
 ---
 <section id="aplicacao" class="cap">
   <div class="shell">
@@ -80,35 +83,53 @@ const items: Verb[] = [
     </header>
 
     <p class="cap-sub reveal delay-1">
-      IA aplicada com método faz os seis.
+      Seis verbos. Duas fases. Um método. — IA aplicada institui o que antes
+      ficava na cabeça do gestor.
     </p>
 
-    <div class="cap-grid">
-      {items.map((it, i) => (
-        <a
-          href={it.href}
-          class:list={['cap-block', 'surface', 'reveal', `delay-${(i % 6) + 1}`]}
-          data-span={it.span}
-        >
-          <div class="cap-spot" aria-hidden="true"></div>
-          <div class="cap-block-inner">
-            <div class="cap-block-top">
-              <span class="cap-block-id">/{it.id}</span>
-              <span class="cap-block-arrow">→</span>
-            </div>
-            <div class="cap-block-body">
-              <h3 class="cap-block-verb">{it.verb}</h3>
-              <p class="cap-block-headline">{it.headline}</p>
-              <p class="cap-block-text">{it.body}</p>
-              <p class="cap-block-pull signal-text">{it.pull}</p>
-            </div>
-          </div>
-          <span class="bracket bracket-tl"></span>
-          <span class="bracket bracket-tr"></span>
-          <span class="bracket bracket-bl"></span>
-          <span class="bracket bracket-br"></span>
-        </a>
-      ))}
+    {phases.map((phase, phaseIdx) => (
+      <div class="cap-phase reveal" data-phase={phase.key}>
+        <div class="cap-phase-head">
+          <span class="cap-phase-text">
+            <strong>{phase.name}</strong>
+            <span class="cap-phase-sep">·</span>
+            <span class="cap-phase-caption">{phase.caption}</span>
+          </span>
+          <span class="cap-phase-rule"></span>
+        </div>
+
+        <div class="cap-grid">
+          {phase.items.map((b, i) => (
+            <a
+              href={APLICACAO_HREF}
+              class:list={['cap-block', 'surface', 'reveal', `delay-${(phaseIdx * 3 + i + 1)}`]}
+              aria-label={`${b.title} — ver detalhamento na página Aplicação`}
+            >
+              <div class="cap-spot" aria-hidden="true"></div>
+              <div class="cap-block-inner">
+                <div class="cap-block-top">
+                  <span class="cap-block-id">/{b.id}</span>
+                  <span class="cap-block-arrow">→</span>
+                </div>
+                <div class="cap-block-body">
+                  <h3 class="cap-block-title">{b.title}</h3>
+                  <p class="cap-block-line">{b.line}</p>
+                </div>
+              </div>
+              <span class="bracket bracket-tl"></span>
+              <span class="bracket bracket-tr"></span>
+              <span class="bracket bracket-bl"></span>
+              <span class="bracket bracket-br"></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <div class="cap-footer reveal delay-2">
+      <a href={APLICACAO_HREF} class="cap-footer-link">
+        ↳ Aplicação completa · seis capacidades em detalhe
+      </a>
     </div>
   </div>
 </section>
@@ -121,8 +142,8 @@ const items: Verb[] = [
     blocks.forEach((el) => {
       el.addEventListener('mousemove', (e) => {
         const r = el.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width  - 0.5) * 14;
-        const y = ((e.clientY - r.top)  / r.height - 0.5) * 14;
+        const x = ((e.clientX - r.left) / r.width  - 0.5) * 8;
+        const y = ((e.clientY - r.top)  / r.height - 0.5) * 8;
         el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
         el.style.setProperty('--my', (e.clientY - r.top)  + 'px');
         el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -158,7 +179,6 @@ const items: Verb[] = [
     align-items: end;
     gap: 24px;
   }
-
   .section-head-meta {
     grid-column: span 12;
     display: flex;
@@ -170,17 +190,12 @@ const items: Verb[] = [
     text-transform: uppercase;
     color: var(--fg-50);
   }
-
-  .section-head-id {
-    color: var(--signal);
-  }
-
+  .section-head-id { color: var(--signal); }
   .section-head-line {
     flex: 1;
     height: 1px;
     background: linear-gradient(to right, transparent, var(--hairline) 20%, var(--hairline) 80%, transparent);
   }
-
   .section-head-title {
     grid-column: span 12;
     font-family: var(--font-display);
@@ -191,26 +206,72 @@ const items: Verb[] = [
     color: var(--bone);
     text-wrap: balance;
   }
-
   @media (min-width: 880px) {
     .section-head-meta  { grid-column: span 3; }
     .section-head-title { grid-column: span 9; }
   }
 
+  /* ---------- PHASES ---------- */
+  .cap-phase {
+    margin-top: 64px;
+  }
+  .cap-phase + .cap-phase { margin-top: 52px; }
+
+  .cap-phase-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+    flex-wrap: nowrap;
+  }
+  .cap-phase-rule {
+    flex: 1;
+    min-width: 24px;
+    height: 0.5px;
+    background: linear-gradient(to right, transparent, var(--fg-22) 30%, var(--fg-22) 70%, transparent);
+  }
+  .cap-phase-text {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-65);
+    white-space: nowrap;
+  }
+  .cap-phase-text strong {
+    color: var(--signal);
+    font-weight: 500;
+  }
+  .cap-phase-sep { color: var(--fg-30); }
+  .cap-phase-caption {
+    color: var(--fg-50);
+    letter-spacing: 0.14em;
+  }
+
+  @media (max-width: 720px) {
+    .cap-phase-head { flex-wrap: wrap; gap: 12px; }
+    .cap-phase-text { white-space: normal; font-size: 10px; }
+  }
+
   /* ---------- GRID OF BLOCKS ---------- */
   .cap-grid {
-    margin-top: 96px;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 24px;
+    gap: 18px;
   }
 
   .cap-block {
     grid-column: span 12;
     position: relative;
-    min-height: 380px;
+    min-height: 132px;
     overflow: hidden;
-    padding: 40px;
+    padding: 18px 20px 18px;
+    text-decoration: none;
+    color: inherit;
     transition:
       transform 500ms cubic-bezier(.2, .8, .2, 1),
       border-color 400ms ease,
@@ -218,12 +279,20 @@ const items: Verb[] = [
     will-change: transform;
   }
 
+  @media (min-width: 720px) {
+    .cap-block { grid-column: span 6; }
+  }
   @media (min-width: 880px) {
-    .cap-block[data-span='4']  { grid-column: span 4; }
-    .cap-block[data-span='5']  { grid-column: span 5; }
-    .cap-block[data-span='6']  { grid-column: span 6; }
-    .cap-block[data-span='7']  { grid-column: span 7; }
-    .cap-block[data-span='12'] { grid-column: span 12; }
+    .cap-block { grid-column: span 4; }
+  }
+
+  /* Sutil diferenciação tonal por fase: Estratégia mais fria, Execução
+     mais quente — sem sair da paleta, só re-equilíbrio de alphas. */
+  .cap-phase[data-phase='A'] .cap-block {
+    background: linear-gradient(180deg, oklch(0.18 0.012 95 / 0.55), oklch(0.13 0.012 95 / 0.35));
+  }
+  .cap-phase[data-phase='B'] .cap-block {
+    background: linear-gradient(180deg, oklch(0.20 0.020 80 / 0.55), oklch(0.13 0.012 95 / 0.35));
   }
 
   .cap-spot {
@@ -232,12 +301,9 @@ const items: Verb[] = [
     pointer-events: none;
     opacity: 0;
     transition: opacity 500ms ease;
-    background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), oklch(0.82 0.155 78 / 0.18), transparent 60%);
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), oklch(0.82 0.155 78 / 0.16), transparent 60%);
   }
-
-  .cap-block:hover .cap-spot {
-    opacity: 1;
-  }
+  .cap-block:hover .cap-spot { opacity: 1; }
 
   .cap-block-inner {
     position: relative;
@@ -245,7 +311,7 @@ const items: Verb[] = [
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    gap: 32px;
+    gap: 14px;
   }
 
   .cap-block-top {
@@ -258,46 +324,57 @@ const items: Verb[] = [
     text-transform: uppercase;
     color: var(--fg-50);
   }
-
-  .cap-block-id {
-    color: var(--signal);
-  }
-
+  .cap-block-id { color: var(--signal); }
   .cap-block-arrow {
     opacity: 0.6;
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+  .cap-block:hover .cap-block-arrow {
+    opacity: 1;
+    transform: translateX(3px);
   }
 
-  .cap-block-verb {
+  .cap-block-title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.4vw, 3rem);
     font-weight: 500;
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.3rem, 1.8vw, 1.65rem);
+    line-height: 1.1;
+    letter-spacing: -0.014em;
     color: var(--bone);
+    text-wrap: balance;
   }
 
-  .cap-block-headline {
-    margin-top: 16px;
-    max-width: 36ch;
-    font-size: 15px;
-    line-height: 1.4;
-    color: var(--fg-86);
+  .cap-block-line {
+    margin-top: 6px;
+    max-width: 38ch;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-65);
   }
 
-  .cap-block-text {
-    margin-top: 16px;
-    max-width: 40ch;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--fg-60);
-    text-wrap: pretty;
+  /* ---------- FOOTER LINK ---------- */
+  .cap-footer {
+    margin-top: 64px;
+    text-align: center;
+  }
+  .cap-footer-link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--signal);
+    text-decoration: none;
+    padding: 6px 4px;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .cap-footer-link:hover {
+    opacity: 0.85;
+    transform: translateX(2px);
   }
 
-  .cap-block-pull {
-    margin-top: 20px;
-    max-width: 40ch;
-    font-size: 14px;
-    font-weight: 300;
-    font-style: italic;
+  @media (max-width: 720px) {
+    .cap-phase-head { gap: 10px; }
+    .cap-phase-caption { width: 100%; }
   }
 </style>

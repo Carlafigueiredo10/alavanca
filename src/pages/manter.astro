@@ -1,25 +1,863 @@
 ---
-import VerbLanding from '../components/VerbLanding.astro';
+import Base from '../layouts/Base.astro';
+import ManterCinematic from '../components/landing/ManterCinematic.astro';
+
+const SPRINT_HREF = '/manter/sprint';
 ---
-<VerbLanding
-  verb="Manter"
-  id="06"
-  headline="Da entrega silenciosa à continuidade institucional do lab."
-  body="Você descreve Entregas · Janela e audiência · Risco de descontinuidade · Pedido de continuidade. A Jô compõe Dossiê de Transição, Briefing Executivo, Plano de Sustentabilidade SEI-Ready e Minutas de Adesão à Rede — toda afirmação rastreável a peça nominada nos modos Construir, Formalizar ou Avaliar."
-  pull="O lab vira política pública documentada — impossível de fechar com uma canetada."
-  ctaHref="/manter/sprint"
-  ctaLabel="Iniciar pacote de continuidade →"
-  doesList={[
-    'Compõe Dossiê de Transição em três camadas — Lastro Normativo · Operacional · de Outcome.',
-    'Gera Briefing Executivo de 2-3 páginas (ou roteiro de slides) com o custo de não manter quantificado em quatro vetores.',
-    'Redige Plano de Sustentabilidade SEI-Ready autônomo para defesa orçamentária, funções comissionadas e alocação de horas.',
-    'Redige Minutas de Adesão à Rede (InovaGov · RenovaJud · Mapeamento LISP Brasil) — ofício pronto para o dirigente assinar.',
-  ]}
-  doesNotList={[
-    'Não cria entrega nova — Manter compõe; quem cria é Construir, Formalizar ou Avaliar.',
-    'Não compõe peça de imprensa (rito próprio da assessoria de comunicação do órgão).',
-    'Não trava a saída quando o patrocinador é único — entrega o documento com alerta destacado de fragilidade institucional.',
-    'Não trata "LISP" como instituição filiável — refere-se ao Mapeamento LISP Brasil (Observatório UFRN / metodologia Enap).',
-  ]}
-  meta="Continuidade de Estado · Anti-falácia do patrocinador sênior · Mapeamento LISP Brasil · InovaGov · RenovaJud · Lei 14.129/2021"
-/>
+<Base
+  title="Manter · Onde a inovação aprende a sobreviver dentro do Estado · Alavanca"
+  description="Transforme resultados dispersos em legitimidade institucional acumulada. O módulo Manter consolida evidências, organiza narrativas institucionais e constrói defesa técnica diante de mudanças políticas e cortes orçamentários."
+  bodyClass="film-grain"
+>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="m-hero">
+    <ManterCinematic />
+    <div class="container">
+      <div class="m-eyebrow animate-in">
+        <span class="m-eyebrow-id">/ 06</span>
+        <span class="m-eyebrow-line"></span>
+        <span class="m-eyebrow-tag">II · Aplicação · Continuidade institucional</span>
+      </div>
+
+      <h1 class="m-verb animate-in delay-100">Manter.</h1>
+
+      <p class="m-hero-headline animate-in delay-180">
+        Onde a inovação aprende a sobreviver dentro do Estado.
+      </p>
+
+      <p class="m-hero-body animate-in delay-260">
+        Transforme resultados dispersos em legitimidade institucional acumulada.
+        O módulo Manter consolida evidências, organiza narrativas e constrói
+        capacidade de defesa técnica diante de mudanças políticas, cortes
+        orçamentários e transições de gestão.
+      </p>
+
+      <p class="m-hero-body m-hero-body--soft animate-in delay-340">
+        Manter não é fazer marketing.
+        <strong>É tornar o valor público impossível de ignorar.</strong>
+      </p>
+
+      <div class="m-hero-cta animate-in delay-420">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary">
+          Iniciar Sustentação com a Jô →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POR QUE MANTER
+       ============================================================ -->
+  <section class="m-section m-section--why">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Por que Manter</div>
+        <h2 class="m-section-headline">
+          Laboratórios não desaparecem porque fracassaram. Desaparecem porque
+          não conseguiram demonstrar valor.
+        </h2>
+        <p class="m-lead">
+          É o momento em que muda o diretor, muda o governo, o orçamento é
+          reduzido, novas prioridades surgem e a inovação precisa
+          <strong>justificar sua continuidade</strong>. O módulo Manter ajuda a
+          transformar entregas fragmentadas em evidência institucional
+          acumulada.
+        </p>
+      </div>
+
+      <div class="m-why-grid">
+        <div class="m-why-block">
+          <div class="m-why-label m-why-label--neg">↳ Momentos críticos</div>
+          <ul class="m-list m-list--neg">
+            <li>muda o diretor;</li>
+            <li>muda o governo;</li>
+            <li>o orçamento é reduzido;</li>
+            <li>novas prioridades surgem;</li>
+            <li>a inovação precisa justificar sua continuidade.</li>
+          </ul>
+        </div>
+
+        <div class="m-why-block">
+          <div class="m-why-label">↳ Em troca, a sustentação produz</div>
+          <ul class="m-list">
+            <li>defesa técnica baseada em evidências verificáveis;</li>
+            <li>narrativa adaptada a cada audiência (sem alterar a substância);</li>
+            <li>dossiê auditável para tramitação administrativa;</li>
+            <li>capacidade de reposicionamento estratégico nas janelas políticas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="m-pull">
+        A proposta não é construir discursos inspiracionais.<br />
+        <span class="m-pull--strong">É estruturar defesa técnica, administrativa e política baseada em evidências verificáveis.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMO A JÔ TRABALHA
+       ============================================================ -->
+  <section class="m-section m-section--jo">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Como a Jô trabalha</div>
+        <h2 class="m-section-headline">
+          Não é agência de comunicação. É um mecanismo de sustentação
+          institucional.
+        </h2>
+        <p class="m-lead">
+          A lógica parte de uma premissa simples: <strong>no setor público,
+          sobreviver institucionalmente exige capacidade permanente de
+          demonstrar valor.</strong>
+        </p>
+      </div>
+
+      <div class="m-method-stack">
+        <span class="m-method-label">↳ Consolida</span>
+        <ul class="m-method-list">
+          <li><strong>Entregas</strong> realizadas</li>
+          <li><strong>Impactos</strong> comprovados</li>
+          <li><strong>Indicadores</strong> acumulados</li>
+          <li><strong>Riscos</strong> evitados</li>
+          <li><strong>Capacidade</strong> institucional gerada</li>
+          <li><strong>Continuidade</strong> operacional</li>
+        </ul>
+      </div>
+
+      <article class="m-gatekeeper m-gatekeeper--info">
+        <div class="m-gatekeeper-head">
+          <span class="m-gatekeeper-kind">Restrição arquitetural · composição</span>
+        </div>
+        <p class="m-gatekeeper-body">
+          O módulo Manter <strong>compõe</strong> — não gera do zero. A Jô
+          combina sua resposta com o <strong>Plano de Implementação Técnica</strong>
+          (gerado em Construir) e a <strong>Matriz de Indicadores de Valor
+          Público</strong> (gerada em Avaliar). Sem esses artefatos prévios na
+          jornada, a defesa institucional nasce frágil — o Dashboard de
+          Impacto Acumulado precisa de evidência sólida, não de texto narrativo.
+        </p>
+      </article>
+
+      <div class="m-pillars-grid m-pillars-grid--two">
+        <div class="m-pillar">
+          <div class="m-pillar-num">A</div>
+          <h3 class="m-pillar-title">Storytelling Institucional</h3>
+          <p class="m-pillar-q">
+            A Jô <strong>adapta a comunicação sem alterar a substância
+            técnica</strong>. O mesmo projeto pode ser reorganizado para
+            diferentes audiências: alta gestão, órgãos de controle, áreas
+            finalísticas, orçamento, parceiros institucionais.
+            <strong>A narrativa muda. Os dados permanecem.</strong>
+          </p>
+        </div>
+        <div class="m-pillar">
+          <div class="m-pillar-num">B</div>
+          <h3 class="m-pillar-title">Janela Política</h3>
+          <p class="m-pillar-q">
+            A capacidade de sustentação depende do contexto. A Jô identifica
+            riscos de descontinuidade, momentos de transição, vulnerabilidades
+            políticas, oportunidades de institucionalização e necessidade de
+            reposicionamento estratégico.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       O QUE VOCÊ RECEBE
+       ============================================================ -->
+  <section class="m-section m-section--deliverables">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ O que você recebe</div>
+        <h2 class="m-section-headline">
+          Um pacote consolidado de defesa institucional do laboratório.
+        </h2>
+        <p class="m-lead">
+          Os documentos organizam histórico de entregas, impactos demonstrados,
+          indicadores consolidados, riscos mitigados, argumentos de sustentação
+          e evidências acumuladas de valor público.
+        </p>
+      </div>
+
+      <div class="m-deliv-grid">
+        <div>
+          <div class="m-deliv-label">↳ Pacote de defesa institucional</div>
+          <ul class="m-deliv-list">
+            <li>
+              <h3>Dossiê de Transição</h3>
+              <p>
+                Histórico operacional consolidado em três camadas — lastro
+                normativo, operacional e de outcome. Pronto para entrega
+                a nova gestão.
+              </p>
+            </li>
+            <li>
+              <h3>Pitch Institucional Adaptativo</h3>
+              <p>
+                Mesma substância, múltiplas audiências: alta gestão, controle,
+                áreas finalísticas, orçamento, parceiros. <strong>A narrativa
+                muda. Os dados permanecem.</strong>
+              </p>
+            </li>
+            <li>
+              <h3>Dashboard de Impacto Acumulado</h3>
+              <p>
+                Composto a partir do Plano de Implementação Técnica (Construir)
+                e da Matriz de Indicadores (Avaliar) — não inventa, agrega.
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="m-deliv-label m-deliv-label--neg">↳ Conforme o cenário, a Jô também pode indicar</div>
+          <ul class="m-list m-list--neg">
+            <li>fragilidade institucional;</li>
+            <li>excesso de dependência política;</li>
+            <li>ausência de evidência acumulada;</li>
+            <li>baixa capacidade de sustentação;</li>
+            <li>inconsistência narrativa entre áreas.</li>
+          </ul>
+          <p class="m-deliv-quote">
+            <em>Nem toda inovação consegue sobreviver à mudança de gestão.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INICIE SUA SUSTENTAÇÃO — VITRINE DAS 3 PERGUNTAS
+       ============================================================ -->
+  <section class="m-section m-section--start" id="iniciar">
+    <div class="container">
+      <div class="m-section-head">
+        <div class="m-section-label">/ Inicie sua sustentação</div>
+        <h2 class="m-section-headline">
+          Manter exige evidência organizada.
+        </h2>
+        <p class="m-lead">
+          Respostas vagas impedirão a consolidação institucional. Quando
+          clicar em <strong>Submeter</strong>, a Jô combina suas respostas com
+          os artefatos já produzidos em Construir e Avaliar pra montar o
+          Dossiê de Transição.
+        </p>
+      </div>
+
+      <div class="m-preview-grid m-preview-grid--three">
+        <article class="m-preview-card">
+          <div class="m-preview-num">01</div>
+          <h3 class="m-preview-title">As Entregas Existentes</h3>
+          <p class="m-preview-q">
+            Quais entregas, resultados ou impactos o laboratório já produziu
+            até aqui?
+            <span class="m-preview-q-aside">
+              Fio condutor narrativo. A Jô cruza com os artefatos já gerados
+              em Construir e Avaliar — não substitui evidência sólida.
+            </span>
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Redução de 40% no tempo de análise de aposentadorias,
+              implantação de assistente interno de IA e capacitação de 120
+              servidores em linguagem simples."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">02</div>
+          <h3 class="m-preview-title">A Audiência Alvo</h3>
+          <p class="m-preview-q">
+            Quem precisará ser convencido da continuidade ou relevância da
+            iniciativa?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Nova diretoria do órgão, equipe orçamentária e área
+              jurídica responsável pela renovação do projeto."</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="m-preview-card">
+          <div class="m-preview-num">03</div>
+          <h3 class="m-preview-title">A Janela Política</h3>
+          <p class="m-preview-q">
+            Qual contexto institucional, mudança de gestão ou risco torna
+            necessário provar o valor do laboratório neste momento?
+          </p>
+          <div class="m-preview-eg">
+            <span class="m-preview-eg-label">Exemplo</span>
+            <p>
+              <em>"Haverá mudança de presidência no próximo trimestre e
+              revisão geral das iniciativas estratégicas do órgão."</em>
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="m-submit-block">
+        <a href={SPRINT_HREF} class="m-cta m-cta-primary m-cta-large">
+          Submeter Sustentação à Jô →
+        </a>
+        <p class="m-submit-note">
+          A partir daqui, a Jô inicia a conversa guiada para estruturar
+          tecnicamente a defesa institucional e a sustentação estratégica do
+          laboratório.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RODAPÉ
+       ============================================================ -->
+  <section class="m-bottom">
+    <div class="container">
+      <a href="/aplicacao" class="m-back">↩ voltar pra Aplicação</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .container { max-width: 920px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .m-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 96px 0 88px;
+  }
+  .m-hero > .container { position: relative; z-index: 1; }
+
+  .m-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .m-eyebrow-id { color: var(--amber); }
+  .m-eyebrow-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+
+  .m-verb {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .m-hero-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    max-width: 640px;
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .m-hero-body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 580px;
+    margin-bottom: 16px;
+  }
+  .m-hero-body--soft { color: var(--fg-65); }
+  .m-hero-body strong { color: var(--fg); font-weight: 500; }
+
+  .m-hero-cta { margin-top: 36px; }
+
+  /* ============================================================
+     SECTIONS · BASE
+     ============================================================ */
+  .m-section {
+    position: relative;
+    padding: 88px 0;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-section--why          { background: rgba(0, 0, 0, 0.18); }
+  .m-section--deliverables { background: rgba(0, 0, 0, 0.18); }
+
+  .m-section-head { max-width: 720px; margin-bottom: 52px; }
+
+  .m-section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+  }
+
+  .m-section-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .m-lead {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--fg-86);
+    max-width: 640px;
+  }
+  .m-lead strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     LISTS
+     ============================================================ */
+  .m-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .m-list li {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    padding-left: 18px;
+    position: relative;
+  }
+  .m-list li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .m-list--neg li { color: var(--fg-50); }
+  .m-list--neg li::before { color: var(--fg-22); }
+
+  /* ============================================================
+     POR QUE · GRID
+     ============================================================ */
+  .m-why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+  .m-why-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-why-label--neg { color: var(--fg-50); }
+
+  .m-pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.5;
+    color: var(--fg-86);
+    max-width: 640px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-pull--strong { color: var(--amber); }
+
+  /* ============================================================
+     MÉTODO STACK
+     ============================================================ */
+  .m-method-stack {
+    margin-bottom: 36px;
+    padding: 20px 0;
+    border-top: 0.5px solid var(--fg-14);
+    border-bottom: 0.5px solid var(--fg-14);
+  }
+  .m-method-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 14px;
+  }
+  .m-method-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+  .m-method-list li {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--fg-65);
+  }
+  .m-method-list strong {
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ============================================================
+     GATEKEEPER · restrição arquitetural
+     ============================================================ */
+  .m-gatekeeper {
+    margin-bottom: 36px;
+    padding: 22px 24px 24px;
+    border: 0.5px solid var(--amber-faint);
+    border-radius: 10px;
+    background: rgba(217, 119, 6, 0.05);
+  }
+  .m-gatekeeper--info {
+    border-color: var(--fg-22);
+    border-style: dashed;
+    background: rgba(245, 242, 235, 0.025);
+  }
+  .m-gatekeeper-head { margin-bottom: 12px; }
+  .m-gatekeeper-kind {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .m-gatekeeper--info .m-gatekeeper-kind { color: var(--fg-65); }
+  .m-gatekeeper-body {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+  }
+  .m-gatekeeper-body strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     PILARES
+     ============================================================ */
+  .m-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .m-pillars-grid--two {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .m-pillar {
+    position: relative;
+    padding: 26px 24px 28px;
+    border: 0.5px solid var(--fg-14);
+    background: rgba(245, 242, 235, 0.025);
+    border-radius: 10px;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .m-pillar:hover {
+    border-color: var(--fg-30);
+    background: rgba(245, 242, 235, 0.04);
+  }
+  .m-pillar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-pillar-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-pillar-q {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-86);
+  }
+  .m-pillar-q strong { color: var(--fg); font-weight: 500; }
+
+  /* ============================================================
+     DELIVERABLES
+     ============================================================ */
+  .m-deliv-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .m-deliv-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+  .m-deliv-label--neg { color: var(--fg-50); }
+  .m-deliv-quote {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 0.5px solid var(--fg-14);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--amber);
+  }
+  .m-deliv-quote em { font-style: italic; }
+
+  .m-deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .m-deliv-list li {
+    position: relative;
+    padding-left: 24px;
+  }
+  .m-deliv-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 14px;
+    height: 0.5px;
+    background: var(--amber);
+  }
+  .m-deliv-list h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+  .m-deliv-list p {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-deliv-list strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     INICIAR · VITRINE
+     ============================================================ */
+  .m-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 56px;
+  }
+  .m-preview-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .m-preview-card {
+    position: relative;
+    padding: 28px 26px 26px;
+    border: 0.5px solid var(--fg-22);
+    background: rgba(245, 242, 235, 0.03);
+    border-radius: 12px;
+    transition: border-color 200ms ease, background 200ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-preview-card:hover {
+    border-color: var(--amber-faint);
+    background: rgba(245, 242, 235, 0.05);
+  }
+  .m-preview-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .m-preview-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.014em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .m-preview-q {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg-86);
+    margin-bottom: 20px;
+  }
+  .m-preview-q-aside {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--fg-65);
+  }
+  .m-preview-eg {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-left: 2px solid var(--amber-faint);
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 0 6px 6px 0;
+  }
+  .m-preview-eg-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 8px;
+  }
+  .m-preview-eg p {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-65);
+  }
+  .m-preview-eg em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--fg-86);
+  }
+
+  .m-submit-block {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .m-submit-note {
+    margin-top: 22px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-65);
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ============================================================
+     CTAs
+     ============================================================ */
+  .m-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .m-cta-primary {
+    color: var(--bg);
+    background: var(--amber);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  }
+  .m-cta-primary:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 28px -10px oklch(0.82 0.155 78 / 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+  .m-cta-large {
+    padding: 16px 34px;
+    font-size: 15px;
+  }
+
+  /* ============================================================
+     RODAPÉ
+     ============================================================ */
+  .m-bottom { padding: 48px 0 80px; }
+  .m-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .m-back:hover {
+    opacity: 0.85;
+    transform: translateX(-2px);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 880px) {
+    .m-pillars-grid { grid-template-columns: 1fr 1fr; }
+    .m-preview-grid--three { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .m-hero { padding: 72px 0 64px; }
+    .m-section { padding: 64px 0; }
+    .m-section-head { margin-bottom: 36px; }
+    .m-why-grid,
+    .m-deliv-grid,
+    .m-preview-grid,
+    .m-preview-grid--three {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .m-pillars-grid,
+    .m-pillars-grid--two { grid-template-columns: 1fr; }
+  }
+</style>

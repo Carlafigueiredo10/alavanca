@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackBar from '../../components/BackBar.astro';
 ---
 <Base
   title="NT de Dedicação Exclusiva · Formalizar · Alavanca"
@@ -44,6 +45,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="1" rows="5" maxlength="700" placeholder="Ex: 1 Coordenador-Geral (DAS-4) com perfil de gestão de PD&I; 3 Analistas (FCE-3) com perfil técnico de desenvolvimento de soluções tecnológicas inéditas. Atividades de PD&I já declaradas no Ato de Enquadramento do órgão como ICT."></textarea>
       <div class="step-counter"><span data-step-counter="1">0</span> / 700</div>
+      <div data-chip-palette="1"></div>
       <div class="step-actions">
         <span class="step-back-placeholder"></span>
         <button class="cta cta-primary" data-step-next="1" disabled>Continuar →</button>
@@ -58,6 +60,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="2" rows="4" maxlength="500" placeholder="Ex: dedicação exclusiva 40h/semana para os 4 cargos. Servidores efetivos do órgão, em regime de afastamento integral por art. 14-A da Lei 10.973/2004, mantido vínculo originário e remuneração."></textarea>
       <div class="step-counter"><span data-step-counter="2">0</span> / 500</div>
+      <div data-chip-palette="2"></div>
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
         <button class="cta cta-primary" data-step-next="2" disabled>Continuar →</button>
@@ -72,6 +75,7 @@ import Base from '../../layouts/Base.astro';
       </div>
       <textarea class="step-input" data-step-input="3" rows="5" maxlength="700" placeholder="Ex: atualmente os 3 Analistas acumulam atividades do lab com rotinas da área de origem (regime parcial 20h), com atraso recorrente em entregas e sintomas de sobrecarga. Norma interna de RH do órgão (Decreto regimental) a ser citada pela área de gestão de pessoas. Caso análogo: Lab da Receita Federal opera em regime de afastamento integral desde 2022."></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 700</div>
+      <div data-chip-palette="3"></div>
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
         <button class="cta cta-primary cta-large" data-generate disabled>Gerar Nota Técnica →</button>
@@ -95,6 +99,8 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>
 
 <style>
@@ -138,6 +144,8 @@ import Base from '../../layouts/Base.astro';
 </style>
 
 <script>
+  import { attachChipPalette } from '../../lib/wizard/chips';
+  import { FORMALIZAR_DEDICACAO_PALETTES } from '../../lib/wizard/chip-palettes';
   type StepNum = 1 | 2 | 3;
   const STATE_KEY = 'alavanca:wizard-state-formalizar-dedicacao';
   const MODE = 'formalizar';
@@ -155,6 +163,11 @@ import Base from '../../layouts/Base.astro';
   }
   stepNums.forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
+    const chipContainer = document.querySelector<HTMLDivElement>(`[data-chip-palette="${n}"]`);
+    const palette = FORMALIZAR_DEDICACAO_PALETTES[n - 1];
+    if (chipContainer && palette) {
+      attachChipPalette({ container: chipContainer, textarea: input, palette });
+    }
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
     const nextBtn = document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) || (n === 3 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
     function refresh() { const val = input.value.trim(); answers[n] = val; counter.textContent = String(input.value.length); if (nextBtn) nextBtn.disabled = val.length < 12; }
@@ -210,4 +223,6 @@ import Base from '../../layouts/Base.astro';
   if (restored && Object.values(answers).every((v) => v.length >= 12)) showStep(3);
   else showStep(1);
 </script>
+
+<BackBar href="/formalizar" label="voltar pra Formalizar" />
 </Base>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BackBar from '../../components/BackBar.astro';
 ---
 <Base
   title="Blueprint do Sprint · Estruturar · Alavanca"
@@ -13,7 +14,7 @@ import Base from '../../layouts/Base.astro';
   <div class="container">
     <div class="section-label animate-in">/ Estruturar · Blueprint</div>
     <h1 class="intro-headline animate-in delay-100">Do problema ao plano de fases.</h1>
-    <p class="subhead-italic intro-subhead animate-in delay-180">Em três respostas — não em três meses.</p>
+    <p class="subhead-italic intro-subhead animate-in delay-180">Três respostas estruturam o método.</p>
     <p class="kicker intro-kicker animate-in delay-260">↓ Problema · Hipótese · Experimento</p>
     <div class="intro-meta animate-in delay-340">
       <div class="intro-meta-text">
@@ -61,9 +62,8 @@ import Base from '../../layouts/Base.astro';
         <div class="step-tag">01 · <span class="verb">Problema</span></div>
         <h2 class="step-headline">Qual a dor pública concreta?</h2>
         <p class="step-hint">
-          Especifique o serviço, o órgão e o impacto observável. Genérico não vira plano —
-          se o seu problema é "melhorar o atendimento", você ainda não tem um problema, tem
-          uma intenção.
+          Especifique o serviço, o órgão e o impacto observável. Quanto mais
+          concreto, melhor o plano. Os chips ajudam a montar o pacote.
         </p>
       </div>
 
@@ -75,6 +75,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: evasão de 40% no agendamento de perícias médicas oficiais, gerando ociosidade de servidores médicos da junta pericial."
       ></textarea>
       <div class="step-counter"><span data-step-counter="1">0</span> / 600</div>
+      <div data-chip-palette="1"></div>
 
       <div class="step-actions">
         <span class="step-back-placeholder"></span>
@@ -103,6 +104,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: o servidor não lê o e-mail institucional a tempo. Notificá-lo pelo WhatsApp corporativo reduzirá o absenteísmo, porque é o canal que ele já usa diariamente."
       ></textarea>
       <div class="step-counter"><span data-step-counter="2">0</span> / 600</div>
+      <div data-chip-palette="2"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="2">← Voltar</button>
@@ -130,6 +132,7 @@ import Base from '../../layouts/Base.astro';
         placeholder="Ex: enviar aviso via WhatsApp para amostra de 100 servidores e comparar a taxa de evasão com grupo de controle do e-mail, durante 30 dias. Sucesso: redução de pelo menos 15 pontos percentuais na evasão."
       ></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
+      <div data-chip-palette="3"></div>
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
@@ -158,6 +161,8 @@ import Base from '../../layouts/Base.astro';
   </div>
 </section>
 
+
+<BackBar href="/estruturar" label="voltar pra Estruturar" />
 </Base>
 
 <style>
@@ -399,6 +404,9 @@ import Base from '../../layouts/Base.astro';
   // ============================================================
   import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
   import { submitWizard } from '../../lib/journey/wizard-submit';
+  import { attachChipPalette } from '../../lib/wizard/chips';
+  import { ESTRUTURAR_PALETTES } from '../../lib/wizard/chip-palettes';
+  import type { ChipPalette } from '../../lib/wizard/chip-palettes';
 
   type StepNum = 1 | 2 | 3;
 
@@ -440,6 +448,11 @@ import Base from '../../layouts/Base.astro';
   stepNums.forEach((n) => {
     const input = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`)!;
     const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`)!;
+    const chipContainer = document.querySelector<HTMLDivElement>(`[data-chip-palette="${n}"]`);
+    const palette = ESTRUTURAR_PALETTES[n - 1];
+    if (chipContainer && palette) {
+      attachChipPalette({ container: chipContainer, textarea: input, palette });
+    }
     const nextBtn =
       document.querySelector<HTMLButtonElement>(`[data-step-next="${n}"]`) ||
       (n === 3 ? document.querySelector<HTMLButtonElement>('[data-generate]') : null);
@@ -477,18 +490,45 @@ import Base from '../../layouts/Base.astro';
     }
   }
 
+  // Cadeia de versão: setado pelo prefillFromArtifact quando o user chega via
+  // /jornada/<id> com ?from=<id>. submitWizard repassa pro backend.
+  let editingArtifactId: string | null = null;
+
+  const FIELD_LABELS = ['Problema', 'Hipótese', 'Experimento'];
+
+  function buildArgs(vals: [string, string, string]) {
+    return {
+      verb: 'estruturar' as const,
+      wizardInput: { 1: vals[0], 2: vals[1], 3: vals[2] },
+      fallbackText: buildPrompt(vals[0], vals[1], vals[2]),
+      fallbackSource: 'wizard-sprint',
+      replacesArtifactId: editingArtifactId,
+      refine: {
+        fieldLabels: FIELD_LABELS,
+        fieldPalettes: ESTRUTURAR_PALETTES as (ChipPalette | null)[],
+        currentValues: vals as unknown as string[],
+        rebuild: (updated: string[]) => {
+          stepNums.forEach((n, idx) => {
+            const v = updated[idx] ?? '';
+            answers[n] = v;
+            const ta = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+            const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+            if (ta) ta.value = v;
+            if (counter) counter.textContent = String(v.length);
+          });
+          return buildArgs([updated[0] ?? '', updated[1] ?? '', updated[2] ?? '']);
+        },
+      },
+    };
+  }
+
   generateBtn.addEventListener('click', async () => {
     if (answers[1].length < 12 || answers[2].length < 12 || answers[3].length < 12) return;
 
     generateBtn.disabled = true;
     generateBtn.textContent = 'Encaminhando à Jô…';
 
-    await submitWizard({
-      verb: 'estruturar',
-      wizardInput: { 1: answers[1], 2: answers[2], 3: answers[3] },
-      fallbackText: buildPrompt(answers[1], answers[2], answers[3]),
-      fallbackSource: 'wizard-sprint',
-    });
+    await submitWizard(buildArgs([answers[1], answers[2], answers[3]]));
   });
 
   function buildPrompt(problema: string, hipotese: string, experimento: string): string {
@@ -560,14 +600,71 @@ import Base from '../../layouts/Base.astro';
     setGenerateLabel();
   }
 
-  // estado inicial
-  const restored = restoreState();
-  if (restored && answers[1].length >= 12 && answers[2].length >= 12 && answers[3].length >= 12) {
-    // tudo preenchido → abre direto no passo final
-    showStep(3);
-  } else {
-    showStep(1);
+  // ── Pre-fill via ?from=<artifactId> (edição) ────────────────────
+  // Tem precedência sobre o restoreState. Se a fetch falhar, segue silencioso.
+  async function prefillFromArtifact(artifactId: string): Promise<boolean> {
+    try {
+      const resp = await fetch(`/api/journey/artifacts/${encodeURIComponent(artifactId)}`);
+      if (!resp.ok) return false;
+      const data = await resp.json() as { artifact?: { wizard_input?: unknown } };
+      const wi = data.artifact?.wizard_input as Record<string, unknown> | undefined;
+      if (!wi) return false;
+      let any = false;
+      stepNums.forEach((n) => {
+        const v = wi[String(n)];
+        if (typeof v !== 'string' || v.length === 0) return;
+        answers[n] = v;
+        const ta = document.querySelector<HTMLTextAreaElement>(`[data-step-input="${n}"]`);
+        const counter = document.querySelector<HTMLSpanElement>(`[data-step-counter="${n}"]`);
+        if (ta) {
+          ta.value = v;
+          ta.dispatchEvent(new Event('input'));
+        }
+        if (counter) counter.textContent = String(v.length);
+        any = true;
+      });
+      if (any) {
+        editingArtifactId = artifactId;
+        showEditingBanner();
+      }
+      return any;
+    } catch {
+      return false;
+    }
   }
-  setGenerateLabel();
+
+  function showEditingBanner(): void {
+    if (document.getElementById('editing-banner')) return;
+    const banner = document.createElement('div');
+    banner.id = 'editing-banner';
+    banner.style.cssText = 'max-width:760px;margin:24px auto 0;padding:12px 18px;border:0.5px solid var(--amber);border-radius:10px;background:rgba(217,119,6,0.08);font-family:var(--sans);font-size:13.5px;color:var(--fg);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;';
+    banner.innerHTML =
+      '<span><strong>Editando peça anterior.</strong> Ao gerar, cria uma nova versão (rastreabilidade preservada).</span>' +
+      '<a href="/minha-jornada" style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--fg-65);text-decoration:none;">Cancelar ↩</a>';
+    const stepperBar = document.querySelector('.stepper-bar');
+    if (stepperBar?.parentElement) {
+      stepperBar.parentElement.insertBefore(banner, stepperBar);
+    } else {
+      document.body.prepend(banner);
+    }
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const fromId = urlParams.get('from');
+
+  async function bootstrap(): Promise<void> {
+    let prefilled = false;
+    if (fromId) {
+      prefilled = await prefillFromArtifact(fromId);
+    }
+    const restored = !prefilled && restoreState();
+    if ((prefilled || restored) && Object.values(answers).every((v) => v.length >= 12)) {
+      showStep(3);
+    } else {
+      showStep(1);
+    }
+    setGenerateLabel();
+  }
+  void bootstrap();
   // checkAuth(); // desativado em modo demo aberto
 </script>

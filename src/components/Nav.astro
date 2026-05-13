@@ -14,21 +14,31 @@ interface Props {
   cta?: { label: string; href: string } | null;
 }
 
+// 6 seções de topo, fixas em toda a aplicação. Os 6 verbos NÃO ficam aqui —
+// eles vivem dentro de /aplicacao (cards). Mapear/Estruturar/.../Manter etc.
+// herdam o ativo via match: 'aplicacao' (1º segmento do path bate quando o
+// user está em /aplicacao, /mapear, /estruturar, /formalizar, /construir,
+// /avaliar, /manter — tratamento especial no script abaixo).
 const defaultLinks: NavLink[] = [
-  { id: '01', label: 'Mapear',     href: '/mapear',     match: 'mapear' },
-  { id: '02', label: 'Estruturar', href: '/estruturar', match: 'estruturar' },
-  { id: '03', label: 'Formalizar', href: '/formalizar', match: 'formalizar' },
-  { id: '04', label: 'Construir',  href: '/construir',  match: 'construir' },
-  { id: '05', label: 'Avaliar',    href: '/avaliar',    match: 'avaliar' },
-  { id: '06', label: 'Manter',     href: '/manter',     match: 'manter' },
+  { id: '01', label: 'Diagnóstico', href: '/diagnostico',  match: 'diagnostico' },
+  { id: '02', label: 'Aplicação',   href: '/#aplicacao',   match: 'aplicacao' },
+  { id: '03', label: 'IA',          href: '/sobre-jo',     match: 'sobre-jo' },
+  { id: '04', label: 'Ecossistema', href: '/casos',        match: 'casos' },
+  { id: '05', label: 'Fundamentos', href: '/bibliografia', match: 'bibliografia' },
+  { id: '06', label: 'Contribuir',  href: '/sugestoes',    match: 'sugestoes' },
 ];
+
+// Páginas de verbo individual (/mapear, /estruturar, etc.) mantém "Aplicação"
+// como item ativo do nav — pertencem ao guarda-chuva da Aplicação.
+const VERB_SEGMENTS = new Set(['mapear', 'estruturar', 'formalizar', 'construir', 'avaliar', 'manter']);
 
 const {
   links = defaultLinks,
   cta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' },
 } = Astro.props;
 
-const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
+const rawSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
+const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
 ---
 <header class="nav" id="alavanca-nav">
   <div class="nav-inner shell">
@@ -63,6 +73,11 @@ const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
       <span class="nav-auth-label">Entrar</span>
     </a>
 
+    <a class="nav-owner" id="nav-owner" href="/meus-produtos" hidden>
+      <span class="nav-owner-dot"></span>
+      <span class="nav-owner-label">Meus produtos</span>
+    </a>
+
     {cta && (
       <a class="nav-cta" href={cta.href}>
         <span class="nav-cta-dot"></span>
@@ -89,10 +104,15 @@ const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
   // client-side se Supabase devolver sessão. Flash possível mas curto.
   import { getSupabaseBrowserClient } from '../lib/supabase/browser';
 
+  // Email cujo login destrava o link "Meus produtos" no nav. Hardcoded de
+  // propósito: cantinho privado da dona da plataforma, não é multi-tenant.
+  const OWNER_EMAIL = 'carlacristinesoares@gmail.com';
+
   (async () => {
     const el = document.getElementById('nav-auth') as HTMLAnchorElement | null;
     if (!el) return;
     const label = el.querySelector<HTMLSpanElement>('.nav-auth-label');
+    const ownerLink = document.getElementById('nav-owner') as HTMLAnchorElement | null;
     try {
       const sb = getSupabaseBrowserClient();
       const { data } = await sb.auth.getSession();
@@ -100,6 +120,11 @@ const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
         el.href = '/minha-jornada';
         el.dataset.state = 'authed';
         if (label) label.textContent = 'Minha jornada';
+
+        const email = data.session.user?.email?.toLowerCase() ?? '';
+        if (ownerLink && email === OWNER_EMAIL) {
+          ownerLink.hidden = false;
+        }
       }
     } catch {
       /* segue como Entrar — fallback seguro */
@@ -232,6 +257,36 @@ const activeSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
   }
   .nav-auth:hover { color: var(--signal); }
   .nav-auth[data-state="authed"] { color: var(--signal); }
+
+  /* ---------- OWNER LINK (Carla) ---------- */
+  .nav-owner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    border: 0.5px solid oklch(0.82 0.155 78 / 0.4);
+    border-radius: 999px;
+    transition: border-color 220ms ease, background-color 220ms ease;
+  }
+  .nav-owner:hover {
+    border-color: var(--signal);
+    background: oklch(0.82 0.155 78 / 0.08);
+  }
+  .nav-owner-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+  @media (max-width: 640px) {
+    .nav-owner { display: none; }
+  }
 
   /* ---------- CTA ---------- */
   .nav-cta {

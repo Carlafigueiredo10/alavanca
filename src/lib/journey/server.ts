@@ -170,6 +170,22 @@ export async function getJourneyContext(
   };
 }
 
+// Lê um artifact específico (RLS garante que só o dono enxerga).
+// Retorna null com ok:true quando a linha não existe / não é acessível —
+// page caller traduz em 404.
+export async function getArtifactById(
+  supabase: SupabaseServerClient,
+  artifactId: string,
+): Promise<{ ok: true; artifact: JourneyArtifact | null } | { ok: false; error: string }> {
+  const { data, error } = await supabase
+    .from('journey_artifacts')
+    .select('*')
+    .eq('id', artifactId)
+    .maybeSingle();
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, artifact: (data as JourneyArtifact | null) ?? null };
+}
+
 export async function archiveJourney(
   supabase: SupabaseServerClient,
   journeyId: string,

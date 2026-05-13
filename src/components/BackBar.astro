@@ -1,0 +1,39 @@
+---
+// Barra simples de "voltar" no rodapé de páginas internas. Padrão visual
+// igual ao VerbLanding (.vl-back) — mantém consistência.
+interface Props {
+  href: string;
+  label: string; // texto exibido após "↩"
+}
+const { href, label } = Astro.props;
+---
+<section class="bb">
+  <div class="bb-container">
+    <a href={href} class="bb-link">↩ {label}</a>
+  </div>
+</section>
+
+<style>
+  .bb {
+    padding: 28px 0 60px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .bb-container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .bb-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease, transform 200ms ease;
+    display: inline-block;
+  }
+  .bb-link:hover {
+    color: var(--amber);
+    transform: translateX(-2px);
+  }
+</style>

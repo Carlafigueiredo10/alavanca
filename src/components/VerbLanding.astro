@@ -29,6 +29,7 @@ const {
 ---
 <Base title={`${verb} · Alavanca`} description={body}>
   <section class="vl-hero">
+    <slot name="cinematic" />
     <div class="container">
       <div class="vl-meta animate-in">
         <span class="vl-id">/{id}</span>
@@ -72,7 +73,7 @@ const {
 
   <section class="vl-bottom">
     <div class="container">
-      <a href="/" class="vl-back">↩ voltar ao índice</a>
+      <a href="/aplicacao" class="vl-back">↩ voltar pra Aplicação</a>
     </div>
   </section>
 </Base>
@@ -80,7 +81,12 @@ const {
 <style>
   .container { max-width: 880px; }
 
-  .vl-hero { padding: 96px 0 64px; }
+  .vl-hero {
+    padding: 96px 0 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .vl-hero > .container { position: relative; z-index: 1; }
 
   .vl-meta {
     display: flex;
