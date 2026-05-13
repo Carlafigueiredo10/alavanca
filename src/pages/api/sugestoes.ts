@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseAdminClient, createSupabaseServerClient } from '../../lib/supabase/server';
+import { notifyOwnerOfSuggestion } from '../../lib/admin/notify';
 
 export const prerender = false;
 
@@ -84,17 +85,21 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 
   const admin = createSupabaseAdminClient();
-  const { error } = await admin.from('suggestions').insert({
-    content,
-    category,
-    kind,
-    subkind,
-    page,
-    author_name: authorName,
-    author_email: authorEmail,
-    user_id: userId,
-    user_agent: userAgent,
-  });
+  const { data: inserted, error } = await admin
+    .from('suggestions')
+    .insert({
+      content,
+      category,
+      kind,
+      subkind,
+      page,
+      author_name: authorName,
+      author_email: authorEmail,
+      user_id: userId,
+      user_agent: userAgent,
+    })
+    .select('id')
+    .single();
 
   if (error) {
     console.error('[sugestoes] insert failed', error.message);
@@ -103,6 +108,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       500
     );
   }
+
+  // Notifica a Carla. Aguardamos pra não ser killed pelo runtime serverless,
+  // mas a função não lança — falha de e-mail nunca quebra a resposta ao usuário.
+  await notifyOwnerOfSuggestion({
+    id: inserted?.id,
+    content,
+    category,
+    kind,
+    subkind,
+    page,
+    authorName,
+    authorEmail,
+  });
 
   return jsonResponse({ ok: true });
 };

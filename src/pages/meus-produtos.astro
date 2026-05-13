@@ -1,12 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
 import { requireUser } from '../lib/server/auth';
+import { OWNER_EMAIL } from '../lib/admin/owner';
+import {
+  getSuggestionsMetrics,
+  getUsersMetrics,
+  getJourneyMetrics,
+  getSnapshotsMetrics,
+} from '../lib/admin/metrics';
 
 export const prerender = false;
 
 // Cantinho privado da Carla pro lançamento do ENAP. Acesso restrito por email:
 // qualquer outro user logado recebe 404 (não revela que a rota existe).
-const OWNER_EMAIL = 'carlacristinesoares@gmail.com';
 
 const auth = await requireUser(Astro.cookies);
 if (!auth.ok) {
@@ -14,9 +20,50 @@ if (!auth.ok) {
 }
 const { user } = auth;
 
-if ((user.email ?? '').toLowerCase() !== OWNER_EMAIL) {
+if ((user.email ?? '').toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
   return new Response('Not found', { status: 404 });
 }
+
+// Dashboard agregado (SSR, paralelo). Volume hoje é baixo: agregação em JS.
+const [suggestionsMetrics, usersMetrics, journeyMetrics, snapshotsMetrics] = await Promise.all([
+  getSuggestionsMetrics(),
+  getUsersMetrics(),
+  getJourneyMetrics(),
+  getSnapshotsMetrics(),
+]);
+
+function fmtDate(iso: string | null): string {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('pt-BR', {
+    day: '2-digit', month: 'short', year: 'numeric',
+  });
+}
+
+function fmtAgo(iso: string | null): string {
+  if (!iso) return '—';
+  const ms = Date.now() - new Date(iso).getTime();
+  if (ms < 0) return 'agora';
+  const min = Math.floor(ms / 60000);
+  if (min < 1) return 'agora';
+  if (min < 60) return `há ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `há ${h} h`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `há ${d} ${d === 1 ? 'dia' : 'dias'}`;
+  const m = Math.floor(d / 30);
+  return `há ${m} ${m === 1 ? 'mês' : 'meses'}`;
+}
+
+const VERB_ORDER: ('mapear' | 'estruturar' | 'formalizar' | 'construir' | 'avaliar' | 'manter')[] =
+  ['mapear', 'estruturar', 'formalizar', 'construir', 'avaliar', 'manter'];
+const VERB_LABEL = {
+  mapear: 'Mapear',
+  estruturar: 'Estruturar',
+  formalizar: 'Formalizar',
+  construir: 'Construir',
+  avaliar: 'Avaliar',
+  manter: 'Manter',
+} as const;
 
 interface Produto {
   n: string;       // numeração visual (01–10)
@@ -77,6 +124,88 @@ const apresentacao: { href: string | null; backupHref: string | null } = {
       <p class="cantinho__sub">
         Vitrine privada pro lançamento na ENAP — só visível com o seu login.
       </p>
+    </section>
+
+    <section class="cantinho__dashboard" aria-labelledby="dashboard-title">
+      <div class="cantinho__sec-id">↳ Painel</div>
+      <h2 id="dashboard-title" class="cantinho__sec-title">Dashboard</h2>
+
+      <div class="dash">
+        <article class="dash__card">
+          <div class="dash__card-label">Sugestões</div>
+          <div class="dash__card-big">{suggestionsMetrics.total}</div>
+          <ul class="dash__list">
+            <li><span>Elogios</span><b>{suggestionsMetrics.byCategory.elogio}</b></li>
+            <li><span>Melhorias</span><b>{suggestionsMetrics.byCategory.melhoria}</b></li>
+            <li><span>Erros</span><b>{suggestionsMetrics.byCategory.erro}</b></li>
+            <li><span>Outros</span><b>{suggestionsMetrics.byCategory.outro}</b></li>
+            <li class="dash__muted"><span>Sem categoria</span><b>{suggestionsMetrics.byCategory.nenhuma}</b></li>
+          </ul>
+          <div class="dash__delta">+{suggestionsMetrics.last30d} nos últimos 30 dias</div>
+        </article>
+
+        <article class="dash__card">
+          <div class="dash__card-label">Por tipo</div>
+          <div class="dash__card-big">{suggestionsMetrics.byKind.ecossistema.total + suggestionsMetrics.byKind.geral + suggestionsMetrics.byKind.bibliografia}</div>
+          <ul class="dash__list">
+            <li><span>Geral</span><b>{suggestionsMetrics.byKind.geral}</b></li>
+            <li><span>Bibliografia</span><b>{suggestionsMetrics.byKind.bibliografia}</b></li>
+            <li><span>Ecossistema</span><b>{suggestionsMetrics.byKind.ecossistema.total}</b></li>
+            <li class="dash__sub"><span>↳ Redes</span><b>{suggestionsMetrics.byKind.ecossistema.rede}</b></li>
+            <li class="dash__sub"><span>↳ Práticas</span><b>{suggestionsMetrics.byKind.ecossistema.pratica}</b></li>
+            <li class="dash__sub"><span>↳ Ferramentas</span><b>{suggestionsMetrics.byKind.ecossistema.ferramenta}</b></li>
+          </ul>
+        </article>
+
+        <article class="dash__card">
+          <div class="dash__card-label">Usuários</div>
+          <div class="dash__card-big">{usersMetrics.total}</div>
+          <ul class="dash__list">
+            <li><span>Já fizeram login</span><b>{usersMetrics.comLogin}</b></li>
+            <li><span>Novos (30 dias)</span><b>{usersMetrics.novos30d}</b></li>
+          </ul>
+          <div class="dash__delta">Último login (outro): {fmtAgo(usersMetrics.ultimoLoginOutroIso)}</div>
+        </article>
+
+        <article class="dash__card">
+          <div class="dash__card-label">Jornadas</div>
+          <div class="dash__card-big">{journeyMetrics.jornadasAbertas}</div>
+          <ul class="dash__list">
+            <li><span>Com lab nomeado</span><b>{journeyMetrics.jornadasComLabel}</b></li>
+            <li><span>Arquivadas</span><b>{journeyMetrics.jornadasArchived}</b></li>
+          </ul>
+        </article>
+
+        <article class="dash__card dash__card--wide">
+          <div class="dash__card-label">Peças geradas</div>
+          <div class="dash__card-big">{journeyMetrics.pecasGeradas}</div>
+          <ul class="dash__list dash__list--cols">
+            {VERB_ORDER.map((v) => (
+              <li><span>{VERB_LABEL[v]}</span><b>{journeyMetrics.pecasPorVerbo[v]}</b></li>
+            ))}
+          </ul>
+        </article>
+
+        {journeyMetrics.topLabs.length > 0 && (
+          <article class="dash__card dash__card--wide">
+            <div class="dash__card-label">Top labs por peças</div>
+            <ol class="dash__top">
+              {journeyMetrics.topLabs.map((l) => (
+                <li><span>{l.lab}</span><b>{l.pecas}</b></li>
+              ))}
+            </ol>
+          </article>
+        )}
+      </div>
+
+      <div class="dash__footnote">
+        <span>Última sugestão: {fmtAgo(suggestionsMetrics.ultimaIso)}</span>
+        <span class="dash__footnote-sep">·</span>
+        <span>
+          Snapshots históricos: {snapshotsMetrics.count}
+          {snapshotsMetrics.desdeIso && ` desde ${fmtDate(snapshotsMetrics.desdeIso)}`}
+        </span>
+      </div>
     </section>
 
     <section class="cantinho__apresentacao" aria-labelledby="apresentacao-title">
@@ -173,6 +302,159 @@ const apresentacao: { href: string | null; backupHref: string | null } = {
       line-height: 1.1;
       letter-spacing: -0.018em;
       margin: 0 0 24px;
+    }
+
+    /* ── DASHBOARD ── */
+    .cantinho__dashboard {
+      display: flex;
+      flex-direction: column;
+    }
+    .dash {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 720px) {
+      .dash { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (min-width: 980px) {
+      .dash { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .dash__card {
+      border: 0.5px solid var(--fg-14);
+      border-radius: 10px;
+      background: rgba(245, 242, 235, 0.02);
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .dash__card--wide {
+      grid-column: 1 / -1;
+    }
+    @media (min-width: 980px) {
+      .dash__card--wide { grid-column: span 3; }
+    }
+    .dash__card-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-45);
+    }
+    .dash__card-big {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--amber);
+    }
+    .dash__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dash__list--cols {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 24px;
+    }
+    @media (min-width: 720px) {
+      .dash__list--cols { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 980px) {
+      .dash__list--cols { grid-template-columns: repeat(6, 1fr); }
+    }
+    .dash__list li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      letter-spacing: 0.04em;
+      color: var(--fg-86);
+      padding: 2px 0;
+      border-bottom: 0.5px dashed var(--fg-14);
+    }
+    .dash__list li:last-child { border-bottom: none; }
+    .dash__list li b {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--fg);
+      letter-spacing: 0;
+    }
+    .dash__list li.dash__sub {
+      padding-left: 12px;
+      color: var(--fg-65);
+    }
+    .dash__list li.dash__muted {
+      color: var(--fg-45);
+    }
+    .dash__list li.dash__muted b {
+      color: var(--fg-65);
+    }
+    .dash__delta {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      color: var(--fg-45);
+    }
+    .dash__top {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: top;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dash__top li {
+      counter-increment: top;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--sans);
+      font-size: 13.5px;
+      color: var(--fg-86);
+      padding: 6px 0;
+      border-bottom: 0.5px dashed var(--fg-14);
+    }
+    .dash__top li::before {
+      content: counter(top, decimal-leading-zero);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      margin-right: 12px;
+    }
+    .dash__top li span { flex: 1; }
+    .dash__top li b {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--fg);
+    }
+    .dash__footnote {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--fg-45);
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: baseline;
+    }
+    .dash__footnote-sep {
+      color: var(--fg-22);
     }
 
     /* ── APRESENTAÇÃO ── */
