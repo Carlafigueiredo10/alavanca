@@ -186,6 +186,21 @@ export async function getArtifactById(
   return { ok: true, artifact: (data as JourneyArtifact | null) ?? null };
 }
 
+// Hard delete de um artifact. RLS garante ownership. A FK self-reference
+// `replaces_artifact_id` é `on delete set null`, então versões posteriores
+// que apontavam pra este artifact ficam órfãs (sem referência) mas sobrevivem.
+export async function deleteArtifact(
+  supabase: SupabaseServerClient,
+  artifactId: string,
+): Promise<MutationResult> {
+  const { error } = await supabase
+    .from('journey_artifacts')
+    .delete()
+    .eq('id', artifactId);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 export async function archiveJourney(
   supabase: SupabaseServerClient,
   journeyId: string,

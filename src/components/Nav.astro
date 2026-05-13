@@ -11,7 +11,6 @@ interface Props {
   // Mantido pra não quebrar páginas que ainda passam current="casos" etc.
   current?: string;
   links?: NavLink[];
-  cta?: { label: string; href: string } | null;
 }
 
 // 6 seções de topo, fixas em toda a aplicação. Os 6 verbos NÃO ficam aqui —
@@ -34,7 +33,6 @@ const VERB_SEGMENTS = new Set(['mapear', 'estruturar', 'formalizar', 'construir'
 
 const {
   links = defaultLinks,
-  cta = { label: 'Comece aqui', href: '/mapear/sprint' },
 } = Astro.props;
 
 const rawSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
@@ -69,17 +67,11 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
       ))}
     </nav>
 
-    {cta && (
-      <a class="nav-cta" href={cta.href}>
-        <span class="nav-cta-dot"></span>
-        <span class="nav-cta-label">{cta.label}</span>
-        <span class="nav-cta-arrow">→</span>
-      </a>
-    )}
-
     <a class="nav-auth" id="nav-auth" href="/login" data-state="anon">
-      <span class="nav-auth-label">Entrar</span>
+      <span class="nav-auth-label">Entrar<span class="nav-auth-label-rest"> / Criar conta</span></span>
     </a>
+
+    <a class="nav-jornada" id="nav-jornada" href="/minha-jornada" hidden>Minha jornada</a>
 
     <form class="nav-logout" id="nav-logout" method="POST" action="/api/auth/logout" hidden>
       <button type="submit" class="nav-logout-btn" aria-label="Sair">Sair</button>
@@ -115,15 +107,16 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
   (async () => {
     const el = document.getElementById('nav-auth') as HTMLAnchorElement | null;
     if (!el) return;
-    const label = el.querySelector<HTMLSpanElement>('.nav-auth-label');
     const ownerLink = document.getElementById('nav-owner') as HTMLAnchorElement | null;
     try {
       const sb = getSupabaseBrowserClient();
       const { data } = await sb.auth.getSession();
       if (data?.session) {
-        el.href = '/minha-jornada';
-        el.dataset.state = 'authed';
-        if (label) label.textContent = 'Minha jornada';
+        // Authed: esconde "Entrar / Criar conta", mostra "Minha jornada" + "Sair".
+        el.hidden = true;
+
+        const jornada = document.getElementById('nav-jornada') as HTMLAnchorElement | null;
+        if (jornada) jornada.hidden = false;
 
         const logout = document.getElementById('nav-logout') as HTMLFormElement | null;
         if (logout) logout.hidden = false;
@@ -250,7 +243,46 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
   }
 
   /* ---------- AUTH (Entrar / Minha jornada) ---------- */
+  .nav-auth[hidden] { display: none; }
   .nav-auth {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--bone);
+    background: oklch(0.82 0.155 78 / 0.10);
+    border: 1px solid oklch(0.82 0.155 78 / 0.55);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
+  }
+  .nav-auth::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 6px oklch(0.82 0.155 78 / 0.6);
+  }
+  .nav-auth:hover {
+    color: var(--signal);
+    border-color: var(--signal);
+    background: oklch(0.82 0.155 78 / 0.18);
+  }
+  .nav-auth[data-state="authed"] {
+    color: var(--signal);
+    border-color: oklch(0.82 0.155 78 / 0.4);
+    background: transparent;
+  }
+
+  /* ---------- MINHA JORNADA (authed) ---------- */
+  .nav-jornada[hidden] { display: none; }
+  .nav-jornada {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
@@ -262,8 +294,7 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
     padding: 10px 6px;
     transition: color 220ms ease;
   }
-  .nav-auth:hover { color: var(--signal); }
-  .nav-auth[data-state="authed"] { color: var(--signal); }
+  .nav-jornada:hover { color: var(--signal); }
 
   /* ---------- LOGOUT (botão "Sair") ---------- */
   .nav-logout {
@@ -274,18 +305,34 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
   }
   .nav-logout[hidden] { display: none; }
   .nav-logout-btn {
-    background: transparent;
-    border: 0;
-    color: var(--fg-50);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: oklch(0.82 0.155 78 / 0.08);
+    border: 1px solid oklch(0.82 0.155 78 / 0.4);
+    border-radius: 999px;
+    color: var(--bone);
     font-family: var(--font-mono);
     font-size: 10px;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 10px 6px;
+    padding: 10px 16px;
     cursor: pointer;
-    transition: color 220ms ease;
+    transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
   }
-  .nav-logout-btn:hover { color: var(--signal); }
+  .nav-logout-btn::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+  .nav-logout-btn:hover {
+    color: var(--signal);
+    border-color: var(--signal);
+    background: oklch(0.82 0.155 78 / 0.16);
+  }
 
   /* ---------- OWNER LINK (Carla) ---------- */
   .nav-owner {
@@ -317,52 +364,12 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
     .nav-owner { display: none; }
   }
 
-  /* ---------- CTA ---------- */
-  .nav-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid var(--hairline);
-    padding: 10px 16px;
-    text-decoration: none;
-    color: var(--bone);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    transition: border-color 250ms ease, color 250ms ease;
-  }
-
-  .nav-cta:hover {
-    border-color: oklch(0.82 0.155 78 / 0.6);
-  }
-
-  .nav-cta-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: blink 3.4s steps(1) infinite;
-  }
-
-  .nav-cta-arrow {
-    color: var(--signal);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 250ms ease, transform 250ms ease;
-  }
-
-  .nav-cta:hover .nav-cta-arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 640px) {
-    .nav-inner { padding: 16px 24px; }
+    .nav-inner { padding: 16px 24px; gap: 14px; }
     .nav-brand-sub { display: none; }
-    .nav-cta-label { display: none; }
-    .nav-cta { padding: 10px 12px; }
-    .nav-auth { display: none; }
+    .nav-auth-label-rest { display: none; }
+    .nav-auth { padding: 8px 12px; }
+    .nav-logout-btn { padding: 8px 12px; }
   }
 </style>

@@ -165,12 +165,19 @@ function summaryOf(a: JourneyArtifact): string {
               </div>
               <ul class="jornada__items">
                 {list.map((a) => (
-                  <li class="jornada__item">
+                  <li class="jornada__item" data-artifact-id={a.id}>
                     <a class="jornada__item-link" href={`/jornada/${a.id}`}>
                       <div class="jornada__item-when">{formatDateTime(a.created_at)}</div>
                       <p class="jornada__item-summary">{summaryOf(a)}</p>
                       <span class="jornada__item-arrow">→</span>
                     </a>
+                    <button
+                      type="button"
+                      class="jornada__item-del"
+                      data-del-artifact={a.id}
+                      aria-label="Excluir peça"
+                      title="Excluir peça"
+                    >✕</button>
                   </li>
                 ))}
               </ul>
@@ -362,11 +369,41 @@ function summaryOf(a: JourneyArtifact): string {
       gap: 14px;
     }
     .jornada__item {
+      position: relative;
       border: 0.5px solid var(--fg-14);
       border-radius: 8px;
       background: rgba(245, 242, 235, 0.02);
       overflow: hidden;
-      transition: border-color 200ms ease, background 200ms ease;
+      transition: border-color 200ms ease, background 200ms ease, opacity 200ms ease;
+    }
+    .jornada__item.is-deleting { opacity: 0.4; pointer-events: none; }
+    .jornada__item-del {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 0.5px solid var(--fg-22);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--fg-65);
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 180ms ease, color 180ms ease, border-color 180ms ease, background 180ms ease;
+      z-index: 2;
+    }
+    .jornada__item:hover .jornada__item-del,
+    .jornada__item-del:focus-visible { opacity: 1; }
+    .jornada__item-del:hover {
+      color: rgba(255, 130, 130, 1);
+      border-color: rgba(255, 130, 130, 0.7);
+      background: rgba(255, 80, 80, 0.12);
+    }
+    /* Em touch (sem hover real), sempre visível pra ser tappable */
+    @media (hover: none) {
+      .jornada__item-del { opacity: 0.75; }
     }
     .jornada__item:hover {
       border-color: var(--amber);
@@ -472,6 +509,71 @@ function summaryOf(a: JourneyArtifact): string {
       if (e.key === 'Enter') {
         e.preventDefault();
         saveBtn?.click();
+      }
+    });
+
+    // ── Excluir peça ─────────────────────────────────────────────────
+    // Hard delete via DELETE /api/journey/artifacts/<id>. RLS garante dono.
+    // Confirma, marca o <li> como is-deleting (opacidade), dispara fetch
+    // e em sucesso remove do DOM + atualiza contadores. Em erro, reverte.
+    document.addEventListener('click', async (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest('[data-del-artifact]');
+      if (!(btn instanceof HTMLButtonElement)) return;
+      e.preventDefault();
+
+      const id = btn.dataset.delArtifact;
+      if (!id) return;
+
+      const ok = window.confirm('Excluir essa peça? Não dá pra desfazer.');
+      if (!ok) return;
+
+      const item = btn.closest('.jornada__item') as HTMLLIElement | null;
+      if (!item) return;
+      item.classList.add('is-deleting');
+
+      try {
+        const resp = await fetch(`/api/journey/artifacts/${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+        });
+        if (!resp.ok) {
+          item.classList.remove('is-deleting');
+          const data = (await resp.json().catch(() => ({}))) as { error?: string };
+          window.alert(`Não consegui excluir: ${data.error ?? resp.statusText}`);
+          return;
+        }
+        const group = item.closest('.jornada__group') as HTMLDivElement | null;
+        const list = item.parentElement as HTMLUListElement | null;
+        item.remove();
+
+        // Atualiza "N peças" do grupo; se zerar, remove grupo inteiro.
+        if (group && list) {
+          const remaining = list.querySelectorAll('.jornada__item').length;
+          if (remaining === 0) {
+            group.remove();
+          } else {
+            const count = group.querySelector('.jornada__group-count');
+            if (count) count.textContent = remaining === 1 ? '1 peça' : `${remaining} peças`;
+          }
+        }
+
+        // Atualiza "X peças geradas" do hero
+        const meta = document.querySelector('.jornada__meta');
+        if (meta) {
+          const allItems = document.querySelectorAll('.jornada__item').length;
+          const startedText = meta.textContent?.split('·')[0]?.trim() ?? 'Aberta em ?';
+          const piecesText =
+            allItems === 0
+              ? 'nenhuma peça gerada'
+              : allItems === 1
+                ? '1 peça gerada'
+                : `${allItems} peças geradas`;
+          meta.textContent = `${startedText} · ${piecesText}`;
+        }
+      } catch {
+        item.classList.remove('is-deleting');
+        window.alert('Sem rede. Tenta de novo daqui a pouco.');
       }
     });
   </script>

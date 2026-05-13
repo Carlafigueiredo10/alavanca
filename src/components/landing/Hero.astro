@@ -114,12 +114,38 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
           <span class="hero-cta-label">Conheça a Jô</span>
           <span class="hero-cta-arrow">→</span>
         </a>
+        <a class="hero-cta hero-cta-auth" id="hero-cta-auth" href="/login">
+          <span class="hero-cta-auth-inner">
+            <span class="hero-cta-auth-dot"></span>
+            <span class="hero-cta-label">Entrar / Criar conta</span>
+          </span>
+          <span class="hero-cta-arrow">→</span>
+        </a>
+        <p class="hero-cta-auth-note" id="hero-cta-auth-note">
+          Sem conta, suas respostas e peças geradas pela Jô não ficam salvas — você refaz do zero a cada visita.
+        </p>
       </div>
     </div>
   </div>
 
   <div class="hero-fade"></div>
 </section>
+
+<script>
+  // Esconde o CTA "Entrar / Criar conta" se já houver sessão. SSR mostra por
+  // default (fallback seguro); este script reescreve client-side. Pequeno flash
+  // possível em quem já está logado, mas aceitável.
+  import { getSupabaseBrowserClient } from '../../lib/supabase/browser';
+  (async () => {
+    const authCta = document.getElementById('hero-cta-auth');
+    if (!authCta) return;
+    try {
+      const sb = getSupabaseBrowserClient();
+      const { data } = await sb.auth.getSession();
+      if (data?.session) authCta.classList.add('is-authed');
+    } catch { /* mantém visível como fallback */ }
+  })();
+</script>
 
 <script is:inline>
   (() => {
@@ -347,6 +373,42 @@ const ticks = Array.from({ length: 60 }, (_, i) => {
   }
   .hero-cta-secondary .hero-cta-label {
     font-size: 16px;
+  }
+
+  .hero-cta-auth {
+    border-color: oklch(0.82 0.155 78 / 0.55);
+    background: oklch(0.82 0.155 78 / 0.08);
+    color: var(--bone);
+  }
+  .hero-cta-auth:hover {
+    border-color: var(--signal);
+    background: oklch(0.82 0.155 78 / 0.16);
+    color: var(--signal);
+  }
+  .hero-cta-auth-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-cta-auth-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 8px oklch(0.82 0.155 78 / 0.7);
+  }
+  .hero-cta-auth-note {
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.55;
+    letter-spacing: 0.04em;
+    color: var(--fg-60);
+    max-width: 36ch;
+  }
+  .hero-cta-auth.is-authed,
+  .hero-cta-auth.is-authed + .hero-cta-auth-note {
+    display: none;
   }
 
   .hero-cta-arrow {

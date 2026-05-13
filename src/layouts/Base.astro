@@ -16,7 +16,6 @@ interface Props {
   description?: string;
   current?: string; // ignorado — Nav detecta ativo via Astro.url.pathname
   navLinks?: NavLink[];
-  navCta?: { label: string; href: string } | null;
   bodyClass?: string;
 }
 
@@ -25,7 +24,6 @@ const {
   description = 'Plataforma do CLIC para apoio a laboratórios de inovação pública: diagnóstico, trilhas, assistente e casos.',
   current,
   navLinks,
-  navCta,
   bodyClass,
 } = Astro.props;
 
@@ -48,7 +46,7 @@ const showJo = !path.startsWith('/jo') && !path.startsWith('/login');
   />
 </head>
 <body class={bodyClass}>
-  <Nav current={current} links={navLinks} cta={navCta} />
+  <Nav current={current} links={navLinks} />
   <main>
     <slot />
   </main>
