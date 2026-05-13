@@ -34,7 +34,7 @@ const VERB_SEGMENTS = new Set(['mapear', 'estruturar', 'formalizar', 'construir'
 
 const {
   links = defaultLinks,
-  cta = { label: 'Iniciar diagnóstico', href: '/mapear/sprint' },
+  cta = { label: 'Comece aqui', href: '/mapear/sprint' },
 } = Astro.props;
 
 const rawSegment = (Astro.url.pathname.split('/')[1] || '').toLowerCase();
@@ -72,6 +72,10 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
     <a class="nav-auth" id="nav-auth" href="/login" data-state="anon">
       <span class="nav-auth-label">Entrar</span>
     </a>
+
+    <form class="nav-logout" id="nav-logout" method="POST" action="/api/auth/logout" hidden>
+      <button type="submit" class="nav-logout-btn" aria-label="Sair">Sair</button>
+    </form>
 
     <a class="nav-owner" id="nav-owner" href="/meus-produtos" hidden>
       <span class="nav-owner-dot"></span>
@@ -120,6 +124,9 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
         el.href = '/minha-jornada';
         el.dataset.state = 'authed';
         if (label) label.textContent = 'Minha jornada';
+
+        const logout = document.getElementById('nav-logout') as HTMLFormElement | null;
+        if (logout) logout.hidden = false;
 
         const email = data.session.user?.email?.toLowerCase() ?? '';
         if (ownerLink && email === OWNER_EMAIL) {
@@ -257,6 +264,28 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
   }
   .nav-auth:hover { color: var(--signal); }
   .nav-auth[data-state="authed"] { color: var(--signal); }
+
+  /* ---------- LOGOUT (botão "Sair") ---------- */
+  .nav-logout {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-logout[hidden] { display: none; }
+  .nav-logout-btn {
+    background: transparent;
+    border: 0;
+    color: var(--fg-50);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 10px 6px;
+    cursor: pointer;
+    transition: color 220ms ease;
+  }
+  .nav-logout-btn:hover { color: var(--signal); }
 
   /* ---------- OWNER LINK (Carla) ---------- */
   .nav-owner {
