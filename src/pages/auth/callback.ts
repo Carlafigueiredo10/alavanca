@@ -28,6 +28,16 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 
   if (error) return loginRedirect(error.message);
 
+  // Flash single-use: lido + deletado pelo Base.astro no próximo SSR.
+  // Max-Age curto cobre o redirect; se o destino for página estática
+  // (raro após login), o cookie expira sozinho sem efeito colateral.
+  cookies.set('alavanca_flash', 'Sua jornada foi salva. A Jô agora mantém o contexto entre os 6 verbos.', {
+    path: '/',
+    maxAge: 60,
+    httpOnly: true,
+    sameSite: 'lax',
+  });
+
   // Redirect inteligente: quando o `next` é o default genérico (/ ou /jo) e o
   // user já tem peças geradas, manda pra /minha-jornada. Se veio explícito de
   // outra rota (ex: /estruturar/sprint), respeita literalmente. RLS garante

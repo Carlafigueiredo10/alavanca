@@ -1,5 +1,4 @@
 ﻿---
-export const prerender = false;
 import Base from '../layouts/Base.astro';
 
 interface VerbCard {
@@ -145,10 +144,10 @@ const PHASES: Phase[] = [
             <a href={v.href} class="ap-card">
               <div class="ap-card-head">
                 <span class="ap-card-id">/{v.id}</span>
-                <span class="ap-card-verb-tag">{v.verb}</span>
                 <span class="ap-card-tag">{v.tag}</span>
               </div>
-              <h2 class="ap-card-title">{v.title}</h2>
+              <h2 class="ap-card-verb">{v.verb}</h2>
+              <p class="ap-card-title">{v.title}</p>
               <p class="ap-card-headline">{v.headline}</p>
               <p class="ap-card-body">{v.body}</p>
               <p class="ap-card-pull">{v.pull}</p>
@@ -329,10 +328,6 @@ const PHASES: Phase[] = [
     flex-wrap: wrap;
   }
   .ap-card-id { color: var(--amber); letter-spacing: 0.2em; }
-  .ap-card-verb-tag {
-    color: var(--fg-86);
-    letter-spacing: 0.2em;
-  }
   .ap-card-tag {
     padding: 3px 9px;
     border-radius: 999px;
@@ -342,14 +337,29 @@ const PHASES: Phase[] = [
     letter-spacing: 0.14em;
   }
 
-  .ap-card-title {
+  /* Verbo é o destaque principal do card: serif grande, peso de título.
+     Substitui o antigo title funcional como heading visual. */
+  .ap-card-verb {
     font-family: var(--serif);
     font-weight: 500;
-    font-size: clamp(22px, 2.6vw, 28px);
-    line-height: 1.1;
-    letter-spacing: -0.018em;
+    font-size: clamp(34px, 4.4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.026em;
     color: var(--fg);
-    margin: 6px 0 4px;
+    margin: 10px 0 2px;
+    text-wrap: balance;
+  }
+
+  /* Título funcional vira subtítulo discreto — descreve o que o verbo
+     entrega sem competir visualmente com ele. */
+  .ap-card-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.35;
+    letter-spacing: 0;
+    color: var(--fg-65);
+    margin: 0 0 4px;
     text-wrap: balance;
   }
 

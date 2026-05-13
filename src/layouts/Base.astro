@@ -2,6 +2,7 @@
 import Nav from '../components/Nav.astro';
 import JoFab from '../components/JoFab.astro';
 import JoDrawer from '../components/JoDrawer.astro';
+import JourneyBadge from '../components/JourneyBadge.astro';
 import '../styles/tokens.css';
 
 interface NavLink {
@@ -29,6 +30,35 @@ const {
 
 const path = Astro.url.pathname;
 const showJo = !path.startsWith('/jo') && !path.startsWith('/login');
+
+// Wizards onde o badge "Jornada salva" aparece. Mesma lista do antigo
+// AuthQualityHint, mas inversa: lá era convite a logar; aqui é reforço
+// de que está logada. Middleware garante sessão antes de chegar aqui.
+const WIZARD_PATHS = new Set([
+  '/mapear/sprint',
+  '/estruturar/sprint',
+  '/formalizar/sprint',
+  '/formalizar/politica-inovacao',
+  '/formalizar/nit',
+  '/formalizar/enquadramento-ict',
+  '/formalizar/catalogo',
+  '/formalizar/portaria',
+  '/formalizar/dedicacao',
+  '/construir/sprint',
+  '/avaliar/sprint',
+  '/manter/sprint',
+]);
+const isWizard = WIZARD_PATHS.has(path);
+
+// Flash single-use: cookie setado pelo /auth/callback após exchange OK.
+// Lido SSR + deletado na mesma request. Páginas estáticas não veem cookie,
+// mas após login o destino é sempre rota privada (SSR), então funciona.
+let flashMessage: string | null = null;
+const flashCookie = Astro.cookies.get('alavanca_flash');
+if (flashCookie?.value) {
+  flashMessage = flashCookie.value;
+  Astro.cookies.delete('alavanca_flash', { path: '/' });
+}
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -47,11 +77,84 @@ const showJo = !path.startsWith('/jo') && !path.startsWith('/login');
 </head>
 <body class={bodyClass}>
   <Nav current={current} links={navLinks} />
+
+  {flashMessage && (
+    <aside class="flash-toast" id="alavanca-flash" role="status" aria-live="polite">
+      <span class="flash-toast-dot" aria-hidden="true"></span>
+      <span class="flash-toast-text">{flashMessage}</span>
+    </aside>
+  )}
+
+  {isWizard && (
+    <div class="journey-badge-host">
+      <JourneyBadge />
+    </div>
+  )}
+
   <main>
     <slot />
   </main>
   {showJo && <JoFab />}
   {showJo && <JoDrawer />}
+
+  <style>
+    .flash-toast {
+      position: fixed;
+      top: 88px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      max-width: 560px;
+      border: 0.5px solid oklch(0.82 0.155 78 / 0.4);
+      border-left: 2px solid var(--amber, #d97706);
+      border-radius: 12px;
+      background: oklch(0.12 0.012 95 / 0.92);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+              backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      font-family: var(--font-sans, sans-serif);
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: var(--fg-86, #d4ccbe);
+      z-index: 1000;
+      animation: flashIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .flash-toast.is-fade {
+      animation: flashOut 600ms ease both;
+    }
+    .flash-toast-dot {
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber, #d97706);
+      box-shadow: 0 0 8px oklch(0.82 0.155 78 / 0.7);
+    }
+    .flash-toast-text {
+      font-style: italic;
+    }
+    @keyframes flashIn {
+      from { opacity: 0; transform: translate(-50%, -8px); }
+      to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes flashOut {
+      from { opacity: 1; }
+      to   { opacity: 0; transform: translate(-50%, -8px); }
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const flash = document.getElementById('alavanca-flash');
+      if (!flash) return;
+      // 4.5s visível, depois fade de 600ms, depois remove do DOM.
+      setTimeout(() => flash.classList.add('is-fade'), 4500);
+      setTimeout(() => flash.remove(), 5200);
+    })();
+  </script>
 
   <script is:inline>
     // ============================================================

@@ -13,7 +13,6 @@ import { createSupabaseServerClient } from './lib/supabase/server';
 
 const PRIVATE_PREFIXES = [
   '/diagnostico',
-  '/aplicacao',
   '/jo',
   '/assistente',
   '/ia/linguagem',

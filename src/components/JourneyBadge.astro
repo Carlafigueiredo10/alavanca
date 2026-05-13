@@ -1,0 +1,57 @@
+---
+// JourneyBadge
+// -----------------------------------------------------------------
+// Pill discreto que reforça a persistência da jornada no topo dos
+// wizards. Renderizado pelo Base.astro condicionalmente — só nas
+// rotas de wizard, que são privadas (middleware garante sessão).
+//
+// Sem JS: middleware já garantiu que quem está vendo está autenticada.
+---
+<aside class="journey-badge" role="status" aria-label="Jornada salva">
+  <span class="journey-badge-dot" aria-hidden="true"></span>
+  <span class="journey-badge-label">Jornada salva</span>
+  <a class="journey-badge-link" href="/minha-jornada">ver →</a>
+</aside>
+
+<style>
+  .journey-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 0.5px solid oklch(0.82 0.155 78 / 0.3);
+    border-radius: 999px;
+    background: oklch(0.82 0.155 78 / 0.06);
+    margin: 0 auto;
+    max-width: max-content;
+    font-family: var(--mono, monospace);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-65, #a39a8d);
+  }
+  .journey-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber, #d97706);
+    box-shadow: 0 0 6px oklch(0.82 0.155 78 / 0.6);
+  }
+  .journey-badge-label {
+    color: var(--fg-86, #d4ccbe);
+  }
+  .journey-badge-link {
+    color: var(--amber, #d97706);
+    text-decoration: none;
+    transition: opacity 200ms ease;
+  }
+  .journey-badge-link:hover {
+    opacity: 0.7;
+  }
+  /* Container que centraliza horizontalmente */
+  :global(.journey-badge-host) {
+    display: flex;
+    justify-content: center;
+    padding: 80px 24px 0;
+  }
+</style>
