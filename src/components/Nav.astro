@@ -69,6 +69,14 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
       ))}
     </nav>
 
+    {cta && (
+      <a class="nav-cta" href={cta.href}>
+        <span class="nav-cta-dot"></span>
+        <span class="nav-cta-label">{cta.label}</span>
+        <span class="nav-cta-arrow">→</span>
+      </a>
+    )}
+
     <a class="nav-auth" id="nav-auth" href="/login" data-state="anon">
       <span class="nav-auth-label">Entrar</span>
     </a>
@@ -81,14 +89,6 @@ const activeSegment = VERB_SEGMENTS.has(rawSegment) ? 'aplicacao' : rawSegment;
       <span class="nav-owner-dot"></span>
       <span class="nav-owner-label">Meus produtos</span>
     </a>
-
-    {cta && (
-      <a class="nav-cta" href={cta.href}>
-        <span class="nav-cta-dot"></span>
-        <span class="nav-cta-label">{cta.label}</span>
-        <span class="nav-cta-arrow">→</span>
-      </a>
-    )}
   </div>
 </header>
 
