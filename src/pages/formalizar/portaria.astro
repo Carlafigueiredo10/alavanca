@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
+import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Portaria de Criação · Formalizar · Alavanca"
@@ -75,6 +76,8 @@ import BackBar from '../../components/BackBar.astro';
       <textarea class="step-input" data-step-input="3" rows="4" maxlength="500" placeholder="Ex: decreto de organização do Ministério X prevê unidades técnicas vinculadas à Secretaria-Executiva; número e ano a serem confirmados pela área jurídica do órgão."></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 500</div>
       <div data-chip-palette="3"></div>
+      <AuthQualityHint />
+
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>
         <button class="cta cta-primary cta-large" data-generate disabled>Gerar Minuta de Portaria →</button>

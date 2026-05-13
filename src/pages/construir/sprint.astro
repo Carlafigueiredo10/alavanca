@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
+import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Plano de Implementação · Construir · Alavanca"
@@ -166,6 +167,8 @@ import BackBar from '../../components/BackBar.astro';
       ></textarea>
       <div class="step-counter"><span data-step-counter="4">0</span> / 500</div>
       <div data-chip-palette="4"></div>
+
+      <AuthQualityHint />
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="4">← Voltar</button>
@@ -450,11 +453,7 @@ import BackBar from '../../components/BackBar.astro';
   const generateBtn = document.querySelector<HTMLButtonElement>('[data-generate]')!;
 
   function setGenerateLabel() {
-    if (isAuthed === false) {
-      generateBtn.textContent = 'Gerar Plano (faz login) →';
-    } else {
-      generateBtn.textContent = 'Gerar Plano →';
-    }
+    generateBtn.textContent = 'Gerar Plano →';
   }
 
   let editingArtifactId: string | null = null;
