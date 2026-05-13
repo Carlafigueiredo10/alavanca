@@ -1,7 +1,7 @@
----
+﻿---
+export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
-import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Enquadramento como ICT · Formalizar · Alavanca"
@@ -78,7 +78,6 @@ import AuthQualityHint from '../../components/AuthQualityHint.astro';
       <textarea class="step-input" data-step-input="3" rows="4" maxlength="500" placeholder="Ex: órgão criado pela Lei nº [a confirmar pelo setor jurídico]; regimento interno aprovado pelo Decreto nº [a confirmar]. A alteração será feita no regimento interno, capítulo das competências do órgão."></textarea>
       <div class="step-counter"><span data-step-counter="3">0</span> / 500</div>
       <div data-chip-palette="3"></div>
-      <AuthQualityHint />
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>

@@ -1,7 +1,7 @@
----
+﻿---
+export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
-import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Blueprint do Sprint · Estruturar · Alavanca"
@@ -135,7 +135,6 @@ import AuthQualityHint from '../../components/AuthQualityHint.astro';
       <div class="step-counter"><span data-step-counter="3">0</span> / 600</div>
       <div data-chip-palette="3"></div>
 
-      <AuthQualityHint />
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="3">← Voltar</button>

@@ -1,7 +1,7 @@
----
+﻿---
+export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
-import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Criação do NIT · Formalizar · Alavanca"
@@ -100,7 +100,6 @@ import AuthQualityHint from '../../components/AuthQualityHint.astro';
       <textarea class="step-input" data-step-input="4" rows="4" maxlength="500" placeholder="Ex: Ato de Enquadramento como ICT em fase de aprovação pela alta gestão; Política de Inovação ainda não editada (será desenvolvida na Frente 06); modelo de acordo de cooperação técnica em uso pela área jurídica."></textarea>
       <div class="step-counter"><span data-step-counter="4">0</span> / 500</div>
       <div data-chip-palette="4"></div>
-      <AuthQualityHint />
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="4">← Voltar</button>

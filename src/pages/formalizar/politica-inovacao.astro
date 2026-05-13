@@ -1,7 +1,7 @@
----
+﻿---
+export const prerender = false;
 import Base from '../../layouts/Base.astro';
 import BackBar from '../../components/BackBar.astro';
-import AuthQualityHint from '../../components/AuthQualityHint.astro';
 ---
 <Base
   title="Política de Inovação · Formalizar · Alavanca"
@@ -145,7 +145,6 @@ import AuthQualityHint from '../../components/AuthQualityHint.astro';
       <textarea class="step-input" data-step-input="5" rows="6" maxlength="900" placeholder="Ex: percentual de participação dos inventores entre 10% (piso institucional) e 1/3 (teto legal do art. 13), com ajuste por mérito decidido pela direção. FORMICT preenchido anualmente pelo NIT (status de pedidos de PI, contratos de transferência, ganhos econômicos, partilha aos inventores). Governança de conflito: declaração obrigatória de interesses econômicos pelos pesquisadores envolvidos em contratos comerciais."></textarea>
       <div class="step-counter"><span data-step-counter="5">0</span> / 900</div>
       <div data-chip-palette="5"></div>
-      <AuthQualityHint />
 
       <div class="step-actions">
         <button class="cta cta-secondary" data-step-back="5">← Voltar</button>
