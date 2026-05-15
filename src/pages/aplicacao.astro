@@ -160,6 +160,27 @@ const PHASES: Phase[] = [
   ))}
 
   <!-- ============================================================
+       CTA · CATÁLOGO DE PRODUTOS
+       ============================================================ -->
+  <section class="ap-catalog-cta">
+    <div class="container">
+      <div class="ap-catalog-meta">
+        <span class="ap-catalog-id">/03</span>
+        <span class="ap-catalog-line"></span>
+        <span class="ap-catalog-tag">Catálogo · 22 artefatos</span>
+      </div>
+      <h2 class="ap-catalog-headline">Quer ver tudo que sai dessas seis portas?</h2>
+      <p class="ap-catalog-body">
+        Catálogo completo dos 22 artefatos institucionais que a Jô produz —
+        diagnósticos, blueprints, minutas jurídicas, planos técnicos, matrizes
+        de indicadores e dossiês de transição. SEI-Ready, lastreados,
+        agrupados pelo verbo que gera.
+      </p>
+      <a href="/produtos" class="ap-catalog-link">ver catálogo de artefatos →</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
        VOLTAR
        ============================================================ -->
   <section class="ap-bottom">
@@ -404,11 +425,77 @@ const PHASES: Phase[] = [
     transform: translateX(4px);
   }
 
+  /* ── CTA CATÁLOGO ── */
+  .ap-catalog-cta {
+    padding: 72px 0 56px;
+    margin-top: 32px;
+    border-top: 0.5px solid var(--fg-14);
+    background: rgba(217, 119, 6, 0.03);
+  }
+  .ap-catalog-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 24px;
+  }
+  .ap-catalog-id { color: var(--amber); }
+  .ap-catalog-line {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 0.5px;
+    background: var(--fg-22);
+  }
+  .ap-catalog-tag { color: var(--fg-65); }
+
+  .ap-catalog-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 18px;
+    max-width: 680px;
+    text-wrap: balance;
+  }
+  .ap-catalog-body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 680px;
+    margin-bottom: 28px;
+  }
+  .ap-catalog-link {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--amber);
+    border-radius: 999px;
+    padding: 14px 28px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .ap-catalog-link:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 10px 28px -10px oklch(0.82 0.155 78 / 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+
   /* ── VOLTAR ── */
   .ap-bottom {
     padding: 56px 0 80px;
-    border-top: 0.5px solid var(--fg-14);
-    margin-top: 32px;
   }
   .ap-back {
     font-family: var(--mono);

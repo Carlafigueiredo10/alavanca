@@ -1,0 +1,676 @@
+---
+import Base from '../layouts/Base.astro';
+
+// ============================================================
+// Catálogo completo dos artefatos que a Jô produz.
+// Lista pública. Geração (click no CTA) cai no /verbo, que é
+// gated por middleware — abrir o card é livre, gerar exige login.
+// ============================================================
+
+interface Artifact {
+  num: string;           // 01..22
+  name: string;          // nome do artefato
+  short: string;         // descrição curta visível sem expandir
+  long: string;          // descrição completa ao abrir
+  cta: string;           // texto do CTA do verbo correspondente
+  href: string;          // destino exato do CTA (pode ser /verbo/sprint ou /verbo/sub)
+}
+
+interface VerbGroup {
+  key: string;           // mapear, estruturar, ...
+  num: string;           // 01..06
+  verb: string;          // Mapear, Estruturar, ...
+  caption: string;       // descrição curta do verbo (mesma família da landing /aplicacao)
+  artifacts: Artifact[];
+}
+
+const GROUPS: VerbGroup[] = [
+  {
+    key: 'mapear',
+    num: '01',
+    verb: 'Mapear',
+    caption: 'Diagnóstico Institucional',
+    artifacts: [
+      {
+        num: '01',
+        name: 'Relatório de Diagnóstico Institucional',
+        short: 'SEI-Ready · pronto pra tramitação administrativa.',
+        long: 'Documento estruturado que consolida Cenário · Atores · Gargalo · Risco em três famílias com lastro institucional. Formatado pra encaminhamento direto, sem retrabalho de diagramação.',
+        cta: 'Iniciar Diagnóstico com a Jô →',
+        href: '/mapear/sprint',
+      },
+      {
+        num: '02',
+        name: 'Matriz de Riscos',
+        short: 'Probabilidade × impacto, lastreada no input — não chuta números.',
+        long: 'Riscos identificados a partir do cenário descrito, com probabilidade e impacto declarados e justificativa por linha. Vincula cada risco ao gargalo de origem.',
+        cta: 'Iniciar Diagnóstico com a Jô →',
+        href: '/mapear/sprint',
+      },
+      {
+        num: '03',
+        name: 'Diretriz de Decisão',
+        short: 'Veredito explícito: GO · GO com mitigação · NO-GO.',
+        long: 'A Jô não devolve "depende". Emite veredito tripartite com base no diagnóstico e na matriz de riscos. NO-GO vem com justificativa — nem todo problema deve virar projeto.',
+        cta: 'Iniciar Diagnóstico com a Jô →',
+        href: '/mapear/sprint',
+      },
+      {
+        num: '04',
+        name: 'Ordem de Ataque',
+        short: 'Roteamento obrigatório dos próximos verbos.',
+        long: 'A rota exata dos módulos a acionar depois do diagnóstico — em ordem de prioridade institucional. Evita pular do problema direto pra implementação sem testar premissas.',
+        cta: 'Iniciar Diagnóstico com a Jô →',
+        href: '/mapear/sprint',
+      },
+    ],
+  },
+  {
+    key: 'estruturar',
+    num: '02',
+    verb: 'Estruturar',
+    caption: 'Arquitetura Operacional',
+    artifacts: [
+      {
+        num: '05',
+        name: 'Blueprint de Sprint',
+        short: 'SEI-Ready · ciclo Entender · Explorar · Entregar.',
+        long: 'Documento detalhando o ciclo da intervenção nas três fases canônicas da inovação pública. Lastro: Design Sprint (InovaGov), Projeto MINDS (GNova/OCDE) e SIMPLES MENTE (ciências comportamentais).',
+        cta: 'Iniciar Estruturação com a Jô →',
+        href: '/estruturar/sprint',
+      },
+      {
+        num: '06',
+        name: 'Lógica Experimental',
+        short: 'Hipótese central, riscos a testar, critérios de validação.',
+        long: 'Estrutura científica do experimento: o que se aposta, qual o risco mais alto da aposta e como ela vai ser observada na prática. Reduz desperdício antes da implementação.',
+        cta: 'Iniciar Estruturação com a Jô →',
+        href: '/estruturar/sprint',
+      },
+      {
+        num: '07',
+        name: 'Plano de Trabalho Inicial',
+        short: 'Base institucional pra alocar equipe e organizar sprint.',
+        long: 'Plano metodológico justificável institucionalmente — direciona alocação de equipe, papéis e ritmo do experimento sem improviso.',
+        cta: 'Iniciar Estruturação com a Jô →',
+        href: '/estruturar/sprint',
+      },
+    ],
+  },
+  {
+    key: 'formalizar',
+    num: '03',
+    verb: 'Formalizar',
+    caption: 'Governança Normativa',
+    artifacts: [
+      {
+        num: '08',
+        name: 'Minuta de Portaria de Criação',
+        short: 'Vinculação, mandato, competências, fundamentação tripartite.',
+        long: 'Peça de existência jurídica do laboratório. Sem ato formal, o lab não sobrevive à primeira troca de gestão. Fundamentação ancorada em três bases legais coerentes entre si.',
+        cta: 'Construir Portaria com a Jô →',
+        href: '/formalizar/portaria',
+      },
+      {
+        num: '09',
+        name: 'Catálogo de Serviços',
+        short: 'Define o que o lab faz — e obrigatoriamente o que NÃO faz.',
+        long: 'Sem a declaração explícita de restrições, a Jô recusa a emissão. Antídoto da síndrome do balcão de pedidos: o lab que aceita tudo se dissolve em demanda reativa.',
+        cta: 'Construir Catálogo com a Jô →',
+        href: '/formalizar/catalogo',
+      },
+      {
+        num: '10',
+        name: 'Nota Técnica de Dedicação Exclusiva',
+        short: 'Lastro Marco CT&I (arts. 9º-A bolsa · 14-A afastamento).',
+        long: 'Ancorada PRIMEIRO no Marco CT&I, DEPOIS em OCDE/ENAP. Justifica dedicação exclusiva, bolsas de inovação, bônus tecnológico e afastamento de servidores pra PD&I.',
+        cta: 'Construir NT Dedicação com a Jô →',
+        href: '/formalizar/dedicacao',
+      },
+      {
+        num: '11',
+        name: 'Ato de Enquadramento como ICT',
+        short: 'Anti-fachada — só enquadra com PD&I declarada.',
+        long: 'Enquadramento institucional no Marco Legal de CT&I. Habilita parcerias, instrumentos jurídicos do Marco e é pré-requisito (obrigatório) da Política de Inovação subsequente.',
+        cta: 'Construir ICT com a Jô →',
+        href: '/formalizar/enquadramento-ict',
+      },
+      {
+        num: '12',
+        name: 'Estruturação inicial do NIT',
+        short: 'Portaria do NIT com cláusula condicional embutida.',
+        long: 'Núcleo de Inovação Tecnológica vinculado ao laboratório. A Jô permite avançar mas emite alerta recomendando Enquadramento ICT prévio — pra evitar NIT sem fundação jurídica.',
+        cta: 'Construir NIT com a Jô →',
+        href: '/formalizar/nit',
+      },
+      {
+        num: '13',
+        name: 'Política de Inovação',
+        short: 'Modelo Integrado (Diretrizes) ou Fragmentado (núcleo + 4 resoluções).',
+        long: 'Diretrizes institucionais permanentes pra inovação. Gatekeeper rígido: a Jô exige confirmação do Enquadramento ICT antes de liberar a redação — sem ICT, não há base legal pra Política.',
+        cta: 'Construir Política com a Jô →',
+        href: '/formalizar/politica-inovacao',
+      },
+    ],
+  },
+  {
+    key: 'construir',
+    num: '04',
+    verb: 'Construir',
+    caption: 'Entrega Assistida',
+    artifacts: [
+      {
+        num: '14',
+        name: 'Plano de Implementação Técnica',
+        short: 'Stack, restrições TI, integrações com sistemas legados.',
+        long: 'Documento de implantação: tecnologias, restrições da TI institucional, integrações necessárias com sistemas legados e divisão de responsabilidades operacionais.',
+        cta: 'Iniciar Construção com a Jô →',
+        href: '/construir/sprint',
+      },
+      {
+        num: '15',
+        name: 'Termo de Cooperação Técnica',
+        short: 'Minuta institucional entre lab e unidade finalística.',
+        long: 'Formaliza a relação entre o laboratório (que entrega) e a unidade que vai operar a solução em regime permanente. Sem isso, lab vira suporte permanente — e morre.',
+        cta: 'Iniciar Construção com a Jô →',
+        href: '/construir/sprint',
+      },
+      {
+        num: '16',
+        name: 'Plano de Handoff e Descontinuidade',
+        short: 'Rota de fuga — como desligar sem paralisar o Estado.',
+        long: 'Transferência operacional, governança de sustentação e desligamento ordenado. Toda solução pública precisa de um plano de descontinuidade desde o dia 1 — pra não criar dependência de lock-in.',
+        cta: 'Iniciar Construção com a Jô →',
+        href: '/construir/sprint',
+      },
+    ],
+  },
+  {
+    key: 'avaliar',
+    num: '05',
+    verb: 'Avaliar',
+    caption: 'Medição Pública',
+    artifacts: [
+      {
+        num: '17',
+        name: 'Teoria de Mudança',
+        short: 'Relação explícita entre intervenção e resultado.',
+        long: 'Diferencia atividade (o que foi feito) de outcome (o que mudou no mundo). Pré-requisito pra qualquer afirmação de impacto não ser narrativa vazia.',
+        cta: 'Iniciar Avaliação com a Jô →',
+        href: '/avaliar/sprint',
+      },
+      {
+        num: '18',
+        name: 'Matriz de Indicadores de Valor Público',
+        short: '3 dimensões obrigatórias: Administrativa · Cidadã · Econômica.',
+        long: 'Indicadores classificados com critérios de acompanhamento e evidências esperadas por linha. Letramento institucional anti-caixa-preta: cada indicador vem com Justificativa de Enquadramento.',
+        cta: 'Iniciar Avaliação com a Jô →',
+        href: '/avaliar/sprint',
+      },
+      {
+        num: '19',
+        name: 'Plano de Coleta de Dados',
+        short: 'Fontes, frequência, responsáveis pela aferição.',
+        long: 'Operacionaliza a Matriz de Indicadores: onde o dado mora, quem coleta, em que frequência. Sem plano de coleta, indicador é decoração de slide.',
+        cta: 'Iniciar Avaliação com a Jô →',
+        href: '/avaliar/sprint',
+      },
+    ],
+  },
+  {
+    key: 'manter',
+    num: '06',
+    verb: 'Manter',
+    caption: 'Sustentação',
+    artifacts: [
+      {
+        num: '20',
+        name: 'Dossiê de Transição',
+        short: 'Três camadas: lastro normativo, operacional e de outcome.',
+        long: 'Histórico institucional consolidado pra entrega a nova gestão. A próxima equipe não recomeça do zero — sobe na pilha de decisões já tomadas, com rastreabilidade de cada uma.',
+        cta: 'Iniciar Sustentação com a Jô →',
+        href: '/manter/sprint',
+      },
+      {
+        num: '21',
+        name: 'Pitch Institucional Adaptativo',
+        short: 'Mesma substância, múltiplas audiências.',
+        long: 'Alta gestão, controle, áreas finalísticas, orçamento, parceiros — cada interlocutor recebe a versão certa. A narrativa muda. Os dados permanecem.',
+        cta: 'Iniciar Sustentação com a Jô →',
+        href: '/manter/sprint',
+      },
+      {
+        num: '22',
+        name: 'Dashboard de Impacto Acumulado',
+        short: 'Agrega Plano Técnico (Construir) + Matriz de Indicadores (Avaliar).',
+        long: 'Não inventa, agrega. Manter compõe os artefatos das fases anteriores num painel único de impacto institucional — o que mostra valor sobrevive ao próximo corte.',
+        cta: 'Iniciar Sustentação com a Jô →',
+        href: '/manter/sprint',
+      },
+    ],
+  },
+];
+
+const TOTAL = GROUPS.reduce((acc, g) => acc + g.artifacts.length, 0);
+---
+<Base
+  title="Produtos · catálogo de artefatos · Alavanca"
+  description="Os 22 artefatos institucionais que a Jô produz: diagnósticos, blueprints, minutas jurídicas, planos técnicos, matrizes de indicadores, dossiês de transição. SEI-Ready, lastreados, prontos pra tramitação."
+  bodyClass="film-grain"
+>
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <section class="pr-intro">
+    <div class="container">
+      <div class="pr-meta animate-in">
+        <span class="pr-id">/03</span>
+        <span class="pr-line"></span>
+        <span class="pr-tag">III · Produtos · Catálogo</span>
+      </div>
+
+      <h1 class="pr-headline animate-in delay-100">
+        {TOTAL} artefatos. Um método.
+      </h1>
+
+      <p class="pr-subhead animate-in delay-180">
+        Tudo que a Jô produz — agrupado pelo verbo que gera.
+      </p>
+
+      <p class="pr-body animate-in delay-260">
+        Cada artefato é um documento institucional pronto pra tramitação:
+        SEI-Ready, lastreado e justificável. Clique pra abrir a descrição
+        completa. A geração requer login — o catálogo é público, a produção
+        é da sua jornada.
+      </p>
+
+      <p class="pr-kicker animate-in delay-340">↓ {GROUPS.length} verbos · {TOTAL} artefatos · clique pra expandir</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GRUPOS POR VERBO
+       ============================================================ -->
+  {GROUPS.map((g) => (
+    <section class="pr-group" data-verb={g.key}>
+      <div class="container">
+        <div class="pr-group-head">
+          <span class="pr-group-num">/{g.num}</span>
+          <a href={`/${g.key}`} class="pr-group-link">
+            <strong class="pr-group-verb">{g.verb}</strong>
+            <span class="pr-group-sep">·</span>
+            <span class="pr-group-caption">{g.caption}</span>
+            <span class="pr-group-arrow">→</span>
+          </a>
+          <span class="pr-group-count">{g.artifacts.length} {g.artifacts.length === 1 ? 'artefato' : 'artefatos'}</span>
+          <span class="pr-group-rule"></span>
+        </div>
+
+        <ul class="pr-list">
+          {g.artifacts.map((a) => (
+            <li class="pr-item">
+              <details class="pr-art">
+                <summary class="pr-art-summary">
+                  <span class="pr-art-num">{a.num}</span>
+                  <span class="pr-art-name">{a.name}</span>
+                  <span class="pr-art-short">{a.short}</span>
+                  <span class="pr-art-chev" aria-hidden="true">+</span>
+                </summary>
+                <div class="pr-art-body">
+                  <p class="pr-art-long">{a.long}</p>
+                  <div class="pr-art-foot">
+                    <span class="pr-art-origin">Gera-se em <a href={`/${g.key}`} class="pr-art-origin-link">{g.verb}</a></span>
+                    <a href={a.href} class="pr-art-cta">{a.cta}</a>
+                  </div>
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <!-- ============================================================
+       RODAPÉ
+       ============================================================ -->
+  <section class="pr-bottom">
+    <div class="container">
+      <p class="pr-bottom-note">
+        O catálogo é a vitrine. O método está em <a href="/aplicacao">Aplicação</a>.
+      </p>
+      <a href="/aplicacao" class="pr-back">↩ voltar pra Aplicação</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .container { max-width: 960px; }
+
+  /* ── INTRO ── */
+  .pr-intro { padding: 112px 0 48px; }
+
+  .pr-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+    margin-bottom: 36px;
+  }
+  .pr-id { color: var(--amber); }
+  .pr-line { flex: 0 0 auto; width: 56px; height: 0.5px; background: var(--fg-22); }
+
+  .pr-headline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(48px, 7.6vw, 80px);
+    line-height: 0.98;
+    letter-spacing: -0.032em;
+    color: var(--fg);
+    margin-bottom: 22px;
+    text-wrap: balance;
+  }
+
+  .pr-subhead {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(18px, 2.3vw, 22px);
+    line-height: 1.4;
+    color: var(--fg-86);
+    margin-bottom: 22px;
+    max-width: 680px;
+  }
+
+  .pr-body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    max-width: 680px;
+    margin-bottom: 28px;
+  }
+
+  .pr-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fg-50);
+  }
+
+  /* ── GRUPOS ── */
+  .pr-group { padding: 48px 0 24px; }
+  .pr-group + .pr-group { padding-top: 8px; }
+
+  .pr-group-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .pr-group-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+  }
+  .pr-group-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+  }
+  .pr-group-verb {
+    font-family: var(--serif);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.005em;
+    text-transform: none;
+    color: var(--fg);
+  }
+  .pr-group-sep { color: var(--fg-30); }
+  .pr-group-caption {
+    color: var(--fg-65);
+    letter-spacing: 0.14em;
+  }
+  .pr-group-arrow {
+    color: var(--fg-50);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0;
+    transition: transform 200ms ease, color 200ms ease;
+  }
+  .pr-group-link:hover { color: var(--amber); }
+  .pr-group-link:hover .pr-group-caption { color: var(--amber); }
+  .pr-group-link:hover .pr-group-arrow {
+    color: var(--amber);
+    transform: translateX(3px);
+  }
+  .pr-group-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--fg-50);
+    text-transform: lowercase;
+  }
+  .pr-group-rule {
+    flex: 1;
+    min-width: 24px;
+    height: 0.5px;
+    background: linear-gradient(to right, transparent, var(--fg-22) 30%, var(--fg-22) 70%, transparent);
+  }
+
+  /* ── LISTA DE ARTEFATOS ── */
+  .pr-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pr-art {
+    border: 0.5px solid var(--fg-22);
+    border-radius: 12px;
+    background: rgba(245, 242, 235, 0.025);
+    overflow: hidden;
+    transition: border-color 220ms ease, background 220ms ease;
+  }
+  .pr-art:hover { border-color: var(--fg-30); }
+  .pr-art[open] {
+    border-color: var(--amber-faint, oklch(0.82 0.155 78 / 0.4));
+    background: rgba(217, 119, 6, 0.04);
+  }
+
+  .pr-art-summary {
+    display: grid;
+    grid-template-columns: 44px 1.2fr 1.5fr 24px;
+    align-items: baseline;
+    gap: 16px;
+    padding: 18px 22px;
+    cursor: pointer;
+    list-style: none;
+    transition: background 180ms ease;
+  }
+  .pr-art-summary::-webkit-details-marker { display: none; }
+  .pr-art-summary:hover { background: rgba(245, 242, 235, 0.03); }
+
+  .pr-art-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+  }
+  .pr-art-name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.3;
+    letter-spacing: -0.014em;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .pr-art-short {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--fg-65);
+  }
+  .pr-art-chev {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--fg-50);
+    text-align: right;
+    transition: transform 240ms ease, color 240ms ease;
+  }
+  .pr-art[open] .pr-art-chev {
+    transform: rotate(45deg);
+    color: var(--amber);
+  }
+
+  /* ── CORPO EXPANDIDO ── */
+  .pr-art-body {
+    padding: 4px 22px 22px 82px;
+    border-top: 0.5px solid var(--fg-14);
+    background: rgba(0, 0, 0, 0.15);
+  }
+  .pr-art-long {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--fg-86);
+    margin: 16px 0 18px;
+    max-width: 680px;
+  }
+
+  .pr-art-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--fg-14);
+  }
+  .pr-art-origin {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-50);
+  }
+  .pr-art-origin-link {
+    color: var(--fg-86);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--fg-22);
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .pr-art-origin-link:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+
+  .pr-art-cta {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--amber);
+    border-radius: 999px;
+    padding: 10px 20px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    transition: filter 180ms ease, transform 180ms ease, box-shadow 200ms ease;
+  }
+  .pr-art-cta:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow:
+      0 8px 22px -10px oklch(0.82 0.155 78 / 0.45),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  }
+
+  /* ── RODAPÉ ── */
+  .pr-bottom {
+    padding: 64px 0 96px;
+    border-top: 0.5px solid var(--fg-14);
+    margin-top: 32px;
+  }
+  .pr-bottom-note {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--fg-65);
+    margin-bottom: 22px;
+  }
+  .pr-bottom-note a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 0.5px solid var(--amber-faint, oklch(0.82 0.155 78 / 0.4));
+  }
+  .pr-bottom-note a:hover { border-bottom-color: var(--amber); }
+  .pr-back {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fg-50);
+    text-decoration: none;
+    transition: color 200ms ease, transform 200ms ease;
+  }
+  .pr-back:hover { color: var(--amber); transform: translateX(-2px); }
+
+  /* ── RESPONSIVO ── */
+  @media (max-width: 880px) {
+    .pr-art-summary {
+      grid-template-columns: 36px 1fr 20px;
+      grid-template-rows: auto auto;
+      gap: 10px 12px;
+      padding: 16px 18px;
+    }
+    .pr-art-num { grid-row: 1; grid-column: 1; }
+    .pr-art-name { grid-row: 1; grid-column: 2; }
+    .pr-art-chev { grid-row: 1; grid-column: 3; }
+    .pr-art-short {
+      grid-row: 2;
+      grid-column: 2 / -1;
+      font-size: 13px;
+    }
+    .pr-art-body {
+      padding: 4px 18px 20px 18px;
+    }
+    .pr-art-foot {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .pr-art-cta {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pr-intro { padding: 88px 0 36px; }
+    .pr-group { padding: 36px 0 18px; }
+    .pr-group-head { gap: 10px; }
+    .pr-group-rule { display: none; }
+  }
+</style>
